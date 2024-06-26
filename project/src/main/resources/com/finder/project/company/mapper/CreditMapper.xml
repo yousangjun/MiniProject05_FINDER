@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.finder.project.company.mapper.CreditMapper">
+
+    <!-- 상품 조회 -->
+    <select id="selectProduct" resultType="Product">
+        SELECT * FROM product
+        WHERE product_no = #{productNo}
+    </select>
+    
+    <!-- 주문 조회 -->
+    <select id="selectOrder" resultType="Order">
+        SELECT * FROM `order`
+        WHERE order_no = #{orderNo}
+    </select>
+
+    <!-- 결제 조회 -->
+    <select id="selectCredit" resultType="Credit">
+        SELECT * FROM credit
+        WHERE order_no = #{orderNo} <!-- order_no 으로 받음 주의 ⭐ -->
+    </select>
+
+    <!-- 결제 목록 조회 -->
+    <select id="orderCreditList" resultMap="OrderCreditMap" parameterType="map">
+        SELECT o.*, c.*, u.*
+        FROM `order` o
+        LEFT JOIN `credit` c ON o.order_no = c.order_no
+        LEFT JOIN `user` u ON o.user_no = u.user_no
+        WHERE o.user_no = #{userNo}
+        ORDER BY c.credit_date DESC
+        LIMIT #{page.index}, #{page.rows}
+    </select>
+
+    <resultMap id="OrderCreditMap" type="Order">
+        <id property="orderNo" column="order_no" />
+
+        <result property="userNo" column="user_no" />
+        <result property="productNo" column="product_no" />
+        <result property="totalQuantity" column="total_quantity" />
+        <result property="totalPrice" column="total_price" />
+        <result property="orderStatus" column="order_status" />
+        <result property="orderedDate" column="ordered_date" />
+        <result property="createdDate" column="created_Date" />
+        <result property="updatedDate" column="updated_date" />
+        <result property="expirationDate" column="expiration_date" />
+        <result property="remainQuantity" column="remain_quantity" />
+    
+        <association property="user" javaType="Users">
+            <id property="userNo" column="user_no" />
+            <result property="userName" column="user_name" />
+            <result property="userId" column="user_id" />
+            <result property="userPw" column="user_pw" />
+            <result property="userBeforePw" column="user_before_pw" />
+            <result property="userBirth" column="user_birth" />
+            <result property="userPhone" column="user_phone" />
+            <result property="userEmail" column="user_email" />
+            <result property="userRegDate" column="user_reg_date" />
+            <result property="userUpdDate" column="user_upd_date" />
+            <result property="userGender" column="user_gender" />
+            <result property="enabled" column="enabled" />
+        </association>
+
+        <collection property="credits" ofType="Credit">
+            <id property="creditNo" column="credit_no" />    
+            <result property="creditMethod" column="credit_method" />
+            <result property="creditDate" column="credit_date" />
+        </collection>
+
+    </resultMap>
+
+
+    <!-- 결제내역에 띄울 내역 데이터 개수 [승헌 페이징] -->
+    <select id="countOrderCredit" resultType="int">
+            SELECT COUNT(*) 
+            FROM `order` o
+            LEFT JOIN `credit` c ON o.order_no = c.order_no
+            LEFT JOIN `user` u ON o.user_no = u.user_no
+            WHERE o.user_no = #{userNo}
+    </select>
+
+
+
+
+    <!-- 주문 등록 -->
+    <insert id="insertOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="orderNo">
+        INSERT INTO `order` (user_no, product_no, total_quantity, total_price, order_status, expiration_date)
+        VALUES (#{userNo}, #{productNo}, #{totalQuantity}, #{totalPrice}, #{orderStatus}, #{expirationDate})
+    </insert>
+
+    <!-- 결제 등록 -->
+    <insert id="insertCredit" parameterType="Credit">
+        INSERT INTO `credit` (order_no, credit_method, credit_status, credit_code, credit_date)
+        VALUES (#{orderNo}, #{creditMethod}, #{creditStatus}, #{creditCode}, NOW())
+    </insert>
+
+    <!-- 결제시 주문 갱신 -->
+    <update id="updateOrder">
+        UPDATE `order`
+        SET order_status = 'PAID',
+            expiration_date = #{expirationDate},
+            remain_quantity = #{remainQuantity},
+            updated_date = now()
+        WHERE order_no = #{orderNo}
+    </update>
+
+    <update id="updateRemainQuantityByOrderNo">
+        UPDATE `order`
+        SET remain_quantity = #{remainQuantity}
+        WHERE order_no = #{orderNo}
+    </update>
+
+    <update id="updateRemainQuantityAndAccessOrderByOrderNo">
+        UPDATE `order`
+        SET remain_quantity = #{remainQuantity},
+            access_order = #{accessOrder}
+        WHERE order_no = #{orderNo}
+    </update>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.finder.project.company.mapper.CompanyMapper">
+
+
+    <!-- introduce_com 기업소개 페이지 -->
+    <!-- 기업 상세 정보 조회 ❌ -->
+    <select id="selectCompanyDetail" resultType="CompanyDetail">
+        SELECT *
+        FROM company_detail cd JOIN company c ON cd.com_no = c.com_no
+        WHERE com_info_no = #{comInfoNo}
+    </select>
+
+    <!-- 기업 상세 정보 등록 (동작함) ⭕ --> 
+    <insert id="insertCompanyDetail">
+        INSERT INTO company_detail(com_represent, com_url, com_birth, com_size, com_emp_count, com_sales, com_content, com_vision, com_welfare, com_no)
+        VALUES (#{comRepresent}, #{comUrl}, #{comBirth}, #{comSize}, #{comEmpCount}, #{comSales}, #{comContent}, #{comVision}, #{comWelfare}, #{comNo})
+    </insert>
+
+    <!-- 기업 상세 정보 수정 (동작함) ⭕ --> 
+    <update id="updateCompanyDetail">
+        UPDATE company_detail
+        SET com_represent = #{comRepresent},
+            com_birth = #{comBirth},
+            com_size = #{comSize},
+            com_emp_count = #{comEmpCount},
+            com_sales = #{comSales},
+            com_content = #{comContent}
+        WHERE com_no = #{comNo}
+    </update>
+
+
+
+
+
+    <!-- info_update_com 기업 정보 수정 페이지 (지금 작업중) -->
+    <!-- 기업 조회 ❌ -->
+    <select id="selectCompanyByComNo" resultType="Company">
+        SELECT *
+        FROM company
+        WHERE com_no = #{comNo}
+    </select>
+
+    <!-- 기업 등록 ❌ -->
+    <insert id="insertCompany">
+        INSERT INTO company(com_name, com_category, com_address, com_business, user_no)
+        VALUES (#{comName}, #{comCategory}, #{comAddress}, #{comBusiness}, #{userNo})
+    </insert>
+
+    <!-- 비밀번호 변경 ⭕  -->
+    <update id="updateUserPw">
+        UPDATE user
+           SET user_pw = #{userPw}
+              <!-- ,user_before_pw = #{userBeforePw} -->
+              ,user_upd_date = now()
+        WHERE user_no = #{userNo}
+    </update>
+
+    <!-- 회원 정보 수정(일반/기업 모두) ⭕ -->
+    <update id="updateUserInfo">
+        UPDATE user
+           SET user_birth = #{userBirth}
+              ,user_phone = #{userPhone}
+              ,user_email = #{userEmail}
+              ,user_upd_date = now()
+        WHERE user_no = #{userNo}
+    </update>
+
+
+
+
+
+    <!-- 쌤이랑 user_no -> company 연결 com_no -> companyDetail 연결 -->
+    <!-- user_no 로 company 조회 ⭕ -->
+    <select id="selectByUserNo" resultType="Company">
+        SELECT *
+        FROM company
+        WHERE user_no = #{userNo}
+        LIMIT 0, 1
+    </select>
+    <!-- 쌤이랑 -->
+    <!-- com_no 로 companyDetail 조회 ⭕ -->
+    <select id="selectCompanyDetailByComNo" resultType="CompanyDetail">
+        SELECT *
+        FROM company_detail
+        WHERE com_no = #{comNo}
+    </select>
+
+
+    <select id="serachCompanyByName" resultType="Company">
+        SELECT *
+        FROM company
+        WHERE com_name LIKE CONCAT('%',#{name},'%')
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,67 @@
+<!-- 학력 리스트 -->
+<div class="d-flex flex-column w-100 h-auto">
+    <th:block th:each="education : ${educationList}">
+        <div class="education-card d-flex justify-content-between">
+            <div class="flex-column col-3">
+                <p th:text="${education.university}"></p>
+            </div>
+            <div class="flex-column col-3">
+                <p th:text="${education.major}"></p>
+            </div>
+            <div class="flex-column col-3">
+                <p th:text="${education.universityStatus}"></p>
+            </div>
+            <th:block sec:authorize="hasRole('ROLE_COMPANY')">
+            </th:block>
+            <th:block sec:authorize="!hasRole('ROLE_COMPANY') and hasRole('ROLE_USER')">
+                <div class="flex-column col-3">
+                    <button type="button" class="btn del_btn"
+                        th:onclick="|deleteEducation(${education.educationNo})|">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+            </th:block>
+        </div>
+    </th:block>
+</div>
+
+
+<script>
+    $(function () {
+
+    })
+
+    // 학력 삭제
+    function deleteEducation(educationNo) {
+        let check = confirm("정말로 삭제하시겠습니까?")
+
+        if (!check) return
+
+        $.ajax({
+            type: 'delete', //요청메소드
+            url: `/resume/cv_Eddelete_user?educationNo=${educationNo}`, //요청경로 - 컨트롤러url 
+            data: '', //요청 데이터
+            contentType: '', //요청데이터 타입
+            dataType: '', //응답데이터 타입
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+            },
+            //요청 성공             응답데이터 응답상태
+            success: function name(response, status) {
+                if (response == "SUCCESS") {
+                    educationList()
+                }
+                if (response == "FAIL") {
+                    alert("학력 삭제에 실패하였습니다.")
+                }
+            },
+            //에러 발생
+            error: function (xhr, status) {
+                alert('에러 발생')
+            }
+        })
+
+
+    }
+
+</script>

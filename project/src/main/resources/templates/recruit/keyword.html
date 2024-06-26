@@ -1,0 +1,23 @@
+<div class="">
+    <th:block th:each="company : ${companyList}">
+        <div class="d-flex company-item" data-id="${company.comNo}"></div>
+
+        <div class="company-item ">
+            <ul class="item">
+                <li class="d-flex">
+                    <div class="custom-dropdown-item w-50" th:data-id="${company.comNo}"
+                        th:classappend="' custom-dropdown-item-' + ${company.comNo}">
+                        <a th:href="|/company/com_detail_user?comNo=${company.comNo}|" th:text="${company.comName}"></a>
+                    </div>
+                    <ul class="recruit-wrab w-50">
+                        <div class="item recruit-list-item" th:data-id="${company.comNo}"
+                            th:classappend="' custom-dropdown-item-' + ${company.comNo}">
+
+
+                        </div>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </th:block>
+</div>

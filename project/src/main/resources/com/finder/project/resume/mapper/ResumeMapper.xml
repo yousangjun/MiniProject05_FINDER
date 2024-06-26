@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.finder.project.resume.mapper.ResumeMapper">
+
+<resultMap id="CvResultMap" type="com.finder.project.resume.dto.Resume">
+    <id property="cvNo" column="cv_no"/>
+    <result property="coverLetter" column="cover_letter"/>
+    <result property="cvTitle" column="cv_title"/>
+    <result property="cvRegDate" column="cv_reg_date"/>
+    <result property="cvUpdDate" column="cv_upd_date"/>
+
+    <association property="user" javaType="com.finder.project.user.dto.Users">
+        <id property="userNo" column="user_no"/>
+        <result property="userName" column="user_name"/>
+        <result property="userId" column="user_id"/>
+        <result property="userPw" column="user_pw"/>
+        <result property="userBeforePw" column="user_before_pw"/>
+        <result property="userBirth" column="user_birth"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userRegDate" column="user_reg_date"/>
+        <result property="userUpdDate" column="user_upd_date"/>
+        <result property="userGender" column="user_gender"/>
+        <result property="enabled" column="enabled"/>
+    </association>
+    
+    <!-- education mapping -->
+    <collection property="educationList" ofType="com.finder.project.resume.dto.Education">
+        <id property="educationNo" column="education_no"/>
+        <result property="university" column="university"/>
+        <result property="major" column="major"/>
+        <result property="universityStatus" column="university_status"/>
+        <result property="cvNo" column="cv_no"/>
+    </collection>
+
+    <!-- employment_history mapping -->
+    <collection property="employmentHistoryList" ofType="com.finder.project.resume.dto.EmploymentHistory">
+        <id property="employmentHistoryNo" column="employment_history_no"/>
+        <result property="organization" column="organization"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="duties" column="duties"/>
+        <result property="cvNo" column="cv_no"/>
+    </collection>
+</resultMap>
+
+  <!-- 이력서 리스트 조회 -->
+  <select id="resumelist" resultMap="CvResultMap">
+    SELECT c.*, u.*
+        FROM cv c
+        INNER JOIN user u ON c.user_no = u.user_no
+    WHERE u.user_no = #{userNo};
+  </select>
+
+  <!-- 이력서 리스트 조회 [cv_list_user] [승헌 페이징] -->
+  <select id="resumelistPaging" resultMap="CvResultMap">
+    SELECT c.*, u.*
+        FROM cv c
+        INNER JOIN user u ON c.user_no = u.user_no
+    WHERE u.user_no = #{userNo}
+    LIMIT #{page.index}, #{page.rows};
+  </select>
+  <!-- 내 이력서에 띄울 내역 데이터 개수 [cv_list_user] [승헌 페이징] -->
+  <select id="countMyResume" resultType="int">
+    SELECT COUNT(*) 
+        FROM cv c
+        INNER JOIN user u ON c.user_no = u.user_no
+    WHERE u.user_no = #{userNo};
+  </select>
+
+
+
+
+  <!-- 이력서 작성,  ⭕ -->
+  <insert id="create" >
+      INSERT INTO `cv` (`user_no`, `cv_reg_date`)
+      VALUES (#{userNo}, NOW())
+  </insert>
+
+  <!--이력서 수정 ⭕-->
+  <update id="update">
+        UPDATE `cv`
+        SET cv_title = #{cvTitle},
+            cover_letter = #{coverLetter},
+            cv_upd_date = now()
+        WHERE cv_no = #{cvNo}
+  </update>
+
+  <!-- 백승헌이 이력서 제목,자기소개서 넣겠다고 만든거 🔍 -->
+  <select id="selectCV" resultType="Resume">
+    SELECT *
+    FROM cv
+    WHERE user_no = #{userNo} AND cv_no = #{cvNo}
+  </select>
+
+
+
+  <!-- 이력서 상세 조회 ⭕-->
+  <select id="select" resultMap="CvResultMap">
+    SELECT c.*, u.*
+      FROM cv c
+        INNER JOIN user u ON c.user_no = u.user_no
+    WHERE c.cv_no = #{cvNo}
+  </select>
+
+
+
+
+
+  <!-- 이력서 삭제 -->
+  <delete id="delete">
+    DELETE FROM cv
+    WHERE cv_no = #{cvNo}
+  </delete>
+
+  <!-- cv 최댓값  -->
+  <select id="maxPk" resultType="int">
+    SELECT COALESCE(MAX(cv_no), 0)
+    FROM cv
+  </select>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 이력서 합불 -->
+<update id="applyCheck">
+  UPDATE apply_employee
+    SET `check` = #{check}
+  WHERE cv_no = #{cvNo}
+</update>
+
+</mapper>

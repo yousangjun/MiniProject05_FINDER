@@ -1,0 +1,171 @@
+@charset "UTF-8";
+
+/* 푸터 */
+footer {
+  background-color: var(--sub-color);
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto; /* 푸터 하단 고정에 사용 */
+  margin-top: 50px; /* footer - content 영역 사이 간격 */
+}
+
+.footer-wrap {
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: auto; /* 푸터 하단 고정에 사용 */
+  padding: 0px 100px 0px 100px;
+  justify-content: space-between;
+  
+}
+
+footer .footer-col1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  row-gap: 45px;
+
+}
+
+.footer-col1-1 {
+  display: flex;
+  column-gap: 50px;
+  color: #DBDBDB;
+}
+
+.footer-col1-1 p,
+.footer-col1-3 p
+.footer-col1-1 p {
+  display: flex;
+  column-gap: 50px;
+  color: #B5B5B5;
+}
+
+footer .footer-col2 {
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  /* margin-right: 150px; */
+}
+
+.footer-col2 > h1 {
+  font-size: 40px;
+  text-align: center;
+}
+
+.footer-col3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  color: #DBDBDB;
+  row-gap: 45px;
+}
+
+.sns-icon-menu {
+  display: flex;
+  column-gap: 20px;
+}
+
+
+.logo-footer {
+  width : 125px;
+  margin: 0 auto;
+}
+
+
+
+/* 미디어쿼리 1400px 이상부터 적용 */
+@media (min-width: 1400px) {
+  footer .footer-col2 {
+    margin-right: 150px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .header-wrap {
+    flex-direction: column;
+  }
+}
+
+
+
+/* success */
+/* 아래 폼 양식 */
+.payment-form {
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  box-shadow: 1px 2px 2px 3px lightgrey;
+  padding: 20px;
+  position: relative;
+  height: auto;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.payment-form .credit-form-btn {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 10px;
+}
+
+.payment-form p {
+  font-size: 20px;
+}
+
+.credit-form-btn a {
+    text-decoration: none;
+    text-align: center;
+    padding-top: 4px;
+}
+
+
+.credit-list-info li {
+    font-size: 20px ;
+}
+
+.credit-list-info {
+  padding-left: 0 ;
+  
+}
+
+
+.credit-list-info {
+  list-style-type: disc;
+}
+
+.credit-body {
+  row-gap: 20px;
+  margin: 10px 10px;
+  justify-content: center;
+  align-items: center;
+  height: 298px;
+}
+
+.credit-body  {
+  font-size: 20px;
+  text-align: left;
+}
+
+.credit-body h3 {
+  font-size: 40px;
+}
+
+.credit-body h3 span {
+  font-size: 20px;
+}
+
+
+.disabled {
+  pointer-events: none; /* 클릭 이벤트 비활성화 */
+  opacity: 0.6; /* 투명도 변경을 통해 비활성화 상태 표시 */
+}

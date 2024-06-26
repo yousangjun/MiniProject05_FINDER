@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.finder.project.recruit.mapper.RecruitMapper">
+
+  <resultMap id="RecruitPostResultMap" type="com.finder.project.recruit.dto.RecruitPost">
+    <id property="recruitNo" column="recruit_no"/>
+    <result property="comNo" column="com_no"/>
+    <result property="recruitTitle" column="recruit_title"/>
+    <result property="recruitContent" column="recruit_content"/>
+    <result property="recruitResponsibilities" column="recruit_responsibilities"/>
+    <result property="recruitQualifications" column="recruit_qualifications"/>
+    <result property="recruitPreferredQualifications" column="recruit_preferred_qualifications"/>
+    <result property="recruitRegDate" column="recruit_reg_date"/>
+    <result property="fileNo" column="file_no"/>
+    <result property="keywordString" column="recruit_keyword"/>
+   
+    <!-- Company mapping -->
+    <association property="company" javaType="com.finder.project.company.dto.Company">
+        <id property="comNo" column="com_no"/>
+        <result property="comName" column="com_name"/>
+        <result property="comCategory" column="com_category"/>
+        <result property="comPhone" column="com_phone"/>
+        <result property="comEmail" column="com_email"/>
+        <result property="comEmployee" column="com_employee"/>
+        <result property="comAddress" column="com_address"/>
+        <result property="comBusiness" column="com_business"/>
+        <result property="userNo" column="user_no"/>
+    </association>
+
+    <association property="option" javaType="com.finder.project.main.dto.Option">
+      <result property="code" column="your_code_column_name"/>
+      <result property="keyword" column="your_keyword_column_name"/>
+    </association>
+
+
+    <!-- Keywords mapping -->
+    
+  </resultMap>
+
+  <resultMap id="ResumeResultMap" type="com.finder.project.resume.dto.Resume">
+    <id property="cvNo" column="cvNo"/>
+    <result property="userNo" column="userNo"/>
+    <result property="coverLetter" column="coverLetter"/>
+    <result property="cvTitle" column="cvTitle"/>
+    <result property="cvRegDate" column="cvRegDate"/>
+    <result property="cvUpdDate" column="cvUpdDate"/>
+    <result property="applyNo" column="applyNo"/> <!-- applyNo 추가 -->
+    
+    <association property="user" javaType="com.finder.project.user.dto.Users">
+        <id property="userNo" column="user_userNo"/>
+        <result property="userName" column="user_userName"/>
+        <result property="userId" column="user_userId"/>
+        <result property="userPw" column="user_userPw"/>
+        <result property="userBeforePw" column="user_userBeforePw"/>
+        <result property="userBirth" column="user_userBirth"/>
+        <result property="userPhone" column="user_userPhone"/>
+        <result property="userEmail" column="user_userEmail"/>
+        <result property="userRegDate" column="user_userRegDate"/>
+        <result property="userUpdDate" column="user_userUpdDate"/>
+        <result property="userGender" column="user_userGender"/>
+        <result property="enabled" column="user_enabled"/>
+    </association>
+
+    <collection property="recruitPost" ofType="com.finder.project.recruit.dto.RecruitPost">
+        <result property="recruitTitle" column="recruit_title"/>
+        <result property="recruitRegDate" column="recruit_reg_date"/>
+        <!-- 필요한 추가 필드를 여기에 추가 -->
+    </collection>
+  </resultMap>
+
+   <!-- Company 객체의 매핑 -->
+    <resultMap id="CompanyResultMap" type="com.finder.project.company.dto.Company">
+        <id property="comNo" column="com_no" />
+        <result property="comName" column="com_name" />
+        <result property="comCategory" column="com_category" />
+        <result property="comAddress" column="com_address" />
+        <result property="comBusiness" column="com_business" />
+    </resultMap>
+
+    <!-- CompanyDetail 객체의 매핑, Company 포함 -->
+    <resultMap id="CompanyDetailResultMap" type="com.finder.project.company.dto.CompanyDetail">
+        <id property="comInfoNo" column="com_info_no" />
+        <result property="comNo" column="com_no" />
+        <result property="comRepresent" column="com_represent" />
+        <result property="comUrl" column="com_url" />
+        <result property="comBirth" column="com_birth" />
+        <result property="comSize" column="com_size" />
+        <result property="comEmpCount" column="com_emp_count" />
+        <result property="comSales" column="com_sales" />
+        <result property="comContent" column="com_content" />
+        <result property="comVision" column="com_vision" />
+        <result property="comWelfare" column="com_welfare" />
+        <result property="comAvgSalary" column="com_avg_salary" />
+        <association property="company" javaType="com.finder.project.company.dto.Company" resultMap="CompanyResultMap"/>
+    </resultMap>
+
+    <resultMap id="RecruitPostResultKeywordMap" type="com.finder.project.recruit.dto.RecruitPost">
+      <id property="recruitNo" column="recruit_no"/>
+      <result property="recruitTitle" column="recruit_title"/>
+    </resultMap>  
+
+
+
+  <select id="max" resultType="int">
+    SELECT MAX(recruit_no)
+    FROM recruit
+  </select>
+
+  <select id="recruitList" resultMap="RecruitPostResultMap">
+    SELECT c.*, r.*, f.file_no AS file_no, f.file_name, f.file_path, f.file_code, rk.recruit_keyword
+    FROM company c
+    INNER JOIN recruit r ON c.com_no = r.com_no
+    LEFT JOIN (
+        SELECT rk.recruit_no, GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ') AS recruit_keyword
+        FROM recruit_keyword rk
+        GROUP BY rk.recruit_no
+    ) rk ON r.recruit_no = rk.recruit_no
+    LEFT JOIN (
+        SELECT *
+        FROM file
+        WHERE parent_table = 'recruit'
+          AND file_code = 1
+    ) f ON r.recruit_no = f.parent_no
+    <where> 
+        <if test="option.code == 0">
+            r.recruit_title LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+
+        <if test="option.code == 1">
+            c.com_name LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+        
+        <if test="option.code == 2">
+            rk.recruit_keyword LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+        
+        <if test="option.code == 3">
+            c.com_category LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+    </where>
+    ORDER BY r.com_reg_date DESC
+    LIMIT #{page.index}, #{page.rows}
+</select>
+
+  <insert id="recruitPost">
+    INSERT INTO recruit (recruit_title, recruit_content, com_no, recruit_responsibilities, recruit_qualifications, recruit_preferred_qualifications, recruit_reg_date)
+    VALUES (#{recruitTitle}, #{recruitContent}, #{comNo}, #{recruitResponsibilities}, #{recruitQualifications}, #{recruitPreferredQualifications}, #{recruitRegDate})
+  </insert>
+    
+  <insert id="recruitKeyword">
+    INSERT INTO recruit_keyword (recruit_no, recruit_keyword)
+    VALUES (#{recruitNo}, #{recruitKeyword})
+  </insert>
+
+  <!-- 상세조회 -->
+  <select id="recruitRead" resultMap="RecruitPostResultMap">
+    SELECT c.*, r.*, rk.*
+    FROM company c
+    INNER JOIN recruit r ON c.com_no = r.com_no
+    LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
+    WHERE r.recruit_no = #{recruitNo}
+    
+  </select>
+
+  <!-- <select id="recruitReadKeyword" resultType="Keyword">
+    SELECT rk.*
+    FROM recruit r
+    INNER JOIN recruit_keyword rk ON rk.recruit_no = r.recruit_no
+    WHERE r.recruit_no = #{recruitNo}
+  </select> -->
+  <!-- 상세조회 끝-->
+
+  <!-- 등록한 채용공고 목록 -->
+  <select id="postsRecruitList" resultMap="RecruitPostResultMap">
+    SELECT c.*, r.*, rk.*
+    FROM company c
+    INNER JOIN recruit r ON c.com_no = r.com_no
+    LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
+    WHERE r.com_no = #{comNo}
+    LIMIT #{page.index}, #{page.rows}
+  </select>
+
+  <select id="postsRecruitListKeyword" resultMap="RecruitPostResultKeywordMap">
+    SELECT DISTINCT r.recruit_title, r.recruit_no
+    FROM recruit r
+    INNER JOIN company c ON c.com_no = r.com_no
+    LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
+    WHERE r.com_no = #{comNo}
+  </select>
+
+  <!-- 등록한 채용공고 목록 페이징용 [승헌] -->
+  <select id="pagedPostsRecruitList" resultMap="RecruitPostResultMap">
+    SELECT c.*, r.*, f.file_no AS file_no, f.file_name, f.file_path, f.file_code, rk.recruit_keyword
+    FROM company c
+    INNER JOIN recruit r ON c.com_no = r.com_no
+    LEFT JOIN (
+        SELECT rk.recruit_no, GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ') AS recruit_keyword
+        FROM recruit_keyword rk
+        GROUP BY rk.recruit_no
+    ) rk ON r.recruit_no = rk.recruit_no
+    LEFT JOIN (
+        SELECT *
+        FROM file
+        WHERE parent_table = 'recruit'
+          AND file_code = 1
+    ) f ON r.recruit_no = f.parent_no
+    WHERE c.com_no = #{comNo}
+    LIMIT #{page.index}, #{page.rows}
+  </select>
+  <!-- 등록한 채용공고 페이징 [승헌] -->
+  <select id="countpostsRecruitList" resultType="int">
+        SELECT COUNT(*) 
+        FROM company c
+        INNER JOIN recruit r ON c.com_no = r.com_no
+        LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
+        WHERE r.com_no = #{comNo}
+  </select> 
+
+
+  <!-- 등록한 채용공고 조회 -->
+  <select id="postsRecruitRead" resultMap="RecruitPostResultMap">
+    SELECT c.*, r.*, rk.*
+    FROM company c
+    INNER JOIN recruit r ON c.com_no = r.com_no
+    LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
+    WHERE r.recruit_no = #{recruitNo}
+  </select>
+
+  <delete id="deleteRecruitList">
+    DELETE FROM recruit
+    WHERE recruit_no = #{recrutNo};
+  </delete>
+  
+  <update id="recruitUpdate">
+    UPDATE recruit
+    SET recruit_title = #{recruitTitle},
+    recruit_content = #{recruitContent},
+    recruit_responsibilities = #{recruitResponsibilities},
+    recruit_qualifications = #{recruitQualifications},
+    recruit_preferred_qualifications = #{recruitPreferredQualifications},
+    recruit_reg_date = now()
+    WHERE recruit_no = #{recruitNo}
+  </update>
+
+  <delete id="deleteKeyword">
+    DELETE FROM recruit_keyword 
+    WHERE recruit_no = #{recruitNo};
+
+  </delete>
+
+  <!-- 세션에 등록한 set recuitNo 가져오기 -->
+  <select id="selectRecruitsByNos" resultMap="RecruitPostResultMap">
+    <choose>
+      <when test="list != null and list.size() > 0">
+        SELECT c.*, r.*, rk.*
+        FROM company c
+        INNER JOIN recruit r ON c.com_no = r.com_no
+        LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
+        WHERE r.recruit_no IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </when>
+      <otherwise>
+        SELECT c.*, r.*, rk.*
+        FROM company c
+        INNER JOIN recruit r ON c.com_no = r.com_no
+        LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
+        WHERE 1=0
+      </otherwise>
+    </choose>
+  </select>
+  <!-- 세션에 등록한 set recuitNo 가져오기  끝-->
+
+  <!-- 연관검색어 회사 -->
+  <select id="selectCompanyNameList" resultType="string">
+      SELECT com_name
+      FROM company
+  </select>
+
+   <!-- 데이터 개수 조회 -->
+  <!-- 메서드 이름이 count 인 -->
+  <select id="count" resultType="int">
+    SELECT COUNT(DISTINCT r.recruit_no)
+    FROM recruit r
+    JOIN company c ON r.com_no = c.com_no
+    LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
+    <where>
+        <if test="option.code == 0">
+            r.recruit_title LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+        <if test="option.code == 1">
+            c.com_name LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+        <if test="option.code == 2">
+            rk.recruit_keyword LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+        <if test="option.code == 3">
+            c.com_category LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+    </where>
+  </select>
+
+  <!-- 지원내역 삽입 -->
+  <insert id="apply">
+    INSERT INTO apply_employee (cv_no , recruit_no)
+    VALUES (#{cvNo} , #{recruitNo})
+  </insert>
+
+  <!-- 유저가 채용지원한 리스트 -->
+  <select id="applyCvList" resultMap="RecruitPostResultMap">
+    SELECT c.*, r.*, rk.*
+    FROM company c
+    INNER JOIN recruit r ON c.com_no = r.com_no
+     LEFT JOIN (
+        SELECT rk.recruit_no, GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ')
+        FROM recruit_keyword rk
+        GROUP BY rk.recruit_no
+    ) rk ON r.recruit_no = rk.recruit_no
+    JOIN apply_employee a ON r.recruit_no = a.recruit_no
+    JOIN cv ON a.cv_no = cv.cv_no
+    WHERE cv.user_no = #{userNo};
+  </select>
+  
+  <!-- recruit_list_com 제출된 이력서 -->
+  <select id="applyCom" resultMap="ResumeResultMap">
+    SELECT c.cv_no AS cvNo,
+           c.user_no AS userNo,
+           c.cover_letter AS coverLetter,
+           c.cv_title AS cvTitle,
+           c.cv_reg_date AS cvRegDate,
+           c.cv_upd_date AS cvUpdDate,
+           u.user_no AS user_userNo,
+           u.user_name AS user_userName,
+           u.user_id AS user_userId,
+           u.user_pw AS user_userPw,
+           u.user_before_pw AS user_userBeforePw,
+           u.user_birth AS user_userBirth,
+           u.user_phone AS user_userPhone,
+           u.user_email AS user_userEmail,
+           u.user_reg_date AS user_userRegDate,
+           u.user_upd_date AS user_userUpdDate,
+           u.user_gender AS user_userGender,
+           u.ENABLED AS user_enabled,
+           ae.apply_no AS applyNo, 
+           r.recruit_title AS recruit_title,
+           r.recruit_reg_date AS recruit_reg_date
+    FROM cv c
+    JOIN apply_employee ae ON c.cv_no = ae.cv_no
+    JOIN recruit r ON ae.recruit_no = r.recruit_no
+    JOIN user u ON c.user_no = u.user_no
+    WHERE r.com_no = #{comNo}
+    ORDER BY c.cv_reg_date DESC
+    LIMIT #{page.index}, #{page.rows};
+</select>
+
+  <!-- 제출된 이력서 페이징 -->
+  <!-- <select id="countResumes" resultType="int">
+      SELECT COUNT(ae.apply_no)
+      FROM cv c
+      JOIN apply_employee ae ON c.cv_no = ae.cv_no
+      JOIN recruit r ON ae.recruit_no = r.recruit_no
+      WHERE r.com_no = #{comNo};
+  </select> -->
+
+  <select id="countResumes" resultType="int">
+      SELECT COUNT(ae.apply_no)
+      FROM cv c
+      JOIN apply_employee ae ON c.cv_no = ae.cv_no
+      JOIN recruit r ON ae.recruit_no = r.recruit_no
+      WHERE r.com_no = #{comNo};
+  </select>
+
+
+
+  <select id="userNoToCom" resultType="Company">
+    SELECT *
+    FROM company
+    WHERE user_no = #{userNo};
+  </select>
+
+  <!-- comNo 로 지금 보고있는 채용공고 comdetail -->
+  <select id="selectCompanyDetailsWithRecruit" resultMap="CompanyDetailResultMap">
+        SELECT
+            c.com_no,
+            c.com_name,
+            c.com_category,
+            c.com_address,
+            c.com_business,
+            cd.com_info_no,
+            cd.com_represent,
+            cd.com_url,
+            cd.com_birth,
+            cd.com_size,
+            cd.com_emp_count,
+            cd.com_sales,
+            cd.com_content,
+            cd.com_vision,
+            cd.com_welfare,
+            cd.com_avg_salary
+        FROM
+            recruit r
+        JOIN
+            company c ON r.com_no = c.com_no
+        JOIN
+            company_detail cd ON #{comNo} = cd.com_no;
+    </select>
+
+
+  <!-- 지금 보고있는 recruit comNo으로 com -->
+  <select id="recruitToCom" resultType="Company">
+    SELECT c.*
+    FROM company c
+    JOIN recruit r ON c.com_no = #{comNo};
+  </select>
+
+  <select id="recruitNoToRecruit" resultType="RecruitPost">
+    SELECT *
+    FROM recruit
+    WHERE recruit_no = #{recruitNo}
+  </select>
+  
+  <!-- userNO으로 ae테이블의 recruitNO중복 제거한 count -->
+  <select id="userNoToDistnctRecruitNo" resultType="int">
+  SELECT COUNT(*) AS apply_count
+    FROM apply_employee ae
+    JOIN cv c ON ae.cv_no = c.cv_no
+    WHERE c.user_no = #{userNo} AND ae.recruit_no = #{recruitNo}
+  </select>
+
+  <!-- 현재 세션의 주문 테이블의 채용공고 포인트(횟수) 조회 -->
+  <select id="selectOrdersByUserNo" resultType="Order">
+    SELECT *
+    FROM `order` o
+    WHERE o.user_no = #{userNo}
+  </select>
+  
+  <!-- 합 / 불 -->
+<select id="getCheckByRecruitNo" resultType="int">
+  SELECT COALESCE(ae.`check`, -1) AS `check`
+  FROM apply_employee ae
+  JOIN cv c ON ae.cv_no = c.cv_no
+  JOIN `user` u ON c.user_no = u.user_no
+  JOIN recruit r ON ae.recruit_no = r.recruit_no
+  WHERE r.recruit_no = #{recruitNo} AND u.user_no = #{userNo}
+</select>
+
+</mapper>

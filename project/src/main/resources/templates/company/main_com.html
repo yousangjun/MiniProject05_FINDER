@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layout/company_layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>기업 페이지</title>
+</head>
+
+<body layout:fragment="content">
+  <div class="container mt-5 main-content main-content2">
+    <h2 class="text-center fw-bold mb-5">기업 정보</h2>
+
+    <div class="row mt-4 g-5 justify-content-center align-items-center com-info-wrap p-4">
+      <a href="/company/introduce_com" class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="com-index-card card text-center">
+          <div class="card-body">
+            <h5 class="card-title card-option">정보</h5>
+            <img src="/img/기업정보.png" class="img-fluid mb-3" alt="Information">
+            <ul class="list-unstyled">
+              <li>기업 소개</li>
+              <li>기업 정보 수정</li>
+            </ul>
+          </div>
+        </div>
+      </a>
+
+      <a href="/recruit/posted_jobs_com" class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="com-index-card card text-center">
+          <div class="card-body">
+            <h5 class="card-title card-option">채용공고 관리</h5>
+            <img src="/img/채용공고.png" class="img-fluid mb-3" alt="Job Posting Management">
+            <ul class="list-unstyled">
+              <li>채용공고 등록</li>
+              <li>등록한 채용공고</li>
+            </ul>
+          </div>
+        </div>
+      </a>
+
+      <a href="/recruit/recruit_list_com" class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="com-index-card card text-center">
+          <div class="card-body">
+            <h5 class="card-title card-option">이력서 조회</h5>
+            <img src="/img/이력서.png" class="img-fluid mb-3" alt="Resume Check">
+            <ul class="list-unstyled">
+              <li>제출된 이력서</li>
+              <li>AI 간편 평가</li>
+            </ul>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+</body>
+
+</html>

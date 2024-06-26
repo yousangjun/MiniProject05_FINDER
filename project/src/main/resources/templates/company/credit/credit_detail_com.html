@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/company_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       
+
+      </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+</head>
+
+<body layout:fragment="content">
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">구매 동의 안내</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <strong>
+                        해당 항목 구매에 동의하시겠습니까?
+                    </strong>
+                    <br>
+                    <br>
+                    <button id="confirmBtn" type="button" class="btn-short" data-bs-dismiss="modal" onclick="BuyCheck()">확인</button>
+                    <button type="button" class="btn-short" data-bs-dismiss="modal">닫기</button>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column container main-content align-items-center">
+
+        <h1 class="my-5">상품을 선택하셨습니다.</h1>
+
+        <div class="col-lg-4 col-md-6 col-sm-12 credit-content-wrap" >
+            <div class="card text-center">
+                <div class="card-body d-flex flex-column credit-body">
+                    <h3>
+                        <span style="font-size: 30px;" th:text="${product.productName}"></span>
+                        <span th:text=" ' / ' + ${product.productDuration} + '개월 ' + ${product.productCount} + 건"></span>
+                    </h3>
+                    <ul class="credit-list-info">
+                        <li>채용공고 작성 건수</li>   
+                        <th:block th:if="${product.productName} != 10만원">
+                            <li>AI 평가 사용</li> 
+                        </th:block>
+                        <li>건당 <span th:text="${product.productDuration}"></span>개월 유지 가능</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5 payment-form-wrap">
+            <div class="payment-form">
+              <!-- 신용카드 결제 / 구매자 확인 동의 -->
+              <form class="d-flex flex-column justify-content-between">
+                <div class="credit_user_info">
+
+                    <!-- 넘겨줄 데이터 -->
+                    <input type="hidden" name="productNo" id="productNo" th:value="${product.productNo}">
+                    <!-- <input type="hidden" name="productPrice" id="productPrice" th:value="${product.productPrice}"> 상품 가격 -->
+                    <!-- <input type="hidden" name="productName" id="productName" th:value="${product.productName}"> 상품 이름 -->
+                    <!-- <input type="hidden" name="userName" id="userName" th:value="${session.user.userName}"> 결제자 -->
+
+                    <div>
+                        <p>결제 금액 : <span th:text="${product.productPrice}"></span>원</p>
+                        <hr>
+                    </div>
+
+                    <div>
+                        <p>결제자 : <span th:text="${session.user.userName}"></span></p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p>연락처 : <span th:text="${session.user.userPhone}"></span></p>
+                            <button id="buyCheck" style="align-self: self-end;" type="button" class="btn-long" data-bs-toggle="modal" data-bs-target="#exampleModal">구매 동의</button>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+
+                 <div class="d-flex credit-form-btn align-items-center">
+                    <div>
+                        <p>결제 수단 :</p>
+                    </div>
+                    <div class="align-self-end">
+                        <a id="tossURL" href="#" type="button" onclick="postOrder()" class="btn-long disabled">신용카드 결제</a>
+                        <a href="/company/credit/credit_com" type="button" class="btn-long">취소</a>
+                    </div>
+                  </div>
+              </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        $('#tossURL').attr('disabled', 'disabled'); // 구매 동의 버튼 비활성화
+
+        function BuyCheck() {
+                $('#buyCheck').css('backgroundColor', 'green'); // 구매 동의 버튼의 배경색 변경
+
+                // 상품 번호 가져오기
+                var productNo = document.getElementById('productNo').value;
+
+                // 신용카드 결제 버튼 활성화
+                var tossURL = document.getElementById('tossURL');
+                // tossURL.href = '/company/credit/checkout?productNo=' + productNo; // 이거때문에 자꾸 orderNo 존재하지 않는다고 오류뜸
+                tossURL.classList.remove('disabled');
+            }
+
+
+        function postOrder() {
+
+            // 💍 CSRF TOKEN
+            var csrfToken = "[[${_csrf.token}]]";
+            let url = "/company/credit/checkout";
+            const productNo = document.getElementById('productNo').value;
+
+            // jQuery 로 AJAX 요청
+            $.ajax({
+                type: 'POST',               // 요청 메소드 - GET, POST, PUT, DELETE
+                url: url,                   // 요청 URL
+                data: JSON.stringify({      // 요청 데이터를 JSON 문자열로 변환
+                    productNo: productNo
+                }),
+                contentType: 'application/json',     // 요청 데이터 타입
+                dataType: 'json',                   // 응답 데이터 타입
+                beforeSend: function(xhr) {
+                    // 💍 CSRF 토큰을 요청 헤더에 추가
+                    xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+                },
+                // 요청 성공 
+                success: function(response, status) {
+                    // response : 응답 데이터
+                    // status   : 응답 상태
+                    if(response.success) {
+                        let orderNo = response.orderNo;
+                        window.location.href = `/company/credit/checkout?productNo=${productNo}&orderNo=${orderNo}`;
+                    } else {
+                        window.location.href = '/company/credit/fail?error';
+                    }
+                },
+                // 에러
+                error: function(xhr, status) {
+                    // xhr      : XMLHttpRequest 객체
+                    // status   : 응답 상태
+                    alert('에러 발생');
+                }
+            });
+
+        }
+
+            
+
+    </script>
+
+</body>
+</html>

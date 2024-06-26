@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.finder.project.resume.mapper.EmploymentHistoryMapper">
+
+  <!--전체 조회-->
+  <select id="listByCvNo" resultType="com.finder.project.resume.dto.EmploymentHistory">
+    SELECT * FROM employment_history
+    WHERE cv_no = #{cvNo}
+  </select>
+
+  <!-- 조회 -->
+  <select id="select" resultType="com.finder.project.resume.dto.EmploymentHistory">
+    SELECT * FROM employment_history
+    WHERE employment_history_no = #{employmentHistoryNo}
+  </select>
+
+  <!-- 등록 맞는 문장 -->
+  <insert id="create">
+    INSERT INTO employment_history (organization, start_date, end_date, duties, cv_no)
+    VALUES (#{organization}, #{startDate}, #{endDate}, #{duties}, #{cvNo})
+  </insert>
+
+  <!-- 수정 맞는 문법 -->
+  <update id="update">
+    UPDATE employment_history
+    SET organization = #{organization},
+        start_date = #{startDate},
+        end_date = #{endDate},
+        duties = #{duties}
+    WHERE employment_history_no = #{employmentHistoryNo}
+  </update>
+
+  <!-- employmentHistoryNo 으로 삭제 -->
+  <delete id="delete">
+    DELETE FROM employment_history
+    WHERE employment_history_no = #{employmentHistoryNo}
+  </delete>
+  <!-- cvNo 로 삭제 -->
+  <delete id="deleteByCvNo">
+    DELETE FROM employment_history
+    WHERE cv_no = #{cvNo}
+  </delete>
+
+  <!--경력사항 최댓값 번호-->
+    <select id="maxPk" resultType="int">
+    SELECT MAX(employment_history_no) FROM employment_history
+  </select>
+
+</mapper>

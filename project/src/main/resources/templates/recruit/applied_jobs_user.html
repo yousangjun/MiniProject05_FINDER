@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/recruit_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지원한 채용공고</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- <script src="https://tistory4.daumcdn.net/tistory/3134841/skin/images/confetti_v2.js"></script> -->
+
+    <style>
+        canvas {
+            z-index: 50000;
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            transform: scale(1.1);
+        }
+    </style>
+    <script src="/js/pop.js"></script>
+
+</head>
+
+<body layout:fragment="content">
+
+    
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: transparent !important;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">종합이력서 결과 안내</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <strong id="result1">
+
+                    </strong>
+                    <br>
+                    <br>
+                    <div id="result2">
+
+                    </div>
+                    <br>
+                    <div id="result3">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid container">
+        <div style="display: flex; flex-direction: column; margin-left: 100px; margin-bottom: 50px; margin-top: 30px;">
+            <strong style="font-size: 45px; margin-bottom: 15px;">채용공고 관리</strong>
+            <strong style="font-size: 19px;">열정과 재능이 만나는 곳, 당신의 꿈이 시작됩니다.</strong>
+        </div>
+
+        <div class="row justify-content-center" style="padding: 0 40px 0 40px;">
+
+            <nav class="col-12 col-md-12 col-lg-3 sidebar">
+                <div style="margin: 15px 0 45px 15px;">
+                    <strong style="font-size: 24px;">
+                        마이페이지
+                    </strong>
+                </div>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">내 정보</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/user/update_user" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px;" class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Registration.png" alt="x">
+                                </div>
+                                <div>
+                                    내 정보 수정
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">채용공고 관리</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/applied_jobs_user" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/list.png" alt="x">
+                                </div>
+                                <div>
+                                    지원한 채용공고
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/new_jobs_user" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/list.png" alt="x">
+                                </div>
+                                <div>
+                                    최근 본 채용공고
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">이력서 관리</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/resume/cv_list_user" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Documents.png" alt="x">
+                                </div>
+                                <div>
+                                    나의 이력서
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/resume/cv_create_user" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Documents.png" alt="x">
+                                </div>
+                                <div>
+                                    이력서 작성
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
+            <main class="col-12 col-md-12 col-lg-8 main-content d-flex justify-content-end align-items-start">
+                <div class="job-listings ">
+                    <form action="" method="get" class="job-header">
+                        <div style="padding: 15px;"><strong>지원한 채용공고</strong></div>
+                        <!-- <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-right: 20px;"> -->
+                        <div class="d-flex justify-content-end align-items-center me-3 mb-2">
+                            <!-- <select name="filter" id="filter" class="form-control"> -->
+                            <!-- <select name="filter" class="form-control w-auto mx-3"
+                                style="color: #828282; padding: 3px 12px 3px 12px;">
+                                <option value="1">최근 날짜</option>
+                            </select> -->
+                            <!-- <input class="form-control form_input" type="text" name="search_filter" id="search_filter"
+                                placeholder="검색어를 입력해주세요">
+                            <button class="d-flex justify-content-center align-items-center btn-in-short fw-bold">
+                                찾기
+                            </button> -->
+                        </div>
+                    </form>
+
+
+
+                    <th:block th:if="${recruitPosts.isEmpty()}">
+                        <div style="min-height: 300px; text-align: center;">
+                            <h5 style="line-height: 300px;">지원한 채용공고가 없습니다.</h5>
+                        </div>
+                    </th:block>
+
+                    <th:block th:each="recruit : ${recruitPosts}">
+
+                        <a th:href="|/recruit/detail_jobs_user?recruitNo=${recruit.recruitNo}|" class="job-item-link"
+                            th:id="'recruit_' + ${recruit.recruitNo}">
+                            <input type="hidden" name="recruitNo" id="recruitNo" th:value="${recruit.recruitNo}">
+                            <div class="job-item d-flex flex-column">
+                                <div style="width: 38px; height: 15px;">
+                                    <!-- new 자리 -->
+                                </div>
+                                <div style="font-size: 12px;">
+                                    <span th:text="${recruit.company.comName}"></span>
+                                    <span>|</span>
+                                    <span>기간 : </span><span th:text="${recruit.recruitRegDate}"></span>
+                                </div>
+                                <div style="font-size: 17px; margin-bottom: 15px; font-weight: bold;"
+                                    th:text="${recruit.recruitTitle}">
+
+                                </div>
+                                <div class="item d-flex justify-content-between">
+                                    <div class="keyword-span">
+                                        <th:block th:each="keyword : ${recruit.keywordList}">
+                                            <span th:text="${keyword.recruitKeyword}">
+
+                                            </span>
+                                        </th:block>
+                                    </div>
+
+
+                                    <div class="gap-2 d-flex">
+                                        <div>
+                                            <button type="button" class="btn-short " id="btn-stop"
+                                                th:data-recruit-no="${recruit.recruitNo}" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal">
+                                                <strong>합격조회</strong>
+                                            </button>
+                                        </div>
+
+
+                                        <div class="d-flex justify-content-center m-1">
+                                            <strong style="color: #024FDF;">FINDER</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </th:block>
+                    
+                    
+                </div>
+            </main>
+        </div>
+        
+        <div class="buttonContainer" style="display: none;">
+            <button class="canvasBtn" id="stopButton">Stop Confetti</button>
+            <button class="canvasBtn" id="startButton">Drop Confetti</button>
+        </div>
+    
+        <canvas id="canvas"></canvas>
+
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+
+            function reAction() {
+                $("#startButton").trigger("click");
+                setTimeout(function () {
+                    $("#stopButton").trigger("click");
+                }, 300000);
+                
+            }
+
+            var checkBtn = $('#btn-stop')
+
+
+            document.getElementById('btn-stop').addEventListener('click', function (event) {
+                const recruitNo = this.getAttribute('data-recruit-no');
+                // alert(recruitNo)
+                event.stopPropagation();  // 이벤트 전파 중지
+                event.preventDefault(); // 기본 동작 방지
+
+
+                fetch(`/recruit/applied_jobs_user_check?recruitNo=${recruitNo}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        
+                        if (data != -1) {
+                            // 받은 데이터를 처리하는 로직
+                            $('#result1').html((data === 1 ? `<p style="font-size: 32px;" class="p-0">서류전형에 <span style="color:var(--main-color); font-size:40px;">합격</span>하셨습니다.</p>` : '서류전형에 탈락하셨습니다.'));
+                            $('#result2').text((data === 1 ? '축하드립니다! 귀하의 서류가 성공적으로 통과되었습니다. 저희 채용 과정에 관심을 가져주셔서 감사드리며, 다음 단계로 진행하게 된 것을 기쁘게 생각합니다. 향후 절차에 대한 자세한 안내는 이메일로 보내드릴 예정이니, 확인해 주시기 바랍니다. 함께 일할 날을 기대하겠습니다.' : '안녕하세요. 귀하의 지원서에 대해 신중히 검토한 결과, 안타깝게도 이번 채용 과정에서는 다음 단계로 진행하지 않기로 결정하였습니다. 귀하의 노력과 관심에 깊은 감사의 말씀을 드리며, 앞으로 더욱 멋진 기회를 맞이하시길 진심으로 기원합니다. 저희 회사에 대한 관심에 다시 한 번 감사드립니다.'));
+                            $('#result3').text((data === 1 ? '감사합니다.' : '귀하의 앞날에 무궁한 발전과 성공이 함께하길 바랍니다.'));
+                            
+                            if (data == 1) {
+                                reAction();
+                                
+                            }
+                            
+                        } else {
+                            $('#result1').text('합격발표가 조회되지 않습니다.')
+                            
+                            
+                        }
+                        console.log(data);
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+            //티스토리 공감버튼 이벤트
+
+           
+
+
+        });
+    </script>
+</body>
+
+</html>
