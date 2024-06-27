@@ -7,6 +7,7 @@ import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
 import Error from './pages/error/Error';
 
+
 function App() {
   return (
     <BrowserRouter>
