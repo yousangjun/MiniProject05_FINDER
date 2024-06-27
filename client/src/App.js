@@ -5,7 +5,6 @@ import Company from './pages/company/Company';
 import { Recruit } from './pages/recruit/Recruit';
 import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
-import Error from './pages/error/Error';
 
 function App() {
   return (
@@ -16,8 +15,6 @@ function App() {
           <Route path="/recruit" element={<Recruit/>}></Route>
           <Route path="/resume" element={<Resume/>}></Route>
           <Route path="/user" element={<User/>}></Route>
-          <Route path='/*' element={<Error/>}></Route>
-          <Route path='/company' element={<introduce_com/>}></Route>
         </Routes>
     </BrowserRouter>
   );
