@@ -6,6 +6,7 @@ import { Recruit } from './pages/recruit/Recruit';
 import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
 
+
 function App() {
   return (
     <BrowserRouter>
