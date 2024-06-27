@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.finder.project.security.constants.SecurityConstants;
 import com.finder.project.security.provider.JwtTokenProvider;
 import com.finder.project.user.dto.CustomUser;
+import com.finder.project.user.dto.UserAuth;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -102,26 +103,27 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      * @throws ServletException
      */
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-            Authentication authentication) throws IOException, ServletException {
-        log.info("인증 성공 (auth SUCCESS) : ");
+protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+        Authentication authentication) throws IOException, ServletException {
+    log.info("인증 성공 (auth SUCCESS) : ");
 
-        CustomUser user = ((CustomUser) authentication.getPrincipal());
-        int userNo = user.getUser().getUserNo();
-        String userId = user.getUser().getUserId();
+    CustomUser user = ((CustomUser) authentication.getPrincipal());
+    int userNo = user.getUser().getUserNo();
+    String userId = user.getUser().getUserId();
 
-        List<String> roles = user.getAuthorities()
-                                .stream()
-                                .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.toList());
+    // UserAuth 객체에서 권한 정보를 추출하여 List<String> 형태로 변환
+    List<String> roles = user.getAuthorities()
+                            .stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .collect(Collectors.toList());
 
-        // 🔐 JWT
-        String token = jwtTokenProvider.createToken(userNo, userId, roles);
+    // 🔐 JWT
+    String token = jwtTokenProvider.createToken(userNo, userId, roles);
 
-        // 💍 { Authorization : Bearer + {jwt} } 
-        response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
-        response.setStatus(200);
-    }
+    // 💍 { Authorization : Bearer + {jwt} } 
+    response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+    response.setStatus(200);
+}
 
 
 

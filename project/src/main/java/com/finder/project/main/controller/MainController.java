@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.ui.Model;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,14 +24,23 @@ import com.finder.project.recruit.dto.RecruitPage;
 import com.finder.project.recruit.dto.RecruitPost;
 import com.finder.project.recruit.mapper.RecruitMapper;
 import com.finder.project.recruit.service.RecruitService;
+import com.finder.project.security.provider.JwtTokenProvider;
+import com.finder.project.user.dto.UserAuth;
 import com.finder.project.user.dto.Users;
 import com.finder.project.user.service.CustomUserDetailsService;
+import com.finder.project.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 public class MainController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     RecruitService recruitService;
@@ -41,11 +51,11 @@ public class MainController {
     @Autowired
     FileService fileService;
 
-     @Autowired
+    @Autowired
     private CustomUserDetailsService userDetailsService;
 
-
-
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     // 메인페이지 (채용공고) 이런식으로 하는게 맞는지 물어보기
     @GetMapping({ "/index", "" })
@@ -111,8 +121,7 @@ public class MainController {
     public ResponseEntity<Map<String, Object>> recrutiCardList(@RequestParam("page") int page,
             @RequestParam("rows") int rows,
             @RequestParam(value = "code", required = false) Integer code,
-            @RequestParam(value = "keyword", required = false) String keyword
-            ) throws Exception {
+            @RequestParam(value = "keyword", required = false) String keyword) throws Exception {
         Map<String, Object> response = new HashMap<>();
         log.info("page cardList" + page);
 
@@ -137,14 +146,14 @@ public class MainController {
         // model.addAttribute("page", pageRequest);
         // model.addAttribute("recruitList", recruitList);
         // return "/recruit/card";
-        return new ResponseEntity<>(response, HttpStatus.OK); 
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 로그인 페이지 REST에서는 필요없음
     // @GetMapping("/login")
     // public String login() {
-        
-    //     return "/login";
+
+    // return "/login";
     // }
     // @GetMapping({"/", ""})
     // public String home() {
@@ -152,20 +161,33 @@ public class MainController {
     // }
 
     @GetMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) throws Exception {
-        // 로그인 로직 구현
-        Users user = new Users();
-        user.setUserId(username);
-        user.setUserPw(password);
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
+        try {
+            // 사용자 인증
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password)
+            );
 
-        // userDetailsService를 사용하여 유저 인증
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        if (userDetails == null || !user.getUserPw().equals(password)) {
+            // 유저 정보 조회
+            Users user = userService.select(username);
+            List<UserAuth> userAuthList = user.getAuthList();
+
+            // List<UserAuth>를 List<String>으로 변환
+            List<String> roles = userAuthList.stream()
+                .map(UserAuth::getAuth)
+                .collect(Collectors.toList());
+
+            // JWT 토큰 생성
+            String jwtToken = jwtTokenProvider.createToken(user.getUserNo(), user.getUserId(), roles);
+
+            // 토큰을 클라이언트에 반환
+            return ResponseEntity.ok().body(jwtToken);
+
+        } catch (Exception e) {
             return ResponseEntity.status(401).body("로그인 실패: 유효하지 않은 사용자입니다.");
         }
-
-        return ResponseEntity.ok().body("로그인 성공");
     }
 
 }

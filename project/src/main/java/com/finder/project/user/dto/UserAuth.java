@@ -8,6 +8,11 @@ public class UserAuth {
     private int userNo;
     private String auth;
 
+    // getter 메서드 추가
+    public String getAuth() {
+        return auth;
+    }
+
 //     public UserAuth(int userNo, String auth) {
 //         this.userNo = userNo;
 //         this.auth = auth;
