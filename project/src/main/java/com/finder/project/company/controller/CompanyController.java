@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,9 +36,9 @@ import com.finder.project.user.dto.Users;
 import lombok.extern.slf4j.Slf4j;
 
 
-
 @Slf4j
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/company")
 public class CompanyController {
 
