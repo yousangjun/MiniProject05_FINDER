@@ -74,15 +74,17 @@ public class SearchController {
     private RecruitService recruitService;
 
     @GetMapping("/keyword")
-    public String getRecruitList(@RequestParam int comNo, Model model) {
+    public ResponseEntity<Map<String, Object>> getRecruitList(@RequestParam int comNo) {
+        Map<String, Object> response = new HashMap<>();
         List<RecruitPost> recruitPosts = recruitService.postsRecruitListKeyword(comNo);
         for (RecruitPost recruitPost : recruitPosts) {
             log.info(recruitPost + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         }
         // recruitPosts를 HTML로 변환하는 로직 필요 (예: Thymeleaf를 이용해 변환)
         // 여기서는 간단하게 JSON으로 반환
-        model.addAttribute("recruitPost", recruitPosts);
-        return "/recruit/searchRecruit";
+        response.put("recruitPosts", recruitPosts);
+        // model.addAttribute("recruitPost", recruitPosts);
+        return new ResponseEntity<>(response, HttpStatus.OK); 
     }
 
 }

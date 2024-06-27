@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Keyword from './Keyword';
+import SearchRecruit from './SearchRecruit';
 
-const HomeHeader = ({ handleInputChange, keyword, selectedCode, optionList }) => {
+
+const HomeHeader = () => {
+    const [keyword, setKeyword] = useState('');
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [companyList, setCompanyList] = useState([]);
+    const [recruitList, setRecruitList] = useState([]);
     const inputRef = useRef(null);
     const dropdownRef = useRef(null);
-    useEffect(() => {
-        // companyList가 변경될 때마다 실행됩니다.
-        console.log('CompanyList updated:', companyList);
-        // 여기에 필요한 추가 로직을 넣을 수 있습니다.
-    }, [companyList]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
+            //dropdownRef.current 해당 돔 요소가 존재하는지 ?
+            //contains(event.target)  = current안에있는 요소 참조 만약에 클릭이벤트이면 클릭한 요소 참조
             if (inputRef.current && !inputRef.current.contains(event.target) &&
                 dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setDropdownVisible(false);
@@ -29,8 +29,8 @@ const HomeHeader = ({ handleInputChange, keyword, selectedCode, optionList }) =>
 
     const handleKeywordChange = (e) => {
         const newKeyword = e.target.value;
+        setKeyword(newKeyword);
         console.log(newKeyword);
-        handleInputChange(newKeyword);
 
         if (newKeyword) {
             fetch(`/search?query=${encodeURIComponent(newKeyword)}`)
@@ -48,43 +48,48 @@ const HomeHeader = ({ handleInputChange, keyword, selectedCode, optionList }) =>
         }
     };
 
-    const handleCodeChange = (e) => {
-        handleInputChange(keyword, e.target.value);
+
+    const handleMouseOver = (e) => {
+        const comNo = e.target.dataset.id;
+        const recruitListItem = document.querySelector(`.recruit-list-item[data-id='${comNo}']`);
+        if (recruitListItem) {
+            recruitListItem.classList.remove("d-none");
+        }
+       
+        fetch(`/keyword?comNo=${encodeURIComponent(comNo)}`)
+            .then(response => response.json())
+            .then(data => {
+                setRecruitList(data.recruitPosts);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    };
+
+
+    const handleMouseOut = (e) => {
+        const comNo = e.target.dataset.id;
+        const recruitListItem = document.querySelector(`.recruit-list-item[data-id='${comNo}`);
+        if (recruitListItem) {
+            recruitListItem.classList.add("d-none");
+        }
     };
 
     const initKeywordEvent = () => {
+        console.log('Initializing keyword event');
         const items = document.querySelectorAll("[class*='custom-dropdown-item-']");
         items.forEach(item => {
+            console.log('Adding event listeners to item:', item);
             item.addEventListener("mouseover", handleMouseOver);
             item.addEventListener("mouseout", handleMouseOut);
         });
     };
 
-    const handleMouseOver = (e) => {
-        const comNo = e.target.dataset.id;
-        const recruitListItem = document.querySelector(`.recruit-list-item[data-id='${comNo}']`);
-
-        if (recruitListItem && recruitListItem.children.length === 0) {
-            fetch(`/keyword?comNo=${encodeURIComponent(comNo)}`)
-                .then(response => response.text())
-                .then(html => {
-                    recruitListItem.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-        } else if (recruitListItem) {
-            recruitListItem.classList.remove("d-none");
+    useEffect(() => {
+        if (dropdownVisible) {
+            initKeywordEvent();
         }
-    };
-
-    const handleMouseOut = (e) => {
-        const comNo = e.target.dataset.id;
-        const recruitListItem = document.querySelector(`.recruit-list-item[data-id='${comNo}']`);
-        if (recruitListItem) {
-            recruitListItem.classList.add("d-none");
-        }
-    };
+    }, [dropdownVisible, companyList]);
 
     return (
         <>
@@ -96,7 +101,7 @@ const HomeHeader = ({ handleInputChange, keyword, selectedCode, optionList }) =>
                 <form action="" method="get" className="w-75 d-flex align-items-center justify-content-end">
                     <div className="d-flex align-items-center w-75 mb-3 mt-3 position-relative flex-column">
                         <div className="d-flex align-items-center w-75 mb-3 mt-3 box">
-                            <div className="custom-form-floating ">
+                            <div className="custom-form-floating">
                                 <input
                                     ref={inputRef}
                                     type="text"
@@ -115,8 +120,6 @@ const HomeHeader = ({ handleInputChange, keyword, selectedCode, optionList }) =>
                                     name="code"
                                     className="form-select"
                                     id="floatingSelectGrid"
-                                    value={selectedCode}
-                                    onChange={handleCodeChange}
                                 >
                                     {/* {optionList.map((item) => (
                                         <option key={item.code} value={item.code}>
@@ -128,13 +131,31 @@ const HomeHeader = ({ handleInputChange, keyword, selectedCode, optionList }) =>
                         </div>
 
 
-                        <div
-                            ref={dropdownRef}
-                            className="custom-dropdown-menu"
-                            id="customDropdownMenu"
-                        >
-                            <Keyword companies={companyList} />
+                        <div className={`custom-dropdown-menu ${dropdownVisible ? 'show' : ''}`} id="customDropdownMenu" ref={dropdownRef}>
+                            {dropdownVisible && companyList.map((company) => (
+                                <React.Fragment key={company.comNo}>
+                                    <div className="d-flex company-item" data-id={company.comNo}></div>
+                                    <div className="company-item">
+                                        <ul className="item">
+                                            <li className="d-flex">
+                                                <div className={`custom-dropdown-item w-50 custom-dropdown-item-${company.comNo}`} data-id={company.comNo}>
+                                                    <a href={`/company/com_detail_user?comNo=${company.comNo}`}>{company.comName}</a>
+                                                </div>
+                                                <ul className="recruit-wrab w-50">
+                                                    <div className={`item recruit-list-item custom-dropdown-item-${company.comNo}`} data-id={company.comNo}>
+                                                        <SearchRecruit recruitList={recruitList} />
+                                                        {console.log(recruitList + "??")}
+                                                    </div>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </React.Fragment>
+                            ))}
                         </div>
+
+
+
 
                     </div>
                 </form>
@@ -144,7 +165,7 @@ const HomeHeader = ({ handleInputChange, keyword, selectedCode, optionList }) =>
             </div>
             <hr style={{ marginBottom: '65px' }} />
         </>
-    )
-}
+    );
+};
 
-export default HomeHeader
+export default HomeHeader;
