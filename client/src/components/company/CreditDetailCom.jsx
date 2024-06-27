@@ -1,9 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './CreditDetailCom.css'
-import { Link } from 'react-router-dom'
+import './CreditDetailCom.css';
+import { Link } from 'react-router-dom';
+import { Modal, Button } from 'react-bootstrap';
 
 const CreditDetailCom = () => {
+    const [modalShow, setModalShow] = useState(false);
+    const [isAgreed, setIsAgreed] = useState(false);
+
+    const handleBuyCheck = () => {
+        setIsAgreed(true);
+    };
+
+    const handlePostOrder = () => {
+        const productNo = 2; // 예시 값, 실제 데이터로 변경 필요
+        const url = "/company/credit/checkout";
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productNo })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.history.push(`/company/credit/checkout?productNo=${productNo}&orderNo=${data.orderNo}`);
+            } else {
+                window.history.push('/company/credit/fail?error');
+            }
+        })
+        .catch(error => {
+            alert('에러 발생');
+        });
+    };
 
     return (
         <div className="d-flex flex-column container main-content align-items-center">
@@ -40,7 +71,14 @@ const CreditDetailCom = () => {
                                 <p>결제자 : <span>홍길동</span></p>
                                 <div className="d-flex justify-content-between align-items-center">
                                     <p>연락처 : <span>010-1234-5678</span></p>
-                                    <button id="buyCheck" style={{ alignSelf: 'self-end' }} type="button" className="btn-long">구매 동의</button>
+                                    <Button 
+                                        id="buyCheck" 
+                                        style={{ alignSelf: 'self-end' }} 
+                                        className="btn-long" 
+                                        onClick={() => setModalShow(true)}
+                                    >
+                                        구매 동의
+                                    </Button>
                                 </div>
                                 <hr />
                             </div>
@@ -51,13 +89,47 @@ const CreditDetailCom = () => {
                                 <p>결제 수단 :</p>
                             </div>
                             <div className="align-self-end">
-                                <button id="tossURL" type="button" className="btn-long disabled">신용카드 결제</button>
-                                <Link to="/company/credit_com">취소</Link>
+                                <Button 
+                                    id="tossURL" 
+                                    className="btn-long" 
+                                    disabled={!isAgreed}
+                                    onClick={handlePostOrder}
+                                >
+                                    신용카드 결제
+                                </Button>
+                                <Link to="/company/credit_com" className="btn-long">취소</Link>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
+
+            <Modal show={modalShow} onHide={() => setModalShow(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>구매 동의 안내</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{ textAlign: 'center' }}>
+                    <strong>해당 항목 구매에 동의하시겠습니까?</strong>
+                    <br /><br />
+                    <Button 
+                        id="confirmBtn" 
+                        className="btn-short" 
+                        onClick={() => {
+                            handleBuyCheck();
+                            setModalShow(false);
+                        }}
+                    >
+                        확인
+                    </Button>
+                    <Button 
+                        className="btn-short" 
+                        onClick={() => setModalShow(false)}
+                    >
+                        닫기
+                    </Button>
+                </Modal.Body>
+                <Modal.Footer></Modal.Footer>
+            </Modal>
         </div>
     );
 };
