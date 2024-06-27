@@ -9,7 +9,7 @@ header {
     z-index: 100;
 }
 
-  .header-wrap {
+.header-wrap {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -17,81 +17,81 @@ header {
     padding: 10px 0;
     border-bottom: 1px solid lightgrey;
     padding: 10px 100px 10px 100px;
-  }
-  
-  header .logo {
+}
+
+header .logo {
     display: flex;
     align-items: center;
-  }
-  
-  .logo a {
+}
+
+.logo a {
     display: flex;
     text-decoration-line: none;
-  }
-  
-  .logo-header {
+}
+
+.logo-header {
     width : 75px;
+}
+
+header .logo-title {
+  font-size: 30px;
+  line-height: 75px;
+  color: var(--main-color);
+}
+
+header .nav-menu {
+  display: flex;
+  column-gap: 40px;
+}
+
+@media (max-width: 768px) {
+
+  .header-wrap {
+    width: 100%;
   }
-  
-  header .logo-title {
-    font-size: 30px;
-    line-height: 75px;
-    color: var(--main-color);
-  }
-  
+
   header .nav-menu {
-    display: flex;
-    column-gap: 40px;
-  }
-  
-  @media (max-width: 768px) {
-  
-    .header-wrap {
+      flex-direction: column;
       width: 100%;
-    }
-  
-    header .nav-menu {
-        flex-direction: column;
-        width: 100%;
-    }
-  
-    header .nav-menu a, 
-    header .nav-menu button {
-      border-left: 1px solid var(--main-color);
-      border-right: 1px solid var(--main-color);
-    }
-  
-    header .nav-menu>form {
-       flex-direction: column;
-    }  
   }
-  
-  
-  header .nav-menu a {
-    color: black;
-    text-decoration: none;
-    padding: 5px 10px;
+
+  header .nav-menu a, 
+  header .nav-menu button {
+    border-left: 1px solid var(--main-color);
+    border-right: 1px solid var(--main-color);
   }
-  header .nav-menu form {
-    display: flex;
-    column-gap: 40px;
-  }
-  .logout-button {
-    border: none;
-    background-color: #fff;
-    color: black;
-    text-decoration: none;
-    padding: 5px 10px;
-  }
-  .logout-button:hover {
-    background-color: var(--main-color);
-    border-radius: 5px;
-    font-weight: 1000;
-    color: #fff;
-  }
-  header .nav-menu a:hover {
-    background-color: var(--main-color);
-    border-radius: 5px;
-    font-weight: 1000;
-    color: #fff;
-  }
+
+  header .nav-menu>form {
+      flex-direction: column;
+  }  
+}
+
+
+header .nav-menu a {
+  color: black;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+header .nav-menu form {
+  display: flex;
+  column-gap: 40px;
+}
+.logout-button {
+  border: none;
+  background-color: #fff;
+  color: black;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+.logout-button:hover {
+  background-color: var(--main-color);
+  border-radius: 5px;
+  font-weight: 1000;
+  color: #fff;
+}
+header .nav-menu a:hover {
+  background-color: var(--main-color);
+  border-radius: 5px;
+  font-weight: 1000;
+  color: #fff;
+}
