@@ -1,7 +1,23 @@
 import React from 'react'
 
-export const Recruit = () => {
+export const Recruit = ({ }) => {
   return (
-    <div>Recruit</div>
+    <div>
+      <button className="btn-short">
+        <a href=""
+          style={{ textDecorationLine: 'none', color: 'white', display: 'block' }}>{ }</a>
+      </button>
+
+      <button className="btn-in-short">
+        <a href=""
+          style={{ textDecorationLine: 'none', color: 'white', display: 'block' }}>{ }</a>
+      </button>
+
+      <button className="btn-long">
+        <a href=""
+          style={{ textDecorationLine: 'none', color: 'white', display: 'block' }}>{ }</a>
+      </button>
+
+    </div>
   )
 }
