@@ -115,9 +115,4 @@ body {
   }
 }
 
-@media (max-width: 1000px) {
-  .header-wrap {
-    flex-direction: column;
-  }
-}
 

@@ -1,8 +1,18 @@
 import React from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import HomeContainer from '../containers/main/HomeContainer';
+import './Home.css'
+import Header from '../layouts/Header';
+import Footer from '../layouts/Footer';
 
-const Home = () => {
+const Home = ({ }) => {
   return (
-    <div>Home</div>
+    <body>
+      <Header/>
+      <HomeContainer/>
+      <Footer/>
+    </body>
+
   )
 }
 
