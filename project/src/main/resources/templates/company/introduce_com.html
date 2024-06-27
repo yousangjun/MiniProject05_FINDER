@@ -178,8 +178,6 @@
 
                     <form id="form" action="/company/insert_detail" method="post" enctype="multipart/form-data"
                         style="width:100% !important; border-radius: 12px;">
-                        <!-- CSRF 토큰 -->
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                         <div class="d-flex justify-content-end">
                             <div class="d-flex justify-content-end">
                                 <!-- 없으면 등록 -->

@@ -36,7 +36,6 @@
 
         <th:block th:if="${companyDetail != null}">
             <div class="d-flex flex-column w-75 mx-auto">
-                <input type="hidden" name="comNo" th:value="${companyDetail.company.comNo}">
 
 
                 <!-- 회사명/대표명/업종/주소 -->
@@ -63,8 +62,6 @@
                     </div>
                 </div>
 
-                
-               
 
                 <!-- 엽력/규모/사원수/매출액 -->
                 <div class="row w-100 justify-content-center">
@@ -134,8 +131,8 @@
                     </div>
                 </div>
 
-                 <!-- 차트 -->
-                 <div class="row justify-content-center column-gap-5 visualization-chart">
+                <!-- 차트 -->
+                <div class="row justify-content-center column-gap-5 visualization-chart">
 
                     <div class="chart-container gender-chart">
                         <canvas id="genderChart"></canvas>
@@ -163,13 +160,13 @@
     new Chart(genderChart, {
         type: 'doughnut',
         data: {
-          labels: ['남자', '여자'],
-          datasets: [{
-            label: '성비',
-            data: [60, 40],  // 실제 남자와 여자의 비율로 데이터를 입력하세요.
-            backgroundColor: ['#36A2EB', '#FF6384'],
-            borderWidth: 1
-          }]
+            labels: ['남자', '여자'],
+            datasets: [{
+                label: '성비',
+                data: [60, 40],  // 실제 남자와 여자의 비율로 데이터를 입력하세요.
+                backgroundColor: ['#36A2EB', '#FF6384'],
+                borderWidth: 1
+            }]
         },
         options: {
             animation: false,
@@ -199,13 +196,13 @@
     new Chart(ageChart, {
         type: 'bar',
         data: {
-          labels: ['20대', '30대', '40대', '50대', '60대이상'],
-          datasets: [{
-            label: ["나이대"],
-            data: [12, 20, 14, 4, 1],  // 실제 데이터로 수정하세요.
-            backgroundColor: ['#36A2EB', '#36A2EB', '#36A2EB', '#36A2EB', '#36A2EB'],
-            borderWidth: 1,
-          }]
+            labels: ['20대', '30대', '40대', '50대', '60대이상'],
+            datasets: [{
+                label: ["나이대"],
+                data: [12, 20, 14, 4, 1],  // 실제 데이터로 수정하세요.
+                backgroundColor: ['#36A2EB', '#36A2EB', '#36A2EB', '#36A2EB', '#36A2EB'],
+                borderWidth: 1,
+            }]
         },
         options: {
             animation: false,

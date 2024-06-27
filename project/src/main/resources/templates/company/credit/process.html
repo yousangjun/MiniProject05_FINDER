@@ -4,14 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <meta name="_csrf" th:content="${_csrf.token}"/>
-  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
   </head>
   <link rel="stylesheet" href="/css/credit.css">
 
   <body layout:fragment="content">
-    <!-- CSRF 토큰 -->
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
     <!-- <h1>결제테이블 데이터 삽입 프로세스</h1>
     <br>
@@ -32,12 +28,7 @@
       const productNo = urlParams.get("productNo");
       const orderNo = urlParams.get("orderNo");
 
-      var csrfToken = $("meta[name='_csrf']").attr("content");
-      var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
-      var headers = {};
-      headers[csrfHeader] = csrfToken;
-
+      
       function confirm() {
 
       // paymentKey 필수
