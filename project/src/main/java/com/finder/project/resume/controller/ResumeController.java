@@ -263,6 +263,7 @@ public class ResumeController {
         resume.setCvNo(resumeService.maxPk());
 
         log.info("resume의 정보" + resume);
+
         
         int cvNo = resume.getCvNo();
 
@@ -559,6 +560,7 @@ public class ResumeController {
      */
     @GetMapping("/cv_read_com")
     public ResponseEntity<?> ReadCom(@RequestParam("cvNo") int cvNo, Users user) throws Exception {
+        log.info("사용자 이력서 기업에 지원하기");
         try {
             // 사용자의 이력서 정보를 가져옴
             Resume resume = resumeService.select(cvNo);
