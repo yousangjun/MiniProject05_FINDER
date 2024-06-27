@@ -1,0 +1,20 @@
+.detail-content {
+    min-height: 190px;
+    height: auto; 
+    overflow-y: hidden;
+    resize: none; 
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.visualization-chart {
+    margin-top: 50px;
+    width: 100%;
+}
+
+.chart-container {
+    width: 300px;
+    height: 300px; /* 높이를 추가하여 크기를 고정 */
+    margin: 0 auto;
+}
