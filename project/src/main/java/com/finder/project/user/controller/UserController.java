@@ -50,7 +50,7 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    // ✅ 사용자 회원가입 (해결~!~!~!~!!~~!~~!)
+    // ⭕ 사용자 회원가입 (해결~!~!~!~!!~~!~~!)
     @PostMapping("/join_user")
     public ResponseEntity<?> userjoinPro(@RequestBody Users users) throws Exception {
 
@@ -71,7 +71,7 @@ public class UserController {
     }
     // ---------------------------------------------------------------------------------
 
-    // ✅ 기업 회원가입 (해결~!~!~!~!!~~!~~!)
+    // ⭕ 기업 회원가입 (해결~!~!~!~!!~~!~~!)
     @PostMapping("/join_com")
     public ResponseEntity<?> companyjoinPro(@RequestBody Users users) throws Exception {
 
@@ -95,7 +95,7 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.BAD_REQUEST);
     }
 
-    // ✅ 아이디 중복확인 (해결~!~!~!~!!~~!~~!)
+    // ⭕ 아이디 중복확인 (해결~!~!~!~!!~~!~~!)
     @ResponseBody
     @GetMapping("/check/{userId}")
     public ResponseEntity<Boolean> userCheck(@PathVariable("userId") String userId) throws Exception {
@@ -119,6 +119,7 @@ public class UserController {
     @ResponseBody
     @GetMapping("/find_user")
     // ✅ 아이디 찾기 이메일로 전송 (해결~!~!~!~!!~~!~~!)
+    // 이거 get방식이긴 한데 물어봐야함 ❓❓❓❓❓❓❓❓
     public ResponseEntity<String> findId(@RequestBody Users users) throws Exception {
 
         Users user = new Users();
@@ -139,6 +140,7 @@ public class UserController {
             String text = "회원님의 아이디는: " + userId;
             emailService.sendSimpleMessage(userEmail, subject, text);
             return ResponseEntity.ok("해당 이메일로 ID를 발송하였습니다.");
+            // return new ResponseEntity<>(users, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -146,7 +148,7 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/find_users")
-    // ✅ 회원가입시 하는 이메일인증 자동생성 완료
+    // ⭕회원가입시 하는 이메일인증 자동생성 완료
     public ResponseEntity<?> join(@RequestBody Users users) throws Exception {
 
         String userEmail = users.getUserEmail();
@@ -178,7 +180,7 @@ public class UserController {
     }
 
     // ✅ db에 있는 자동생성된 code랑 사용자가 입력한 코드랑 비교 (해결~!~!~!~!!~~!~~!)
-    @PostMapping("/email_code_check")
+    @GetMapping("/email_code_check")
     public ResponseEntity<String> codeCheck(@RequestBody EmailVerification request) throws Exception {
 
         String checkCode = request.getVerificationCode();
@@ -186,7 +188,7 @@ public class UserController {
         log.info("이메일 인증 코드 데이터베이스에서 불러오나요?  " + code);
 
         if (code != null) {
-            return ResponseEntity.ok("성공"); // 코드 인증 성공
+            return ResponseEntity.ok(code); // 코드 인증 성공
         } else {
             return ResponseEntity.ok(null); // 코드 인증 실패
         }
@@ -253,10 +255,10 @@ public class UserController {
         // 데이터 처리 성공
         if (result > 0) {
 
-            return ResponseEntity.ok("성공"); // 코드 인증 성공
+            return ResponseEntity.ok(result); // 코드 인증 성공
         }
         // 데이터 처리 실패
-        return ResponseEntity.ok(null); // 코드 인증 실패
+        return ResponseEntity.ok(result); // 코드 인증 실패
     }
 
     // import org.springframework.stereotype.Controller;
