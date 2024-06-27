@@ -41,7 +41,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        // ✅ 인가 설정
+        // ✅ 인가 설정.
+        http.csrf( csrf -> csrf.disable() );
+
         http.authorizeRequests(requests -> requests
                 .antMatchers("/**").permitAll()
                 .antMatchers("/recruit/posted_jobs_com/**").hasRole("COMPANY")

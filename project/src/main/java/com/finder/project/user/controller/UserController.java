@@ -2,6 +2,8 @@ package com.finder.project.user.controller;
 
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,21 +48,9 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    @GetMapping("/{page}")
-    public String main(@PathVariable("page") String page) {
-        log.info("메인 화면...");
-        return "/user/" + page;
-    }
-
-    @GetMapping("/join_user")
-    public String join() {
-
-        return "user/join_user";
-    }
-
     // 사용자 회원가입
     @PostMapping("/join_user")
-    public String userjoinPro(Users users) throws Exception {
+    public ResponseEntity<?> userjoinPro(@RequestBody Users users) throws Exception {
 
         String userEmail = users.getUserEmail();
         String checkEmail = userMapper.checkEmail(userEmail);
@@ -70,10 +60,12 @@ public class UserController {
         if (checkEmail == null) {
             // 회원가입 성공
             userService.join(users);
-            return "redirect:/login";
+            log.info("회원가입 성공! - SUCCESS");
+            return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
         }
         // 회원가입 실패
-        return "redirect:/user/join_user?error=emailExists";
+        log.info("회원가입 실패! - FAIL");
+        return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
     }
 
     // 기업 회원가입
