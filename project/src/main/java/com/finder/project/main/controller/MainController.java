@@ -8,8 +8,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +23,8 @@ import com.finder.project.recruit.dto.RecruitPage;
 import com.finder.project.recruit.dto.RecruitPost;
 import com.finder.project.recruit.mapper.RecruitMapper;
 import com.finder.project.recruit.service.RecruitService;
+import com.finder.project.user.dto.Users;
+import com.finder.project.user.service.CustomUserDetailsService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +40,12 @@ public class MainController {
 
     @Autowired
     FileService fileService;
+
+     @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+
+
 
     // 메인페이지 (채용공고) 이런식으로 하는게 맞는지 물어보기
     @GetMapping({ "/index", "" })
@@ -139,5 +150,22 @@ public class MainController {
     // public String home() {
     // return "index";
     // }
+
+    @GetMapping("/login")
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) throws Exception {
+        // 로그인 로직 구현
+        Users user = new Users();
+        user.setUserId(username);
+        user.setUserPw(password);
+
+        // userDetailsService를 사용하여 유저 인증
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        if (userDetails == null || !user.getUserPw().equals(password)) {
+            return ResponseEntity.status(401).body("로그인 실패: 유효하지 않은 사용자입니다.");
+        }
+
+        return ResponseEntity.ok().body("로그인 성공");
+    }
 
 }
