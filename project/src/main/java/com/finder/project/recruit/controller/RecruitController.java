@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.finder.project.company.dto.Company;
@@ -38,7 +38,7 @@ import com.finder.project.user.dto.Users;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/recruit")
 public class RecruitController {
 
@@ -201,9 +201,10 @@ public class RecruitController {
 
     // 채용공고 조회/수정/삭제 페이지 ----
     @GetMapping("/post_jobs_read_com")
-    public String getPost_jobs_read_com(@RequestParam("recruitNo") int recruitNo, Model model, Files file)
+    public ResponseEntity<Map<String, Object>> getPost_jobs_read_com(@RequestParam("recruitNo") int recruitNo,
+            Files file)
             throws Exception {
-
+        Map<String, Object> response = new HashMap<>();
         RecruitPost recruitPost = recruitService.recruitRead(recruitNo);
         log.info(file + "??????????????????????????????????????????");
 
@@ -235,15 +236,16 @@ public class RecruitController {
         }
 
         Files Thumbnail = fileService.listByParentThumbnail(file);
+        response.put("Thumbnail", Thumbnail);
+        response.put("recruitPost", recruitPost);
+        response.put("fileList", fileList);
+        response.put("recruitPost", recruitPost);
+        // model.addAttribute("Thumbnail", Thumbnail);
+        // model.addAttribute("recruitPost", recruitPost);
+        // model.addAttribute("fileList", fileList);
+        // model.addAttribute("recruitPost", recruitPost);
 
-        model.addAttribute("Thumbnail", Thumbnail);
-        model.addAttribute("recruitPost", recruitPost);
-        model.addAttribute("fileList", fileList);
-
-        model.addAttribute("recruitPost", recruitPost);
-        // model.addAttribute("keywords", keywords);
-
-        return "/recruit/post_jobs_read_com";
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/post_jobs_read_com")
