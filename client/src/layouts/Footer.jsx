@@ -1,6 +1,8 @@
 import React from 'react'
 import './Footer.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebook, faLinkedin, faYoutube, faInstagram } from '@fortawesome/free-brands-svg-icons'
 
 const Footer = () => {
   return (
@@ -9,10 +11,10 @@ const Footer = () => {
         <div className="footer-col1 my-3">
           <div></div>
           <div className="sns-icon-menu my-2">
-            <i className="fa-brands fa-facebook fa-bounce fs-2"></i>
-            <i className="fa-brands fa-linkedin fa-bounce fs-2"></i>
-            <i className="fa-brands fa-youtube fa-bounce fs-2"></i>
-            <i className="fa-brands fa-instagram fa-bounce fs-2"></i>
+            <FontAwesomeIcon icon={faFacebook} className="fa-bounce fs-2" />
+            <FontAwesomeIcon icon={faLinkedin} className="fa-bounce fs-2" />
+            <FontAwesomeIcon icon={faYoutube} className="fa-bounce fs-2" />
+            <FontAwesomeIcon icon={faInstagram} className="fa-bounce fs-2" />
           </div>
           <div className="footer-col1-1 d-flex flex-wrap flex-md-column flex-lg-row align-items-md-center my-2">
             <div>
