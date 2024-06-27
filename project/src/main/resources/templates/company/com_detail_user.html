@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/recruit_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업 상세정보</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        .detail-content {
+            min-height: 190px;
+            height: auto; 
+            overflow-y: hidden;
+            resize: none; 
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .visualization-chart {
+            margin-top: 50px;
+            width: 100%;
+        }
+        
+        .chart-container {
+            width: 300px;
+            height: 300px; /* 높이를 추가하여 크기를 고정 */
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body layout:fragment="content">
+
+    <div class="container-fluid container">
+
+        <th:block th:if="${companyDetail != null}">
+            <div class="d-flex flex-column w-75 mx-auto">
+                <input type="hidden" name="comNo" th:value="${companyDetail.company.comNo}">
+
+
+                <!-- 회사명/대표명/업종/주소 -->
+                <div class="d-flex flex-row justify-content-between mb-4 mx-5" style="font-size: 20px;">
+                    <div>
+                        <div class="d-flex w-100 column-gap-3" style="margin-bottom: 20px;">
+                                <label for="com_name" style="font-weight: bold;">회사이름 :</label>
+                                <span th:text="${companyDetail.company.comName}"></span>
+                        </div>
+                        <div class="d-flex w-100 column-gap-3">
+                                <label for="com_represent" style="font-weight: bold;">대표명&nbsp;&nbsp;&nbsp; :</label>
+                                <span th:text="${companyDetail.comRepresent}"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex w-100 column-gap-3" style="margin-bottom: 20px;">
+                                <label for="com_category" style="font-weight: bold;">업종 : </label>
+                                <span th:text="${companyDetail.company.comBusiness}"></span>
+                        </div>
+                        <div class="d-flex w-100 column-gap-3">
+                                <label for="com_address" style="font-weight: bold;">주소 : </label>
+                                <span th:text="${companyDetail.company.comAddress}"></span>
+                        </div>
+                    </div>
+                </div>
+
+                
+               
+
+                <!-- 엽력/규모/사원수/매출액 -->
+                <div class="row w-100 justify-content-center">
+                    <div class="d-flex flex-column row-gap-3 col-3 text-center">
+                        <img src="/img/연차1.png" alt="업력연차" style="width: 190px; padding: 26px 12px 10px;"
+                            class="align-self-center">
+                        <div class="mb-3">
+                            <label for="floatingPlaintextInput" class="fs-4" style="text-align: center;">업력 연차</label>
+                            <input type="text" readonly class="form-control-plaintext" id="floatingPlaintextInput"
+                                placeholder="" th:value="${companyDetail.comBirth} + 년" style="text-align: center;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column row-gap-3 col-3 text-center">
+                        <img src="/img/대기업1.png" alt="기업규모" style="width: 190px; padding: 26px 12px 10px;"
+                            class="align-self-center">
+                        <div class="mb-3">
+                            <label for="floatingPlaintextInput" class="fs-4" style="text-align: center;">기업 규모</label>
+                            <input type="text" readonly class="form-control-plaintext" id="floatingPlaintextInput"
+                                placeholder="" th:value="${companyDetail.comSize}" style="text-align: center;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column row-gap-3 col-3 text-center">
+                        <img src="/img/사원수1.png" alt="사원수" style="width: 190px; padding: 26px 12px 10px;"
+                            class="align-self-center">
+                        <div class="mb-3">
+                            <label for="floatingPlaintextInput" class="fs-4" style="text-align: center;">사원 수</label>
+                            <input type="text" readonly class="form-control-plaintext" id="floatingPlaintextInput"
+                                placeholder="" th:value="${companyDetail.comEmpCount} + 명" style="text-align: center;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column row-gap-3 col-3 text-center">
+                        <img src="/img/매출액1.png" alt="매출액" style="width: 190px; padding: 26px 12px 10px;"
+                            class="align-self-center">
+                        <div class="mb-3">
+                            <label for="floatingPlaintextInput" class="fs-4" style="text-align: center;">매출액</label>
+                            <input type="text" readonly class="form-control-plaintext" id="floatingPlaintextInput"
+                                placeholder="" th:value="${companyDetail.comSales} + 억" style="text-align: center;">
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <br>
+
+                <!-- 기술소개 -->
+                <div class="w-100">
+                    <div class="d-flex flex-column mx-auto">
+                        <label for="floatingPlaintextInput" class="fs-2 mb-3" style="text-align: center;">기술 소개</label>
+                        <textarea readonly class="w-75 mx-auto detail-content" id="floatingPlaintextInput"
+                            placeholder="name@example.com" th:text="${companyDetail.comContent}"></textarea>
+                    </div>
+                </div>
+                <!-- 비전 -->
+                <div class="w-100">
+                    <div class="d-flex flex-column mx-auto">
+                        <label for="floatingPlaintextInput" class="fs-2 mb-3" style="text-align: center;">기업 비전</label>
+                        <textarea readonly class="w-75 mx-auto detail-content" id="floatingPlaintextInput"
+                            placeholder="name@example.com" th:text="${companyDetail.comVision}"></textarea>
+                    </div>
+                </div>
+                <!-- 복지 -->
+                <div class="w-100">
+                    <div class="d-flex flex-column mx-auto">
+                        <label for="floatingPlaintextInput" class="fs-2 mb-3" style="text-align: center;">기업 복지</label>
+                        <textarea readonly class="w-75 mx-auto detail-content" id="floatingPlaintextInput"
+                            placeholder="name@example.com" th:text="${companyDetail.comWelfare}"></textarea>
+                    </div>
+                </div>
+
+                 <!-- 차트 -->
+                 <div class="row justify-content-center column-gap-5 visualization-chart">
+
+                    <div class="chart-container gender-chart">
+                        <canvas id="genderChart"></canvas>
+                    </div>
+
+                    <div class="chart-container age-chart">
+                        <canvas id="ageChart" width="500" height="500"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+        </th:block>
+
+    </div>
+
+    
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>              
+    <script>
+
+    // 성비 차트
+    const genderChart = document.getElementById('genderChart');
+    new Chart(genderChart, {
+        type: 'doughnut',
+        data: {
+          labels: ['남자', '여자'],
+          datasets: [{
+            label: '성비',
+            data: [60, 40],  // 실제 남자와 여자의 비율로 데이터를 입력하세요.
+            backgroundColor: ['#36A2EB', '#FF6384'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+            animation: false,
+            responsive: true,
+            plugins: {
+            legend: {
+                position: 'top',
+                display: false,
+                },
+            title: {
+                display: true,
+                text: '남녀 성비',
+                font: {
+                    size: 20
+                },
+                padding: {
+                    bottom: 20
+                }
+                }
+            }   
+        }
+    });
+
+
+    // 나이 차트
+    const ageChart = document.getElementById('ageChart');
+    new Chart(ageChart, {
+        type: 'bar',
+        data: {
+          labels: ['20대', '30대', '40대', '50대', '60대이상'],
+          datasets: [{
+            label: ["나이대"],
+            data: [12, 20, 14, 4, 1],  // 실제 데이터로 수정하세요.
+            backgroundColor: ['#36A2EB', '#36A2EB', '#36A2EB', '#36A2EB', '#36A2EB'],
+            borderWidth: 1,
+          }]
+        },
+        options: {
+            animation: false,
+            responsive: true,
+            plugins: {
+            legend: {
+                position: 'top',
+                display: false,
+                },
+            title: {
+                display: true,
+                text: '나이대',
+                font: {
+                    size: 20
+                },
+                padding: {
+                    bottom: 20
+                }
+                }
+            },
+            scales: {
+                y: {
+                beginAtZero: true
+                }
+            } 
+        }
+    });
+
+
+    </script>
+</body>
+</html>

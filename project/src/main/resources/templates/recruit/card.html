@@ -1,0 +1,41 @@
+<th:block th:if="${recruitList.isEmpty()}">
+    
+</th:block>
+
+<th:block th:each="recruit : ${recruitList}">
+    <div class="col" th:attr="data-recruit-id=${recruit.recruitNo}">
+        <div class="card" style="border-radius: 20px !important; box-shadow: -4px 8px 20px rgba(0, 0, 0, 0.1);">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div>
+                    <div class="card-title">
+                        <img th:src="|/file/img/${recruit.fileNo}|" alt="썸네일" style=" width: 75px; height: 75px;"
+                            th:if="${recruit.fileNo > 0}">
+                        <img src="/img/no-image.png" alt="썸네일" width="75px" height="75px" th:if="${recruit.fileNo == 0}"
+                            th:value="${recruit.fileNo}">
+                    </div>
+                    <input type="hidden" name="recruitNo" th:value="${recruit.recruitNo}">
+                    <p class="card-text" style=" font-size: 12px;" th:text="${recruit.company.comName}"></p>
+                </div>
+                <strong th:text="${recruit.recruitTitle}"></strong>
+                <div class="keyword-span">
+                    <th:block th:if="${recruit.keywordList.isEmpty()}">
+                        <p>키워드가 존재하지 않습니다.</p>
+                    </th:block>
+
+                    <th:block th:each="keyword : ${recruit.keywordList}" class="span-wrapper">
+                        <span th:text="${keyword.recruitKeyword}"></span>
+                    </th:block>
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <div th:text="${recruit.recruitRegDate}"></div>
+                    <div>
+                        <button class="btn-short">
+                            <a th:href="|/recruit/detail_jobs_user?recruitNo=${recruit.recruitNo}|"
+                                style="text-decoration-line: none; color: white;">조회</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>

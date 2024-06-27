@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.finder.project.main.mapper.MainMapper">
+
+    <resultMap id="userNoToUserAuthMap" type="com.finder.project.user.dto.UserAuth">
+    <id property="authNo" column="auth_no" />
+    <result property="auth" column="auth" />
+    <result property="userNo" column="user_no" />
+
+    <!-- user fields -->
+
+    <association property="user" javaType="com.finder.project.user.dto.Users">
+            <id property="userNo" column="user_no" />
+            <result property="userName" column="user_name" />
+            <result property="userId" column="user_id" />
+            <result property="userPw" column="user_pw" />
+            <result property="userBeforePw" column="user_before_pw" />
+            <result property="userBirth" column="user_birth" />
+            <result property="userPhone" column="user_phone" />
+            <result property="userEmail" column="user_email" />
+            <result property="userRegDate" column="user_reg_date" />
+            <result property="userUpdDate" column="user_upd_date" />
+            <result property="userGender" column="user_gender" />
+            <result property="enabled" column="ENABLED" />
+        </association>
+    </resultMap>
+
+    <select id="userNoToUserAuth" resultMap="userNoToUserAuthMap">
+        SELECT u.*, ua.*
+        FROM user u
+        JOIN user_auth ua ON u.user_no = ua.user_no
+        WHERE u.user_no = #{userNo};
+    </select>
+
+
+</mapper>

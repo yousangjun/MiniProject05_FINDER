@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/company_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업 소개</title>
+    <style>
+        .com-intro-title {
+            text-align: center;
+            height: 50px;
+            font-size: var(--text-middle);
+            border-radius: 8px;
+            border: 1px solid #FAFAFA;
+        }
+
+        .com-intro-input {
+            border: 1px solid #FAFAFA;
+            border-radius: 8px;
+            padding: 5px;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .introduce-col1 {
+            border: 1px solid #FAFAFA;
+            border-radius: 8px;
+            padding: 5px;
+            width: auto;
+        }
+
+        img {
+            width: 60%;
+            align-self: center;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+</head>
+
+<body layout:fragment="content">
+    <div class="container-fluid container">
+        <div style="display: flex; flex-direction: column; margin-left: 100px; margin-bottom: 50px; margin-top: 30px;">
+
+            <strong style="font-size: 45px; margin-bottom: 15px;">기업 정보</strong>
+            <strong style="font-size: 19px;">새로운 길을 만드는 여정에 함께하세요.</strong>
+
+        </div>
+
+        <div class="row justify-content-center" style="padding: 0 40px 0 40px;">
+            <nav class="col-12 col-sm-12 col-lg-3 sidebar">
+                <div style="margin: 15px 0 45px 15px;">
+                    <strong style="font-size: 24px;">
+                        마이페이지
+                    </strong>
+                </div>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">기업 정보</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/company/introduce_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px;" class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/home.png" alt="x">
+                                </div>
+                                <div>
+                                    기업 소개
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/user/update_user" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px;" class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Registration.png" alt="x">
+                                </div>
+                                <div>
+                                    담당자 정보 수정
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/company/credit/credit_list_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px;" class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/CreditCard.png" alt="x">
+                                </div>
+                                <div>
+                                    결제 내역
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">채용공고 관리</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/post_jobs_com" class="job-item-link nav-link fw-normal fs-6 token-end">
+                            <div style="background-color: #fff; border-radius: 8px; "
+                                class="d-flex justify-content-between">
+                                <div class="d-flex gap-2 p-2 ps-2">
+                                    <div>
+                                        <img src="/img/list.png" alt="x">
+                                    </div>
+                                    <div>
+                                        채용공고 등록
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 p-2 ">
+                                    <div>
+                                        <img src="/img/CreditScore.png" alt="x" style="width: 24px;">
+                                    </div>
+                                    <div>
+                                        <th:block th:if="${session.user.order} != null">
+                                            <span th:text="${session.user.order.remainQuantity}"></span>
+                                        </th:block>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/posted_jobs_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/list.png" alt="x">
+                                </div>
+                                <div>
+                                    등록한 채용공고
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">이력서 관리</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/recruit_list_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Documents.png" alt="x">
+                                </div>
+                                <div>
+                                    제출된 이력서
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/company/score_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Documents.png" alt="x">
+                                </div>
+                                <div>
+                                    AI 간편 평가
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
+
+            <main class="col-12 col-md-12 col-lg-8 main-content d-flex justify-content-end align-items-start">
+                <div class="job-listings d-flex flex-column align-items-center">
+                    <div class="job-header w-100">
+                        <div style="padding: 15px;"><strong>기업 소개</strong></div>
+                    </div>
+
+                    <form id="form" action="/company/insert_detail" method="post" enctype="multipart/form-data"
+                        style="width:100% !important; border-radius: 12px;">
+                        <!-- CSRF 토큰 -->
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <div class="d-flex justify-content-end">
+                            <div class="d-flex justify-content-end">
+                                <!-- 없으면 등록 -->
+                                <th:block th:if="${session.user.companyDetail == null}">
+                                    <button onclick="createComDetail()" type="submit" class="btn-long">
+                                        등록
+                                    </button>
+                                </th:block>
+                                <!-- 있으면 수정 -->
+                                <th:block th:if="${session.user.companyDetail != null}">
+                                    <button onclick="updateComDetail()" type="submit" class="btn-long">
+                                        수정
+                                    </button>
+                                </th:block>
+                            </div>
+                        </div>
+
+                        <!-- 아직 작성안했을 때 등록폼 -->
+                        <th:block th:if="${session.user.companyDetail == null}">
+                            <div class="company-introduce d-flex flex-column w-100">
+                                <div>
+                                    <input type="text" id="comName" name="comName" class="w-100 my-4 com-intro-title"
+                                        th:value="${session.user.company.comName}" readonly>
+                                </div>
+                                <div class="row">
+                                    <div class="d-flex flex-column row-gap-3 col-3">
+                                        <img src="/img/연차1.png" alt="업력연차">
+                                        <div class="com-intro-input">
+                                            <input type="text" id="comBirth" name="comBirth" class="w-75"
+                                                style="border: none; text-align: center;">
+                                            <span>년</span>
+                                        </div>
+                                        <h4 style="text-align: center;">업력 연차</h4>
+                                    </div>
+                                    <div class="d-flex flex-column row-gap-3 col-3">
+                                        <img src="/img/대기업1.png" alt="기업규모">
+                                        <select id="comSize" name="comSize" class="com-intro-input"
+                                            style="text-align: center;">
+                                            <option value="기업선택" aria-readonly="true">기업선택</option>
+                                            <option value="대기업">대기업</option>
+                                            <option value="중견기업">중견기업</option>
+                                            <option value="중소기업">중소기업</option>
+                                        </select>
+                                        <h4 style="text-align: center;">기업 규모</h4>
+                                    </div>
+                                    <div class="d-flex flex-column row-gap-3 col-3">
+                                        <img src="/img/사원수1.png" alt="사원수">
+                                        <div class="com-intro-input">
+                                            <input type="text" id="comEmpCount" name="comEmpCount" class="w-75"
+                                                style="border: none; text-align: center;">
+                                            <span>명</span>
+                                        </div>
+                                        <h4 style="text-align: center;">사원수</h4>
+                                    </div>
+                                    <div class="d-flex flex-column row-gap-3 col-3">
+                                        <img src="/img/매출액1.png" alt="매출액">
+                                        <div class="com-intro-input">
+                                            <input type="text" id="comSales" name="comSales" class="w-75"
+                                                style="border: none; text-align: center;">
+                                            <span>억</span>
+                                        </div>
+                                        <h4 style="text-align: center;">매출액</h4>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between introduce-col2 mb-3"
+                                    style="column-gap: 25px;">
+                                    <div class="w-100">
+                                        <label for="com_represent">대표명</label>
+                                        <input class="com-intro-input" type="text" id="comRepresent"
+                                            name="comRepresent">
+                                    </div>
+                                    <div class="w-100">
+                                        <label for="com_category">업종</label>
+                                        <input class="com-intro-input" type="text" id="comCategory" name="comCategory"
+                                            th:value="${session.user.company.comBusiness}" readonly
+                                            placeholder="소프트웨어 개발">
+                                    </div>
+                                </div>
+                                <div class="introduce-col3 ">
+                                    <label for="com_address">주소</label>
+                                    <input class="com-intro-input" type="text" id="comAddress" name="comAddress"
+                                        th:value="${session.user.company.comAddress}" readonly
+                                        placeholder="인천광역시 부평구 부평1동 534-48">
+                                </div>
+                                <div class="w-100 introduce-col4">
+                                    <h4 class="w-100"
+                                        style="text-align: center; background-color: #FAFAFA; margin-top: 20px; margin-bottom: 0;">
+                                        기술 소개</h4>
+                                    <textarea name="comContent" id="comContent" placeholder="기업 소개글을 작성하세요."
+                                        class="w-100"
+                                        style="min-height: 300px; border: 1px solid #FAFAFA; border-radius: 0 0 8px 8px;"></textarea>
+                                </div>
+                            </div>
+                        </th:block>
+
+                        <!-- 작성수정폼 -->
+                        <th:block th:if="${session.user.companyDetail != null}">
+                            <div class="company-introduce d-flex flex-column w-100">
+                                <input type="hidden" name="comNo" th:value="${session.user.company.comNo}">
+                                <div>
+                                    <input type="text" class="w-100 my-4 com-intro-title" name="com_intro_title"
+                                        th:value="${session.user.company.comName}" readonly>
+                                </div>
+                                <div class="row">
+                                    <div class="d-flex flex-column row-gap-3 col-3">
+                                        <img src="/img/연차1.png" alt="업력연차">
+                                        <div class="com-intro-input">
+                                            <input type="text" id="comBirth" name="comBirth"
+                                                th:value="${session.user.companyDetail.comBirth}" class="w-75"
+                                                style="border: none; text-align: center;">
+                                            <span>년</span>
+                                        </div>
+                                        <h4 style="text-align: center;">업력 연차</h4>
+                                    </div>
+                                    <div class="d-flex flex-column row-gap-3 col-3">
+                                        <img src="/img/대기업1.png" alt="기업규모">
+                                        <select id="comSize" name="comSize" class="com-intro-input"
+                                            style="text-align: center;">
+                                            <option value="대기업">대기업</option>
+                                            <option value="중견기업">중견기업</option>
+                                            <option value="중소기업">중소기업</option>
+                                        </select>
+                                        <h4 style="text-align: center;">기업 규모</h4>
+                                    </div>
+                                    <div class="d-flex flex-column row-gap-3 col-3">
+                                        <img src="/img/사원수1.png" alt="사원수">
+                                        <div class="com-intro-input">
+                                            <input type="text" id="comEmpCount" name="comEmpCount"
+                                                th:value="${session.user.companyDetail.comEmpCount}" class="w-75"
+                                                style="border: none; text-align: center;">
+                                            <span>명</span>
+                                        </div>
+                                        <h4 style="text-align: center;">사원수</h4>
+                                    </div>
+                                    <div class="d-flex flex-column row-gap-3 col-3">
+                                        <img src="/img/매출액1.png" alt="매출액">
+                                        <div class="com-intro-input">
+                                            <input type="text" id="comSales" name="comSales"
+                                                th:value="${session.user.companyDetail.comSales}" class="w-75"
+                                                style="border: none; text-align: center;">
+                                            <span>억</span>
+                                        </div>
+                                        <h4 style="text-align: center;">매출액</h4>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between introduce-col2 mb-3"
+                                    style="column-gap: 25px;">
+                                    <div class="w-100">
+                                        <label for="com_represent">대표명</label>
+                                        <input class="com-intro-input" type="text" id="comRepresent" name="comRepresent"
+                                            th:value="${session.user.companyDetail.comRepresent}">
+                                    </div>
+                                    <div class="w-100">
+                                        <label for="com_category">업종</label>
+                                        <input class="com-intro-input" type="text" id="comCategory" name="comCategory"
+                                            th:value="${session.user.company.comBusiness}" readonly>
+                                    </div>
+                                </div>
+                                <div class="introduce-col3 ">
+                                    <label for="com_address">주소</label>
+                                    <input class="com-intro-input" type="text" id="comAddress" name="comAddress"
+                                        th:value="${session.user.company.comAddress}" readonly>
+                                </div>
+                                <div class="w-100 introduce-col4">
+                                    <h4 class="w-100 py-2"
+                                        style="text-align: center; background-color: #FAFAFA; margin-top: 20px; margin-bottom: 0;">
+                                        기술 소개</h4>
+                                    <textarea name="comContent" id="comContent"
+                                        th:text="${session.user.companyDetail.comContent}" placeholder="기업 소개글을 작성하세요."
+                                        class="w-100 p-3 fs-5"
+                                        style="min-height: 300px; border: 1px solid  #FAFAFA; border-radius: 0 0 8px 8px;"></textarea>
+                                </div>
+                            </div>
+                        </th:block>
+
+                    </form> <!-- 폼 태그 끝 -->
+
+                </div>
+            </main>
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+        // 등록 누르면 insert_detail 수정 누르면 update_detail
+        function updateComDetail() {
+            $('#form').attr('action', '/company/update_detail')
+            $('#form').submit()
+            alert('수정이 완료되었습니다.')
+        }
+
+        function createComDetail() {
+            alert('등록이 완료되었습니다.')
+        }
+    </script>
+
+</body>
+
+</html>

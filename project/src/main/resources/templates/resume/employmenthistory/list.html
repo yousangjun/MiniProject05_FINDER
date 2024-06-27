@@ -1,0 +1,75 @@
+<!-- 경력 리스트 -->
+<div class="d-flex flex-column w-100">
+    <th:block th:each="employmentHistory : ${employmentHistoryList}">
+        <div class="education-card d-flex justify-content-between">
+            <div class="flex-column col-3">
+                <p th:text="${employmentHistory.organization}">기관</p>
+            </div>
+            <div class="flex-column col-3">
+                <p th:text="${#dates.format(employmentHistory.startDate, 'yyyy-MM-dd')}">시작일</p>
+            </div>
+            <div class="flex-column col-3">
+                <p th:text="${#dates.format(employmentHistory.endDate, 'yyyy-MM-dd')}">끝 일</p>
+            </div>
+            <div class="flex-column col-3">
+                <p th:text="${employmentHistory.duties}">담당직</p>
+            </div>
+            <th:block sec:authorize="hasRole('ROLE_COMPANY')">
+                
+            </th:block>
+            <th:block sec:authorize="!hasRole('ROLE_COMPANY') and hasRole('ROLE_USER')">
+                <div class="flex-column col-3">
+                    <button type="button" class="btn del_btn"
+                        th:onclick="|deleteEmploymentHistory(${employmentHistory.employmentHistoryNo})|">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+
+            </th:block>
+        </div>
+    </th:block>
+</div>
+
+
+<script>
+    $(function () {
+
+    })
+
+    // 경력 삭제
+    function deleteEmploymentHistory(employmentHistoryNo) {
+
+        let check = confirm("정말로 삭제하시겠습니까?");
+
+
+        if (!check) return;
+
+        var csrfToken = "[[${_csrf.token}]]";
+        $.ajax({
+            type: 'delete', //요청 메소드
+            url: `/resume/cv_Emdelete_user?employmentHistoryNo=${employmentHistoryNo}`, //요청 경로 - 컨트롤러 URL 
+            data: '', //요청 데이터
+            contentType: '', //요청데이터 타입
+            dataType: '', //응답데이터 타입
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+            },
+            // 요청 성공: 응답 데이터, 응답 상태
+            success: function name(response, status) {
+                if (response == "SUCCESS") {
+                    employmentHistoryList();
+                }
+                if (response == "FAIL") {
+                    alert("경력 삭제에 실패하였습니다.");
+                }
+            },
+            // 에러 발생
+            error: function (xhr, status) {
+                alert('에러 발생');
+            }
+        })
+    }
+
+
+
+</script>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/company_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>점수 환산 페이지</title>
+
+
+
+    <style>
+        .job-list {
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .job-header {
+            color: #fff;
+            background-color: #005AAB;
+            padding: 10px;
+            margin-bottom: 35px;
+            border-radius: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: 130px;
+            font-size: 28px;
+        }
+
+
+        .keyword-span span {
+            background-color: #f8f8f8;
+            color: #5d5d5d;
+            border-radius: 20px;
+            padding: 5px;
+            font-size: 15px;
+            /* opacity: 0.9; */
+            font-weight: bold;
+            transition: background-color 0.5s ease;
+        }
+
+        .keyword-span-green span {
+            background-color: #128246;
+            color: black;
+            border-radius: 20px;
+            padding: 5px 16px 5px 16px;
+            font-size: 15px;
+            /* opacity: 0.9; */
+            font-weight: bold;
+        }
+
+
+        .keyword-span-red span {
+            background-color: red;
+            color: black;
+            border-radius: 20px;
+            padding: 5px 10px 5px 10px;
+            font-size: 15px;
+            /* opacity: 0.9; */
+            font-weight: bold;
+        }
+
+        .score-search {
+
+            color: #828282;
+            font-size: 13px !important;
+            width: 50% !important;
+            height: 32px !important;
+            border-radius: 8px !important;
+            border: #fff;
+            transition: box-shadow 0.3s ease;
+            transition: outline 0.3s ease !important;
+            padding: 15px;
+            margin-right: 15px;
+        }
+
+        .name-link {
+            background-color: #f0f0f0;
+            color: #5d5d5d;
+            border-radius: 20px;
+            padding: 0 12px 0 12px;
+            font-size: 16px;
+            text-align: center;
+            /* opacity: 0.8; */
+            font-weight: bold;
+            transition: background-color 0.5s ease;
+            text-align: center;
+            width: auto !important;
+            height: 24px !important;
+            line-height: 24px;
+            display: inline-block !important;
+            margin-bottom: 2px;
+        }
+
+        .name-link:hover {
+            background-color: #fff;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/pagination.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+
+<body layout:fragment="content">
+
+
+    <div class="container-fluid container">
+        <div style="display: flex; flex-direction: column; margin-left: 100px; margin-bottom: 50px; margin-top: 30px;">
+            <strong style="font-size: 45px; margin-bottom: 15px;">AI 평가</strong>
+            <strong style="font-size: 19px;">새로운 길을 만드는 여정에 함께하세요.</strong>
+        </div>
+
+        <div class="row justify-content-center" style="padding: 0 40px 0 40px;">
+            <nav class="col-12 col-sm-12 col-lg-3 sidebar">
+                <div style="margin: 15px 0 45px 15px;">
+                    <strong style="font-size: 24px;">
+                        마이페이지
+                    </strong>
+                </div>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">기업 정보</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/company/introduce_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px;" class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/home.png" alt="x">
+                                </div>
+                                <div>
+                                    기업 소개
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/user/update_user" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px;" class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Registration.png" alt="x">
+                                </div>
+                                <div>
+                                    담당자 정보 수정
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/company/credit/credit_list_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px;" class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/CreditCard.png" alt="x">
+                                </div>
+                                <div>
+                                    결제 내역
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">채용공고 관리</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/post_jobs_com" class="job-item-link nav-link fw-normal fs-6 token-end">
+                            <div style="background-color: #fff; border-radius: 8px; "
+                                class="d-flex justify-content-between">
+                                <div class="d-flex gap-2 p-2 ps-2">
+                                    <div>
+                                        <img src="/img/list.png" alt="x">
+                                    </div>
+                                    <div>
+                                        채용공고 등록
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 p-2 ">
+                                    <div>
+                                        <img src="/img/CreditScore.png" alt="x" style="width: 24px;">
+                                    </div>
+                                    <th:block th:if="${session.user.order} != null">
+                                        <span th:text="${session.user.order.remainQuantity}"></span>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/posted_jobs_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/list.png" alt="x">
+                                </div>
+                                <div>
+                                    등록한 채용공고
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">이력서 관리</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/recruit_list_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Documents.png" alt="x">
+                                </div>
+                                <div>
+                                    제출된 이력서
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/company/score_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Documents.png" alt="x">
+                                </div>
+                                <div>
+                                    AI 간편 평가
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
+            <!-- 여기서 부터 시작-->
+            <main class="col-12 col-md-12 col-lg-8 main-content d-flex justify-content-end align-items-start">
+                <div class="job-listings ">
+
+                    <form class="job-header mb-1">
+                        <div style="padding: 16px;"><strong>점수 환산</strong>
+                            <div class="d-flex justify-content-end align-items-center me-3 mb-0" style="margin: 10px;">
+
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                    <div class="container mt-0 justify-content-center">
+                        <div style="margin-bottom: 15px; margin-top: 20px;">
+                            <span style="margin-right: 15px;"><strong>지원자<span style="color: #155ADC; margin-left: 5px;"
+                                        th:text="|${resumeList.size()}명|"></span></strong></span>
+                            <!-- <span style="margin-right: 15px;"><strong>합격<span
+                                        style="color: #128246; margin-left: 5px;">3명</span>
+                                </strong></span>
+                            <span style="margin-right: 15px;"><strong>불합격<span
+                                        style="color: red; margin-left: 5px;">3명</span></strong></span> -->
+                        </div>
+
+                        <div class="item d-flex justify-content-between mb-3">
+                            <div class="keyword-span" id="outputContainer">
+                            </div>
+                            <div class="gap-2 d-flex">
+                                <div class="d-flex justify-content-center">
+                                    <div class="d-flex justify-content-center">
+                                        <input type="text" name="keyword" id="keyword" placeholder="keyword" class="p-1"
+                                            style="border: 1px solid var(--bs-border-color); padding: 1rem .75rem; border-radius: 8px; width: auto; min-width: 100px; max-width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="job-list mt-1">
+
+                                <ol class="list-group">
+                                    <li class="list-group-item d-flex 
+                                    ">
+                                        <div class="" style="width: 18%;">
+                                            <strong style="font-size: 20px;">지원자</strong>
+                                        </div>
+                                        <div class="w-25">
+                                            <strong style="font-size: 20px;">이력서 점수</strong>
+                                        </div>
+                                        <div class="" style="width: 68%;">
+                                            <strong style="font-size: 20px;">지원 채용공고</strong>
+                                        </div>
+                                    </li>
+
+                                    <input type="hidden" name="" id="input-msg"
+                                        value="자기소개서를 100점 만점으로 평가해주세요.
+                                        무조건 점수만 응답해주세요.
+                                        자기소개서는 '50자 이상이어야 하며', '한글 맞춤법을 준수할 경우', '외부 활동과 성취 내용이 있는 경우', '전공 선택 이유와 성취 내용이 있는 경우', 
+                                        '지원 동기와 의지가 확실한 경우' 에 해당하지 않는경우 점수를 줄 수 없습니다. 나머지 점수는 아래 키워드와의 유사성을 평가하여 매우 엄격하게 평가해야 합니다. 키워드와 유사성이 없으면 최하점을 주어야합니다.
+                                        '디자이너' 라는 글자가 들어가면 점수는 30점입니다.
+                                        만약 자기소개서가 빈 문자열이거나 null이면 0점을 주세요. 결과를 꼭 숫자로만 표현해주세요 꼭 숫자만 값이 나와야합니다. '예를들어 90점이면 90으로 표현'">
+
+                                    <th:block th:if="${resumeList.isEmpty()}">
+                                        <div style="min-height: 300px; text-align: center;">
+                                            <h5 style="line-height: 300px;">조회된 이력서 정보가 없습니다.</h5>
+                                        </div>
+                                    </th:block>
+
+                                    <th:block th:each="resume, stat : ${resumeList}">
+                                        <li class="list-group-item d-flex">
+                                            <input type="hidden" name=""
+                                                th:attr="id='resume-cover-letter-' + ${stat.index}"
+                                                th:value="${resume.coverLetter}">
+                                            <div class="d-flex align-items-center" style="width: 18%;">
+                                                <div class="d-flex me-1 " style="width: 13px;">
+                                                    <strong th:text="|${stat.index + 1}.|"></strong>
+                                                </div>
+
+                                                <div class="d-felx">
+                                                    <a th:href="|/resume/cv_read_user?cvNo=${resume.cvNo}|"
+                                                        class="job-item-link name-link">
+                                                        <span id="resume-name" th:text="${resume.user.userName}"></span>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="w-25" style="padding-top: 5px ;">
+                                                <span >
+                                                    <strong th:attr="id='score-' + ${stat.index}" >
+
+                                                    </strong>
+                                                </span>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between" style="width: 68%;">
+                                                <div class="d-flex ">
+                                                    <th:block th:each="recruit : ${resume.recruitPost}">
+                                                        <div class="me-2" style="padding-top: 5px ;">
+                                                            <span th:text="${recruit.recruitTitle}">
+
+                                                            </span>
+                                                        </div>
+                                                    </th:block>
+                                                </div>
+                                                <!-- <div class="keyword-span-green d-flex">
+
+                                                    <span style="#128246;">합격</span>
+                                                </div> -->
+                                                <div>
+                                                    <div>
+                                                        <button class="btn-in-short finder-btn"
+                                                            th:attr="data-index=${stat.index}"
+                                                            th:value="${resume.user.userName}"
+                                                            th:cvNo="${resume.cvNo}" 
+                                                            style="font-weight: bold;">FINDER</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </th:block>
+
+                                </ol>
+
+
+                                <!-- 페이지네이션 -->
+                                <div class="pagination-container justify-content-center d-flex mt-4">
+                                    <div class="pagination d-flex">
+
+                                        <!-- [ 처음 ] -->
+                                        <a class="page-item page-first"
+                                            th:href="|/company/score_com?page=${page.first}|"><i
+                                                class="fa-solid fa-angles-left"></i></a>
+
+                                        <!-- [ 이전 ] -->
+                                        <th:block th:if="${page.page != page.first}">
+                                            <a class="page-item" th:href="|/company/score_com?page=${page.prev}|"><i
+                                                    class="fa-solid fa-angle-left"></i></a>
+                                        </th:block>
+
+                                        <!-- 페이지 번호 -->
+                                        <!-- 
+                                            #numbers.sequence(시작번호, 끝번호) 
+                                            : 시작번호부터 끝번호까지 번호 리스트를 생성
+                                        -->
+                                        <th:block th:each="no : ${#numbers.sequence(page.start, page.end)}">
+                                            <!-- 현재 페이지 -->
+                                            <th:block th:if="${page.page == no}">
+                                                <b>
+                                                    <span th:text="${no}"></span>
+                                                </b>
+                                            </th:block>
+                                            <th:block th:if="${page.page != no}">
+                                                <a th:href="|/company/score_com?page=${no}|" th:text="${no}"></a>
+                                            </th:block>
+                                        </th:block>
+
+                                        <!-- [ 다음 ] -->
+                                        <th:block th:if="${page.page != page.last}">
+                                            <a class="page-item" th:href="|/company/score_com?page=${page.next}|"><i
+                                                    class="fa-solid fa-angle-right"></i></a>
+                                        </th:block>
+
+                                        <!-- [ 마지막 ] -->
+                                        <a class="page-item page-end"
+                                            th:href="|/company/score_com?page=${page.last}|"><i
+                                                class="fa-solid fa-angles-right"></i></a>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <div class="counter" data-count="60">0</div>
+        </div>
+    </div>
+    <!-- <textarea name="" th:attr="id='result-' + ${stat.index}" rows="20" cols="50" class="" placeholder="응답 결과"></textarea> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+
+    <script>
+
+
+        function countUp() {
+
+            $('.counter').each(function() {
+                var $this = $(this),
+                    countTo = $this.attr('data-count');
+                $({ countNum: $this.text()}).animate({
+                    countNum: countTo
+                },
+
+                {
+                    duration: 3000,
+                    easing:'linear',
+                    step: function() {
+                    $this.text(Math.floor(this.countNum));
+                    },
+                    complete: function() {
+                    $this.text(this.countNum);
+                    //alert('finished');
+                    }
+
+                });  
+            });
+
+        }
+
+
+        $(document).ready(function () {
+
+            
+
+
+            let resumeCoverLetter = $('#resume-cover-letter-' + 0).val();
+            // alert(resumeCoverLetter);
+
+
+            // $('.finder-btn').on('click', function () {
+            //     alert(inputKeyword)
+            // });
+
+
+
+
+            // 키워드 입력 처리
+            $('#keyword').off('keypress').on('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent the default form submission
+                    var inputValue = $(this).val();
+                    if (inputValue.trim() !== '') { // Check if the input is not empty
+                        var newSpanElement = $('<input>', {
+                            type: 'text',
+                            class: 'form-control input-keyword',
+                            readonly: true,
+                            style: 'font-size: 11px;',
+                            id: 'keywordForm',
+                            name: 'keyword',
+                            value: '#' + inputValue
+                        });
+                        $('#outputContainer').append(newSpanElement); // Append the new span to the container
+                    }
+                    $(this).val(''); // Clear the input field
+                }
+            });
+
+            let API_KEY = ''
+
+            if (API_KEY == '') {
+                // alert('API_KEY 를 변수에 입력하세요.')
+            }
+
+
+            // AI 지원자 평가
+            $('.finder-btn').on('click', function () {
+
+                let resumeName = $(this).val();
+                let cvNo = $(this).attr('cvNo')
+                // alert(cvNo)
+                // alert(resumeName)
+
+                let index = $(this).data('index');  // 클릭된 버튼의 인덱스 가져오기
+                let inputKeywords = $('.input-keyword').map(function () {
+                    return $(this).val();
+                }).get().join(' ');
+
+                if (inputKeywords.trim() !== '') {
+                    let request = new XMLHttpRequest();
+                    // let result = $('#result-' + index);  // 해당 인덱스의 result 요소 선택
+                    let content = $('#score-' + index);  // 해당 인덱스의 score 요소 선택
+                    let msg = $('#input-msg').val();
+
+                    // 이력서 자기소개서 값 가져오기
+                    let resumeCoverLetter = $('#resume-cover-letter-' + index).val();
+
+
+                    let data = {
+                        "model": "gpt-3.5-turbo",
+                        "messages": [
+                            {
+                                "role": "user",
+                                "content": resumeCoverLetter + " " + msg + " " + inputKeywords
+                            }
+                        ],
+                        "temperature": 1,
+                        "max_tokens": 256,
+                        "top_p": 1,
+                        "frequency_penalty": 0,
+                        "presence_penalty": 0
+                    };
+
+                    // 응답 처리
+                    request.onreadystatechange = function () {
+                        if (request.readyState == request.DONE && request.status == 200) {
+                            let response = request.responseText;
+                            // result.text(response);
+                            let object = JSON.parse(response);
+                            let contentValue = object.choices[0].message.content;
+                            content.text(contentValue);
+
+                            // 값에 따라 색깔 설정
+                            if (contentValue >= 86 && contentValue <= 100) {
+                                content.css("color", "#155ADC"); // 파란색
+                            } else if (contentValue >= 79 && contentValue <= 85) {
+                                content.css("color", "#128246"); // 초록색
+                            } else if (contentValue >= 60 && contentValue <= 69) {
+                                content.css("color", "#FFE039"); // 노란색
+                            } else {
+                                content.css("color", "red"); // 빨간색
+                            }
+
+                            // 스위트얼러트
+                            let timerInterval;
+                            Swal.fire({
+
+                                // title: "",
+                                width: 800,
+                                html: "<h1 style='font-weight:bold; margin-top:50px;'>👨‍💻 AI 이력서 평가 진행중 👩‍🚀</h1>"
+                                    // + "<img src='/img/AI_BOT.webp' width='480' /> "
+                                    + "<div class='d-flex justify-content-center'>"
+                                    + "<img src='/img/AI분석중.gif' width='720' /> "
+                                    // + "<img src='/img/AI_BOT.webp' width='560' /> "
+                                    + "</div>"
+                                    + `<h3 style='font-weight:bold;'>${resumeName}님의 이력서 분석을 시작합니다.</h3>`,
+                                // html: "지원서의 이력서 분석을 시작합니다.",
+                                timer: 10000,
+                                timerProgressBar: true,
+
+                                backdrop: `
+                                            rgba(0,0,0,0.7)
+                                            right center 
+                                            url("/img/AI_BOT.webp")
+                                            no-repeat
+                                        `
+                                        ,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                    const timer = Swal.getPopup().querySelector("b");
+                                    timerInterval = setInterval(() => {
+                                    timer.textContent = `${Swal.getTimerLeft()}`;
+                                    }, 100);
+                                },
+                                willClose: () => {
+                                    clearInterval(timerInterval);
+                                    Swal.fire({
+                                        // title: `👨‍💼 ${resumeName}님의 AI 이력서 점수 ✨`,
+                                        html: `
+                                            <img src='http://localhost:8080/file/img/cv/${cvNo}' width='200' style='margin: 0 auto 30px;' />
+                                            <h1 style='font-size: 28px; font-weight: bold;'>👨‍💼 ${resumeName}님의 AI 이력서 점수 ✨</h1>
+                                            <h1 style='font-size: 40px'>
+                                                <span style="font-size: 60px" class="counter" data-count="${contentValue}">0</span>
+                                                점
+                                            </h1>
+                                        `,
+                                        // imageUrl: `http://localhost:8080/file/img/cv/${cvNo}`,
+                                        // imageWidth: 200,
+                                        width: 600,
+                                        padding: "3em",
+                                        color: "#716add",
+                                        confirmButtonText: "확인",
+                                        //rgba(0,0,123,0.4)
+                                        backdrop: `
+                                            rgba(0,0,0,0.7)
+                                            left top
+                                            no-repeat
+                                        `
+                                    });
+
+                                    countUp()
+
+                                }
+                            })
+                        }
+                        if (request.readyState == request.DONE && request.status == 500) {
+                            alert('서버측 에러 발생');
+                        }
+                    };
+
+                    // 요청 설정
+                    let url = 'https://api.openai.com/v1/chat/completions';
+                    request.open("POST", url, true);
+                    request.setRequestHeader("Content-Type", "application/json");
+                    request.setRequestHeader("Authorization", "Bearer " + API_KEY);
+                    request.send(JSON.stringify(data));
+                } else {
+                    alert("키워드를 입력해주세요 !")
+                }
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>

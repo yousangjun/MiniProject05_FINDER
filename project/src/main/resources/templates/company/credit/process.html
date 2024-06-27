@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/payments_layout}">
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  </head>
+  <link rel="stylesheet" href="/css/credit.css">
+
+  <body layout:fragment="content">
+    <!-- CSRF 토큰 -->
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+    <!-- <h1>결제테이블 데이터 삽입 프로세스</h1>
+    <br>
+    <h1>주문테이블 데이터 갱신 프로세스</h1>
+    <ul>
+      <li>updated_date</li>
+      <li>credit_status</li>
+    </ul> -->
+      
+    <script>
+      // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
+      // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.
+      const urlParams = new URLSearchParams(window.location.search);
+      const paymentKey = urlParams.get("paymentKey");
+      const orderId = urlParams.get("orderId");
+      const amount = urlParams.get("amount"); // 총가격
+      
+      const productNo = urlParams.get("productNo");
+      const orderNo = urlParams.get("orderNo");
+
+      var csrfToken = $("meta[name='_csrf']").attr("content");
+      var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+      var headers = {};
+      headers[csrfHeader] = csrfToken;
+
+      function confirm() {
+
+      // paymentKey 필수
+      var requestData = {
+        paymentKey: urlParams.get("paymentKey"), 
+        orderId: urlParams.get("orderId"),
+        price: parseInt(urlParams.get("amount")), // 가격을 정수로 변환
+        productNo: parseInt(urlParams.get("productNo")), // 제품 번호를 정수로 변환
+        orderNo: parseInt(urlParams.get("orderNo")) // 주문 번호를 정수로 변환
+      };
+
+      return new Promise(function (resolve, reject) {
+
+        $.ajax({
+          type: "POST",
+          url: "/company/credit/process",
+          headers: headers,
+          data: requestData,
+          success: function (result) {
+
+            if (result.status == "success") {
+              console.log("Payment confirmed successfully:", result);
+              window.location.href = `/company/credit/success?orderNo=${result.orderNo}&productNo=${productNo}`;
+              resolve(result); // 성공 시 Promise를 이행하고 결과 전달
+            } else {
+              window.location.href = `/company/credit/fail?orderNo=${result.orderNo}&productNo=${productNo}`;
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error("Error confirming payment:", error);
+            reject(error); // 실패 시 Promise를 거부하고 에러 전달
+          }
+        });
+      });
+
+      }
+
+      confirm();
+
+
+    </script>
+  </body>
+</html>

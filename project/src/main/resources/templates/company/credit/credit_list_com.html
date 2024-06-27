@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/company_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .table-wrap {
+            min-height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        th {
+            text-align: center;
+            width: auto;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        td {
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        .creditList-item:hover {
+            background-color: #f4f4f4;
+        }
+
+        .aBtn {
+            text-decoration: none !important;
+            line-height: 34px !important;
+            text-align: center !important;
+            padding: 0 5px !important;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/pagination.css">
+    <title>결제 내역</title>
+</head>
+
+<body layout:fragment="content">
+
+    <th:block th:each="order : ${orderCreditList}">
+        <!-- 상세조회 Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">결제내역 상세 안내</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align: center;">
+                        <strong>
+                            결제 날짜: <span th:each="credit : ${order.credits}"
+                                th:text="${#dates.format( credit.creditDate, 'yyyy/MM/dd' )}"></span>
+                        </strong>
+                        <br>
+                        <br>
+                        <span th:text="${session.user.userName}"></span>님의 결제 내역입니다<br>
+                        상품 옵션은 
+                        <th:block th:switch="${order.totalQuantity}">
+                            <span th:case="30">2</span>
+                            <span th:case="80">3</span>
+                            <span th:case="150">5</span>
+                        </th:block>
+                        개월이며 <br>
+                        결제 금액은
+                        <span th:text="${order.totalPrice}"></span>
+                        원입니다.<br>
+                        <hr>
+                        구매해주셔서 감사합니다.<br>
+                        주문처리 일자: <span th:text="${#dates.format( order.orderedDate, 'yyyy/MM/dd' )}"></span><br>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <div class="container-fluid container">
+        <div style="display: flex; flex-direction: column; margin-left: 100px; margin-bottom: 50px; margin-top: 30px;">
+
+            <strong style="font-size: 45px; margin-bottom: 15px;">기업 정보</strong>
+            <strong style="font-size: 19px;">앞으로의 길을 내다볼 때 필요한 건 아닌 판단이다.</strong>
+
+        </div>
+
+        <div class="row justify-content-center" style="padding: 0 40px 0 40px;">
+
+            <nav class="col-12 col-sm-12 col-lg-3 sidebar">
+                <div style="margin: 15px 0 45px 15px;">
+                    <strong style="font-size: 24px;">
+                        마이페이지
+                    </strong>
+                </div>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">기업 정보</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/company/introduce_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px;" class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/home.png" alt="x">
+                                </div>
+                                <div>
+                                    기업 소개
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/user/update_user" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px;" class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Registration.png" alt="x">
+                                </div>
+                                <div>
+                                    담당자 정보 수정
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/company/credit/credit_list_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px;" class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/CreditCard.png" alt="x">
+                                </div>
+                                <div>
+                                    결제 내역
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">채용공고 관리</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/post_jobs_com" class="job-item-link nav-link fw-normal fs-6 token-end">
+                            <div style="background-color: #fff; border-radius: 8px; "
+                                class="d-flex justify-content-between">
+                                <div class="d-flex gap-2 p-2 ps-2">
+                                    <div>
+                                        <img src="/img/list.png" alt="x">
+                                    </div>
+                                    <div>
+                                        채용공고 등록
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 p-2 ">
+                                    <div>
+                                        <img src="/img/CreditScore.png" alt="x" style="width: 24px;">
+                                    </div>
+                                    <th:block th:if="${session.user.order} != null">
+                                        <span th:text="${session.user.order.remainQuantity}"></span>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/posted_jobs_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/list.png" alt="x">
+                                </div>
+                                <div>
+                                    등록한 채용공고
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column ul-header">
+                    <li class="li-header">
+                        <strong class="fs-5">이력서 관리</strong>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recruit/recruit_list_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Documents.png" alt="x">
+                                </div>
+                                <div>
+                                    제출된 이력서
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/company/score_com" class="job-item-link nav-link fw-normal fs-6">
+                            <div style="background-color: #fff; border-radius: 8px; " class="d-flex gap-2 p-2 ps-2">
+                                <div>
+                                    <img src="/img/Documents.png" alt="x">
+                                </div>
+                                <div>
+                                    AI 간편 평가
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
+            <div class="col-12 col-md-12 col-lg-8 main-content d-flex justify-content-end align-items-start">
+                <div class="job-listings">
+                    <div class="job-header">
+                        <div style="padding: 15px;"><strong>결제 내역</strong></div>
+                        <!-- <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-right: 20px;"> -->
+                        <div class="d-flex justify-content-end align-items-center me-3 mb-2">
+                            <!-- <select name="filter" id="filter" class="form-control"> -->
+                            <!-- <select name="filter" class="form-control w-auto mx-3"
+                                style="color: #828282; padding: 3px 12px 3px 12px;">
+                                <option value="1">최근 날짜</option>
+                                <option value="1">오래된 날짜</option>
+                            </select> -->
+                            <!-- <input class="form-control form_input" type="text" name="search_filter" id="search_filter"
+                                placeholder="검색어를 입력해주세요">
+                            <button class="d-flex justify-content-center align-items-center btn-in-short fw-bold">
+                                찾기
+                            </button> -->
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table class="table-credit" style="min-width: 100%;">
+                            <thead>
+                                <tr style="text-align: center;">
+                                    <th>주문번호</th>
+                                    <th>결제수단</th>
+                                    <th>결제일시</th>
+                                    <th>결제금액</th>
+                                    <th>결제상태</th>
+                                    <th style="width: 80px;">상세보기</th>
+                                </tr>
+                            </thead>
+
+                            <th:block th:if="${orderCreditList.isEmpty()}">
+                                <tr>
+                                    <td style="height:400px;" colspan="6" align="center">
+                                        <h5>결제하신 내역이 없습니다.</h5>
+                                    </td>
+                                </tr>
+                            </th:block>
+
+                            <th:block th:each="order : ${orderCreditList}">
+                                <tr class="creditList-item">
+                                    <td th:text="${order.orderNo}"></td>
+
+                                    <td>
+
+                                        <span th:each="credit : ${order.credits}"
+                                            th:text="${credit.creditMethod}"></span>
+                                    </td>
+
+                                    <td>
+                                        <span th:each="credit : ${order.credits}" th:text="${credit.creditDate != null ? 
+                                                #dates.format( credit.creditDate, 'yyyy/MM/dd HH:mm:ss' ) 
+                                                : ''}"></span>
+                                    </td>
+
+                                    <td th:text="${order.totalPrice}"></td>
+
+                                    <td th:switch="${order.orderStatus}">
+                                        <span th:case="'PAID'">결제완료</span>
+                                        <span th:case="PENDING">결제대기</span>
+                                        <span th:case="CANCELLED">결제취소</span>
+                                    </td>
+
+                                    <td>
+                                        <th:block th:each="credit : ${order.credits}" th:if="credit.creditDate != null">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                class="btn-short aBtn" th:text="상세조회">
+                                            </a>
+                                        </th:block>
+                                        <th:block th:switch="${order.orderStatus}">
+                                            <a th:href="|/company/credit/checkout?orderNo=${order.orderNo}&productNo=${order.productNo}|"
+                                                class="btn-short aBtn" th:case="PENDING" th:text="결제하기"></a>
+                                        </th:block>
+                                    </td>
+                                </tr>
+                            </th:block>
+
+                        </table>
+                    </div>
+
+                    <!-- 페이지네이션 -->
+                    <div class="pagination-container justify-content-center d-flex mt-4">
+                        <div class="pagination d-flex">
+
+                            <!-- [ 처음 ] -->
+                            <a class="page-item page-first"
+                                th:href="|/company/credit/credit_list_com?page=${page.first}|"><i
+                                    class="fa-solid fa-angles-left"></i></a>
+
+                            <!-- [ 이전 ] -->
+                            <th:block th:if="${page.page != page.first}">
+                                <a class="page-item" th:href="|/company/credit/credit_list_com?page=${page.prev}|"><i
+                                        class="fa-solid fa-angle-left"></i></a>
+                            </th:block>
+
+                            <!-- 페이지 번호 -->
+                            <!-- 
+                                #numbers.sequence(시작번호, 끝번호) 
+                                : 시작번호부터 끝번호까지 번호 리스트를 생성
+                            -->
+                            <th:block th:each="no : ${#numbers.sequence(page.start, page.end)}">
+                                <!-- 현재 페이지 -->
+                                <th:block th:if="${page.page == no}">
+                                    <b>
+                                        <span th:text="${no}"></span>
+                                    </b>
+                                </th:block>
+                                <th:block th:if="${page.page != no}">
+                                    <a th:href="|/company/credit/credit_list_com?page=${no}|" th:text="${no}"></a>
+                                </th:block>
+                            </th:block>
+
+                            <!-- [ 다음 ] -->
+                            <th:block th:if="${page.page != page.last}">
+                                <a class="page-item" th:href="|/company/credit/credit_list_com?page=${page.next}|"><i
+                                        class="fa-solid fa-angle-right"></i></a>
+                            </th:block>
+
+                            <!-- [ 마지막 ] -->
+                            <a class="page-item page-end"
+                                th:href="|/company/credit/credit_list_com?page=${page.last}|"><i
+                                    class="fa-solid fa-angles-right"></i></a>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        var myModal = document.getElementById('myModal')
+        var myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', function () {
+            myInput.focus()
+        })
+    </script>
+
+</body>
+
+</html>

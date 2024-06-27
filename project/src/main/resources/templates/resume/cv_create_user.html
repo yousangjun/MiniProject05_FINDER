@@ -1,0 +1,654 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layout/user_layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="_csrf" th:content="${_csrf.token}" />
+  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>이력서 작성</title>
+
+  <style>
+    .form-header {
+      text-align: center;
+      background-color: var(--long-btn-color);
+      color: white;
+      padding-top: 16px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .form-group .form-control {
+      margin-bottom: 10px;
+    }
+
+    .profile-pic {
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .file-upload {
+      margin-top: 10px;
+      text-align: left;
+    }
+
+    #preview {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #eeeeee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* 이미지가 preview 영역에 맞춰서 잘림 */
+    }
+
+    .deleteFile-btn {
+      background-color: white;
+      border-radius: 8px;
+    }
+
+    .btn-short {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      /* 필요에 따라 조정 */
+    }
+
+    .form-group2 {
+
+      margin-bottom: 60px;
+    }
+
+
+
+    .more_btn::before {
+      content: "+";
+      font-size: 24px;
+      padding-right: 5px;
+    }
+
+    .more_btn {
+      color: #475067;
+      font-size: 32px !important;
+      width: 120px;
+      height: 40px;
+      border-radius: 5px;
+      font-size: 17px !important;
+      line-height: 35px;
+    }
+
+    .more_btn:hover {
+      background: #f4f6fa;
+      transition: all .3s ease;
+    }
+
+    .del_btn {
+      height: 46px;
+      color: #475067;
+      padding: 10px;
+    }
+
+    .del_btn:hover {
+      background: #f4f6fa;
+      color: #475067;
+      transition: all .3s ease;
+    }
+  </style>
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+</head>
+
+
+<body layout:fragment="content">
+
+  <form action="/resume/cv_update_user" method="post" enctype="multipart/form-data">
+    <div class="container-fluid container resume-form  ">
+      <div class="form-group col-12"
+        style="margin-bottom: 60px;padding: 40px; border-radius: 12px; box-shadow: 0 0 7px 5px #f5f5f5;">
+        <span
+          style="font-weight:bold;font-size:22px;width: 140px;display: inline-block;float: left; color: #0d6efd;">이력서
+          제목</span>
+        <input name="cvTitle" type="text" class="form-control" id="title" placeholder="제목을 입력해주세요."
+          style="width: calc(100% - 140px); margin-bottom:0; border-top:0; border-left:0; border-right:0; background: none; border-bottom:solid 1px #0d6efd; border-radius: 0; padding:3px 5px 6px;">
+      </div>
+
+      <!-- CSRF 토큰 -->
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+      <div class="d-flex">
+
+
+        <div class="form-group col-6" style="width:calc(100% - 250px);">
+          <div class=" row ">
+            <div class="form-group col-12">
+              <p type="text" class="form-control" id="name" placeholder="이름" th:text="${session.user.userName}"
+                style="font-weight:bold; font-size: 28px; border:0; padding:0; ">
+            </div>
+            <div class="form-group col-12" style="border-bottom:solid 1px #d7dce5; margin:0 15px 15px; padding:0; ">
+              <p type="text" class="form-control" id="age" placeholder="나이" th:text="${session.user.userBirth}"
+                style="font-size: 20px; border:0; padding:0; color:#67738e; ">
+            </div>
+            <div class="form-group col-12">
+              <p type="text" class="form-control" id="email" placeholder="이메일" th:text="${session.user.userEmail}"
+                style="font-size: 20px; border:0; padding:0; background: url('data:image/svg+xml,%3Csvg width=\'30\' height=\'30\' viewBox=\'0 0 17 15\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect x=\'2\' y=\'3\' width=\'12\' height=\'6\' fill=\'%2396A0B5\'/%3E%3Cpath d=\'M13.4 2.60156H2.6C1.8575 2.60156 1.25675 3.209 1.25675 3.95141L1.25 12.0505C1.25 12.7929 1.8575 13.4004 2.6 13.4004H13.4C14.1425 13.4004 14.75 12.7929 14.75 12.0505V3.95141C14.75 3.209 14.1425 2.60156 13.4 2.60156ZM13.4 5.30127L8 8.67589L2.6 5.30127V3.95141L8 7.32604L13.4 3.95141V5.30127Z\' fill=\'%23D7DCE5\'/%3E%3C/svg%3E%0A') no-repeat;
+              padding-left:40px; ">
+            </div>
+            <div class="form-group col-12">
+              <p type="text" class="form-control" id="email" placeholder="전화" th:text="${session.user.userPhone}"
+                style="font-size: 20px; border:0; padding:0; background: url('data:image/svg+xml,%3Csvg width=\'30\' height=\'30\' viewBox=\'0 0 17 15\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M10.6668 9.91152L10.3256 10.2715C10.3256 10.2715 9.51334 11.1258 7.2971 8.79246C5.08087 6.45908 5.89311 5.60478 5.89311 5.60478L6.10836 5.37752C6.63786 4.81949 6.68811 3.92393 6.22536 3.2699L5.28036 1.93257C4.70737 1.12253 3.60113 1.01602 2.94488 1.70681L1.76814 2.94513C1.44339 3.2879 1.22589 3.73117 1.25214 4.22395C1.31964 5.48402 1.85814 8.19392 4.86112 11.3568C8.04635 14.7095 11.0351 14.843 12.2568 14.7223C12.6438 14.6848 12.9798 14.4755 13.2506 14.1905L14.3156 13.0684C15.0356 12.3109 14.8331 11.0133 13.9121 10.4838L12.4796 9.65875C11.8751 9.31149 11.1393 9.41349 10.6668 9.91077V9.91152Z\' fill=\'%23D7DCE5\'/%3E%3C/svg%3E%0A') no-repeat; padding-left: 40px;">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="profile-pic col-6" style="width:180px; height:auto; margin-left:70px;">
+          <div id="preview" style="border:none; min-height:210px; max-height:210px; margin-bottom:15px; ">
+            <img th:if="${Thumbnail != null}" th:src="|/file/img/${Thumbnail.fileNo}|" class="img-thumbnail"
+              alt="이미지를 넣어주세요" style="border:none; background: #f5f5f5; border-radius: 0;">
+            <!-- <p th:if="${Thumbnail == null}">이미지를 넣어주세요</p> -->
+
+            <!-- <div class="profile-pic col-6">
+          <div id="preview">
+            <img th:if="${Thumbnail != null}" th:src="|/file/img/${Thumbnail.fileNo}|" class="img-thumbnail"
+                style="width: auto; height: auto;" alt="이미지를 넣어주세요"> -->
+
+          </div>
+
+          <div class="ImgFile"> <!--파일 비동기 html-->
+            <input type="file" id="imgUploadFile" name="thumbnail" accept="image/png, image/jpeg" style="display:none;">
+            <button class="btn-long imgFile-input" type="button" id="imgUploadBtn">사진 선택</button>
+            <!-- <label for="files">
+              <div class="btn-long" style="padding-top: 5px;">사진 추가</div>
+            </label> -->
+            <!--특정 이미지파일만 볼 수 있게 만들기-->
+            <!-- <input type="file" name="file" id="imgfiles" 
+            accept="image/png, image/jpeg"
+            style="display: none;"> -->
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-group row w-100 flex-column ms-1">
+
+        <!-- 학력/경력 시작 -->
+        <div class="col-sm-12  border bg-light rounded-3 "
+          style="border:none !important; --bs-bg-opacity: 0; padding-left:0; ">
+          <!--학력 controller 부르기-->
+
+          <div class="d-flex justify-content-between mt-3" style="margin-top: 30px !important; ">
+            <h5 style="font-weight:bold; font-size:22px; margin-left:10px; ">학력</h5>
+            <!-- .educationBtn 으로 클릭 이벤트 걸려있음 -->
+            <button type="button" class="educationBtn btn-short"
+              style="width:80px; background: none; justify-content: flex-end; margin-bottom:7px;">
+              <span class="fs-2 more_btn">추가</span>
+            </button>
+          </div>
+
+          <div>
+            <hr color="#eee" style="margin:5px 0 20px; border-color:#d7dce5; opacity: 1;">
+          </div>
+
+
+          <div class="">
+
+            <div class="col-12 d-flex" style="margin-left:1%;">
+              <div class="form-group col-3" style="width:33%;">
+                <span
+                  style="font-size: 17px;font-weight: bold;color: #0d6efd;width: 50px;float: left;display: inline-block; line-height: 32px;">학교</span>
+                <input type="text" class="form-control w-75" id="university" placeholder="학교" value=""
+                  style="calc : (100% - 70px) !important;">
+              </div>
+
+              <div class="form-group col-3" style="width:33%;">
+                <span
+                  style="font-size: 17px;font-weight: bold;color: #0d6efd;width: 50px;float: left;display: inline-block; line-height: 32px;">전공</span>
+                <input type="text" class="form-control w-75" id="major" placeholder="전공"
+                  style="calc : (100% - 70px) !important;">
+              </div>
+
+              <div class="form-group col-3" style="width:33%;">
+                <span
+                  style="font-size: 17px;font-weight: bold;color: #0d6efd;width: 50px;float: left;display: inline-block; line-height: 32px;">학적</span>
+                <input type="text" class="form-control w-75" id="universityStatus" placeholder="학력상태"
+                  style="calc : (100% - 70px) !important;">
+              </div>
+            </div>
+
+            <div class="col-12 p-2">
+              <!-- 학력 리스트 -->
+              <div id="education-list">
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="col-sm-12  border bg-light rounded-3 mt-3"
+          style="border:none !important; --bs-bg-opacity: 0; padding-left:0; ">
+
+          <!--경력 db 넣기-->
+
+          <div class="d-flex justify-content-between mt-3" style="margin-top: 30px !important; ">
+            <h5 style="font-weight:bold; font-size:22px; margin-left:10px; ">경력</h5>
+            <!-- .educationBtn 으로 클릭 이벤트 걸려있음 -->
+            <button type="button" class="employmentHistoryBtn btn-short"
+              style="width:80px; background: none; justify-content: flex-end; margin-bottom:7px;">
+              <span class="fs-2 more_btn">추가</span>
+            </button>
+          </div>
+
+          <div>
+            <hr color="#eee" style="margin:5px 0 20px; border-color:#d7dce5; opacity: 1;">
+          </div>
+
+
+
+          <div class="col-12 d-flex">
+            <div class="form-group col-3">
+              <p>기관</p>
+            </div>
+            <div class="form-group col-3">
+              <p>시작일</p>
+            </div>
+            <div class="form-group col-3">
+              <p>끝 일</p>
+            </div>
+            <div class="form-group col-3">
+              <p>당담</p>
+            </div>
+          </div>
+
+          <div class="col-12 d-flex">
+            <div class="form-group col-3">
+              <input type="text" class="form-control w-75" id="organization" placeholder="기관" value="">
+            </div>
+            <div class="form-group col-3">
+              <input type="date" class="form-control w-75" id="startDate" placeholder="시작 날짜">
+            </div>
+            <div class="form-group col-3">
+              <input type="date" class="form-control w-75" id="endDate" placeholder="끝나는 날짜">
+            </div>
+            <div class="form-group col-3">
+              <input type="text" class="form-control w-75" id="duties" placeholder="담당업무">
+            </div>
+            <div class="flex-column col-3">
+
+            </div>
+          </div>
+
+          <div class="col-12 p-2">
+            <!-- 경력 리스트 -->
+            <div id="employmenthistory-list">
+
+            </div>
+          </div>
+
+
+        </div>
+        <!-- 학력/경력 끝-->
+
+
+
+        <div class="mt-5" style="padding:0; ">
+          <h5 style="font-weight:bold; font-size:22px; margin-left:10px; ">자기소개서</h5>
+          <hr color="#eee" style="margin:15px 0 20px; border-color:#d7dce5; opacity: 1;">
+          <textarea required minlength="50" class="form-control border bg-light rounded-3" rows="5"
+            placeholder="최소 50글자 이상 작성해야 합니다." name="coverLetter" style="border-radius: 0 !important;"></textarea>
+        </div>
+
+
+
+
+        <div class="file-upload upload-btn d-flex justify-content-between">
+          <div>
+
+            <input type="file" id="uploadFile" name="uploadFile" multiple style="display:none;">
+            <button class="btn-long file-input" type="button" id="uploadBtn" name="uploadBtn">파일 선택</button>
+            <button class="btn-long deleteFile" type="button" id="deleteFile" name="deleteFile">파일 삭제</button>
+            <span id="fileName">파일을 추가해주세요.</span>
+            <div id="fileAddList">
+
+            </div>
+          </div>
+          <div class="btn-click123">
+            <button type="submit" class="btn-long">이력서 등록</button>
+            <button type="button" class="btn-long" onclick="moveToList()">이전 페이지</button>
+          </div>
+        </div>
+      </div>
+
+  </form>
+
+  </div>
+
+
+
+  <script>
+
+
+    //ajax로 그것들 부르기
+    var csrfToken = "[[${_csrf.token}]]";
+    var cvNo = "[[${cvNo}]]"
+
+    // 학력 등록 ajax
+    $('.educationBtn').click(function () {
+      // 클릭 했을 때 가져와야해서 안애 있어야됨
+      var university = document.getElementById('university').value
+      var major = document.getElementById('major').value
+      var universityStatus = document.getElementById('universityStatus').value
+      console.log(`university : ${university}`);
+      console.log(`major : ${major}`);
+      console.log(`universityStatus : ${universityStatus}`);
+
+      $.ajax({
+        type: 'post', //요청메소드
+        url: '/resume/cv_Edupdate_user', //요청경로 - 컨트롤러url 
+        data: JSON.stringify({
+          cvNo: cvNo,
+          university: university,
+          major: major,
+          universityStatus: universityStatus
+        }), //요청 데이터
+        contentType: 'application/json', //요청데이터 타입
+        dataType: 'json', //응답데이터 타입
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+        },
+
+        //요청 성공             응답데이터 응답상태
+        success: function name(response, status) {
+          console.log("cv-create 학력 정보가 들어갔습니다.")
+          console.dir(response) // 이거 자체가 객체
+          console.log(response.university);
+          console.log(response.major);
+          console.log(response.universityStatus);
+
+          document.getElementById('university').value = ''
+          document.getElementById('major').value = ''
+          document.getElementById('universityStatus').value = ''
+
+          // 학력 목록 갱신
+          educationList()
+        },
+        //에러 발생
+        error: function (xhr, status) {
+          alert('에러 발생')
+        }
+      })
+    });
+
+    /**
+     *  학력 리스트 조회
+     * - cvNo 로 조회 
+     */
+    function educationList() {
+      // alert(`학력 리스트 갱신`)
+      $.ajax({
+        type: 'get', //요청메소드
+        url: `/resume/cv_Edlist_user?cvNo=${cvNo}`, //요청경로 - 컨트롤러url 
+        data: '', //요청 데이터
+        contentType: '', //요청데이터 타입
+        dataType: '', //응답데이터 타입
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+        },
+        //요청 성공             응답데이터 응답상태
+        success: function name(response, status) {
+          let educationList = response
+          $("#education-list").html(educationList)
+
+        },
+        //에러 발생
+        error: function (xhr, status) {
+          alert('에러 발생')
+        }
+      })
+    }
+
+    // 경력 등록 ajax
+    $('.employmentHistoryBtn').click(function () {
+      // 클릭 시 가져와야 하는 데이터
+      var organization = document.getElementById('organization').value;
+      var startDate = document.getElementById('startDate').value;
+      var endDate = document.getElementById('endDate').value;
+      var duties = document.getElementById('duties').value; // 이 부분이 변경됨
+
+      console.log(`organization: ${organization}`);
+      console.log(`startDate: ${startDate}`);
+      console.log(`endDate: ${endDate}`);
+      console.log(`duties: ${duties}`);
+
+      $.ajax({
+        type: 'post', // 요청 메소드
+        url: '/resume/cv_Emupdate_user', // 요청 경로 - 컨트롤러 URL 
+        data: JSON.stringify({
+          cvNo: cvNo, // 검색해서 입력하기 위해(아마도)
+          organization: organization,
+          startDate: startDate,
+          endDate: endDate,
+          duties: duties
+        }), // 요청 데이터
+        contentType: 'application/json', // 요청 데이터 타입
+        dataType: 'json', // 응답 데이터 타입
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+        },
+        // 요청 성공
+        success: function (data, status) {
+          console.log("cv-create, 경력정보가 입력했습니다");
+          console.dir(data); // 객체 로깅
+          console.log(data.organization);
+          console.log(data.startDate);
+          console.log(data.endDate);
+          console.log(data.duties);
+
+          // 입력 후 필드 초기화
+          document.getElementById('organization').value = "";
+          document.getElementById('startDate').value = "";
+          document.getElementById('endDate').value = "";
+          document.getElementById('duties').value = "";
+
+          // 경력 목록 갱신
+          employmentHistoryList();
+        },
+        // 에러 발생
+        error: function (xhr, status) {
+          console.error('cv-create 에러 발생:');
+          alert('에러 발생');
+        }
+      });
+    });
+
+
+
+    /**
+     *  경력 리스트 조회
+     * - cvNo 로 조회 
+     */
+    function employmentHistoryList() {
+      // alert(`경력 리스트 갱신`)
+      $.ajax({
+        type: 'get', //요청메소드
+        url: `/resume/cv_Emlist_user?cvNo=${cvNo}`, //요청경로 - 컨트롤러url 
+        data: '', //요청 데이터
+        contentType: '', //요청데이터 타입
+        dataType: '', //응답데이터 타입
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+        },
+        //요청 성공             응답데이터 응답상태
+        success: function name(response, status) {
+          let employmentHistoryList = response
+          $("#employmenthistory-list").html(employmentHistoryList)
+
+        },
+        //에러 발생
+        error: function (xhr, status) {
+          alert('에러 발생')
+        }
+      })
+    }
+
+    //목차 화면으로 이동
+    function moveToList() {
+      location.href = '/resume/cv_list_user'
+    }
+
+    // [사진 선택] 버튼 클릭
+    document.getElementById('imgUploadBtn').addEventListener('click', function () {
+      // input type="file" 파일 찾기 클릭
+      document.getElementById('imgUploadFile').click();
+
+    });
+
+
+    //이미지 파일 업로드
+    $("#imgUploadFile").on("change", function (e) {
+      var csrfToken = "[[${_csrf.token}]]";
+      var cvNo = "[[${cvNo}]]"
+      var formData = new FormData();
+      var inputFile = $("#imgUploadFile")[0];
+      var files = inputFile.files;
+      console.log(files);
+
+      formData.append("cvNo", cvNo)
+      for (let i = 0; i < files.length; i++) {
+        formData.append("thumbnail", files[i]);
+      }
+      $.ajax({
+        url: '/resume/cv_FileCreate_user',
+        processData: false,
+        contentType: false,
+        data: formData,
+        type: 'post',
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+        },
+        success: function (result) {
+          // alert("이미지 파일 업로드 성공  :" + result);
+          let fileNo = result
+          let img = `<img src="/file/img/${fileNo}" />`
+          $("#preview").html(img)
+
+        },
+        error: function (xhr, status, error) {
+          console.error('이미지 업로드 실패:', error);
+          alert('이미지 업로드에 실패했습니다.');
+        }
+      });
+    });
+
+
+    // [파일선택] 버튼 클릭
+    document.getElementById('uploadBtn').addEventListener('click', function () {
+      // input type="file" 파일 찾기 클릭
+      document.getElementById('uploadFile').click();
+
+    });
+
+    // 문서 파일 업로드
+    $("#uploadFile").on("change", function (e) {
+      var csrfToken = "[[${_csrf.token}]]";
+      var cvNo = "[[${cvNo}]]"
+      var formData = new FormData();
+      var inputFile = $("#uploadFile")[0];
+      console.log(inputFile)
+      var files = inputFile.files;
+
+      console.log(files);
+
+      formData.append("cvNo", cvNo)
+      for (let i = 0; i < files.length; i++) {
+        formData.append("file", files[i]);
+
+      }
+      $.ajax({
+        url: '/resume/cv_FileUpdate2_user',
+        processData: false,
+        contentType: false,
+        data: formData,
+        type: 'post',
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+        },
+        success: function (result) {
+          // alert("문서 파일 업로드 성공  :" + result);
+          let fileName = result;
+          let span = `<span class="fileName">${fileName}</span>`;
+          $("#fileAddList").append(span); // 기존 파일 유지
+
+        },
+        error: function (xhr, status, error) {
+          console.error('문서 업로드 실패:', error);
+          alert('문서 업로드에 실패했습니다.');
+        }
+      });
+    });
+    $("#uploadFile").on("change", function (e) {
+      var csrfToken = "[[${_csrf.token}]]";
+      var cvNo = "[[${cvNo}]]"
+      var formData = new FormData();
+      var inputFile = $("#uploadFile")[0];
+      console.log(inputFile)
+      var files = inputFile.files;
+
+      console.log(files);
+
+      formData.append("cvNo", cvNo)
+      for (let i = 0; i < files.length; i++) {
+        formData.append("file", files[i]);
+
+      }
+
+    });
+
+    //파일 첨부 삭제 코드
+
+    $("#deleteFile").on("click", function (e) {
+      var csrfToken = "[[${_csrf.token}]]";
+      var cvNo = "[[${cvNo}]]"
+      $.ajax({
+        url: '/resume/cv_delete_user',
+        contentType: 'application/json',
+        data: JSON.stringify({ cvNo: cvNo }),
+        type: 'delete',
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+        },
+        success: function (result) {
+          // alert("삭제 성공  :" + result);
+          // let fileName = result;
+          // let span = `<span>${fileName}</span>`;
+          // $("#fileAddList").append(span); // 기존 파일 유지
+          $('.fileName').remove()
+        },
+        error: function (xhr, status, error) {
+          console.error('문서 업로드 실패:', error);
+          alert('문서 업로드에 실패했습니다.');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,529 @@
+.sidebar {
+    background-color: #FAFAFA;
+    padding: 20px;
+    border-radius: 20px;
+    width: 230px;
+    height: 700px;
+
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    color: #000;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+
+.main-content h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.job-listings {
+    background-color: #fff;
+    padding: 0px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.job-listings h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 28px;
+    margin-bottom: 10px;
+
+}
+
+
+
+.job-header {
+    color: #fff;
+    background-color: #005AAB;
+    padding: 10px;
+    margin-bottom: 35px;
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 130px;
+    font-size: 28px;
+
+}
+
+.job-index-header {
+    background: #005AAB;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.job-index-header-title {
+    line-height: 110px;
+    color: white;
+}
+
+.job-item-link {
+    text-decoration: none;
+    /* 링크의 밑줄 제거 */
+    color: #1B1B1B;
+    /* 링크 글씨 색상 설정 */
+    display: block;
+    /* 전체 영역 클릭 가능하게 블록 요소로 변경 */
+}
+
+.job-item-link * {
+    color: inherit;
+    /* 자식 요소가 부모 요소의 색상 상속 */
+}
+
+.job-item {
+    background-color: #fff;
+    padding: 15px 36px 15px 36px;
+
+    margin: 20px 0 20px 0;
+    border-radius: 20px;
+    cursor: pointer;
+    /* 커서를 포인터로 변경 */
+    transition: background-color 0.5s ease;
+}
+
+.job-item:hover {
+    background-color: #F7F9FC;
+
+
+}
+
+.a-wrapper>a {
+    text-decoration: none;
+    /* 링크의 밑줄 제거 */
+    color: #fff;
+    /* 링크 글씨 색상 설정 */
+    display: block;
+    /* 전체 영역 클릭 가능하게 블록 요소로 변경 */
+
+    width: 300px;
+    height: 90px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    /* 가로 중앙 정렬 */
+    align-items: center;
+    /* 세로 중앙 정렬 */
+    text-align: center;
+    /* 텍스트 중앙 정렬 */
+    padding: 10px 20px;
+    /* 버튼 패딩 설정 */
+    text-decoration: none;
+    /* 링크 밑줄 제거 */
+
+}
+
+.a-wrapper .detail-form {
+    text-decoration: none;
+    /* 링크의 밑줄 제거 */
+    color: #fff;
+    /* 링크 글씨 색상 설정 */
+    display: block;
+    /* 전체 영역 클릭 가능하게 블록 요소로 변경 */
+
+    width: 300px;
+    height: 90px;
+
+    margin-bottom: 15px;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    /* 가로 중앙 정렬 */
+    align-items: center;
+    /* 세로 중앙 정렬 */
+    text-align: center;
+    /* 텍스트 중앙 정렬 */
+    padding: 10px 20px;
+    /* 버튼 패딩 설정 */
+    text-decoration: none;
+    /* 링크 밑줄 제거 */
+
+}
+
+.keyword-span {}
+
+.keyword-span span {
+    background-color: #f8f8f8;
+    color: #5d5d5d;
+    border-radius: 20px;
+    padding: 0 8px 0 8px;
+    font-size: 11px;
+    opacity: 0.8;
+    font-weight: bold;
+    transition: background-color 0.5s ease;
+    text-align: center;
+    margin: 0 5px 5px 0;
+    width: auto !important;
+    height: 24px !important;
+    line-height: 24px;
+    display: inline-block !important;
+
+}
+
+.keyword-span .input-keyword {
+    background-color: #f8f8f8;
+    color: #5d5d5d;
+    border-radius: 20px;
+    padding: 0 8px 0 8px;
+    font-size: 11px;
+    opacity: 0.8;
+    font-weight: bold;
+    transition: background-color 0.5s ease;
+    text-align: center;
+    margin: 0 5px 5px 0;
+    height: 24px !important;
+    line-height: 24px;
+    display: inline-block !important;
+
+
+}
+
+
+
+.job-item:hover .keyword-span span {
+    background-color: #fff;
+}
+
+.job-item a {
+    color: #024FDF;
+    text-decoration: none;
+    float: right;
+}
+
+.job-item .d-flex {
+    color: #FFFFFF;
+    /* NEW 태그는 여전히 흰색 */
+}
+
+.job-item .d-flex span {
+    color: #1B1B1B;
+    /* NEW 태그의 글씨를 흰색으로 유지 */
+}
+
+
+
+
+
+.container {
+    background: #fff;
+    margin: 0 auto;
+
+}
+
+.form-control {
+
+    color: #828282;
+    font-size: 13px !important;
+    width: 72px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+
+    transition: box-shadow 0.3s ease;
+    transition: outline 0.3s ease !important;
+}
+
+.form-control:focus {
+    border-color: transparent !important;
+    box-shadow: 0 0 0 .05rem #fff !important;
+    outline: transparent !important;
+
+    /* border-color: var(--sub-color) !important; */
+    /* box-shadow:  0 0 0 .25rem rgba(2, 99, 244, 0.55) !important; */
+    /* border-inline-color: var(--sub-color) !important;    */
+
+    /* border-color: transparent; */
+    /* outline: 3px solid var(--sub-color) !important; 포커스 시 외부 테두리 색상 추가 */
+
+}
+
+.ul-header {
+    margin-bottom: 30px !important;
+}
+
+.li-header {
+    margin: 0 0 5px 15px;
+}
+
+
+.nav-link {
+    padding: 3% !important;
+}
+
+.nav-item {
+    height: 40px;
+}
+
+.nav-item>div> {
+    display: flex;
+
+}
+
+.nav-item>div>div {
+    /* padding: 5px; */
+}
+
+.nav-item>div>div>img {
+    width: 24px;
+    height: 24px;
+}
+
+
+.input-none {
+    /* 기본 브라우저 스타일 제거 */
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    box-shadow: none;
+
+    /* 원하는 초기화 스타일 적용 */
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+/* 추가 스타일 */
+#search_filter {
+    padding: 10px;
+    background-color: #fff;
+    width: 180px !important;
+    height: 32px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    margin-right: 15px;
+}
+
+.detail-header>div {
+    margin-bottom: 9px;
+}
+
+.detail-logo {
+    margin-bottom: 44px;
+}
+
+.sec_detail {
+    padding-bottom: 80px;
+}
+
+.sec_detail>div {
+    margin-bottom: 27px;
+}
+
+.detail_box01,
+.detail_box02,
+.detail_box03 {
+    margin-bottom: 26px;
+}
+
+.job_notice_detail {}
+
+.modal-list {}
+
+.modal-list .job-item {}
+
+.modal-list .job-item:focus,
+.modal-list .job-item:focus:hover {
+    background-color: #F7F9FC !important;
+    border: 2px solid #bdbdbd;
+
+
+}
+
+.modal-list .job-item:hover:focus {
+    background-color: #F7F9FC !important;
+
+
+}
+
+.post-main>* {
+    margin-bottom: 20px;
+}
+
+.card {
+    min-height: 300px;
+}
+
+.index-header:focus {
+    border-color: #005AAB !important;
+    outline: 0 !important;
+
+}
+
+#floatingSelectGrid:focus {
+    border-color: #005AAB !important;
+    outline: 0 !important;
+}
+
+.job-index-input {
+
+    transition: border-color 0.3s ease;
+}
+
+.job-index-input:focus {}
+
+.custom-form-floating {
+    position: relative;
+    background-color: white;
+    height: 40px;
+    line-height: 40px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    width: 75%;
+}
+.box {
+    position: relative;
+}
+.custom-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding-left: 15px;
+    box-sizing: border-box;
+}
+
+.custom-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 12.4%;
+    width: 75%;
+    /* height: 130%; */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.custom-dropdown-menu.show {
+    display: inline;
+    opacity: 1;
+}
+
+.custom-dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.custom-dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.hidden-file-input {
+    display: none;
+}
+
+.file-names {
+    margin-left: 10px;
+    white-space: pre-wrap;
+    /* Allow file names to wrap */
+}
+
+
+.input-title:focus {
+    border: 1px solid #1B1B1B;
+}
+
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+
+#thumbnailPreview {
+    display: none;
+    max-width: 200px;
+    margin-top: 10px;
+}
+
+
+.file-name {
+    margin: 5px;
+    padding: 5px;
+    display: inline-block;
+    background: #f3f3f3;
+    border-radius: 5px;
+}
+
+.remove-file {
+    color: rgb(0, 0, 0);
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+
+.thumbnail-wrapper {
+    position: relative;
+    display: inline-block;
+
+}
+
+.thumbnail-preview {
+    max-width: 200px;
+    max-height: 150px;
+
+}
+
+.remove-thumbnail {
+    position: absolute;
+    width: 24px;
+    top: 0px;
+    right: -24px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.332);
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    border: none;
+    display: none;
+}
+
+
+.custom-dropdown-item{
+    position: relative;
+}
+
+.company-item > ul {
+    padding-left: 0 !important;
+}
+
+.recruit-wrab {
+    /* position: absolute; */
+    /* top: 0; */
+    /* left: 0px; */
+    margin: 0;
+    padding: 0;
+}
+
+.recruit-box {
+    margin-bottom: 0 !important;
+
+}
+
+.recruit-box:hover {
+    background-color:#f0f0f0 ;
+}

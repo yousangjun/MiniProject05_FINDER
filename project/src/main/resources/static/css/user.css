@@ -1,0 +1,280 @@
+.userid {
+    display: inline-block;
+    background-color: #E9E9E9;
+    border-radius: 20px;
+    margin-right: 100px;
+    padding: 2px 12px;
+    color: black;
+    width: 70px;
+    height: 27px;
+    font-size: 15px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.username,
+.usergender,
+.userbirth,
+.userphone,
+.useremail {
+    display: inline-block;
+    background-color: #E9E9E9;
+    border-radius: 20px;
+    margin-right: 100px;
+    padding: 2px 12px;
+    color: black;
+    height: 27px;
+    font-size: 15px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.userpw {
+    display: inline-block;
+    background-color: #E9E9E9;
+    border-radius: 20px;
+    margin-right: 100px;
+    padding: 2px 12px;
+    color: black;
+    height: 27px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.useremail {
+    display: inline-block;
+    background-color: #E9E9E9;
+    border-radius: 20px;
+    margin-right: 100px;
+    padding: 2px 12px;
+    color: black;
+    height: 27px;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.phone {
+    gap: 10px;
+}
+
+.phone-check {
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-form {
+    width: 100%;
+    max-width: 570px;
+    padding: 20px;
+}
+
+
+.search-form {
+    width: 100%;
+    max-width: 80%;
+    padding: 20px;
+    justify-content: center;
+
+}
+
+
+
+.register-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.register-form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.register-form input,
+.register-form select {
+    width: calc(100% - 8px);
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    justify-content: center;
+}
+
+
+
+
+.birthdate select {
+    width: calc(31%);
+    margin-right: 5px;
+}
+
+.birthdate select:last-child {
+    margin-right: 0;
+}
+
+.gender {
+    display: flex;
+    gap: 10px;
+}
+
+.gender-btn {
+    display: flex;
+    align-items: center;
+
+}
+
+.btn-male {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: var(--short-btn-color, #007BFF);
+    /* 기본 색상 설정 */
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.btn-female {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: #EDEDED;
+    border: none;
+    color: black;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    vertical-align: middle;
+}
+
+
+.btn-duplicate {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: var(--short-btn-color, #007BFF);
+    /* 기본 색상 설정 */
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.btn-confirm {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: var(--short-btn-color, #007BFF);
+    /* 기본 색상 설정 */
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    vertical-align: middle;
+
+}
+
+
+.btn-search {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: #283C75;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    vertical-align: middle;
+
+}
+
+
+.check-btn {
+    display: flex;
+    align-items: center;
+}
+
+.id {
+    display: flex;
+    gap: 10px;
+}
+
+
+.check-,
+.verify-button,
+.submit-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 8px;
+    background-color: #2065E8;
+    color: #fff;
+    cursor: pointer;
+}
+
+.check-button,
+.verify-button {
+    width: auto;
+}
+
+.submit-button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.middle-container {
+    
+}
+
+/* find_user */
+.header-logo img {
+    height: 50px;
+  }
+  .recovery-form {
+    margin-top: 20px;
+  }
+  .form-header {
+    background-color: #005AAB;
+    color: white;
+    padding: 10px;
+    border-radius: 28px;
+    text-align: center;
+    font-size: 20px;
+  }
+  .divider {
+    border-left: 1px solid #E6E6E6;
+    height: 100%;
+    left: 50%;
+    margin: 0 20px 0 20px;
+    top: 0;
+  }   

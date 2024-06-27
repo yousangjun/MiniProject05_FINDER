@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.finder.project.user.mapper.UserMapper">
+
+   <resultMap type="Users" id="userMap">
+        <id property="userNo" column="user_no" />
+        <result property="userName" column="user_name" />
+        <result property="userId" column="user_id" />
+        <result property="userPw" column="user_pw" />
+        <result property="userBeforePw" column="user_before_pw" />
+        <result property="userBirth" column="user_birth" />
+        <result property="userPhone" column="user_phone" />
+        <result property="userEmail" column="user_email" />
+        <result property="userRegDate" column="user_reg_date" />
+        <result property="userUpdDate" column="user_upd_date" />
+        <result property="userGender" column="user_gender" />
+        <result property="enabled" column="enabled" />
+
+        <collection property="authList" resultMap="authMap" />
+        <!-- <association property="company" resultMap="companyMap" /> -->
+   </resultMap>
+
+  <resultMap type="UserAuth" id="authMap">
+        <result property="authNo" column="auth_no" />
+        <result property="userNo" column="user_no" />
+        <result property="auth" column="auth" />
+    </resultMap>
+
+   <!-- <resultMap type="Company" id="companyMap">
+        <id property="comNo" column="com_no" />
+        <result property="comName" column="com_name" />
+        <result property="comCategory" column="com_category" />
+        <result property="comAddress" column="com_address" />
+        <result property="comBusiness" column="com_business" />
+   </resultMap> -->
+
+
+    <!-- 로그인 - username -->
+    <select id="login" resultMap="userMap">
+         SELECT
+            u.user_no,
+            u.user_name,
+            u.user_id,
+            u.user_pw,
+            u.user_before_pw,
+            u.user_birth,
+            u.user_phone,
+            u.user_email,
+            u.user_reg_date,
+            u.user_upd_date,
+            u.user_gender,
+            u.enabled,
+            c.com_no,
+            c.com_name,
+            c.com_category,
+            c.com_address,
+            c.com_business,
+            a.auth_no,
+            a.auth
+        FROM
+            user u
+            LEFT JOIN company c ON u.user_no = c.user_no
+            LEFT JOIN user_auth a ON u.user_no = a.user_no
+        WHERE
+            u.user_id = #{userId}
+    </select>
+
+
+    <!-- 회원 조회 - id -->
+    <select id="select" resultMap="userMap">
+        SELECT
+            u.user_no ,
+            u.user_name ,
+            u.user_id ,
+            u.user_pw ,
+            u.user_before_pw ,
+            u.user_birth ,
+            u.user_phone ,
+            u.user_email ,
+            u.user_reg_date ,
+            u.user_upd_date ,
+            u.user_gender ,
+            u.enabled ,
+            a.auth_no ,
+            a.auth 
+        FROM
+            user u LEFT JOIN user_auth a ON u.user_no = a.user_no
+        WHERE u.user_id = #{userId}
+    </select>
+
+
+    <!-- <select id = "comSelect" resultMap = "userMap">
+       SELECT
+            u.user_no,
+            u.user_name,
+            u.user_id,
+            u.user_pw,
+            u.user_before_pw,
+            u.user_birth,
+            u.user_phone,
+            u.user_email,
+            u.user_reg_date,
+            u.user_upd_date,
+            u.user_gender,
+            u.enabled,
+            c.com_no,
+            c.com_name,
+            c.com_category,
+            c.com_address,
+            c.com_business,
+            a.auth_no,
+            a.auth
+        FROM
+            user u
+            LEFT JOIN company c ON u.user_no = c.user_no
+            LEFT JOIN user_auth a ON u.user_no = a.user_no
+        WHERE
+            u.user_id = #{userId}
+    </select> -->
+
+    <!-- 회원 가입 -->
+    <insert id="join" >
+        INSERT INTO user( user_name, user_id, user_pw, user_birth, user_phone, user_email, user_gender )
+        VALUES (#{userName}, #{userId}, #{userPw}, #{userBirth}, #{userPhone}, #{userEmail}, #{userGender})
+    </insert>
+
+    <!-- 기업회원 가입 -->
+
+    <insert id="comJoin">
+
+        INSERT INTO company( user_no,com_name, com_category, com_address, com_business )
+        VALUES (#{userNo}, #{comName}, #{comCategory}, #{comAddress}, #{comBusiness})
+
+    </insert>
+
+    <!-- 회원 정보 수정 -->
+    <!-- TODO : 회원 컬럼 수정하기 -->
+    <update id="update">
+        UPDATE user
+           SET user_name = #{user_name}
+              ,user_id = #{user_id}
+              ,user_pw = #{user_pw}
+              ,user_phone = #{user_phone}
+              ,user_gender = #{user_gender}
+        WHERE username = #{user_name}
+    </update>
+
+    <!-- 회원 권한 등록 -->
+    <insert id="insertAuth">
+        INSERT INTO user_auth( user_no, auth )
+        VALUES ( #{userNo}, #{auth} )
+    </insert>
+
+    <!-- 회원 권한 업데이트 -->
+    <!-- <update id="updateAuth">
+         UPDATE user_auth
+         SET auth = #{auth}
+        WHERE user_no = #{userNo}
+    </update> -->
+
+    <!-- MAX NO 조회 -->
+    <select id="max" resultType="int">
+        SELECT MAX(user_no)
+        FROM user
+    </select>
+
+    <!-- <select id="idCheck" resultMap="Users">
+        SELECT userId, user_email, user_name
+        FROM users
+        WHERE user_email = #{userEmail}
+        AND user_name = #{userName}
+    </select> -->
+
+    <!-- 아이디 찾기 -->
+   <select id="findId" resultType="string" parameterType="com.finder.project.user.dto.Users">
+        SELECT user_id
+        FROM user
+        WHERE user_email = #{userEmail} AND user_name = #{userName}
+    </select>
+
+
+    <!-- 이메일과 인증 코드를 저장하는 쿼리 -->
+    <!-- <insert id="saveEmailVerification" parameterType="com.project.dto.EmailVerification">
+        INSERT INTO email_verification (email, verification_code) VALUES (#{email}, #{verificationCode})
+    </insert>
+    -->
+
+    <!-- 비밀번호 업데이트 -->
+    <update id="updatePw" parameterType="map">
+        UPDATE user
+        SET user_pw = #{userPw}
+        WHERE user_id = #{userId}
+    </update>
+
+    
+    <!-- 소셜 회원 가입 -->
+    <insert id="insertSocial">
+        INSERT INTO user_social ( id, username, provider, social_id, name, email, picture )
+        VALUES ( UUID(), #{username}, #{provider}, #{socialId}, #{name}, #{email}, #{picture} )
+    </insert>
+
+
+    <!-- 소셜 회원 조회 -->
+    <select id="selectSocial" resultType="UserSocial">
+        SELECT * 
+        FROM user_social
+        WHERE provider = #{provider} 
+        AND social_id = #{socialId}
+    </select>
+
+
+    <!-- 소셜 회원 수정 -->
+    <update id="updateSocial">
+        UPDATE user_social
+           SET username = #{username}
+              ,provider = #{provider}
+              ,social_id = #{socialId}
+              ,name = #{name}
+              ,email = #{email}
+              ,picture = #{picture}
+              ,updated_at = #{updatedAt}
+        WHERE provider = #{provider} 
+        AND social_id = #{socialId}
+    </update>
+
+    <!-- 소셜정보로 회원 조회 -->
+    <select id="selectBySocial" resultMap="userMap">
+        SELECT u.user_no
+        ,u.user_id
+        ,u.user_pw
+        ,u.user_name
+        ,u.user_email
+        ,u.ENABLED
+        ,u.user_reg_date
+        ,u.user_upd_date
+        ,auth.auth
+        FROM user u 
+        LEFT OUTER JOIN user_auth auth ON u.user_no = auth.user_no
+        WHERE u.user_id = (
+                    SELECT username
+                    FROM user_social
+                    WHERE provider = #{provider} 
+                    AND social_id = #{socialId}
+                    )
+    </select>
+    
+</mapper>

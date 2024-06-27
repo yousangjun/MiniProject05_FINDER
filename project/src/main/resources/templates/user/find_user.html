@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layout/user_layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finder ID/Password Recovery</title>
+</head>
+
+<body layout:fragment="content">
+
+  <div class="container recovery-form" style="width: 45%;">
+    <div class="form-header">
+      <h4 style="margin-top: 10px;">회원 아이디/비밀번호를 잊으셨습니까?</h4>
+      <p>아이디 찾기와 비밀번호 찾기 중 해당되는 것에 입력해주세요.</p>
+    </div>
+    <div class="row mt-4">
+      <div class="d-flex justify-content-center w-100">
+        <div class="col-6">
+          <h4><strong>아이디 찾기</strong></h4>
+
+          <form action="/user/find_user" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="form-group">
+              <label for="email" style="margin-top: 20px;"><strong>이메일</strong></label>
+              <div class="d-flex">
+                <!-- 이메일 입력 태그 -->
+                <input type="text" class="form-control" placeholder="이메일을 입력해주세요." name="firstEmail" id="firstEmail">
+
+                <span class="mx-2">@</span>
+                <select class="form-control" name="lastEmail" id="lastEmail">
+                  <option value="gmail.com">gmail.com</option>
+                  <option value="naver.com">naver.com</option>
+                  <option value="daum.net">daum.net</option>
+                </select>
+                <input type="hidden" id="userEmail" name="userEmail">
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 10px;">
+              <label for="username"><strong>사용자명</strong></label>
+              <div class="d-flex justify-content-between">
+                <!-- 사용자명 입력태그 -->
+                <input type="text" class="form-control" id="username" placeholder="이름을 입력해주세요." name="userName">
+
+                <button type="submit" class="btn btn-primary" style="width: 16% !important; margin-left: 15px;"
+                  onclick="combineEmail()">확인</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="col-6">
+          <h4><strong>비밀번호 찾기</strong></h4>
+          <form action="/user/update_pw" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="form-group">
+              <label for="user-id" style="margin-top: 20px;"><strong>아이디</strong></label>
+
+              <!-- 아이디 입력 -->
+              <input type="text" class="form-control" id="userId" placeholder="아이디를 입력해주세요." name="userId">
+
+            </div>
+            <div class="form-group" style="margin-top: 10px;">
+              <label for="email"><strong>이메일</strong></label>
+              <div class="d-flex">
+
+                <!-- 이메일 입력 -->
+                <input type="text" class="form-control" placeholder="이메일을 입력해주세요." name="firstEmail" id="firstEmail2">
+
+                <span class="mx-2">@</span>
+                <select class="form-control" name="lastEmail" id="lastEmail2">
+                  <option value="gmail.com">gmail.com</option>
+                  <option value="naver.com">naver.com</option>
+                  <option value="daum.net">daum.net</option>
+                </select>
+                <input type="hidden" id="userEmail2" name="userEmail">
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 10px;">
+              <label for="username"><strong>사용자명</strong></label>
+              <div class="d-flex justify-content-between">
+
+                <!-- 사용자명 입력 -->
+                <input type="text" class="form-control" id="userName" placeholder="이름을 입력해주세요.">
+
+                <button type="button" class="btn btn-primary" style="width: 16% !important; margin-left: 15px;"
+                  onclick="PW_Confirm()">확인</button>
+              </div>
+              <!-- 정보가 일치하면 나오는 input 태그 -->
+              <div id="passwordChange" class="d-flex flex-column" style="display: none !important;">
+                <input type="password" id="userPw" name="userPw" class="form-control"
+                  placeholder="8~16자리/영문 대소문자,숫자,특수문자 조합" required style="margin-top: 10px;">
+                <input type="password" id="confirm-password" name="confirm-password" class="form-control" required
+                  placeholder="비밀번호 확인" style="margin-top: 10px;">
+                <div class=" d-flex justify-content-end">
+                  <button onclick="validatePasswordConfirmation()" id="UpdatePw" type="submit" class="btn btn-primary"
+                    style="width: 16% !important; margin-left: 15px; margin-top: 10px;">변경</button>
+                </div>
+                <br>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-primary mt-4" role="alert">
+      고객님께서 검색하신 아이디/비밀번호는 이메일로 전송됩니다.
+      <p>아이디는 이메일과 사용자명이 맞아야 전송됩니다. 비밀번호는 아이디/이메일/사용자명 모두 맞아야 전송됩니다.</p>
+    </div>
+  </div>
+
+  <script>
+    // 현재 비밀번호 확인
+    function PW_Confirm() {
+
+      var firstEmail = document.getElementById('firstEmail2').value;
+      var lastEmail = document.getElementById('lastEmail2').value;
+      var userEmail = firstEmail + "@" + lastEmail;
+      document.getElementById('userEmail2').value = userEmail;
+
+      // 💍 CSRF TOKEN    
+      var csrfToken = "[[${_csrf.token}]]";
+      let url = "/user/info_check";
+      var userId = document.getElementById('userId').value;
+      // var userEmail = document.getElementById('userEmail2').value;
+      var userName = document.getElementById('userName').value;
+
+      // jQuery 로 AJAX 요청
+      $.ajax({
+        type: 'POST', // 요청 메소드 - GET, POST, PUT, DELETE
+        url: url, // 요청 URL
+        data: JSON.stringify({ // 요청 데이터를 JSON 문자열로 변환
+          id: userId,
+          email: userEmail,
+          name: userName
+        }),
+        contentType: 'application/json', // 요청 데이터 타입
+        dataType: 'json', // 응답 데이터 타입
+        beforeSend: function (xhr) {
+          // 💍 CSRF 토큰을 요청 헤더에 추가
+          xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+        },
+        // 요청 성공 
+        success: function (response, status) {
+          // response : 응답 데이터
+          // status   : 응답 상태
+          if (response) {
+            alert('사용자 정보랑 일치합니다.');
+            $('#passwordChange').css('display', 'flex') // 현재 비밀번호 확인 후 변경 폼 보여주기
+          } else {
+            alert('입력하신 사용자 정보가 없습니다.');
+            $('#passwordChange').css('display', 'none !important')
+          }
+        },
+        // 에러
+        error: function (xhr, status) {
+          // xhr      : XMLHttpRequest 객체
+          // status   : 응답 상태
+          alert('에러 발생');
+        }
+      });
+    }
+
+    // 비밀번호 유효성 검사 ⭕
+    function validatePasswordConfirmation() {
+
+      var password = document.getElementsByName("userPw")[0].value;
+      var confirmPassword = document.getElementsByName("confirm-password")[0].value;
+      var UpdatePw = $('#UpdatePw');
+      console.log(password + "+" + confirmPassword)
+
+      // 비밀번호가 8~16자리이고 영문 대소문자, 숫자, 특수문자를 모두 포함하는지 검사
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}[\]:;"'<>,.?\\/]).{8,16}$/.test(password)) {
+        document.getElementsByName("userPw")[0].setCustomValidity(
+          "비밀번호는 8~16자리의 영문 대소문자, 숫자, 특수문자를 모두 포함해야 합니다.");
+      } else {
+        document.getElementsByName("userPw")[0].setCustomValidity("");
+
+
+        // 비밀번호와 확인 비밀번호가 일치하는지 검사
+        if (password != confirmPassword) {
+          document.getElementsByName("confirm-password")[0].setCustomValidity("비밀번호와 일치하지 않습니다.");
+          return
+        } else {
+          document.getElementsByName("confirm-password")[0].setCustomValidity("");
+          alert('비밀번호가 변경되었습니다.') // 비밀번호 변경 완료
+        }
+      }
+    }
+
+    function combineEmail() {
+      var firstEmail = document.getElementById('firstEmail').value;
+      var lastEmail = document.getElementById('lastEmail').value;
+      var userEmail = firstEmail + "@" + lastEmail;
+      document.getElementById('userEmail').value = userEmail;
+    }
+  </script>
+</body>
+
+</html>

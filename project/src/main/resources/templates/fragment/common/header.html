@@ -1,0 +1,73 @@
+
+<!-- 프래그먼트 : 레이아웃에서 공통적으로 사용할 UI -->
+<!-- th:fragment="프래그먼트 명" -->
+<th:block th:fragment="header">
+    <header>
+        <div class="header-wrap">
+            <!-- 로고 누르면 메인페이지로 이동 -->
+            <div class="logo">
+                <a href="/index">
+                    <img class="logo-header" src="/img/logo.png" alt="기업로고" width="auto">
+                    <h1 class="logo-title">
+                        <strong>FINDER</strong>
+                    </h1>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <!-- 👮‍♂️ 기업 회원 메뉴 -->
+                <th:block sec:authorize="hasRole('ROLE_COMPANY')">
+                    <!-- <input type="hidden" name="remainQuantity" id="remainQuantity" th:value="${session.user.order.remainQuantity}"> -->
+                    <!-- <input type="hidden" name="expirationDate" id="expirationDate" th:value="${session.user.order.expirationDate}"> -->
+                    <th:block th:if="${session.user.order != null}">
+                        <input type="hidden" name="accessOrder" id="accessOrder" th:value="${session.user.order.accessOrder}">
+                        <input type="hidden" name="remainQuantity" id="remainQuantity" th:value="${session.user.order.remainQuantity}">
+                        <input type="hidden" name="expirationDate" id="expirationDate" th:value="${#dates.format(session.user.order.expirationDate, 'yyyy-MM-dd')}">
+                        <input type="hidden" name="currentDate" id="currentDate" th:value="${session.currentDate}">
+                        <input type="hidden" name="userNo" id="userNo" th:value="${session.user.userNo}">
+                    </th:block>
+
+                    <!-- 기업이면 기업정보/ 일반회원이면 내정보 -->
+                    <a th:href="|/company/introduce_com?userNo=${session.user.userNo}|"><b>기업 정보</b></a>
+                    <!-- 기업이면 제출된 이력서 / 일반회원이면 내 이력서 -->
+                    <a th:href="|/recruit/recruit_list_com?userNo=${session.user.userNo}|"><b>제출된 이력서</b></a>
+
+                    <!-- 기업일때만 결제 페이지 표시 -->
+                    <a id="paymentLink" th:href="|/company/credit/credit_com?userNo=${session.user.userNo}|" href="#"><b>결제</b></a>
+
+                    <!-- 기업이면 담당자 정보 -->
+                    <a th:href="|/user/update_user?userNo=${session.user.userNo}|"><b>담당자 정보</b></a>
+                </th:block>
+
+                <!-- 👩‍💼 일반 회원 메뉴 -->
+                <th:block sec:authorize="!hasRole('ROLE_COMPANY') and hasRole('ROLE_USER')">
+                    <!-- 기업이면 기업정보/ 일반회원이면 내정보 -->
+                    <a th:href="|/user/update_user?userNo=${session.user.userNo}|"><b>내 정보</b></a>
+                    <!-- 기업이면 제출된 이력서 / 일반회원이면 내 이력서 -->
+                    <a th:href="|/resume/cv_list_user?userNo=${session.user.userNo}|"><b>이력서 관리</b></a>
+                </th:block>
+
+                <!-- 비 로그인 시 -->
+                <th:block sec:authorize="isAnonymous()">
+                    <!-- 메인 카드뷰 채용공고 페이지 -->
+                    <a href="/index"><b>채용공고</b></a>
+                    <!-- 로그인시 로그아웃으로 표시 -->
+                    <a href="/login"><b>로그인</b></a>
+                </th:block>
+
+                <!-- 로그인 시 -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <form action="/logout" method="post">
+                        <!-- CSRF TOKEN -->
+                        <a href="/index"><b>채용공고</b></a>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <!-- 메인 카드뷰 채용공고 페이지 -->
+                        <button class="logout-button" type="submit"><b>로그아웃</b></button>
+                    </form>
+                </th:block>
+            </div>
+        </div>
+    </header>
+</th:block>
+
+
+<!-- header.js 에서 결제 접근 통제 -->

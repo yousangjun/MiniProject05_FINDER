@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.finder.project.resume.mapper.EducationMapper">
+
+  <!-- 조회 -->
+  <select id="listByCvNo" resultType="com.finder.project.resume.dto.Education">
+    SELECT * FROM education
+    WHERE cv_no = #{cvNo}
+  </select>
+
+  <select id="select" resultType="com.finder.project.resume.dto.Education">
+    SELECT * FROM education
+    WHERE education_no = #{educationNo}
+  </select>
+
+  <!-- 생성 -->
+  <insert id="create">
+    INSERT INTO education (cv_no, university, major, university_status)
+    VALUES (#{cvNo}, #{university}, #{major}, #{universityStatus})
+  </insert> 
+
+  <!-- 수정 -->
+  <update id="update">
+    UPDATE education
+    SET university = #{university},
+        major = #{major},
+        university_status = #{universityStatus}
+    WHERE education_no = #{educationNo}
+  </update>
+
+  <!-- educationNo 으로 삭제 -->
+  <delete id="delete">
+    DELETE FROM education
+    WHERE education_no = #{educationNo}
+  </delete>
+  <!-- cvNo 으로 삭제 -->
+  <delete id="deleteByCvNo">
+    DELETE FROM education
+    WHERE cv_no = #{cvNo}
+  </delete>
+
+  <!-- 이력서 번호 -->
+  <select id="maxPk" resultType="int">
+    SELECT MAX(education_no) FROM education
+  </select>
+
+</mapper>
