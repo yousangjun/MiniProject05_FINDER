@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -118,13 +119,12 @@ public class UserController {
     @ResponseBody
     @GetMapping("/find_user")
     // ✅ 아이디 찾기 이메일로 전송 (해결~!~!~!~!!~~!~~!)
-    public ResponseEntity<String> findId(@RequestBody Users users)  throws Exception {
-            
+    public ResponseEntity<String> findId(@RequestBody Users users) throws Exception {
 
         Users user = new Users();
         String userEmail = users.getUserEmail();
         String userName = users.getUserName();
-        
+
         log.info("이메일 파라미터 : " + userEmail);
         log.info("유저 이름 파라미터 : " + userName);
 
@@ -144,10 +144,12 @@ public class UserController {
         }
     }
 
-    // 이메일 자동생성 완료
     @ResponseBody
     @PostMapping("/find_users")
-    public String emailCheck(@RequestBody String userEmail) throws Exception {
+    // ✅ 회원가입시 하는 이메일인증 자동생성 완료
+    public ResponseEntity<?> join(@RequestBody Users users) throws Exception {
+
+        String userEmail = users.getUserEmail();
 
         // 랜덤한 인증 코드 생성
         String mailKey = generateRandomKey(); // 임의의 인증 코드 생성하는 메소드 호출
@@ -159,10 +161,10 @@ public class UserController {
         // 이메일로 인증 코드 전송
         String subject = "FINDER의 이메일 인증";
         String text = "이메일 인증 코드 : " + mailKey;
-        
+
         emailService.sendSimpleMessage(userEmail, subject, text);
 
-        return "1";
+        return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
     }
 
     // 랜덤한 인증 코드 생성 메소드
@@ -229,10 +231,12 @@ public class UserController {
         return ResponseEntity.ok(isMatch);
     }
 
-    // 비밀번호 수정 ⭕
-    @PostMapping("/update_pw")
-    public String updateCompany(@RequestParam("userPw") String userPw, @RequestParam("userId") String userId)
-            throws Exception {
+    // ✅ 비밀번호 수정 ⭕
+    @PutMapping("/update_pw")
+    public ResponseEntity<?> updateCompany(@RequestBody Users users) throws Exception {
+
+        String userPw = users.getUserPw();
+        String userId = users.getUserId();
 
         Users user = new Users();
         user.setUserPw(userPw);
@@ -249,10 +253,10 @@ public class UserController {
         // 데이터 처리 성공
         if (result > 0) {
 
-            return "redirect:/login";
+            return ResponseEntity.ok("성공"); // 코드 인증 성공
         }
         // 데이터 처리 실패
-        return "redirect:/user/error";
+        return ResponseEntity.ok(null); // 코드 인증 실패
     }
 
     // import org.springframework.stereotype.Controller;
