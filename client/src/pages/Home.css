@@ -1,3 +1,86 @@
 .card {
     min-height: 300px;
 }
+
+.job-index-header {
+    background: #005AAB;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.job-index-header-title {
+    line-height: 110px;
+    color: white;
+}
+
+.custom-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding-left: 15px;
+    box-sizing: border-box;
+}
+
+.custom-form-floating {
+    position: relative;
+    background-color: white;
+    height: 40px;
+    line-height: 40px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    width: 75%;
+}
+
+.custom-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 12.4%;
+    width: 75%;
+    /* height: 130%; */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.custom-dropdown-menu.show {
+    display: inline;
+    opacity: 1;
+}
+
+.company-item > ul {
+    padding-left: 0 !important;
+}
+
+.custom-dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.custom-dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.recruit-box {
+    margin-bottom: 0 !important;
+
+}
+
+.recruit-box:hover {
+    background-color:#f0f0f0 ;
+}
+
+.box {
+    position: relative;
+}
+
+#floatingSelectGrid:focus {
+    border-color: #005AAB !important;
+    outline: 0 !important;
+}
+
