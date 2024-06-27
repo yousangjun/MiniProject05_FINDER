@@ -97,10 +97,12 @@ public class MainController {
     // }
 
     @GetMapping("/cardList")
-    public String recrutiCardList(@RequestParam("page") int page, @RequestParam("rows") int rows,
+    public ResponseEntity<Map<String, Object>> recrutiCardList(@RequestParam("page") int page,
+            @RequestParam("rows") int rows,
             @RequestParam(value = "code", required = false) Integer code,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            Model model) throws Exception {
+            @RequestParam(value = "keyword", required = false) String keyword
+            ) throws Exception {
+        Map<String, Object> response = new HashMap<>();
         log.info("page cardList" + page);
 
         RecruitPage pageRequest = new RecruitPage(page, rows);
@@ -118,16 +120,21 @@ public class MainController {
         // option.getCode() + "@@@@"
         // + option.getKeyword());
 
-        model.addAttribute("page", pageRequest);
-        model.addAttribute("recruitList", recruitList);
-        return "/recruit/card";
+        response.put("page", pageRequest);
+        response.put("recruitList", recruitList);
+
+        // model.addAttribute("page", pageRequest);
+        // model.addAttribute("recruitList", recruitList);
+        // return "/recruit/card";
+        return new ResponseEntity<>(response, HttpStatus.OK); 
     }
 
-    // 로그인 페이지
-    @GetMapping("/login")
-    public String login() {
-        return "/login";
-    }
+    // 로그인 페이지 REST에서는 필요없음
+    // @GetMapping("/login")
+    // public String login() {
+        
+    //     return "/login";
+    // }
     // @GetMapping({"/", ""})
     // public String home() {
     // return "index";
