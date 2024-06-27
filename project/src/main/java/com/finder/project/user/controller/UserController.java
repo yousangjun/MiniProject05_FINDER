@@ -12,10 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.finder.project.company.dto.Company;
 import com.finder.project.company.service.CompanyService;
@@ -30,7 +32,7 @@ import com.finder.project.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
@@ -48,7 +50,7 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    // 사용자 회원가입
+    // ⭕ 사용자 회원가입 (해결~!~!~!~!!~~!~~!)
     @PostMapping("/join_user")
     public ResponseEntity<?> userjoinPro(@RequestBody Users users) throws Exception {
 
@@ -61,16 +63,20 @@ public class UserController {
             // 회원가입 성공
             userService.join(users);
             log.info("회원가입 성공! - SUCCESS");
-            return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+            return new ResponseEntity<>(users, HttpStatus.OK);
         }
         // 회원가입 실패
         log.info("회원가입 실패! - FAIL");
-        return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(users, HttpStatus.BAD_REQUEST);
     }
+    // ---------------------------------------------------------------------------------
 
-    // 기업 회원가입
+    // ⭕ 기업 회원가입 (해결~!~!~!~!!~~!~~!)
     @PostMapping("/join_com")
-    public String companyjoinPro(Users users, Company company) throws Exception {
+    public ResponseEntity<?> companyjoinPro(@RequestBody Users users) throws Exception {
+
+        Company company = users.getCompany();
+        log.info("company의 뭐들어있나여?" + company);
 
         String userEmail = users.getUserEmail();
         String checkEmail = userMapper.checkEmail(userEmail);
@@ -81,13 +87,15 @@ public class UserController {
             int userNo = userService.max();
             company.setUserNo(userNo);
             userService.comJoin(company);
-            return "redirect:/login";
+            log.info("회원가입 성공! - SUCCESS");
+            return new ResponseEntity<>(users, HttpStatus.OK);
         }
         // 회원가입 실패
-        return "redirect:/user/join_com?error=emailExists";
+        log.info("회원가입 실패! - FAIL");
+        return new ResponseEntity<>(users, HttpStatus.BAD_REQUEST);
     }
 
-    // 아이디 중복확인
+    // ⭕ 아이디 중복확인 (해결~!~!~!~!!~~!~~!)
     @ResponseBody
     @GetMapping("/check/{userId}")
     public ResponseEntity<Boolean> userCheck(@PathVariable("userId") String userId) throws Exception {
@@ -103,16 +111,24 @@ public class UserController {
         return new ResponseEntity<>(true, HttpStatus.OK);
 
     }
+    // ---------------------------------------------------
 
-    // 아이디 찾기 이메일로 전송 완료
+    // 이거 아이디 찾기 할때 alert 해야함
+    // return "<script>alert('해당 이메일로 ID를 발송하였습니다.');
+    // location.href='/login';</script>"; 이거 뻄
     @ResponseBody
-    @PostMapping("/find_user")
-    public String findId(@RequestParam("userEmail") String userEmail, @RequestParam("userName") String userName)
-            throws Exception {
+    @GetMapping("/find_user")
+    // ✅ 아이디 찾기 이메일로 전송 (해결~!~!~!~!!~~!~~!)
+    // 이거 get방식이긴 한데 물어봐야함 ❓❓❓❓❓❓❓❓
+    public ResponseEntity<String> findId(@RequestBody Users users) throws Exception {
+
+        Users user = new Users();
+        String userEmail = users.getUserEmail();
+        String userName = users.getUserName();
+
         log.info("이메일 파라미터 : " + userEmail);
         log.info("유저 이름 파라미터 : " + userName);
 
-        Users user = new Users();
         user.setUserEmail(userEmail);
         user.setUserName(userName);
 
@@ -123,16 +139,19 @@ public class UserController {
             String subject = "FINDER의 아이디 찾기";
             String text = "회원님의 아이디는: " + userId;
             emailService.sendSimpleMessage(userEmail, subject, text);
-            return "<script>alert('해당 이메일로 ID를 발송하였습니다.'); location.href='/login';</script>";
+            return ResponseEntity.ok("해당 이메일로 ID를 발송하였습니다.");
+            // return new ResponseEntity<>(users, HttpStatus.OK);
         } else {
-            return "<script>alert('해당 이메일을 찾을 수 없습니다.'); history.back();</script>";
+            return ResponseEntity.notFound().build();
         }
     }
 
-    // ✅ 이메일 자동생성 완료
     @ResponseBody
     @PostMapping("/find_users")
-    public String emailCheck(@RequestBody String userEmail) throws Exception {
+    // ⭕회원가입시 하는 이메일인증 자동생성 완료
+    public ResponseEntity<?> join(@RequestBody Users users) throws Exception {
+
+        String userEmail = users.getUserEmail();
 
         // 랜덤한 인증 코드 생성
         String mailKey = generateRandomKey(); // 임의의 인증 코드 생성하는 메소드 호출
@@ -144,9 +163,10 @@ public class UserController {
         // 이메일로 인증 코드 전송
         String subject = "FINDER의 이메일 인증";
         String text = "이메일 인증 코드 : " + mailKey;
+
         emailService.sendSimpleMessage(userEmail, subject, text);
 
-        return "1";
+        return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
     }
 
     // 랜덤한 인증 코드 생성 메소드
@@ -159,8 +179,8 @@ public class UserController {
 
     }
 
-    // ✅ db에 있는 자동생성된 code랑 사용자가 입력한 코드랑 비교
-    @PostMapping("/email_code_check")
+    // ✅ db에 있는 자동생성된 code랑 사용자가 입력한 코드랑 비교 (해결~!~!~!~!!~~!~~!)
+    @GetMapping("/email_code_check")
     public ResponseEntity<String> codeCheck(@RequestBody EmailVerification request) throws Exception {
 
         String checkCode = request.getVerificationCode();
@@ -168,13 +188,13 @@ public class UserController {
         log.info("이메일 인증 코드 데이터베이스에서 불러오나요?  " + code);
 
         if (code != null) {
-            return ResponseEntity.ok("성공"); // 코드 인증 성공
+            return ResponseEntity.ok(code); // 코드 인증 성공
         } else {
             return ResponseEntity.ok(null); // 코드 인증 실패
         }
     }
 
-    // 사용자 정보 확인⭕
+    // ✅ 사용자 아이디 찾기⭕ (해결~!~!~!~!!~~!~~!)
     @PostMapping("/info_check")
     public ResponseEntity<Boolean> infoUserCheck(@RequestBody InformationCheck request) throws Exception {
 
@@ -193,7 +213,7 @@ public class UserController {
         return ResponseEntity.ok(isMatch);
     }
 
-    // 기업 정보 확인
+    // ✅ 기업 아이디 찾기 (해결~!~!~!~!!~~!~~!)
     @PostMapping("/info_com_check")
     public ResponseEntity<Boolean> infoCompanyCheck(@RequestBody CompanyUserRequest request) throws Exception {
 
@@ -213,10 +233,12 @@ public class UserController {
         return ResponseEntity.ok(isMatch);
     }
 
-    // 비밀번호 수정 ⭕
-    @PostMapping("/update_pw")
-    public String updateCompany(@RequestParam("userPw") String userPw, @RequestParam("userId") String userId)
-            throws Exception {
+    // ✅ 비밀번호 수정 ⭕
+    @PutMapping("/update_pw")
+    public ResponseEntity<?> updateCompany(@RequestBody Users users) throws Exception {
+
+        String userPw = users.getUserPw();
+        String userId = users.getUserId();
 
         Users user = new Users();
         user.setUserPw(userPw);
@@ -233,10 +255,10 @@ public class UserController {
         // 데이터 처리 성공
         if (result > 0) {
 
-            return "redirect:/login";
+            return ResponseEntity.ok(result); // 코드 인증 성공
         }
         // 데이터 처리 실패
-        return "redirect:/user/error";
+        return ResponseEntity.ok(result); // 코드 인증 실패
     }
 
     // import org.springframework.stereotype.Controller;
