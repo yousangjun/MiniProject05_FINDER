@@ -48,7 +48,7 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    // 사용자 회원가입
+    // 사용자 회원가입 (해결~!~!~!~!!~~!~~!)
     @PostMapping("/join_user")
     public ResponseEntity<?> userjoinPro(@RequestBody Users users) throws Exception {
 
@@ -67,6 +67,7 @@ public class UserController {
         log.info("회원가입 실패! - FAIL");
         return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
     }
+    // ---------------------------------------------------------------------------------
 
     // 기업 회원가입
     @PostMapping("/join_com")
