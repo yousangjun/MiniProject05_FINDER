@@ -17,6 +17,7 @@ function App() {
           <Route path="/resume" element={<Resume/>}></Route>
           <Route path="/user" element={<User/>}></Route>
           <Route path='/*' element={<Error/>}></Route>
+          <Route path='/company' element={<introduce_com/>}></Route>
         </Routes>
     </BrowserRouter>
   );
