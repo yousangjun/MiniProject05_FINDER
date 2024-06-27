@@ -12,14 +12,17 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.finder.project.company.dto.Company;
@@ -38,7 +41,7 @@ import com.finder.project.user.dto.Users;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
+@RestController   // @Controller + @ResponseBody
 @RequestMapping("/recruit")
 public class RecruitController {
 
@@ -127,8 +130,7 @@ public class RecruitController {
     }
 
     // 지원하기 비동기 삭제
-    @ResponseBody
-    @PostMapping("/detail_jobs_user/{cvNo}")
+    @DeleteMapping("/detail_jobs_user/{cvNo}")
     public ResponseEntity<Boolean> deleteCvNo(@PathVariable("cvNo") int cvNo) throws Exception {
 
         log.info("이력서 삭제 : " + cvNo);
@@ -148,13 +150,19 @@ public class RecruitController {
     }
 
     @PostMapping("/detail_jobs_user/submitCv")
-    public String submitCv(@RequestParam("focusedCvNo") int focusedCvNo, @RequestParam("recruitNo") int recruitNo)
+    public ResponseEntity<Boolean> submitCv(@RequestParam("focusedCvNo") int focusedCvNo, @RequestParam("recruitNo") int recruitNo)
             throws Exception {
 
         log.info(focusedCvNo + "?? " + recruitNo);
-        recruitService.apply(recruitNo, focusedCvNo);
+        int result = recruitService.apply(recruitNo, focusedCvNo);
+        
+        if (result > 0) {
+            log.info("성공하였습니다. ");
+            
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
 
-        return "redirect:/recruit/applied_jobs_user";
+        return new ResponseEntity<>(false, HttpStatus.OK);
     }
 
     // 채용공고 상세 페이지 ---- 끝
@@ -199,11 +207,12 @@ public class RecruitController {
     }
     // 채용공고 등록 페이지 ---- 끝
 
-    // 채용공고 조회/수정/삭제 페이지 ----
+    // 채용공고 조회/수정/삭제 페이지 ----///////////////////////// REST 끝
     @GetMapping("/post_jobs_read_com")
-    public String getPost_jobs_read_com(@RequestParam("recruitNo") int recruitNo, Model model, Files file)
+    public ResponseEntity<Map<String, Object>> getPost_jobs_read_com(@RequestParam("recruitNo") int recruitNo,
+            Files file)
             throws Exception {
-
+        Map<String, Object> response = new HashMap<>();
         RecruitPost recruitPost = recruitService.recruitRead(recruitNo);
         log.info(file + "??????????????????????????????????????????");
 
@@ -235,20 +244,21 @@ public class RecruitController {
         }
 
         Files Thumbnail = fileService.listByParentThumbnail(file);
+        response.put("Thumbnail", Thumbnail);
+        response.put("recruitPost", recruitPost);
+        response.put("fileList", fileList);
+        response.put("recruitPost", recruitPost);
+        // model.addAttribute("Thumbnail", Thumbnail);
+        // model.addAttribute("recruitPost", recruitPost);
+        // model.addAttribute("fileList", fileList);
+        // model.addAttribute("recruitPost", recruitPost);
 
-        model.addAttribute("Thumbnail", Thumbnail);
-        model.addAttribute("recruitPost", recruitPost);
-        model.addAttribute("fileList", fileList);
-
-        model.addAttribute("recruitPost", recruitPost);
-        // model.addAttribute("keywords", keywords);
-
-        return "/recruit/post_jobs_read_com";
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/post_jobs_read_com")
-    public String postPost_jobs_read_com(int recruitNo) throws Exception {
-
+    @DeleteMapping("/post_jobs_read_com/{recruitNo}") //////////////////////////// Rest 끝
+    public ResponseEntity<?> postPost_jobs_read_com(@PathVariable("recruitNo") int recruitNo) throws Exception {
+        // log.info("여기까지 넘어오니 ??" + recruitNo);
         int result = recruitService.deleteRecruitList(recruitNo);
 
         if (result > 0) {
@@ -257,20 +267,23 @@ public class RecruitController {
             file.setParentNo(recruitNo);
             fileService.deleteByParent(file);
             log.info(" delete 성공 ");
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
-
-        return "redirect:/recruit/posted_jobs_com";
+        
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
-
-    @PostMapping("/post_jobs_read_com/update")
-    public String post_jobs_read_com_update(RecruitPost recruitPost) throws Exception {
-
+    
+    @PutMapping("/post_jobs_read_com/update") //////////////////////////
+    public ResponseEntity<?> post_jobs_read_com_update(@RequestBody RecruitPost recruitPost) throws Exception {
+        log.info("넘어 오나요 ?" + recruitPost);  
         int result = recruitService.recruitUpdate(recruitPost);
-
+        
         if (result > 0) {
             log.info(" update 성공 ");
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        return "redirect:/recruit/posted_jobs_com";
+        
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     // 채용공고 조회/수정/삭제 페이지 ---- 끝
@@ -290,8 +303,8 @@ public class RecruitController {
     }
 
     // 채용공고 삭제 비동기
-    @ResponseBody
-    @PostMapping("/posted_jobs_com/{recruitNo}")
+    
+    @DeleteMapping("/posted_jobs_com/{recruitNo}")
     public ResponseEntity<Boolean> deleteRecruit(@PathVariable("recruitNo") int recruitNo) throws Exception {
 
         log.info("채용공고 삭제 : " + recruitNo);
@@ -333,7 +346,7 @@ public class RecruitController {
 
         return "/recruit/new_jobs_user";
     }
-
+    
     // 지원한 채용공고
     @GetMapping("/applied_jobs_user")
     public String applied(Model model, HttpSession session) throws Exception {

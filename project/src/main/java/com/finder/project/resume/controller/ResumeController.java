@@ -63,60 +63,7 @@ public class ResumeController {
     @Autowired
     EmploymentHistoryService employmentHistoryService;
 
-    /**
-     * 이력서 목록 화면
-     * 
-     * @param page
-     * @return
-     */
-    // @GetMapping("/cv_list_user")
-    // public String CvList(Model model, Option option) throws Exception {
-    // log.info("이력서 목록 조회화면입니다.");
-    // //1)데이터 요청
-    // List<Resume> resumeList = resumeService.list(option);
-
-    // //2)모델 등록하기
-    // model.addAttribute("resumeList", resumeList);
-    // model.addAttribute("option", option); //검색
-
-    // //*검색*/)동적으로 옵션값을 가져오는 경우
-    // /* List<Option> optionList = new ArrayList<>();
-    // optionList.add(new Option("전체", 0));
-    // optionList.add(new Option("제목", 1));
-    // optionList.add(new Option("내용", 2));
-    // optionList.add(new Option("제목+내용", 3));
-    // optionList.add(new Option("작성자", 4));
-    // model.addAttribute("optionList", optionList); */
-
-    // //3)뷰 페이지 지정
-    // return "/resume/cv_list_user";
-    // }
-
-    // @GetMapping("/cv_list_user")
-    // public String CvList(HttpSession session, Model model) throws Exception {
-    // Users user = (Users) session.getAttribute("user");
-
-    // if (user == null) {
-    // // 사용자 정보가 없으면 로그인 페이지로 리다이렉트
-    // return "redirect:/login";
-    // }
-
-    // int userNo = user.getUserNo();
-    // log.info(" 유저번호는 : " + userNo);
-    // List<Resume> resumeList = resumeService.resumelist(userNo);
-
-    // if (resumeList != null) {
-    // log.info("이력서 목록이 있구나 : " + resumeList.size() + "건");
-    // // 모델 등록
-    // model.addAttribute("resumeList", resumeList);
-    // model.addAttribute("user", user);
-    // // 뷰페이지 지정
-    // return "resume/cv_list_user";
-    // }
-    // log.info("실패 - userController Get_list ");
-    // return "redirect:/login";
-    // }
-
+/* 구버전 이력서 목록 보기
     @GetMapping("/cv_list_user")
     public String CvList(HttpSession session, Model model, Page page) throws Exception {
         Users user = (Users) session.getAttribute("user");
@@ -142,19 +89,34 @@ public class ResumeController {
         }
         log.info("실패 - userController Get_list ");
         return "redirect:/login";
-    }
+    } */
 
     /**
-     * 게시글 등록 처리화면
-     * 
+     * 200은 뜨는데 사용자 넘버를 집어넣어도 이력서 목록이 안 뜸
+     * @param page
+     * @param user
      * @return
+     * @throws Exception
      */
+    @GetMapping("/cv_list_user")
+    public ResponseEntity<?> CvList(Page page, Users user) throws Exception {
 
-    // @GetMapping("cv_create_user")
-    // public String CvCreate() {
-    // return "/resume/cv_create_user";
-    // }
+        try {
+            int userNo = user.getUserNo();
+            log.info(" 유저번호는 : " + userNo);
+            List<Resume> resumeList = resumeService.resumelistPaging(userNo, page);
+    
+            if (resumeList != null) {
+                log.info("이력서 목록이 있구나 : " + resumeList.size() + "건");
+            }
+            return new ResponseEntity<>(resumeList, HttpStatus.OK);
+            
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
+/*  구버전 등록 화면 
     @GetMapping("/cv_create_user")
     public String CvCreate(Model model, HttpSession session) throws Exception {
         Users user = (Users) session.getAttribute("user");
@@ -173,39 +135,40 @@ public class ResumeController {
             log.info("이력서 만들기 실패");
             return "redirect:/resume/cv_list_user?error";
         }
+    } */
+   
+    /**
+     * 405error뜸 (세션없어서 그런 거 같음)
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/cv_create_user")
+    public ResponseEntity<?> CvCreate(Users user) throws Exception {
+
+        try {
+            // insert 한 서비스로 insert수행
+            int userNo = user.getUserNo();
+            int resumeCreate = resumeService.create(userNo);
+            // 새 이력서 등록하고 이력서 번호 가져와야함
+            int cvNo = resumeService.maxPk();
+            log.info("cvNo : " + cvNo);
+            if (resumeCreate > 0) {
+                log.info("이력서 만드는 걸 성공했어요");
+                return new ResponseEntity<>(resumeCreate, HttpStatus.OK);
+            } else {
+                log.info("이력서 만들기 실패");
+            }
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    /*
-     * @PostMapping("/cv_create_user")
-     * public String CvCreatePro(HttpSession session, Resume resume, Model model)
-     * throws Exception {
-     * Users user = (Users) session.getAttribute("user"); // 세션 사용자 정보 가져오기
-     * 
-     * if (user == null) {
-     * log.info("돌아가라");
-     * return "redirect:/login"; // 사용자 확인
-     * }
-     * 
-     * // Resume 객체에 사용자 정보 추가
-     * resume.setUserNo(user.getUserNo());
-     * 
-     * int result = resumeService.create(0);
-     * 
-     * if (result>0) {
-     * 
-     * return "redirect:/resume/cv_list_user";
-     * }
-     * return "redirect:/resume/cv_create_user?error";
-     * }
-     */
 
-    /**
-     * 구직자 게시글 조회/수정 화면
-     * 
-     * @param param
-     * @return
-     *         파일 요청도 해야함.
-     */
+/*     
+     구버전 구직자 게시글 조회/수정 화면
+     
     @GetMapping("/cv_read_user")
     public String cvReadUser(HttpSession session, Model model,
             @RequestParam("cvNo") int cvNo, Files file) throws Exception {
@@ -223,12 +186,6 @@ public class ResumeController {
         // 사용자의 이력서 정보를 가져옴
         Resume resume = resumeService.select(cvNo);
         log.info(resume + " asdfsdfasdffasafssfdS");
-        // Education education = educationService.select(cvNo);
-        // EmploymentHistory employmentHistory = employmentHistoryService.select(cvNo);
-
-        // List<Education> educationList = educationService.educationList(cvNo);
-        // List<EmploymentHistory> employmentHistoryList =
-        // employmentHistoryService.employmentHistoryList(cvNo);
 
         file.setParentNo(cvNo);
         file.setParentTable("resume");
@@ -243,10 +200,7 @@ public class ResumeController {
             model.addAttribute("cvNo", cvNo);
             model.addAttribute("resume", resume);
             model.addAttribute("user", user);
-            // model.addAttribute("educationList", educationList);
-            // model.addAttribute("education", education);
-            // model.addAttribute("employmentHistory", employmentHistory);
-            // model.addAttribute("employmentHistoryList", employmentHistoryList);
+
             model.addAttribute("Thumbnail", Thumbnail);
             log.info("이력서 번호는 : " + cvNo + "번으로 이동했어요");
             // 이력서 정보가 담긴 화면으로 이동
@@ -255,7 +209,46 @@ public class ResumeController {
         }
         log.info("리스트 -> 이력서로 안 넘어갔다.");
         return "redirect:/resume/cv_list_user?error";
+    } */
+
+
+    /**
+     * 뜨는 거 확인 세션 넣어야 함.
+     * @param user
+     * @param cvNo
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/cv_read_user")
+    public ResponseEntity<?> cvReadUser(Users user,@RequestParam("cvNo") int cvNo, Files file) throws Exception {        
+        try {
+            file.setParentTable("resume");
+            file.setParentNo(cvNo);
+    
+            List<Files> fileList = fileService.listByParent(file);
+    
+            // 사용자의 이력서 정보를 가져옴
+            Resume resume = resumeService.select(cvNo);
+            log.info(resume + " asdfsdfasdffasafssfdS");
+    
+            file.setParentNo(cvNo);
+            file.setParentTable("resume");
+    
+            Files Thumbnail = fileService.listByCVParentThumbnail(file);
+    
+            if (resume != null) {
+                log.info("이력서 번호는 : " + cvNo + "번으로 이동했어요");
+                return new ResponseEntity<>(resume, HttpStatus.OK);
+            }
+            log.info("리스트 -> 이력서로 안 넘어갔다.");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     /**
      * 구직자 게시글 처음 입력처리
@@ -270,6 +263,7 @@ public class ResumeController {
         resume.setCvNo(resumeService.maxPk());
 
         log.info("resume의 정보" + resume);
+
         
         int cvNo = resume.getCvNo();
 
@@ -297,8 +291,7 @@ public class ResumeController {
     @ResponseBody
     @PostMapping("/cv_Emupdate_user")
     public ResponseEntity<?> saveEmData(@RequestBody EmploymentHistory employmentHistory) throws Exception {
-        log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~" + "employmentHistory");
-        ;
+        log.info("경력 등록 / 경력 등록 / 경력 등록 / 경력 등록 / " + "employmentHistory");
 
         // 사용자의 경력 이력서 정보 업데이트
         try {
@@ -318,8 +311,8 @@ public class ResumeController {
         return new ResponseEntity<>("FAIL", HttpStatus.OK);
     }
 
-    // html list 만든 후 list - get 도 만들기
-    // 경력 리스트
+    
+/*     //구버전 경력 리스트
     @GetMapping("/cv_Emlist_user")
     public String employmentHistoryListByUser(@RequestParam("cvNo") int cvNo, Model model) throws Exception {
         List<EmploymentHistory> employmentHistoryList = employmentHistoryService.employmentHistoryList(cvNo);
@@ -327,6 +320,25 @@ public class ResumeController {
         log.info("::::::::::: 경력 리스트 :::::::::: ");
         log.info(employmentHistoryList.toString());
         return "/resume/employmentHistory/list";
+    } */
+    // 경력 리스트
+    /**
+     * @param cvNo
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/cv_Emlist_user")
+    public ResponseEntity<?> EmList(@RequestParam("cvNo") int cvNo) throws Exception {
+        try {
+            List<EmploymentHistory> employmentHistoryList = employmentHistoryService.employmentHistoryList(cvNo);
+            log.info("::::::::::: 경력 리스트 :::::::::: ");
+            log.info(employmentHistoryList.toString());
+    
+            return new ResponseEntity<>(employmentHistoryList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("경력 조회 실패...",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -345,7 +357,7 @@ public class ResumeController {
     @ResponseBody
     @PostMapping("/cv_Edupdate_user")
     public ResponseEntity<?> postMethodName(@RequestBody Education education) throws Exception {
-        log.info("###############################" + education);
+        log.info("학력 등록 / 학력 등록 / 학력 등록 / 학력 등록 / " + education);
         // 사용자 학력 정보 등록하기
         try {
             // 데이터 db에 저장
@@ -364,7 +376,7 @@ public class ResumeController {
         return new ResponseEntity<>("FAIL", HttpStatus.OK); // 실패 시 오류 메시지와 함께 이력서 읽는 페이지로 리다이렉트
     }
 
-    // 학력 리스트
+    /* //구버전 학력 리스트
     @GetMapping("/cv_Edlist_user")
     public String educationListByUser(@RequestParam("cvNo") int cvNo, Model model) throws Exception {
         List<Education> educationList = educationService.educationList(cvNo);
@@ -372,6 +384,21 @@ public class ResumeController {
         log.info("::::::::::: 학력 리스트 :::::::::: ");
         log.info(educationList.toString());
         return "/resume/education/list";
+    } */
+
+    // 학력 리스트
+    @GetMapping("/cv_Edlist_user")
+    public ResponseEntity<?> EdList(@RequestParam("cvNo") int cvNo) throws Exception {
+        try {
+            List<Education> educationList = educationService.educationList(cvNo);
+            log.info("::::::::::: 학력 리스트 :::::::::: ");
+            log.info(educationList.toString());
+                
+            return new ResponseEntity<>(educationList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("학력 조회 실패...",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     public ResumeController(ResumeService resumeService, FileService fileService) {
@@ -384,7 +411,7 @@ public class ResumeController {
     @PostMapping("/cv_FileUpdate_user")
     public ResponseEntity<Integer> uploadFiles(@RequestParam("cvNo") int cvNo, @ModelAttribute Resume resume)
             throws Exception {
-        log.info("::::::::::::::::::::: resume :::::::::::::::::::::");
+        log.info("::::::::::::::::::::: resume/img/file :::::::::::::::::::::");
         log.info(resume.toString());
 
         Files file = new Files();
@@ -409,8 +436,6 @@ public class ResumeController {
     // 이미지 파일 등록
     @ResponseBody
     @PostMapping("/cv_FileCreate_user")
-    // public String uploadFiles(@RequestParam("imgUploadFile") MultipartFile[]
-    // files) throws Exception {
     public ResponseEntity<Integer> createFiles(@RequestParam("cvNo") int cvNo, Resume resume) throws Exception {
         log.info("::::::::::::::::::::: resume :::::::::::::::::::::");
         
@@ -438,8 +463,6 @@ public class ResumeController {
 
     @ResponseBody
     @DeleteMapping("/cv_delete_user")
-    // public String uploadFiles(@RequestParam("imgUploadFile") MultipartFile[]
-    // files) throws Exception {
     public ResponseEntity<Integer> deleteFiles(@RequestBody Map<String, Integer> request) throws Exception {
         Files file = new Files();
         int cvNo = request.get("cvNo");
@@ -455,8 +478,6 @@ public class ResumeController {
     // 문서 파일 업데이트
     @ResponseBody
     @PostMapping("/cv_FileUpdate2_user")
-    // public String uploadFiles(@RequestParam("imgUploadFile") MultipartFile[]
-    // files) throws Exception {
     public ResponseEntity<List<String>> uploadFile(Resume resume) throws Exception {
         log.info(resume.toString());
         List<MultipartFile> files = resume.getFile();
@@ -503,12 +524,8 @@ public class ResumeController {
         return "redirect:/resume/cv_read_user?cvNo&error";
     }
 
-    /**
-     * 사업가 게시글 상세 조회/수정화면
-     * 
-     * @param param
-     * @return
-     */
+    /* 
+     * 구버전 사업가 게시글 상세 조회/수정화면
     @GetMapping("/cv_read_com")
     public String ReadCom(@RequestParam("cvNo") int cvNo, HttpSession session, Model model) throws Exception {
 
@@ -533,7 +550,35 @@ public class ResumeController {
 
         // 화면 이동
         return "resume/cv_read_com";
+    } */
+
+    /**
+     * @param cvNo
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/cv_read_com")
+    public ResponseEntity<?> ReadCom(@RequestParam("cvNo") int cvNo, Users user) throws Exception {
+        log.info("사용자 이력서 기업에 지원하기");
+        try {
+            // 사용자의 이력서 정보를 가져옴
+            Resume resume = resumeService.select(cvNo);
+            log.info("사용자 이력서 ::::: 기업 " + resume);
+            if (resume != null) {
+                log.info("이력서의 " + cvNo + "번이 갔어요");
+                return new ResponseEntity<>(resume, HttpStatus.OK);
+            } else {
+                log.info("이력서가 기업에 넘어가지 않았어요.");
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
+
 
     /**
      * 학력 삭제

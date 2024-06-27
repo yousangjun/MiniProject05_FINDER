@@ -167,7 +167,7 @@
         console.log('page:', currentPage); // 디버깅을 위해 콘솔에 출력
 
         fetch(`/cardList?page=${currentPage}&rows=${rowsPerPage}&code=${option}&keyword=${keyword}`)
-          .then(response => response.text())
+          .then(response => response.text()) // 여기에 나중에 card html이 와야됨 jsx 형태로
           .then(data => {
             // console.log(data)
             if (data.trim() === "") {

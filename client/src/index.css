@@ -1,13 +1,123 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+/*reset*/
+* {margin: 0; padding: 0; box-sizing: border-box; }
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, tbody, tfoot, thead, tr, th, td{margin:0;padding:0;}
+h1, h2, h3, h4, h5, h6 {font-weight: 700; font-size: inherit;}
+a {text-decoration: none; color: inherit;}
+ul { list-style-type: none; }
+img {vertical-align: middle;}
+a img {border: none;}
+a:focus {outline: none}
+button:focus {outline: none}
+
+html {
+  scroll-behavior: smooth;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+body { 
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    flex-direction: column;
+    letter-spacing: -0.1em;
+    background-color: #eee;
 }
+
+
+/* css변수 선언*/
+/*👩‍🦰메인 컬러 지정*/
+:root{
+    /*css 변수 선언*/
+    /*--변수명 : 값*/
+    /*--사용 : var(--변수명)*/
+    --main-color: #024FDF;
+    --sub-color:#283C75;
+    --short-btn-color : #2065E8;
+    --long-btn-color : #005BAA;
+    
+    /*폰트 사이즈 지정*/
+    --text-normal : 16px;
+    --text-middle : 28px;
+    --text-big : 50px;
+
+    /*기본 사이즈 지정*/
+    --container-size : 1440px;
+}
+
+.btn-short {
+  width: 70px;
+  height: 34px;
+  /* padding : 4px 2px; */
+  border-radius: 20px;
+  background-color: var(--short-btn-color);
+  border: none;
+  color: #fff;
+  font-size: var(--text-normal);
+}
+
+.btn-short:hover {
+  background-color: var(--main-color);
+}
+
+.btn-in-short {
+  width: 70px;
+  height: 34px;
+  /* padding : 4px 2px; */
+  border-radius: 20px;
+  background-color: var(--sub-color);
+  border: none;
+  color: #fff;
+  font-size: var(--text-normal);
+}
+
+.btn-in-short:hover {
+  background-color: var(--sub-color);
+}
+
+.btn-long {
+  width: 120px;
+  height: 34px;
+  /* padding : 4px 2px; */
+  border-radius: 8px;
+  background-color: var(--long-btn-color);
+  border: none;
+  color: #fff;
+  font-size: var(--text-normal);
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-long:hover {
+  background-color: var(--main-color);
+}
+
+/* 공통 */
+.main-content { /* content 영역 지정 */
+  margin: 0 auto;
+}
+/* 1440px로 메인화면 통일테스트 */
+.main-content2 {
+  max-width: 1440px;
+}
+
+.container {
+  min-height: calc(100vh - 20rem);
+}
+
+
+
+/* 미디어쿼리 1400px 이상부터 적용 */
+@media (min-width: 1400px) {
+  footer .footer-col2 {
+    margin-right: 150px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .header-wrap {
+    flex-direction: column;
+  }
+}
+

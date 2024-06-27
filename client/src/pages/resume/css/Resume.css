@@ -1,0 +1,15 @@
+.SubTitle{
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+    margin-bottom: 50px;
+    margin-top: 30px;
+}
+
+.title1{
+    font-size: 45px; margin-bottom: 15px;
+}
+
+.title2{
+    font-size: 19px;
+}

@@ -1,0 +1,78 @@
+/* 푸터 */
+footer {
+    background-color: var(--sub-color);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto; /* 푸터 하단 고정에 사용 */
+    margin-top: 200px; /* footer - content 영역 사이 간격 */
+}
+
+.footer-wrap {
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto; /* 푸터 하단 고정에 사용 */
+    padding: 0px 100px 0px 100px;
+    justify-content: space-between;
+}
+
+footer .footer-col1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    row-gap: 45px;
+}
+
+.footer-col1-1 {
+    display: flex;
+    column-gap: 50px;
+    color: #DBDBDB;
+}
+
+.footer-col1-1 p,
+.footer-col1-3 p
+.footer-col1-1 p {
+    display: flex;
+    column-gap: 50px;
+    color: #B5B5B5;
+}
+
+footer .footer-col2 {
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* justify-content: space-between; */
+    /* align-items: center; */
+    /* margin-right: 150px; */
+}
+
+.footer-col2 > h1 {
+    font-size: 40px;
+    text-align: center;
+}
+
+.footer-col3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    color: #DBDBDB;
+    row-gap: 45px;
+}
+
+.sns-icon-menu {
+    display: flex;
+    column-gap: 20px;
+}
+
+
+.logo-footer {
+    width : 125px;
+    margin: 0 auto;
+}

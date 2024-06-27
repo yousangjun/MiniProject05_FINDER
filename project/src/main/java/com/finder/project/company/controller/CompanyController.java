@@ -8,9 +8,9 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.finder.project.company.dto.Company;
 import com.finder.project.company.dto.CompanyDetail;
@@ -29,7 +30,6 @@ import com.finder.project.company.service.CompanyService;
 import com.finder.project.main.dto.Page;
 import com.finder.project.recruit.service.RecruitService;
 import com.finder.project.resume.dto.Resume;
-import com.finder.project.resume.service.ResumeService;
 import com.finder.project.user.dto.Users;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/company")
 public class CompanyController {
 
@@ -50,14 +50,6 @@ public class CompanyController {
     @Autowired
     RecruitService recruitService;
 
-    @Autowired
-    ResumeService resumeService;
-
-    // main_com 화면 (기업 메인 메뉴선정화면)
-    @GetMapping("/main_com")
-    public String main_com() {
-        return "/company/main_com";
-    }
 
     // introduce_com 화면 (기업소개)
     // 조회는 세션에서 해주고 있다. (Users에서 Company CompanyDetail 받아옴)
@@ -72,6 +64,7 @@ public class CompanyController {
 
     // 기업 상세 정보 등록 (기업소개)
     @PostMapping("/insert_detail")
+    // public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
     public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
         // 세션에서 사용자 정보 가져오기
         Users user = (Users) session.getAttribute("user");
@@ -138,27 +131,14 @@ public class CompanyController {
 
 
 
-    // 기업 조회 (기업정보)
-    @GetMapping("/info_update_com")
-    public String info_update_com() throws Exception {  
-
-        return "/company/info_update_com";
-    }
-
-    // 기업 등록 (기업정보)
-    // @PostMapping("/")
-    // public void createCompany(@RequestBody Company company) {
-    //     companyService.createCompany(company);
-    // }
-
-    // 기업 정보 수정
+    // 개인 정보 수정
     @PostMapping("/update_info")
     public String updateCompany(HttpSession session, Company company
-                              ,@RequestParam("userName") String userName,
-                               @RequestParam("userBirth") String userBirth,
-                               @RequestParam("userPhone") String userPhone,
-                               @RequestParam("userEmail") String userEmail
-                               ) throws Exception {
+                            ,@RequestParam("userName") String userName
+                            ,@RequestParam("userBirth") String userBirth
+                            ,@RequestParam("userPhone") String userPhone
+                            ,@RequestParam("userEmail") String userEmail
+                            ) throws Exception {
         
         // 세션에서 사용자 정보 가져오기
         Users user = (Users) session.getAttribute("user");
@@ -198,11 +178,11 @@ public class CompanyController {
     // kakao 로그인하면 여길루옴
     @PostMapping("/update_com_kakaoInfo")
     public String updateKakao(HttpSession session, Company company
-                              ,@RequestParam("userName") String userName,
-                               @RequestParam("userBirth") String userBirth,
-                               @RequestParam("userPhone") String userPhone,
-                               @RequestParam("userEmail") String userEmail
-                               ) throws Exception {
+                            ,@RequestParam("userName") String userName
+                            ,@RequestParam("userBirth") String userBirth
+                            ,@RequestParam("userPhone") String userPhone
+                            ,@RequestParam("userEmail") String userEmail
+                            ) throws Exception {
         
         // 세션에서 사용자 정보 가져오기
         Users user = (Users) session.getAttribute("user");
@@ -293,55 +273,156 @@ public class CompanyController {
 
 
 
-    // 토스 페이먼츠 메인 [GET]
-    @GetMapping("/credit/checkout")
-    public String checkout(@RequestParam("productNo") int productNo
-                          ,@RequestParam("orderNo") int orderNo 
-                          ,Model model) throws Exception {
-        
-        Order order = companyService.selectOrder(orderNo);  // orderNo로 주문 정보 조회
-        Product product = companyService.selectProduct(productNo);
-        
-        model.addAttribute("order", order);
-        model.addAttribute("product", product);
-        return "/company/credit/checkout";
+//-------결제------------------------------------------------------------------------
+
+
+    // 결제상품 화면 [GET]
+    // 상품 3개 있는 화면인데 Link to 에서 하드코딩된 productNo=1,2,3 만 넘기면 된다. ⭕⭕⭕
+    // 따로 화면 그릴 때 요청할 데이터가 없다. 
+    // @GetMapping("/credit/credit_com")
+    // public String credit_com() throws Exception {
+    //     return "/company/credit/credit_com";
+    // }
+
+
+
+
+
+    // 결제상품 세부 화면 [GET]
+    // @GetMapping("/credit/credit_detail_com")
+    // public String credit_detail_com(@RequestParam("productNo") int productNo, Model model, Product product) throws Exception {
+
+    //     product.setProductNo(productNo);
+    //     product = companyService.selectProduct(productNo);
+
+    //     model.addAttribute("product", product);
+    //     return "company/credit/credit_detail_com";
+    // }
+
+    // 결제상품 세부 화면 [GET]
+    // 일단 데이터 찍힘 ⭕⭕⭕
+    @GetMapping("credit/credit_detail_com")
+    public ResponseEntity<?> credit_detail_com(@RequestParam("productNo") Integer productNo) {
+        try {
+            Product product = companyService.selectProduct(productNo);
+
+            if ( product == null ) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
+
+
+
+    // 토스 페이먼츠 메인 [GET]
+    // @GetMapping("/credit/checkout")
+    // public String checkout(@RequestParam("productNo") int productNo
+    //                       ,@RequestParam("orderNo") int orderNo 
+    //                       ,Model model) throws Exception {
+        
+    //     Order order = companyService.selectOrder(orderNo);  // orderNo로 주문 정보 조회
+    //     Product product = companyService.selectProduct(productNo);
+        
+    //     model.addAttribute("order", order);
+    //     model.addAttribute("product", product);
+    //     return "/company/credit/checkout";
+    // }
+
+    // 토스 페이먼츠 메인 [GET] ⭕⭕⭕
+    @GetMapping("/credit/checkout")
+    public ResponseEntity<?> checkout(@RequestParam("productNo") int productNo, @RequestParam("orderNo") int orderNo) {
+        try {
+            Order order = companyService.selectOrder(orderNo);  // orderNo로 주문 정보 조회
+            Product product = companyService.selectProduct(productNo);  // productNo로 제품 정보 조회
+
+            if ( product == null || order == null ) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("order", order);
+            response.put("product", product);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
     // 토스 페이먼츠 중간 프로세스 [GET]
-    @GetMapping("/credit/process")
-    public String process() throws Exception {
+    // 화면을 보여줄 필요가 없다 ⭕⭕⭕
+    // @GetMapping("/credit/process")
+    // public String process() throws Exception {
         
-        return "/company/credit/process";
-    }
+    //     return "/company/credit/process";
+    // }
+
+
+
+
 
     // 토스 페이먼츠 success [GET]
+    // @GetMapping("/credit/success")
+    // public String success(@RequestParam("productNo") int productNo
+    //                     ,@RequestParam("orderNo") int orderNo
+    //                     ,Model model) throws Exception {
+
+    //     Product product = companyService.selectProduct(productNo);
+    //     Order order = companyService.selectOrder(orderNo);
+    //     Credit credit = companyService.selectCredit(orderNo);
+
+    //     model.addAttribute("credit", credit);
+    //     model.addAttribute("order", order);
+    //     model.addAttribute("product", product);
+    //     return "/company/credit/success";
+    // }
+
+    // 토스 페이먼츠 success [GET] ⭕⭕⭕
     @GetMapping("/credit/success")
-    public String success(@RequestParam("productNo") int productNo
-                         ,@RequestParam("orderNo") int orderNo
-                         ,Model model) throws Exception {
+    public ResponseEntity<?> success(@RequestParam("productNo") int productNo, @RequestParam("orderNo") int orderNo) {
+        try {
+            Product product = companyService.selectProduct(productNo);
+            Order order = companyService.selectOrder(orderNo);
+            Credit credit = companyService.selectCredit(orderNo);
 
-        Product product = companyService.selectProduct(productNo);
-        Order order = companyService.selectOrder(orderNo);
-        Credit credit = companyService.selectCredit(orderNo);
+            if (product == null || order == null || credit == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
-        model.addAttribute("credit", credit);
-        model.addAttribute("order", order);
-        model.addAttribute("product", product);
-        return "/company/credit/success";
+            Map<String, Object> response = new HashMap<>();
+            response.put("product", product);
+            response.put("order", order);
+            response.put("credit", credit);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
+
 
 
      // 결제 테이블 추가 [POST]
-     @ResponseBody
-     @PostMapping("/credit/process")
-     public ResponseEntity<Map<String, Object>> successPro(HttpSession session,
-                              @RequestParam("paymentKey") String paymentKey,
-                              @RequestParam("orderId") String orderId,
-                              @RequestParam("price") int price,
-                              @RequestParam("productNo") int productNo,
-                              @RequestParam("orderNo") int orderNo
-                              ) throws Exception {
-     
+    @ResponseBody
+    @PostMapping("/credit/process")
+    public ResponseEntity<Map<String, Object>> successPro(HttpSession session
+                                ,@RequestParam("paymentKey") String paymentKey
+                                ,@RequestParam("orderId") String orderId
+                                ,@RequestParam("price") int price
+                                ,@RequestParam("productNo") int productNo
+                                ,@RequestParam("orderNo") int orderNo
+                                ) throws Exception {
+    
         // 세션에서 사용자 정보 가져오기
         // Users user = (Users) session.getAttribute("user");
         log.info("주문번호 : " + orderNo);
@@ -361,7 +442,7 @@ public class CompanyController {
         }else{
             log.info(" 주문 갱신 실패 ");
         }
-     
+    
         Credit credit = new Credit();
         credit.setOrderNo(orderNo);
         credit.setCreditCode(orderId);
@@ -387,14 +468,14 @@ public class CompanyController {
         response.put("orderNo", orderNo);
 
         return ResponseEntity.ok(response);
-     }
+    }
 
 
     // 주문 테이블 추가 [POST]
     @ResponseBody
     @PostMapping("/credit/checkout")
     public Map<String, Object> successPro(HttpSession session,
-                                      @RequestBody Map<String, Integer> requestBody) throws Exception {
+                                        @RequestBody Map<String, Integer> requestBody) throws Exception {
         int productNo = requestBody.get("productNo");
         log.info("제품번호 : " + productNo);
 
@@ -440,27 +521,11 @@ public class CompanyController {
         return "/company/credit/fail";
     }
 
-    // 결제상품 화면 [GET]
-    @GetMapping("/credit/credit_com")
-    public String credit_com() throws Exception {
-        return "/company/credit/credit_com";
-    }
-    
-    // 결제상품 세부 화면 [GET]
-    @GetMapping("/credit/credit_detail_com")
-    public String credit_detail_com(@RequestParam("productNo") int productNo, Model model, Product product) throws Exception {
-
-        product.setProductNo(productNo);
-        product = companyService.selectProduct(productNo);
-
-        model.addAttribute("product", product);
-        return "company/credit/credit_detail_com";
-    }
 
     // 결제 목록 내역 화면 [GET]
     @GetMapping("/credit/credit_list_com")
     public String credit_list_com(HttpSession session, Model model, Page page
-                                 ) throws Exception {
+                                ) throws Exception {
 
     Users user = (Users) session.getAttribute("user");
     int userNo = user.getUserNo();
@@ -480,35 +545,50 @@ public class CompanyController {
 
 
 
+//-------결제------------------------------------------------------------------------
 
     
     // 기업상세정보페이지 [유저]
     // 채용공고 상세 페이지 ----
+    // @GetMapping("/com_detail_user")
+    // public String getMethodName(@RequestParam("comNo") Integer comNo, Model model,
+    //         HttpSession session) throws Exception {
+        
+    //     // Users user = (Users) session.getAttribute("user");
+        
+    //     // log.info("@@@@@@@@@@@@@" + comNo);
+    //     // RecruitPost recruitPost = recruitService.recruitRead(recruitNo);
+    //     // if (recruitPost == null) {
+    //         // log.error("RecruitPost 객체가 null입니다. : ", recruitPost);
+    //     // } else {
+    //         // log.info("RecruitPost 정보: {}", recruitPost);
+    //     // }
+
+    //     // int comNo = recruitPost.getCompany().getComNo();
+    //     CompanyDetail companyDetail = recruitService.selectCompanyDetailsWithRecruit(comNo);
+
+    //     // log.info("companyDetail", companyDetail);
+    //     model.addAttribute("companyDetail", companyDetail);
+    //     // model.addAttribute("recruitPost", recruitPost);
+
+    //     return "/company/com_detail_user";
+    // }
+
+    // 기업상세정보페이지 [유저]
+    // 채용공고 상세 페이지 ---- ⭕⭕⭕ 근데 그 company 뜨는게 무조건 comNo : 13 /  메타가 뜸
     @GetMapping("/com_detail_user")
-    public String getMethodName(@RequestParam("comNo") Integer comNo, Model model,
-            HttpSession session) throws Exception {
-        
-        // Users user = (Users) session.getAttribute("user");
-        
-        // log.info("@@@@@@@@@@@@@" + comNo);
-        // RecruitPost recruitPost = recruitService.recruitRead(recruitNo);
-        // if (recruitPost == null) {
-            // log.error("RecruitPost 객체가 null입니다. : ", recruitPost);
-        // } else {
-            // log.info("RecruitPost 정보: {}", recruitPost);
-        // }
+    public ResponseEntity<?> getCompanyDetail(@RequestParam("comNo") Integer comNo) {
+        try {
 
-        // int comNo = recruitPost.getCompany().getComNo();
-        CompanyDetail companyDetail = recruitService.selectCompanyDetailsWithRecruit(comNo);
+            log.info("Received comNo: " + comNo);
 
-        // log.info("companyDetail", companyDetail);
-        model.addAttribute("companyDetail", companyDetail);
-        // model.addAttribute("recruitPost", recruitPost);
+            CompanyDetail companyDetail = recruitService.selectCompanyDetailsWithRecruit(comNo);
 
-        return "/company/com_detail_user";
+        return new ResponseEntity<>(companyDetail, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
-
 
 
 
@@ -532,7 +612,7 @@ public class CompanyController {
     // AI 평가 화면 ///--------------------------------------------------------------------------------------------------------------
     @GetMapping("/score_com")
     public String score_com(Model model, HttpSession session, Page page) throws Exception {
-         Users user = (Users) session.getAttribute("user");
+        Users user = (Users) session.getAttribute("user");
 
         if (user == null) {
             // 사용자 정보가 없으면 로그인 페이지로 리다이렉트

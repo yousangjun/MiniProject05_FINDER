@@ -14,24 +14,23 @@ import lombok.ToString;
 @ToString
 public class CustomUser implements UserDetails {
 
-    // 사용자 DTO
-    private Users user;
+    private Users user;         
 
     public CustomUser(Users user) {
         this.user = user;
     }
 
     /**
-     * 🔐 권한 정보 메소드
-     * ✅ UserDetails 를 CustomUser 로 구현하여,
-     *    Spring Security 의 User 대신 사용자 정의 인증 객체(CustomUser)로 적용
-     * ⚠ CustomUser 적용 시, 권한을 사용할 때는 'ROLE_' 붙여서 사용해야한다.
+     * 🟢🟡🔴 권한 getter 메소드
+     * ✅ UserDetails 를 CustomUser 로 구현하여, 
+     *     Spring Security 의 User 대신 사용자 정의 인증 객체(CustomUser)를 사용한다면,
+     *     권한은 'ROLE_' 붙여서 사용해야한다.
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getAuthList().stream()
-                                 .map( (auth) -> new SimpleGrantedAuthority(auth.getAuth()) )
-                                 .collect(Collectors.toList());
+                                  .map( (auth) -> new SimpleGrantedAuthority(auth.getAuth()))
+                                  .collect(Collectors.toList());
     }
 
     @Override
@@ -63,5 +62,6 @@ public class CustomUser implements UserDetails {
     public boolean isEnabled() {
         return user.getEnabled() == 0 ? false : true;
     }
+
     
 }
