@@ -8,10 +8,12 @@ const Header = () => {
             <div className="header-wrap">
                 <div className="logo">
                     <Link to="/">
-                        <img className="logo-header" src="/img/logo.png" alt="기업로고" width="auto" />
-                        <h1 className="logo-title">
-                            <strong>FINDER</strong>
-                        </h1>
+                        <a>
+                            <img className="logo-header" src="/img/logo.png" alt="기업로고" width="auto" />
+                            <h1 className="logo-title">
+                                <strong>FINDER</strong>
+                            </h1>
+                        </a>    
                     </Link>
                 </div>
                 <div className="nav-menu">
