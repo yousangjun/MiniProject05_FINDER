@@ -14,6 +14,7 @@ import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
 import Error from './pages/error/Error';
 import Introduce_com from './pages/resume/Introduce_com';
+import Login from './pages/user/Login';
 
 
 function App() {
@@ -43,6 +44,8 @@ function App() {
           <Route path="/user" element={<User/>}></Route>
           <Route path="/*" element={<Error/>}></Route>
 
+          {/*로그인 페이지 */}
+          <Route path="/login" element={<Login/>}></Route>
         </Routes>
     </BrowserRouter>
   );

@@ -10,7 +10,7 @@ const Introduce_com = () => {
         <input type="text" name="comName" id="comName" className="w-100 my-4 com-intro-title" 
         placeholder='기업명을 작성해주세요'/>
       </div>
-      <div className='row'>
+      <div className='row ComRow'>
         <div className="d-flex flex-column row-gap-3 col-3">
           <img src="/img/업력연차.png" alt="업력연차" />
           <div className='com-intro-input'>
@@ -61,7 +61,7 @@ const Introduce_com = () => {
         <input type="text" className="com-intro-input" name="comAddress" id="comAddress" placeholder='e.g) **시 **구 **로 **...' />
       </div>
       <div className="w-100 introduce-col4">
-        <h4 className="introduceT w-100 py-2">기술소개</h4>
+        <h5 className="introduceT w-100 py-2">기술소개</h5>
         <textarea name="comContent" id="comContent" placeholder='기업 소개글을 작성하시오' 
         className="introduceT2 w-100 p-3 fs-5"></textarea>
       </div>
