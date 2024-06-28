@@ -1,59 +1,88 @@
 package com.finder.project.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-// TODO : deprecated 없애기 (version : before SpringSecurity 5.4 ⬇)
-// @EnableWebSecurity
-// public class SecurityConfig extends WebSecurityConfigurerAdapter {
+import com.finder.project.security.CustomUserDetailService;
+import com.finder.project.security.filter.JwtAuthenticationFilter;
+import com.finder.project.security.filter.JwtRequestFilter;
+import com.finder.project.security.provider.JwtTokenProvider;
 
-// OK : (version : after SpringSecurity 5.4 ⬆)
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) //어노테이션에 prePostEnabled = true를 추가하면 AuthenticationManager를 자동으로 구성합니다.
+public class SecurityConfig  {
 
-	// OK : (version : after SpringSecurity 5.4 ⬆)
-	@Bean
+	@Autowired
+	private CustomUserDetailService customUserDetailService;
+
+    @Autowired 
+    private JwtTokenProvider jwtTokenProvider;
+
+    private AuthenticationManager authenticationManager;
+
+    @Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        this.authenticationManager = authenticationConfiguration.getAuthenticationManager();
+		return authenticationManager;
+	}
+
+    @Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		// 폼 기반 로그인 비활성화
-		http.formLogin(login ->login.disable());							
+        log.info("securityFilterChain...");
 
-		// HTTP 기본 인증 비활성화
-		http.httpBasic(basic ->basic.disable());
+        // 폼 기반 로그인 비활성화
+        http.formLogin( login -> login.disable() );
 
-		// CSRF(Cross-Site Request Forgery) 공격 방어 기능 비활성화
-		http.csrf(csrf ->csrf.disable());
+        // HTTP 기본 인증 비활성화
+        http.httpBasic( basic -> basic.disable() );
 
-		// 세션 관리 정책 설정: STATELESS로 설정하면 서버는 세션을 생성하지 않음
-	 	// 🔐 세션을 사용하여 인증하지 않고,  JWT 를 사용하여 인증하기 때문에, 세션 불필요
-		http.sessionManagement(management ->management
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        // CSRF(Cross-Site Request Forgery) 공격 방어 기능 비활성화
+        http.csrf( csrf -> csrf.disable() );
 
+        // 필터 설정
+        // ✅ JWT 요청 필터 1️⃣
+        // ✅ JWT 인증 필터 2️⃣
+        http.addFilterAt(new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new JwtRequestFilter(authenticationManager, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+            ;
 
-		// 구성이 완료된 SecurityFilterChain을 반환합니다.
+        // 인가 설정
+        http.authorizeHttpRequests()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .antMatchers("/**").permitAll()
+                // .anyRequest().authenticated()
+                ;
+						
+        // 사용자 정보를 불러오는 서비스 설정
+        http.userDetailsService(customUserDetailService);
+
 		return http.build();
 	}
 
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
 	
-	// TODO : deprecated 없애기 (version : before SpringSecurity 5.4 ⬇)
-	// @Override
-	// protected void configure(HttpSecurity http) throws Exception {
-	// 	// 폼 기반 로그인 비활성화
-	// 	http.formLogin().disable()
-		
-	// 	// HTTP 기본 인증 비활성화
-	// 	.httpBasic().disable();
-		
-	// 	// CSRF(Cross-Site Request Forgery) 공격 방어 기능 비활성화
-	// 	http.csrf().disable();
-		
-	// 	// 세션 관리 정책 설정: STATELESS로 설정하면 서버는 세션을 생성하지 않음
-	// 	// 🔐 세션을 사용하여 인증하지 않고,  JWT 를 사용하여 인증하기 때문에, 세션 불필요
-	// 	http.sessionManagement()
-	// 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-	// }
+
+	
 
 }

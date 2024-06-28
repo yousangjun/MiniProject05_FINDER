@@ -52,11 +52,12 @@ public class JwtTokenProvider {
      */
     public String createToken(int userNo, String userId, List<String> roles) {
         byte[] signingKey = getSigningKey();
-    
+
         // JWT 토큰 생성
         String jwt = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(signingKey), Jwts.SIG.HS512)      // 서명에 사용할 키와 알고리즘 설정
-                .header()
+                // .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)        // deprecated (version: before 1.0)
+                .header()                                                      // update (version : after 1.0)
                     .add("typ", SecurityConstants.TOKEN_TYPE)              // 헤더 설정
                 .and()
                 .expiration(new Date(System.currentTimeMillis() + 864000000))  // 토큰 만료 시간 설정 (10일)
@@ -64,11 +65,12 @@ public class JwtTokenProvider {
                 .claim("uid", userId)                                     // 클레임 설정: 사용자 아이디
                 .claim("rol", roles)                                      // 클레임 설정: 권한
                 .compact();      
-    
+
         log.info("jwt : " + jwt);
-    
+
         return jwt;
     }
+
 
     /**
      * 🔐➡👩‍💼 토큰 해석
@@ -123,7 +125,7 @@ public class JwtTokenProvider {
             // OK: 권한도 바로 Users 객체에 담아보기
             List<UserAuth> authList = ((List<?>) roles )
                                             .stream()
-                                            .map(auth -> new UserAuth(no, auth.toString()) )
+                                            .map(auth -> new UserAuth(userId, auth.toString()) )
                                             .collect( Collectors.toList() );
             user.setAuthList(authList);
 
@@ -140,7 +142,7 @@ public class JwtTokenProvider {
                 Users userInfo = userMapper.select(userId);
                 if( userInfo != null ) {
                     user.setUserName(userInfo.getUserName());
-                    user.setUserEmail(userInfo.getUserEmail());
+                    user.setUserId(userInfo.getUserId());
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());

@@ -1,4 +1,4 @@
-package com.finder.project.security.Filter;
+package com.finder.project.security.filter;
 
 import java.io.IOException;
 

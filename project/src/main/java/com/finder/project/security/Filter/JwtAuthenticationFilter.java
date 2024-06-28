@@ -1,4 +1,4 @@
-package com.finder.project.security.Filter;
+package com.finder.project.security.filter;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,12 +19,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.finder.project.security.constants.SecurityConstants;
 import com.finder.project.security.provider.JwtTokenProvider;
 import com.finder.project.user.dto.CustomUser;
-import com.finder.project.user.dto.UserAuth;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-                                                // 로그인 인증을 담당하는 필터
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
@@ -60,6 +58,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // 사용자 인증정보 객체 생성
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+
+         // // 사용자 인증정보 객체 생성
+        // Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
+
+        // try {
+        //     // 사용자 인증 (로그인)
+        //     authentication = authenticationManager.authenticate(authentication);
+        // } catch (Exception e) {
+        //     log.info("error" + e);
+        // }
 
         // 사용자 인증 (로그인)
         authentication = authenticationManager.authenticate(authentication);
@@ -103,27 +111,26 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      * @throws ServletException
      */
     @Override
-protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-        Authentication authentication) throws IOException, ServletException {
-    log.info("인증 성공 (auth SUCCESS) : ");
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+            Authentication authentication) throws IOException, ServletException {
+        log.info("인증 성공 (auth SUCCESS) : ");
 
-    CustomUser user = ((CustomUser) authentication.getPrincipal());
-    int userNo = user.getUser().getUserNo();
-    String userId = user.getUser().getUserId();
+        CustomUser user = ((CustomUser) authentication.getPrincipal());
+        int userNo = user.getUser().getUserNo();
+        String userId = user.getUser().getUserId();
 
-    // UserAuth 객체에서 권한 정보를 추출하여 List<String> 형태로 변환
-    List<String> roles = user.getAuthorities()
-                            .stream()
-                            .map(GrantedAuthority::getAuthority)
-                            .collect(Collectors.toList());
+        List<String> roles = user.getAuthorities()
+                                .stream()
+                                .map(GrantedAuthority::getAuthority)
+                                .collect(Collectors.toList());
 
-    // 🔐 JWT
-    String token = jwtTokenProvider.createToken(userNo, userId, roles);
+        // 🔐 JWT
+        String token = jwtTokenProvider.createToken(userNo, userId, roles);
 
-    // 💍 { Authorization : Bearer + {jwt} } 
-    response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
-    response.setStatus(200);
-}
+        // 💍 { Authorization : Bearer + {jwt} } 
+        response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+        response.setStatus(200);
+    }
 
 
 

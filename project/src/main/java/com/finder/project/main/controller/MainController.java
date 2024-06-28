@@ -4,15 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,23 +19,12 @@ import com.finder.project.recruit.dto.RecruitPage;
 import com.finder.project.recruit.dto.RecruitPost;
 import com.finder.project.recruit.mapper.RecruitMapper;
 import com.finder.project.recruit.service.RecruitService;
-import com.finder.project.security.provider.JwtTokenProvider;
-import com.finder.project.user.dto.UserAuth;
-import com.finder.project.user.dto.Users;
-import com.finder.project.user.service.CustomUserDetailsService;
-import com.finder.project.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 public class MainController {
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @Autowired
     RecruitService recruitService;
@@ -50,12 +34,6 @@ public class MainController {
 
     @Autowired
     FileService fileService;
-
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
 
     // 메인페이지 (채용공고) 이런식으로 하는게 맞는지 물어보기
     @GetMapping({ "/index", "" })
@@ -160,34 +138,34 @@ public class MainController {
     // return "index";
     // }
 
-    @GetMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
-        try {
-            // 사용자 인증
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-            );
+    // @GetMapping("/login")
+    // public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
+    //     try {
+    //         // 사용자 인증
+    //         Authentication authentication = authenticationManager.authenticate(
+    //             new UsernamePasswordAuthenticationToken(username, password)
+    //         );
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+    //         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // 유저 정보 조회
-            Users user = userService.select(username);
-            List<UserAuth> userAuthList = user.getAuthList();
+    //         // 유저 정보 조회
+    //         Users user = userService.select(username);
+    //         List<UserAuth> userAuthList = user.getAuthList();
 
-            // List<UserAuth>를 List<String>으로 변환
-            List<String> roles = userAuthList.stream()
-                .map(UserAuth::getAuth)
-                .collect(Collectors.toList());
+    //         // List<UserAuth>를 List<String>으로 변환
+    //         List<String> roles = userAuthList.stream()
+    //             .map(UserAuth::getAuth)
+    //             .collect(Collectors.toList());
 
-            // JWT 토큰 생성
-            String jwtToken = jwtTokenProvider.createToken(user.getUserNo(), user.getUserId(), roles);
+    //         // JWT 토큰 생성
+    //         String jwtToken = jwtTokenProvider.createToken(user.getUserNo(), user.getUserId(), roles);
 
-            // 토큰을 클라이언트에 반환
-            return ResponseEntity.ok().body(jwtToken);
+    //         // 토큰을 클라이언트에 반환
+    //         return ResponseEntity.ok().body(jwtToken);
 
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("로그인 실패: 유효하지 않은 사용자입니다.");
-        }
-    }
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(401).body("로그인 실패: 유효하지 않은 사용자입니다.");
+    //     }
+    // }
 
 }
