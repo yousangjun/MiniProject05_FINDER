@@ -11,6 +11,7 @@ import { Recruit } from './pages/recruit/Recruit';
 import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
 import Error from './pages/error/Error';
+import Introduce_com from './pages/resume/Introduce_com';
 
 
 function App() {
@@ -24,7 +25,9 @@ function App() {
           <Route path="/company/credit_com" element={<Credit_com/>}></Route>
           <Route path="/company/credit_detail_com" element={<Credit_detail_com/>}></Route>
           <Route path="/company/checkout" element={<Checkout/>}></Route>
+
           <Route path="/company/success" element={<Success/>}></Route>
+
           
           {/* 채용공고 페이지 */}
           <Route path="/recruit" element={<Recruit/>}></Route>
@@ -35,6 +38,7 @@ function App() {
           {/* 회원 페이지 */}
           <Route path="/user" element={<User/>}></Route>
           <Route path="/*" element={<Error/>}></Route>
+
         </Routes>
     </BrowserRouter>
   );

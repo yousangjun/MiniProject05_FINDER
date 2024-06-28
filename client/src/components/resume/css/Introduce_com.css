@@ -1,0 +1,61 @@
+*{
+    margin: auto 0;
+}
+
+
+img{
+    width: 50%;
+    align-self: center;
+}
+
+.com-intro-title{
+    text-align: center;
+    height: 50px;
+    font-size: var(--text-middle);
+    border-radius: 8px;
+    border: 1px solid #bebebe;
+}
+
+.com-intro-input{
+    border: 1px solid #bebebe;
+    border-radius: 8px;
+    padding: 5px;
+    width: 100%;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.ComInput{
+    border: none; 
+    text-align: center;
+}
+
+
+.ComName{
+    column-gap: 25px;
+}
+
+.introduceT{
+    background-color: bebebe;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.introduceT2{
+    min-height: 300px;
+    border: 1px solid #bebebe;
+    border-radius: 0 0 8PX 8PX;
+}
+
+/* 미디어쿼리 1400px 이상부터 적용 */
+@media (min-width: 1400px) {
+    footer .footer-col2 {
+      margin-right: 150px;
+    }
+  }
+  
+  @media (max-width: 1000px) {
+    .header-wrap {
+      flex-direction: column;
+    }
+  }
