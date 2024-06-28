@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import React, { forwardRef } from 'react';
 import SearchRecruit from './SearchRecruit';
 

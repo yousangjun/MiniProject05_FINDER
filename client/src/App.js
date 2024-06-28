@@ -37,7 +37,7 @@ function App() {
 
           
           {/* 채용공고 페이지 */}
-          <Route path="/recruit" element={<Sidebar/>}></Route>
+          <Route path="/recruit" element={<Home/>}></Route>
 
           {/* 이력서 페이지 */}
           <Route path="/resume" element={<Resume/>}></Route>

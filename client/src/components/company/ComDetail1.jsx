@@ -1,5 +1,5 @@
 import React from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import './ComDetail1.css'
 
 const ComDetail1 = ({ companyDetail }) => {

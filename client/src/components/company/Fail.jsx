@@ -1,5 +1,5 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { useSearchParams, Link } from "react-router-dom";
 
 const Fail = () => {

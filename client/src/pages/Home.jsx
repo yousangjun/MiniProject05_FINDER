@@ -1,5 +1,5 @@
 import React from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import HomeContainer from '../containers/main/HomeContainer';
 import './Home.css'
 import Header from '../layouts/Header';
