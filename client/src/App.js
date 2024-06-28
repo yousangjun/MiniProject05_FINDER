@@ -16,6 +16,8 @@ import Error from './pages/error/Error';
 
 import Introduce_com from './pages/resume/Introduce_com';
 import Login from './pages/user/Login';
+import Join_user from './pages/user/join_user';
+import Join_com from './pages/user/join_com';
 
 
 
@@ -48,6 +50,9 @@ function App() {
 
           {/*로그인 페이지 */}
           <Route path="/login" element={<Login/>}></Route>
+          {/* 회원가입 페이지 */}
+          <Route path="/join_user" element={<Join_user/>}></Route>
+          <Route path="/join_com" element={<Join_com/>}></Route>
         </Routes>
     </BrowserRouter>
   );
