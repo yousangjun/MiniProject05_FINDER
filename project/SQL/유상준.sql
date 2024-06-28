@@ -1,3 +1,4 @@
+-- Active: 1717080256825@@127.0.0.1@3306@finder
 --  유저 정보
 INSERT INTO `user` (user_no, user_name, user_id, user_pw, user_before_pw, user_birth, user_phone, user_email, user_gender)
 VALUES 
