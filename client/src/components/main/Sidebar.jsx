@@ -32,7 +32,7 @@ const Sidebar = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a href="/company/credit/credit_list_com" className="job-item-link nav-link fw-normal fs-6">
+              <a href="/company/credit_list_com" className="job-item-link nav-link fw-normal fs-6">
                 <div style={{ backgroundColor: '#fff', borderRadius: '8px' }} className="d-flex gap-2 p-2 ps-2">
                   <div>
                     <img src="/img/CreditCard.png" alt="Credit Card" />

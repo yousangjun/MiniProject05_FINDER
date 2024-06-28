@@ -92,7 +92,7 @@ const HomeContainer = () => {
     };
 
     return (
-        <div className="container main-content">
+        <>
             <HomeHeader
                 keyword={keyword}
                 option={option}
@@ -109,7 +109,7 @@ const HomeContainer = () => {
             <div ref={loader} className="loading-indicator">
                 {loading && <p>Loading more items...</p>}
             </div>
-        </div>
+        </>
     );
 };
 

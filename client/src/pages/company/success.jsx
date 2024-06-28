@@ -1,14 +1,13 @@
 import React from 'react'
-import Header from '../../layouts/Header'
-import Footer from '../../layouts/Footer'
 import SuccessContainer from '../../containers/company/SuccessContainer'
+import MainLayout from '../../layouts/MainLayout'
 
 const success = () => {
     return (
         <>
-            <Header />
+            <MainLayout >
             <SuccessContainer />
-            <Footer />
+            </MainLayout >
         </>
     )
 }
