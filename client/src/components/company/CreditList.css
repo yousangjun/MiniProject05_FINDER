@@ -1,0 +1,425 @@
+
+  /* info_update_com 준범 css 양식 가져옴 */
+  .sidebar {
+    background-color: #FAFAFA;
+    padding: 20px;
+    border-radius: 20px;
+    /* width: 230px; */
+    height: 700px;
+  
+  }
+  
+  .sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar ul li a {
+    color: #000;
+    text-decoration: none;
+    font-size: 15px;
+  }
+  
+  
+  .main-content h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  .job-listings {
+    background-color: #fff;
+    padding: 0px;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  .job-listings h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 28px;
+    margin-bottom: 10px;
+  
+  }
+  
+  
+  
+  .job-header {
+    color: #fff;
+    background-color: #005AAB;
+    padding: 10px;
+    margin-bottom: 35px;
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 130px;
+    font-size: 28px;
+  
+  }
+  
+  .job-item-link {
+    text-decoration: none;
+    /* 링크의 밑줄 제거 */
+    color: #1B1B1B;
+    /* 링크 글씨 색상 설정 */
+    display: block;
+    /* 전체 영역 클릭 가능하게 블록 요소로 변경 */
+  }
+  
+  .job-item-link * {
+    color: inherit;
+    /* 자식 요소가 부모 요소의 색상 상속 */
+  }
+  
+  .job-item {
+    background-color: #fff;
+    padding: 15px 36px 15px 36px;
+  
+    margin: 20px 0 20px 0;
+    border-radius: 20px;
+    cursor: pointer;
+    /* 커서를 포인터로 변경 */
+    transition: background-color 0.5s ease;
+  }
+  
+  .job-item:hover {
+    background-color: #F7F9FC;
+  
+  
+  }
+  
+  .a-wrapper > a {
+    text-decoration: none;
+    /* 링크의 밑줄 제거 */
+    color: #fff;
+    /* 링크 글씨 색상 설정 */
+    display: block;
+    /* 전체 영역 클릭 가능하게 블록 요소로 변경 */
+  
+    width: 300px;
+    height: 90px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+  
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    padding: 10px 20px; /* 버튼 패딩 설정 */
+    text-decoration: none; /* 링크 밑줄 제거 */
+  
+  }
+  
+  .job-item:hover .keyword-span span {
+    background-color: #fff;
+  }
+  
+  .job-item a {
+    color: #024FDF;
+    text-decoration: none;
+    float: right;
+  }
+  
+  .job-item .d-flex {
+    color: #FFFFFF;
+    /* NEW 태그는 여전히 흰색 */
+  }
+  
+  .job-item .d-flex span {
+    color: #1B1B1B;
+    /* NEW 태그의 글씨를 흰색으로 유지 */
+  }
+  
+  
+  
+  
+  
+  .container {
+    background: #fff;
+    margin: 0 auto;
+  }
+  
+  .form-control {
+  
+    color: #828282;
+    font-size: 13px !important;
+    width: 72px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    
+    transition: box-shadow 0.3s ease;
+    transition: outline 0.3s ease !important;
+  }
+  
+  .form-control:focus {
+    border-color: transparent !important;
+    box-shadow:  0 0 0 .05rem #fff !important;
+    outline: transparent !important;
+  
+    /* border-color: var(--sub-color) !important; */
+    /* box-shadow:  0 0 0 .25rem rgba(2, 99, 244, 0.55) !important; */
+    /* border-inline-color: var(--sub-color) !important;    */
+  
+    /* border-color: transparent; */
+    /* outline: 3px solid var(--sub-color) !important; 포커스 시 외부 테두리 색상 추가 */
+    
+  }
+  
+  .ul-header {
+    margin-bottom: 30px !important;
+  }
+  
+  .li-header {
+    margin: 0 0 5px 15px;
+  }
+  
+  
+  .nav-link {
+    padding: 3% !important;
+  }
+  
+  .nav-item {
+    height: 40px;
+  }
+  
+  .nav-item>div> {
+    display: flex;
+  
+  }
+  
+  .nav-item>div>div {
+    /* padding: 5px; */
+  }
+  
+  .nav-item>div>div>img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  
+  /* 상준님꺼 join 꺼 가져오기 */
+  .userid {
+    display: inline-block;
+    background-color: #E9E9E9;
+    border-radius: 20px;
+    margin-right: 100px;
+    padding: 2px 12px;
+    color: black;
+    width: 70px;
+    height: 27px;
+    font-size: 15px;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  .username,
+  .usergender,
+  .userbirth,
+  .userphone,
+  .useremail,
+  .useraddress {
+    display: inline-block;
+    background-color: #E9E9E9;
+    border-radius: 20px;
+    margin-right: 100px;
+    padding: 2px 12px;
+    color: black;
+    height: 27px;
+    font-size: 15px;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  
+  .userpw {
+    display: inline-block;
+    background-color: #E9E9E9;
+    border-radius: 20px;
+    margin-right: 100px;
+    padding: 2px 12px;
+    color: black;
+    height: 27px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  
+  .useremail {
+    display: inline-block;
+    background-color: #E9E9E9;
+    border-radius: 20px;
+    margin-right: 100px;
+    padding: 2px 12px;
+    color: black;
+    height: 27px;
+    font-size: 15px;
+    margin-top: 10px;
+  }
+  
+  .phone {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .phone-check {
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  
+  
+  main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .register-form {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  
+  
+  .register-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .register-form label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+  
+  .register-form input,
+  .register-form select {
+    width: calc(100% - 8px);
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    justify-content: center;
+  }
+  
+  
+  
+  
+  .birthdate select {
+    width: calc(31%);
+    margin-right: 5px;
+  }
+  
+  .birthdate select:last-child {
+    margin-right: 0;
+  }
+  
+  .gender {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .gender-btn {
+    display: flex;
+    align-items: center;
+  
+  }
+  
+  .btn-male {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: var(--long-btn-color);
+    /* 기본 색상 설정 */
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  
+  .btn-female {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: #EDEDED;
+    border: none;
+    color: black;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    vertical-align: middle;
+  }
+  
+  
+  .btn-duplicate {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: var(--short-btn-color, #007BFF);
+    /* 기본 색상 설정 */
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  
+  .btn-confirm {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: var(--short-btn-color, #007BFF);
+    /* 기본 색상 설정 */
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    vertical-align: middle;
+  
+  }
+  
+  
+  
+  .check-,
+  .verify-button,
+  .submit-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 8px;
+    background-color: #2065E8;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .check-button,
+  .verify-button {
+    width: auto;
+  }
+  
+  .submit-button {
+    width: 100%;
+    margin-top: 20px;
+  }

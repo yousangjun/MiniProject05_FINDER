@@ -1,0 +1,33 @@
+.pagination-container {
+    margin-top: 10px;
+}
+
+.pagination a,
+.pagination b {
+    /* border: 1px solid #ccc; */
+    padding: 5px 20px;
+    border-collapse: collapse;
+    text-decoration: none;
+}
+.pagination a:hover,
+.pagination b:hover {
+    z-index: 2;
+    color: var(--bs-pagination-hover-color);
+    background-color: var(--bs-pagination-hover-bg);
+    border-color: var(--bs-pagination-hover-border-color);
+}
+
+.pagination a:hover,
+.pagination b:hover {
+    z-index: 2;
+    color: var(--bs-pagination-hover-color);
+    background-color: var(--bs-pagination-hover-bg);
+    border-color: var(--bs-pagination-hover-border-color);
+}
+
+.pagination .page-first {
+    border-radius: 8px 0 0 8px;
+}
+.pagination .page-end {
+    border-radius: 0 8px 8px 0;
+}
