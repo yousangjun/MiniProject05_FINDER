@@ -65,6 +65,7 @@ public class CompanyController {
 
     // 기업 상세 정보 등록 (기업소개)
     @PostMapping("/insert_detail")
+    // public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
     public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
         // 세션에서 사용자 정보 가져오기
         Users user = (Users) session.getAttribute("user");

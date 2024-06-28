@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -100,8 +99,7 @@ public class MainController {
     public ResponseEntity<Map<String, Object>> recrutiCardList(@RequestParam("page") int page,
             @RequestParam("rows") int rows,
             @RequestParam(value = "code", required = false) Integer code,
-            @RequestParam(value = "keyword", required = false) String keyword
-            ) throws Exception {
+            @RequestParam(value = "keyword", required = false) String keyword) throws Exception {
         Map<String, Object> response = new HashMap<>();
         log.info("page cardList" + page);
 
@@ -126,18 +124,48 @@ public class MainController {
         // model.addAttribute("page", pageRequest);
         // model.addAttribute("recruitList", recruitList);
         // return "/recruit/card";
-        return new ResponseEntity<>(response, HttpStatus.OK); 
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 로그인 페이지 REST에서는 필요없음
     // @GetMapping("/login")
     // public String login() {
-        
-    //     return "/login";
+
+    // return "/login";
     // }
     // @GetMapping({"/", ""})
     // public String home() {
     // return "index";
+    // }
+
+    // @GetMapping("/login")
+    // public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
+    //     try {
+    //         // 사용자 인증
+    //         Authentication authentication = authenticationManager.authenticate(
+    //             new UsernamePasswordAuthenticationToken(username, password)
+    //         );
+
+    //         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    //         // 유저 정보 조회
+    //         Users user = userService.select(username);
+    //         List<UserAuth> userAuthList = user.getAuthList();
+
+    //         // List<UserAuth>를 List<String>으로 변환
+    //         List<String> roles = userAuthList.stream()
+    //             .map(UserAuth::getAuth)
+    //             .collect(Collectors.toList());
+
+    //         // JWT 토큰 생성
+    //         String jwtToken = jwtTokenProvider.createToken(user.getUserNo(), user.getUserId(), roles);
+
+    //         // 토큰을 클라이언트에 반환
+    //         return ResponseEntity.ok().body(jwtToken);
+
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(401).body("로그인 실패: 유효하지 않은 사용자입니다.");
+    //     }
     // }
 
 }
