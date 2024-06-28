@@ -7,6 +7,7 @@ import Com_detail_user from './pages/company/com_detail_user';
 import Credit_com from './pages/company/credit_com';
 import Credit_detail_com from './pages/company/credit_detail_com';
 import Success from './pages/company/success';
+import Credit_list_com from './pages/company/credit_list_com';
 import { Recruit } from './pages/recruit/Recruit';
 import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
@@ -27,6 +28,7 @@ function App() {
           <Route path="/company/checkout" element={<Checkout/>}></Route>
           <Route path="/company/Introduce_Com" element={<Introduce_com/>}></Route>
           <Route path="/company/success" element={<Success/>}></Route>
+          <Route path="/company/credit_list_com" element={<Credit_list_com/>}></Route>
 
           
           {/* 채용공고 페이지 */}

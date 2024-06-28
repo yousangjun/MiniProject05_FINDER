@@ -73,16 +73,15 @@ const CreditDetailCom = () => {
                                 <p>결제자 : <span>홍길동</span></p>
                                 <div className="d-flex justify-content-between align-items-center">
                                     <p>연락처 : <span>010-1234-5678</span></p>
-                                    <button 
+                                    <BtnLong 
+                                        btnLongText={"구매 동의"}
                                         type="button" 
                                         id="buyCheck" 
                                         onClick={(e) => {
                                             e.preventDefault();
                                             setModalShow(true);
                                         }}
-                                    >
-                                        <BtnLong btnLongText={"구매 동의"}/>
-                                    </button>
+                                    />
                                 </div>
                                 <hr />
                             </div>
@@ -93,22 +92,21 @@ const CreditDetailCom = () => {
                                 <p>결제 수단 :</p>
                             </div>
                             <div className="d-flex gap-4 align-self-end">
-                                <button 
-                                        type="button"
-                                        disabled={!isAgreed}
-                                        onClick={handlePostOrder}
-                                >
-                                    <BtnLong btnLongText={"신용카드 결제"}/>
-                                </button>                          
-                                <button 
+                                <BtnLong 
+                                    btnLongText={"신용카드 결제"}
+                                    type="button"
+                                    disabled={!isAgreed}
+                                    onClick={handlePostOrder}
+                                    className={isAgreed ? "btn-agreed" : "btn-not-agreed"}
+                                />
+                                <BtnLong 
+                                    btnLongText={"취소"} 
                                     type="button" 
                                     onClick={(e) => {
                                         e.preventDefault();
                                         navigate('/company/credit_com');
                                     }}
-                                >
-                                    <BtnLong btnLongText={"취소"} />
-                                </button>
+                                />
                             </div>
                         </div>
                     </form>
