@@ -23,7 +23,7 @@ const Introduce_com = () => {
             </div>
             <div className='row ComRow pt-4'>
               <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
-                <img src="/img/업력연차.png" alt="업력연차" />
+                <img src="/img/연차1.png" alt="업력연차" />
                 <div className='com-intro-input'>
                   <input type="text" id='comBitrh' name='comBitrh' className="w-75 ComInput" />
                   <span>년</span>
