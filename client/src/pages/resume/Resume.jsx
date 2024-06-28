@@ -1,15 +1,11 @@
 import React from 'react'
-import Header from '../../layouts/Header'
-import Footer from '../../layouts/Footer'
-import ContentTitleController from '../../containers/resume/ContentTitleController'
+import ContentTitle from '../../components/resume/ContentTitle'
 
 
 const Resume = () => {
   return (
     <>
-    <Header/>
-    <ContentTitleController />
-    <Footer/>
+    <ContentTitle/>
     </>
   )
 }

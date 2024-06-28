@@ -1,7 +1,7 @@
 import React from 'react'
 import ContentTitle from '../../components/resume/ContentTitle'
 
-const ContentTitleController = () => {
+const Resume = () => {
   return (
     <>
     <ContentTitle/>
@@ -9,4 +9,4 @@ const ContentTitleController = () => {
   )
 }
 
-export default ContentTitleController
+export default Resume
