@@ -8,16 +8,37 @@ img{
     align-self: center;
 }
 
+h4{
+    text-align: center;
+    margin: auto 100px;
+ /*    outline: dashed 1px #bebebe; */
+    border-radius: 10px;
+    width: 100px;
+}
+
+h5{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+    background-color: #bebebe;
+    border-radius: 8px 8px 0 0 ;
+}
+
+.ComRow{
+    border: solid 1px #dadada;
+    border-radius: 8px;
+}
+
 .com-intro-title{
     text-align: center;
     height: 50px;
     font-size: var(--text-middle);
     border-radius: 8px;
-    border: 1px solid #bebebe;
+    border: 1px solid #dadada;
 }
 
 .com-intro-input{
-    border: 1px solid #bebebe;
+    border: 1px solid #dadada;
     border-radius: 8px;
     padding: 5px;
     width: 100%;
@@ -36,14 +57,14 @@ img{
 }
 
 .introduceT{
-    background-color: bebebe;
+    background-color: #dadada;
     margin-top: 20px;
     margin-bottom: 0;
 }
 
 .introduceT2{
     min-height: 300px;
-    border: 1px solid #bebebe;
+    border: 1px solid #dadada;
     border-radius: 0 0 8PX 8PX;
 }
 
