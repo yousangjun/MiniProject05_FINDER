@@ -3,7 +3,7 @@
 /* success */
 /* 아래 폼 양식 */
 .payment-form {
-  border: 1px solid lightgrey;
+  border: 1px solid #d3d3d3;
   border-radius: 10px;
   box-shadow: 1px 2px 2px 3px lightgrey;
   padding: 20px;

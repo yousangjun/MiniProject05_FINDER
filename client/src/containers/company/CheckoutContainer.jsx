@@ -4,7 +4,7 @@ import Checkout from '../../components/company/Checkout'
 
 const ComDetailContainer = () => {
     return (
-        <div className='container'>
+        <div className='container main-content'>
             <Checkout />
         </div>
     )

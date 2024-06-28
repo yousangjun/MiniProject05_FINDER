@@ -5,7 +5,7 @@ import ComDetailChart from '../../components/company/ComDetailChart'
 
 const ComDetailContainer = () => {
   return (
-    <div className='container'>
+    <div className='container main-content'>
       {/* <BtnShort btnShortText={"제출"} />
       <BtnLong btnLongText={"안녕하세요"} /> */}
       <ComDetail1 />

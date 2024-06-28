@@ -92,6 +92,7 @@ const CreditDetailCom = () => {
                                 <p>결제 수단 :</p>
                             </div>
                             <div className="d-flex gap-4 align-self-end">
+                                <Link to="/company/checkout">
                                 <BtnLong 
                                     btnLongText={"신용카드 결제"}
                                     type="button"
@@ -99,6 +100,7 @@ const CreditDetailCom = () => {
                                     onClick={handlePostOrder}
                                     className={isAgreed ? "btn-agreed" : "btn-not-agreed"}
                                 />
+                                </Link>
                                 <BtnLong 
                                     btnLongText={"취소"} 
                                     type="button" 
