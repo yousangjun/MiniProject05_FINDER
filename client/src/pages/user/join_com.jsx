@@ -1,14 +1,13 @@
 import React from 'react'
-import Header from '../../layouts/Header'
-import Footer from '../../layouts/Footer'
 import JoinComContainer from '../../containers/user/JoinComContainer'
+import MainLayout from '../../layouts/MainLayout'
 
 const join_com = () => {
     return (
         <>
-            <Header />
-            <JoinComContainer />
-            <Footer />
+            <MainLayout>
+                <JoinComContainer />
+            </MainLayout>
         </>
     )
 }

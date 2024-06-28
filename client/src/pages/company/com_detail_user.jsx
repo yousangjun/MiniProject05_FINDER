@@ -1,14 +1,13 @@
 import React from 'react'
-import Header from '../../layouts/Header'
-import Footer from '../../layouts/Footer'
 import ComDetailContainer from '../../containers/company/ComDetailContainer'
+import MainLayout from '../../layouts/MainLayout'
 
 const com_detail_user = () => {
   return (
     <>
-        <Header />
+      <MainLayout>
         <ComDetailContainer />
-        <Footer />
+      </MainLayout>
     </>
   )
 }

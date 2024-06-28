@@ -1,14 +1,14 @@
 import React from 'react'
-import Header from '../../layouts/Header'
-import Footer from '../../layouts/Footer'
+
 import JoinUserContainer from '../../containers/user/JoinUserContainer'
+import MainLayout from '../../layouts/MainLayout'
 
 const join_user = () => {
     return (
         <>
-            <Header />
-            <JoinUserContainer />
-            <Footer />
+            <MainLayout>
+                <JoinUserContainer />
+            </MainLayout>
         </>
     )
 }

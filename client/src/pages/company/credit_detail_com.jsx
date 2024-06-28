@@ -1,14 +1,13 @@
 import React from 'react'
-import Header from '../../layouts/Header'
-import Footer from '../../layouts/Footer'
 import CreditDetailComContainer from '../../containers/company/CreditDetailComContainer'
+import MainLayout from '../../layouts/MainLayout'
 
 const credit_detail_com = () => {
     return (
         <>
-            <Header />
-            <CreditDetailComContainer />
-            <Footer />
+            <MainLayout>
+                <CreditDetailComContainer />
+            </MainLayout>
         </>
     )
 }
