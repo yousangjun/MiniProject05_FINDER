@@ -1,12 +1,18 @@
 package com.finder.project.main.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.finder.project.company.dto.Company;
 import com.finder.project.company.service.CompanyService;
@@ -18,7 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 
 // @RestController
 @Slf4j
-@Controller
+@CrossOrigin(origins = "*")
+@RestController
 public class SearchController {
 
     @Autowired
@@ -43,7 +50,9 @@ public class SearchController {
 
     // }
     @GetMapping("/search")
-    public String searchItems(@RequestParam String query, Model model) throws Exception {
+    public ResponseEntity<Map<String, Object>> searchItems(@RequestParam String query) throws Exception {
+
+        Map<String, Object> response = new HashMap<>();
         // 실제로는 DB에서 데이터를 필터링하여 가져옵니다.
         // List<String> allItems = recruitMapper.selectCompanyNameList();
         // query를 사용하여 필터링
@@ -53,25 +62,29 @@ public class SearchController {
 
         log.info("query : " + query);
         List<Company> companyList = companyService.serachCompanyByName(query);
+        response.put("companyList", companyList);
+        log.info(response + " 어떤게 나올까요??");
         // log.info("companyList : " + companyList);
-        model.addAttribute("companyList", companyList);
+        // model.addAttribute("companyList", companyList);
 
-        return "/recruit/keyword";
+        return new ResponseEntity<>(response, HttpStatus.OK); 
     }
 
     @Autowired
     private RecruitService recruitService;
 
     @GetMapping("/keyword")
-    public String getRecruitList(@RequestParam int comNo, Model model) {
+    public ResponseEntity<Map<String, Object>> getRecruitList(@RequestParam int comNo) {
+        Map<String, Object> response = new HashMap<>();
         List<RecruitPost> recruitPosts = recruitService.postsRecruitListKeyword(comNo);
         for (RecruitPost recruitPost : recruitPosts) {
             log.info(recruitPost + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         }
         // recruitPosts를 HTML로 변환하는 로직 필요 (예: Thymeleaf를 이용해 변환)
         // 여기서는 간단하게 JSON으로 반환
-        model.addAttribute("recruitPost", recruitPosts);
-        return "/recruit/searchRecruit";
+        response.put("recruitPosts", recruitPosts);
+        // model.addAttribute("recruitPost", recruitPosts);
+        return new ResponseEntity<>(response, HttpStatus.OK); 
     }
 
 }
