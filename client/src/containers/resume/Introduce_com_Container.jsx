@@ -9,7 +9,6 @@ const Introduce_com_Container = () => {
   return (
     <div className='container main-content'>
       <ContentTitle SubTitle1={"기업 소개"} SubTitle2={"사람을 소중히 대하라"} />
-      
       <Introduce_com />
     </div>
 

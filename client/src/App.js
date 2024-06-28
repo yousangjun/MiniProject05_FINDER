@@ -16,6 +16,8 @@ import Error from './pages/error/Error';
 
 import Introduce_com from './pages/resume/Introduce_com';
 import Login from './pages/user/Login';
+import CvCreate_user from './pages/resume/CvCreate_user';
+
 
 
 
@@ -41,6 +43,8 @@ function App() {
 
           {/* 이력서 페이지 */}
           <Route path="/resume" element={<Resume/>}></Route>
+          <Route path="/resume/cvCreate_user" element={<CvCreate_user/>}></Route>
+
 
           {/* 회원 페이지 */}
           <Route path="/user" element={<User/>}></Route>
