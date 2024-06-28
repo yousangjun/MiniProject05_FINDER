@@ -1,0 +1,208 @@
+h5{
+  background-color: white;
+}
+
+.Title{
+    margin-bottom: 60px;
+    padding: 40px;
+    border-radius: 12px;
+     box-shadow: 0 0 7px 5px #f5f5f5
+}
+
+.Title2{
+    font-weight: bold;
+    font-size:22px;
+    width: 140px;
+    display: inline-block;
+    float: left; 
+    color: #0d6efd;
+}
+
+.Title3{
+    width: calc(100% - 140px); 
+    margin-bottom:0; 
+    border-top:0; 
+    border-left:0; 
+    border-right:0; 
+    background: none; 
+    border-bottom:solid 1px #0d6efd; 
+    border-radius: 0; 
+    padding:3px 5px 6px;
+}
+
+.userAgeTitle{
+    border-bottom: solid 1px #f5f5f5;
+    margin: 0 15px 15px;
+    padding: 0;
+}
+
+.userName{
+  font-weight:bold;
+  font-size: 28px;
+  border:0;
+  padding:0;
+}
+
+.userAge{
+  font-size: 20px;
+  border-bottom: solid 1px #9e9e9e;
+  padding:0;
+  color:#5d626b;
+}
+
+.userEmail{
+  font-size: 20px;
+  border:0;
+  padding:0;
+  background: url('data:image/svg+xml,%3Csvg width=\'30\' height=\'30\' viewBox=\'0 0 17 15\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect x=\'2\' y=\'3\' width=\'12\' height=\'6\' fill=\'%2396A0B5\'/%3E%3Cpath d=\'M13.4 2.60156H2.6C1.8575 2.60156 1.25675 3.209 1.25675 3.95141L1.25 12.0505C1.25 12.7929 1.8575 13.4004 2.6 13.4004H13.4C14.1425 13.4004 14.75 12.7929 14.75 12.0505V3.95141C14.75 3.209 14.1425 2.60156 13.4 2.60156ZM13.4 5.30127L8 8.67589L2.6 5.30127V3.95141L8 7.32604L13.4 3.95141V5.30127Z\' fill=\'%23D7DCE5\'/%3E%3C/svg%3E%0A') no-repeat;
+  padding-left:40px;
+}
+
+.userPhone{
+  font-size: 20px;
+  border:0;
+  padding:0;
+  background: url('data:image/svg+xml,%3Csvg width=\'30\' height=\'30\' viewBox=\'0 0 17 15\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M10.6668 9.91152L10.3256 10.2715C10.3256 10.2715 9.51334 11.1258 7.2971 8.79246C5.08087 6.45908 5.89311 5.60478 5.89311 5.60478L6.10836 5.37752C6.63786 4.81949 6.68811 3.92393 6.22536 3.2699L5.28036 1.93257C4.70737 1.12253 3.60113 1.01602 2.94488 1.70681L1.76814 2.94513C1.44339 3.2879 1.22589 3.73117 1.25214 4.22395C1.31964 5.48402 1.85814 8.19392 4.86112 11.3568C8.04635 14.7095 11.0351 14.843 12.2568 14.7223C12.6438 14.6848 12.9798 14.4755 13.2506 14.1905L14.3156 13.0684C15.0356 12.3109 14.8331 11.0133 13.9121 10.4838L12.4796 9.65875C11.8751 9.31149 11.1393 9.41349 10.6668 9.91077V9.91152Z\' fill=\'%23D7DCE5\'/%3E%3C/svg%3E%0A') no-repeat; 
+  padding-left: 40px;
+}
+
+.userImgTitle{
+  width:180px;
+  height:auto;
+  margin-left:70px;
+}
+
+.Preview{
+    border:none;
+    min-height:210px;
+    max-height:210px;
+    margin-bottom:15px;
+}
+
+.img-thumbnail{
+  border:none;
+  background: #f5f5f5;
+  border-radius: 0;
+}
+
+.hrr{
+    margin:5px 0 20px; 
+    border-color:#d7dce5; 
+    opacity: 1;
+}
+
+.introduceMe{
+    font-weight: bold;
+    font-size: 22px;
+    margin-left: 10px;
+}
+
+.hrrr{
+    color: #eee;
+    margin: 15px 0 20px;
+    border-color: #d7dce5;
+    opacity: 1;
+}
+
+.introduceMe1{
+    border-radius: 0 !important;
+}
+
+
+
+.form-header {
+    text-align: center;
+    background-color: var(--long-btn-color);
+    color: white;
+    padding-top: 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  .form-group .form-control {
+    margin-bottom: 10px;
+  }
+
+  .profile-pic {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .file-upload {
+    margin-top: 10px;
+    text-align: left;
+  }
+
+  #preview {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #eeeeee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  #preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 이미지가 preview 영역에 맞춰서 잘림 */
+  }
+
+  .deleteFile-btn {
+    background-color: white;
+    border-radius: 8px;
+  }
+
+  .btn-short {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    /* 필요에 따라 조정 */
+  }
+
+  .form-group2 {
+
+    margin-bottom: 60px;
+  }
+
+
+
+  .more_btn::before {
+    content: "+";
+    font-size: 24px;
+    padding-right: 5px;
+  }
+
+  .more_btn {
+    color: #475067;
+    font-size: 32px !important;
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 17px !important;
+    line-height: 35px;
+  }
+
+  .more_btn:hover {
+    background: #f4f6fa;
+    transition: all .3s ease;
+  }
+
+  .del_btn {
+    height: 46px;
+    color: #475067;
+    padding: 10px;
+  }
+
+  .del_btn:hover {
+    background: #f4f6fa;
+    color: #475067;
+    transition: all .3s ease;
+  }
