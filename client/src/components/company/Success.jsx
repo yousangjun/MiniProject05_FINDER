@@ -1,42 +1,43 @@
 import React, { useEffect  } from 'react'
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import './Success.css';
+import BtnLong from '../main/BtnLong';
 
+const Success = ( {  } ) => {
 
-const Success = () => {
+    // const navigate = useNavigate();
+    // const [searchParams] = useSearchParams();
 
-    const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+    // useEffect(() => {
+    //     // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
+    //     // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.  
+    //     const requestData = {
+    //     orderId: searchParams.get("orderId"),
+    //     amount: searchParams.get("amount"),
+    //     paymentKey: searchParams.get("paymentKey"),
+    //     };
 
-    useEffect(() => {
-        // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
-        // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.  
-        const requestData = {
-        orderId: searchParams.get("orderId"),
-        amount: searchParams.get("amount"),
-        paymentKey: searchParams.get("paymentKey"),
-        };
+    //     async function confirm() {
+    //     const response = await fetch("/confirm", {
+    //         method: "POST",
+    //         headers: {
+    //         "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify(requestData),
+    //     });
 
-        async function confirm() {
-        const response = await fetch("/confirm", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestData),
-        });
+    //     const json = await response.json();
 
-        const json = await response.json();
+    //     if (!response.ok) {
+    //         // 결제 실패 비즈니스 로직을 구현하세요.
+    //         navigate(`/fail?message=${json.message}&code=${json.code}`);
+    //         return;
+    //     }
 
-        if (!response.ok) {
-            // 결제 실패 비즈니스 로직을 구현하세요.
-            navigate(`/fail?message=${json.message}&code=${json.code}`);
-            return;
-        }
-
-        // 결제 성공 비즈니스 로직을 구현하세요.
-        }
-        confirm();
-    }, []);
+    //     // 결제 성공 비즈니스 로직을 구현하세요.
+    //     }
+    //     confirm();
+    // }, []);
 
     return (
         <div className="d-flex flex-column container main-content align-items-center">
@@ -76,7 +77,7 @@ const Success = () => {
                                 <p>결제 수단 : <span>신용카드</span></p>
                             </div>
                             <div className="align-self-end">
-                                <a href="/company/credit/credit_list_com" type="button" className="btn-long">결제내역</a>
+                                <Link to="/company/credit_list_com"><BtnLong btnLongText={"결제내역"}/></Link>
                             </div>
                         </div>
                     </form>

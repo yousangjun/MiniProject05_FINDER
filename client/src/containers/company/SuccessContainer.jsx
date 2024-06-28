@@ -1,5 +1,5 @@
 import React from 'react'
-import Success from '../../components/company/success'
+import Success from '../../components/company/Success'
 
 
 const SuccessContainer = () => {

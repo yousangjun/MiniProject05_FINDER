@@ -1,0 +1,70 @@
+/* success */
+/* 아래 폼 양식 */
+.payment-form {
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  box-shadow: 1px 2px 2px 3px lightgrey;
+  padding: 20px;
+  position: relative;
+  height: auto;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.payment-form .credit-form-btn {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 10px;
+}
+
+.payment-form p {
+  font-size: 20px;
+}
+
+.credit-form-btn a {
+    text-decoration: none;
+    text-align: center;
+    padding-top: 4px;
+}
+
+
+.credit-list-info li {
+    font-size: 20px ;
+}
+
+.credit-list-info {
+  padding-left: 0 ;
+  
+}
+
+
+.credit-list-info {
+  list-style-type: disc;
+}
+
+.credit-body {
+  row-gap: 20px;
+  margin: 10px 10px;
+  justify-content: center;
+  align-items: center;
+  height: 298px;
+}
+
+.credit-body  {
+  font-size: 20px;
+  text-align: left;
+}
+
+.credit-body h3 {
+  font-size: 40px;
+}
+
+.credit-body h3 span {
+  font-size: 20px;
+}
+
+
+a {
+  width: 100px;
+}
