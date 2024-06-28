@@ -56,16 +56,9 @@ public class MainController {
         // }
         // });
 
-        List<Option> optionList = new ArrayList<Option>();
-
-        optionList.add(new Option(0, "제목"));
-        optionList.add(new Option(1, "회사명"));
-        optionList.add(new Option(2, "#키워드"));
-        optionList.add(new Option(3, "카테고리"));
 
         response.put("count", count);
         response.put("page", page);
-        response.put("optionList", optionList);
         response.put("option", option);
         // model.addAttribute("count", count);
         // model.addAttribute("page", page);
@@ -106,6 +99,11 @@ public class MainController {
         RecruitPage pageRequest = new RecruitPage(page, rows);
         
         Option option = new Option(code != null ? code : 0, keyword != null ? keyword : "");
+        List<Option> optionList = new ArrayList<Option>();
+        optionList.add(new Option(1, "제목"));
+        optionList.add(new Option(0, "회사명"));
+        optionList.add(new Option(2, "#키워드"));
+        optionList.add(new Option(3, "카테고리"));
         int count = recruitMapper.count(option);
 
         List<RecruitPost> recruitList = recruitService.recruitList(pageRequest, option);
@@ -122,6 +120,8 @@ public class MainController {
         response.put("page", pageRequest);
         response.put("recruitList", recruitList);
         response.put("count", count);
+        response.put("optionList", optionList);
+        response.put("option", option);
 
         // model.addAttribute("page", pageRequest);
         // model.addAttribute("recruitList", recruitList);

@@ -3,8 +3,14 @@ import React, { forwardRef } from 'react';
 import SearchRecruit from './SearchRecruit';
 
 const HomeHeader = forwardRef((props, ref) => {
-    const { keyword, dropdownVisible, subDropdownVisible, companyList, recruitList, refs, handleKeywordChange, handleOptionChange, count} = props;
-    
+    const { keyword, dropdownVisible, subDropdownVisible, companyList, recruitList, refs, handleKeywordChange, handleOptionChange, count, handleMouseOver } = props;
+    const option = [
+        { value: 0, label: "회사명" },
+        { value: 1, label: "제목" },
+        { value: 2, label: "키워드" },
+        { value: 3, label: "카테고리" }
+    ];
+
     return (
         <>
             <div className="col-1 w-100 d-flex job-index-header" style={{ padding: '0 35px' }}>
@@ -37,7 +43,12 @@ const HomeHeader = forwardRef((props, ref) => {
                                     ref={refs.optionRef}
                                     onChange={handleOptionChange}
                                 >
-                    
+                                    {option.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+
                                 </select>
                             </div>
                         </div>
@@ -45,17 +56,17 @@ const HomeHeader = forwardRef((props, ref) => {
                         <div className={`custom-dropdown-menu ${dropdownVisible ? 'show' : ''}`} id="customDropdownMenu" ref={refs.dropdownRef}>
                             {dropdownVisible && companyList.map((company) => (
                                 <React.Fragment key={company.comNo}>
-                                    <div className="d-flex company-item" data-id={company.comNo}></div>
+                                    <div className="d-flex company-item" data-id={company.comNo} ></div>
                                     <div className="company-item">
                                         <ul className="item">
-                                            <li className="d-flex">
-                                                <div className={`custom-dropdown-item w-50 custom-dropdown-item-${company.comNo}`} data-id={company.comNo}>
-                                                    <a href={`/company/com_detail_user?comNo=${company.comNo}`}>{company.comName}</a>
+                                            <li className="d-flex"  >
+                                                <div className={`custom-dropdown-item w-50 custom-dropdown-item-${company.comNo}`} data-id={company.comNo} onMouseOver={() => handleMouseOver(company.comNo)}>
+                                                    <a href={`/company/com_detail_user?comNo=${company.comNo}`} style={{ display: 'block' }}>{company.comName}</a>
                                                 </div>
                                                 <ul className="recruit-wrab w-50">
-                                                    <div className={`item recruit-list-item custom-dropdown-item-${company.comNo}`} data-id={company.comNo}>
-                                                        <SearchRecruit recruitList={recruitList} />
-                                                        {/* {console.log(recruitList + "??")} */}
+                                                    <div className={`item recruit-list-item custom-dropdown-item-${company.comNo}`} data-id={company.comNo} >
+                                                        <SearchRecruit recruitList={recruitList[company.comNo] || []} />
+                                                        {/* {console.log(recruitList[company.comNo] || [] + "??")} */}
                                                     </div>
                                                 </ul>
                                             </li>
