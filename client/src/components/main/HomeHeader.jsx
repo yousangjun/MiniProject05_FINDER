@@ -1,96 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { forwardRef } from 'react';
 import SearchRecruit from './SearchRecruit';
 
-
-const HomeHeader = () => {
-    const [keyword, setKeyword] = useState('');
-    const [dropdownVisible, setDropdownVisible] = useState(false);
-    const [companyList, setCompanyList] = useState([]);
-    const [recruitList, setRecruitList] = useState([]);
-    const inputRef = useRef(null);
-    const dropdownRef = useRef(null);
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            //dropdownRef.current 해당 돔 요소가 존재하는지 ?
-            //contains(event.target)  = current안에있는 요소 참조 만약에 클릭이벤트이면 클릭한 요소 참조
-            if (inputRef.current && !inputRef.current.contains(event.target) &&
-                dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDropdownVisible(false);
-            }
-        };
-
-        document.addEventListener('click', handleClickOutside);
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
-
-    const handleKeywordChange = (e) => {
-        const newKeyword = e.target.value;
-        setKeyword(newKeyword);
-        console.log(newKeyword);
-
-        if (newKeyword) {
-            fetch(`/search?query=${encodeURIComponent(newKeyword)}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data.companyList);
-                    setCompanyList(data.companyList);
-                    setDropdownVisible(true);
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-        } else {
-            setDropdownVisible(false);
-        }
-    };
-
-
-    const handleMouseOver = (e) => {
-        const comNo = e.target.dataset.id;
-        const recruitListItem = document.querySelector(`.recruit-list-item[data-id='${comNo}']`);
-        if (recruitListItem) {
-            recruitListItem.classList.remove("d-none");
-        }
-       
-        fetch(`/keyword?comNo=${encodeURIComponent(comNo)}`)
-            .then(response => response.json())
-            .then(data => {
-                setRecruitList(data.recruitPosts);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    };
-
-
-    const handleMouseOut = (e) => {
-        const comNo = e.target.dataset.id;
-        const recruitListItem = document.querySelector(`.recruit-list-item[data-id='${comNo}`);
-        if (recruitListItem) {
-            recruitListItem.classList.add("d-none");
-        }
-    };
-
-    const initKeywordEvent = () => {
-        console.log('Initializing keyword event');
-        const items = document.querySelectorAll("[class*='custom-dropdown-item-']");
-        items.forEach(item => {
-            console.log('Adding event listeners to item:', item);
-            item.addEventListener("mouseover", handleMouseOver);
-            item.addEventListener("mouseout", handleMouseOut);
-        });
-    };
-
-    useEffect(() => {
-        if (dropdownVisible) {
-            initKeywordEvent();
-        }
-    }, [dropdownVisible, companyList]);
-
+const HomeHeader = forwardRef((props, ref) => {
+    const { keyword, dropdownVisible, subDropdownVisible, companyList, recruitList, refs, handleKeywordChange } = props;
+    
     return (
         <>
             <div className="col-1 w-100 d-flex job-index-header" style={{ padding: '0 35px' }}>
@@ -103,7 +17,7 @@ const HomeHeader = () => {
                         <div className="d-flex align-items-center w-75 mb-3 mt-3 box">
                             <div className="custom-form-floating">
                                 <input
-                                    ref={inputRef}
+                                    ref={refs.inputRef}
                                     type="text"
                                     id="customDropdownMenuInput"
                                     className="custom-input"
@@ -130,8 +44,7 @@ const HomeHeader = () => {
                             </div>
                         </div>
 
-
-                        <div className={`custom-dropdown-menu ${dropdownVisible ? 'show' : ''}`} id="customDropdownMenu" ref={dropdownRef}>
+                        <div className={`custom-dropdown-menu ${dropdownVisible ? 'show' : ''}`} id="customDropdownMenu" ref={refs.dropdownRef}>
                             {dropdownVisible && companyList.map((company) => (
                                 <React.Fragment key={company.comNo}>
                                     <div className="d-flex company-item" data-id={company.comNo}></div>
@@ -144,7 +57,7 @@ const HomeHeader = () => {
                                                 <ul className="recruit-wrab w-50">
                                                     <div className={`item recruit-list-item custom-dropdown-item-${company.comNo}`} data-id={company.comNo}>
                                                         <SearchRecruit recruitList={recruitList} />
-                                                        {console.log(recruitList + "??")}
+                                                        {/* {console.log(recruitList + "??")} */}
                                                     </div>
                                                 </ul>
                                             </li>
@@ -153,10 +66,6 @@ const HomeHeader = () => {
                                 </React.Fragment>
                             ))}
                         </div>
-
-
-
-
                     </div>
                 </form>
             </div>
@@ -166,6 +75,6 @@ const HomeHeader = () => {
             <hr style={{ marginBottom: '65px' }} />
         </>
     );
-};
+});
 
 export default HomeHeader;

@@ -3,7 +3,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BtnShort from './BtnShort';
 
-const Card = () => {
+const Card = (recruitList) => {
   return (
 
     <div className="col" data-recruit-id="">
