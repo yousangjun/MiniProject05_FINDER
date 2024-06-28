@@ -11,6 +11,7 @@ import { Recruit } from './pages/recruit/Recruit';
 import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
 import Error from './pages/error/Error';
+import Sidebar from './containers/main/Sidebar';
 
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
           <Route path="/company/success" element={<Success/>}></Route>
           
           {/* 채용공고 페이지 */}
-          <Route path="/recruit" element={<Recruit/>}></Route>
+          <Route path="/recruit" element={<Sidebar/>}></Route>
 
           {/* 이력서 페이지 */}
           <Route path="/resume" element={<Resume/>}></Route>
