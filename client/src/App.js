@@ -24,6 +24,7 @@ function App() {
           <Route path="/company/credit_com" element={<Credit_com/>}></Route>
           <Route path="/company/credit_detail_com" element={<Credit_detail_com/>}></Route>
           <Route path="/company/checkout" element={<Checkout/>}></Route>
+          <Route path="/company/Introduce_Com" element={<Introduce_com/>}></Route>
           
           {/* 채용공고 페이지 */}
           <Route path="/recruit" element={<Recruit/>}></Route>
@@ -35,7 +36,6 @@ function App() {
           <Route path="/user" element={<User/>}></Route>
           <Route path="/*" element={<Error/>}></Route>
 
-          <Route path="/company/Introduce_Com" element={<Introduce_com/>}></Route>
         </Routes>
     </BrowserRouter>
   );
