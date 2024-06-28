@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Card from '../../components/main/Card';
 import HomeHeader from '../../components/main/HomeHeader';
+import './HomeContainer.css'
 
 const HomeContainer = () => {
     const [keyword, setKeyword] = useState('');
@@ -18,7 +19,21 @@ const HomeContainer = () => {
     const optionRef = useRef(null);
     const loader = useRef(null);
     const rowsPerPage = 12;
-    
+
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (inputRef.current && !inputRef.current.contains(event.target) &&
+                dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setSubDropdownVisible(false);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
 
     const handleObserver = (entities) => {
         const target = entities[0];
@@ -26,6 +41,8 @@ const HomeContainer = () => {
             fetchCardList();
         }
     };
+
+
 
     useEffect(() => {
         const observer = new IntersectionObserver(handleObserver, {
@@ -91,6 +108,25 @@ const HomeContainer = () => {
             });
     };
 
+    const handleMouseOver = (comNo) => {
+        fetch(`/keyword?comNo=${encodeURIComponent(comNo)}`)
+            .then(response => response.json())
+            .then(data => {
+                setRecruitList(prevState => ({ ...prevState, [comNo]: data.recruitPosts }));
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    };
+
+    const handleMouseOut = (comNo) => {
+        // 해당 컴포넌트를 숨기기
+        const updatedRecruitList = { ...recruitList };
+        delete updatedRecruitList[comNo];  // 해당 comNo의 데이터 삭제
+        setRecruitList(updatedRecruitList);
+    };
+
+
     return (
         <>
             <HomeHeader
@@ -104,6 +140,8 @@ const HomeContainer = () => {
                 handleKeywordChange={handleKeywordChange}
                 handleOptionChange={handleOptionChange}
                 count={count}
+                handleMouseOver={handleMouseOver}
+                handleMouseOut={handleMouseOut}
             />
             <Card data={data} />
             <div ref={loader} className="loading-indicator">
