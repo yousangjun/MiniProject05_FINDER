@@ -6,7 +6,7 @@ const success = () => {
     return (
         <>
             <MainLayout >
-            <SuccessContainer />
+                <SuccessContainer />
             </MainLayout >
         </>
     )

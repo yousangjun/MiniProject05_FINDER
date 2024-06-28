@@ -10,7 +10,8 @@
 
 .visualization-chart {
     margin-top: 50px;
-    width: 100%;
+    width: 75%;
+    margin: 100px auto;
 }
 
 .chart-container {

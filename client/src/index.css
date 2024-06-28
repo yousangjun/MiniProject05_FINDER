@@ -23,6 +23,7 @@ body {
     flex-direction: column;
     letter-spacing: -0.1em;
     background-color: #eee;
+    text-decoration: none;
 }
 
 

@@ -2,25 +2,25 @@
 
 /* success */
 /* 아래 폼 양식 */
-.payment-form {
-  border: 1px solid #d3d3d3;
+.payment-form1 {
   border-radius: 10px;
   box-shadow: 1px 2px 2px 3px lightgrey;
   padding: 20px;
   position: relative;
-  height: auto;
   min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
-.payment-form .credit-form-btn {
+.payment-form1 .credit-form-btn {
   display: flex;
-  justify-content: space-between;
-  column-gap: 10px;
+  column-gap: 30px;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
 
-.payment-form p {
+.payment-form1 p {
   font-size: 20px;
 }
 
@@ -30,55 +30,30 @@
     padding-top: 4px;
 }
 
-
-.credit-list-info li {
+.credit-list-info1 li {
     font-size: 20px ;
 }
 
-.credit-list-info {
+.credit-list-info1 {
   padding-left: 0 ;
-  
+  list-style: disc;
+}
+
+.credit-form-btn>a {
 }
 
 
-.credit-list-info {
-  list-style-type: disc;
-}
-
-.credit-body {
-  row-gap: 20px;
-  margin: 10px 10px;
-  justify-content: center;
-  align-items: center;
-  height: 298px;
-}
-
-.credit-body  {
-  font-size: 20px;
-  text-align: left;
-}
-
-.credit-body h3 {
-  font-size: 40px;
-}
-
-.credit-body h3 span {
-  font-size: 20px;
-}
-
-
-.disabled {
-  pointer-events: none; /* 클릭 이벤트 비활성화 */
-  opacity: 0.6; /* 투명도 변경을 통해 비활성화 상태 표시 */
-}
 
 
 .btn-agreed {
   background-color: #28a745;
-  transition: background-color 0.3s;
+  color: white;
 }
 
 .btn-not-agreed {
   background-color: #6c757d;
-  transition: background-color 0.3s;
+  color: white;
+  cursor: not-allowed;
+  pointer-events: none; /* 클릭 이벤트 비활성화 */
+  opacity: 0.6; /* 투명도 변경을 통해 비활성화 상태 표시 */
 }

@@ -136,140 +136,8 @@
     color: #1B1B1B;
     /* NEW 태그의 글씨를 흰색으로 유지 */
   }
+
   
-  
-  
-  
-  
-  .container {
-    background: #fff;
-    margin: 0 auto;
-  }
-  
-  .form-control {
-  
-    color: #828282;
-    font-size: 13px !important;
-    width: 72px !important;
-    height: 32px !important;
-    border-radius: 8px !important;
-    
-    transition: box-shadow 0.3s ease;
-    transition: outline 0.3s ease !important;
-  }
-  
-  .form-control:focus {
-    border-color: transparent !important;
-    box-shadow:  0 0 0 .05rem #fff !important;
-    outline: transparent !important;
-  
-    /* border-color: var(--sub-color) !important; */
-    /* box-shadow:  0 0 0 .25rem rgba(2, 99, 244, 0.55) !important; */
-    /* border-inline-color: var(--sub-color) !important;    */
-  
-    /* border-color: transparent; */
-    /* outline: 3px solid var(--sub-color) !important; 포커스 시 외부 테두리 색상 추가 */
-    
-  }
-  
-  .ul-header {
-    margin-bottom: 30px !important;
-  }
-  
-  .li-header {
-    margin: 0 0 5px 15px;
-  }
-  
-  
-  .nav-link {
-    padding: 3% !important;
-  }
-  
-  .nav-item {
-    height: 40px;
-  }
-  
-  .nav-item>div> {
-    display: flex;
-  
-  }
-  
-  .nav-item>div>div {
-    /* padding: 5px; */
-  }
-  
-  .nav-item>div>div>img {
-    width: 24px;
-    height: 24px;
-  }
-  
-  
-  /* 상준님꺼 join 꺼 가져오기 */
-  .userid {
-    display: inline-block;
-    background-color: #E9E9E9;
-    border-radius: 20px;
-    margin-right: 100px;
-    padding: 2px 12px;
-    color: black;
-    width: 70px;
-    height: 27px;
-    font-size: 15px;
-    margin-top: 20px;
-    font-weight: bold;
-  }
-  
-  .username,
-  .usergender,
-  .userbirth,
-  .userphone,
-  .useremail,
-  .useraddress {
-    display: inline-block;
-    background-color: #E9E9E9;
-    border-radius: 20px;
-    margin-right: 100px;
-    padding: 2px 12px;
-    color: black;
-    height: 27px;
-    font-size: 15px;
-    margin-top: 15px;
-    font-weight: bold;
-  }
-  
-  .userpw {
-    display: inline-block;
-    background-color: #E9E9E9;
-    border-radius: 20px;
-    margin-right: 100px;
-    padding: 2px 12px;
-    color: black;
-    height: 27px;
-    font-size: 15px;
-    font-weight: bold;
-  }
-  
-  .useremail {
-    display: inline-block;
-    background-color: #E9E9E9;
-    border-radius: 20px;
-    margin-right: 100px;
-    padding: 2px 12px;
-    color: black;
-    height: 27px;
-    font-size: 15px;
-    margin-top: 10px;
-  }
-  
-  .phone {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .phone-check {
-    display: flex;
-    align-items: center;
-  }
   
   
   
@@ -423,3 +291,42 @@
     width: 100%;
     margin-top: 20px;
   }
+
+
+
+
+
+  .table-wrap {
+    min-height: 500px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+}
+
+th {
+    text-align: center;
+    width: auto;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ccc;
+}
+
+td {
+  text-align: center;
+  padding: 15px 0;
+}
+
+td a {
+    display: inline-block;
+}
+
+
+.creditList-item:hover {
+    background-color: #f4f4f4;
+}
+
+.aBtn {
+    text-decoration: none;
+    text-align: center;
+    padding: 0 5px;
+}
