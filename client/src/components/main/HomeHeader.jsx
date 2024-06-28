@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 import SearchRecruit from './SearchRecruit';
 
 const HomeHeader = forwardRef((props, ref) => {
-    const { keyword, dropdownVisible, subDropdownVisible, companyList, recruitList, refs, handleKeywordChange } = props;
+    const { keyword, dropdownVisible, subDropdownVisible, companyList, recruitList, refs, handleKeywordChange, handleOptionChange, count} = props;
     
     return (
         <>
@@ -34,12 +34,10 @@ const HomeHeader = forwardRef((props, ref) => {
                                     name="code"
                                     className="form-select"
                                     id="floatingSelectGrid"
+                                    ref={refs.optionRef}
+                                    onChange={handleOptionChange}
                                 >
-                                    {/* {optionList.map((item) => (
-                                        <option key={item.code} value={item.code}>
-                                            {item.keyword}
-                                        </option>
-                                    ))} */}
+                    
                                 </select>
                             </div>
                         </div>
@@ -70,7 +68,7 @@ const HomeHeader = forwardRef((props, ref) => {
                 </form>
             </div>
             <div style={{ margin: '15px 0' }}>
-                <strong>총 <span style={{ color: 'blue' }}>여기에 count</span>개의 정보를 탐색 하였습니다.</strong>
+                <strong>총 <span style={{ color: 'blue' }}>{count}</span>개의 정보를 탐색 하였습니다.</strong>
             </div>
             <hr style={{ marginBottom: '65px' }} />
         </>

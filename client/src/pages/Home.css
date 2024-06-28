@@ -84,3 +84,38 @@
     outline: 0 !important;
 }
 
+.keyword-span span {
+    background-color: #f8f8f8;
+    color: #5d5d5d;
+    border-radius: 20px;
+    padding: 0 8px 0 8px;
+    font-size: 11px;
+    opacity: 0.8;
+    font-weight: bold;
+    transition: background-color 0.5s ease;
+    text-align: center;
+    margin: 0 5px 5px 0;
+    width: auto !important;
+    height: 24px !important;
+    line-height: 24px;
+    display: inline-block !important;
+
+}
+
+.keyword-span .input-keyword {
+    background-color: #f8f8f8;
+    color: #5d5d5d;
+    border-radius: 20px;
+    padding: 0 8px 0 8px;
+    font-size: 11px;
+    opacity: 0.8;
+    font-weight: bold;
+    transition: background-color 0.5s ease;
+    text-align: center;
+    margin: 0 5px 5px 0;
+    height: 24px !important;
+    line-height: 24px;
+    display: inline-block !important;
+
+
+}

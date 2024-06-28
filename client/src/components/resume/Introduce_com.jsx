@@ -5,6 +5,7 @@ import Sidebar from '../main/Sidebar'
 import BtnShort from '../main/BtnShort'
 
 const Introduce_com = () => {
+
   return (
     <>
       {/* 사이드바 추가된부분 이부분 부터  */}
@@ -20,8 +21,8 @@ const Introduce_com = () => {
               <input type="text" name="comName" id="comName" className="w-100 my-4 com-intro-title"
                 placeholder='기업명을 작성해주세요' />
             </div>
-            <div className='row ComRow'>
-              <div className="d-flex flex-column row-gap-3 col-3">
+            <div className='row ComRow pt-4'>
+              <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
                 <img src="/img/업력연차.png" alt="업력연차" />
                 <div className='com-intro-input'>
                   <input type="text" id='comBitrh' name='comBitrh' className="w-75 ComInput" />
@@ -29,7 +30,7 @@ const Introduce_com = () => {
                 </div>
                 <h4>업력연차</h4>
               </div>
-              <div className="d-flex flex-column row-gap-3 col-3">
+              <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
                 <img src="/img/대기업1.png" alt="기업규모" />
                 <select name="comSize" id="comSize" className='com-intro-input'>
                   <option value="기업선택" aria-readonly="true">기업선택</option>
@@ -39,7 +40,7 @@ const Introduce_com = () => {
                 </select>
                 <h4>기업 규모</h4>
               </div>
-              <div className="d-flex flex-column row-gap-3 col-3">
+              <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
                 <img src="/img/사원수1.png" alt="사원수" />
                 <div className='com-intro-input'>
                   <input type="text" id='comEmpCount' name='comEmpCount' className="w-75 ComInput" />
@@ -47,7 +48,7 @@ const Introduce_com = () => {
                 </div>
                 <h4>사원 수</h4>
               </div>
-              <div className="d-flex flex-column row-gap-3 col-3">
+              <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
                 <img src="/img/매출액1.png" alt="매출액" />
                 <div className='com-intro-input'>
                   <input type="text" id='ComSales2' name='ComSales2' className="w-75 ComInput" />
