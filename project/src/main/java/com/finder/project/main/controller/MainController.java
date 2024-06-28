@@ -102,10 +102,11 @@ public class MainController {
             @RequestParam(value = "keyword", required = false) String keyword) throws Exception {
         Map<String, Object> response = new HashMap<>();
         log.info("page cardList" + page);
-
+        
         RecruitPage pageRequest = new RecruitPage(page, rows);
-
+        
         Option option = new Option(code != null ? code : 0, keyword != null ? keyword : "");
+        int count = recruitMapper.count(option);
 
         List<RecruitPost> recruitList = recruitService.recruitList(pageRequest, option);
         // for (RecruitPost recruitPost : recruitList) {
@@ -120,6 +121,7 @@ public class MainController {
 
         response.put("page", pageRequest);
         response.put("recruitList", recruitList);
+        response.put("count", count);
 
         // model.addAttribute("page", pageRequest);
         // model.addAttribute("recruitList", recruitList);

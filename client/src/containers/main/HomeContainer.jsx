@@ -1,43 +1,58 @@
-import React, { useState, useEffect, useRef } from 'react'
-import HomeHeader from '../../components/main/HomeHeader'
-import CardList from '../../components/main/CardList'
+import React, { useEffect, useRef, useState } from 'react';
+import Card from '../../components/main/Card';
+import HomeHeader from '../../components/main/HomeHeader';
 
 const HomeContainer = () => {
-
     const [keyword, setKeyword] = useState('');
+    const [option, setOption] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [subDropdownVisible, setSubDropdownVisible] = useState(false);
     const [companyList, setCompanyList] = useState([]);
     const [recruitList, setRecruitList] = useState([]);
+    const [count, setCount] = useState(0);
     const inputRef = useRef(null);
     const dropdownRef = useRef(null);
+    const optionRef = useRef(null);
+    const loader = useRef(null);
+    const rowsPerPage = 12;
+    
+
+    const handleObserver = (entities) => {
+        const target = entities[0];
+        if (target.isIntersecting && !loading) {
+            fetchCardList();
+        }
+    };
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            //dropdownRef.current 해당 돔 요소가 존재하는지 ?
-            //contains(event.target)  = current안에있는 요소 참조 만약에 클릭이벤트이면 클릭한 요소 참조
-            if (inputRef.current && !inputRef.current.contains(event.target) &&
-                dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDropdownVisible(false);
-            }
-        };
+        const observer = new IntersectionObserver(handleObserver, {
+            root: null,
+            rootMargin: "20px",
+            threshold: 0.8
+        });
 
-        document.addEventListener('click', handleClickOutside);
+        if (loader.current) {
+            observer.observe(loader.current);
+        }
+
         return () => {
-            document.removeEventListener('click', handleClickOutside);
+            if (loader.current) {
+                observer.unobserve(loader.current);
+            }
         };
     }, []);
 
     const handleKeywordChange = (e) => {
         const newKeyword = e.target.value;
         setKeyword(newKeyword);
-        console.log(newKeyword);
-
+        setCurrentPage(1); // Reset pagination on keyword change
         if (newKeyword) {
             fetch(`/search?query=${encodeURIComponent(newKeyword)}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data.companyList);
                     setCompanyList(data.companyList);
                     setDropdownVisible(true);
                 })
@@ -49,69 +64,53 @@ const HomeContainer = () => {
         }
     };
 
+    const handleOptionChange = (e) => {
+        setOption(e.target.value);
+        setCurrentPage(1); // Reset pagination on option change
+    };
 
-    const handleMouseOver = (e) => {
-        const comNo = e.target.dataset.id;
-        const recruitListItem = document.querySelector(`.recruit-list-item[data-id='${comNo}']`);
-        setSubDropdownVisible(true);
-        if (recruitListItem) {
-            recruitListItem.classList.remove("d-none");
-        }
-
-        fetch(`/keyword?comNo=${encodeURIComponent(comNo)}`)
+    const fetchCardList = () => {
+        if (loading) return;  // 이미 로딩 중인 경우 요청을 시작하지 않음
+        setLoading(true);
+        const url = `/cardList?page=${currentPage}&rows=${rowsPerPage}&code=${option}&keyword=${encodeURIComponent(keyword)}`;
+        fetch(url)
             .then(response => response.json())
-            .then(data => {
-                setRecruitList(data.recruitPosts);
+            .then(newData => {
+                if (newData.recruitList.length === 0) {
+                    setLoading(false); // 더 이상 로드할 데이터가 없음
+                    return; // 함수 종료
+                }
+                setCount(newData.count);
+                setData(prevData => [...prevData, ...newData.recruitList]);
+                setCurrentPage(prev => prev + 1);  // 페이지 번호 안전하게 증가
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
+                setLoading(false);
             });
     };
 
-
-    const handleMouseOut = (e) => {
-        const comNo = e.target.dataset.id;
-        const recruitListItem = document.querySelector(`.recruit-list-item[data-id='${comNo}`);
-        setSubDropdownVisible(false);
-        if (recruitListItem) {
-            recruitListItem.classList.add("d-none");
-        }
-    };
-
-    const initKeywordEvent = () => {
-        console.log('Initializing keyword event');
-        const items = document.querySelectorAll("[class*='custom-dropdown-item-']");
-        items.forEach(item => {
-            console.log('Adding event listeners to item:', item);
-            item.addEventListener("mouseover", handleMouseOver);
-            item.addEventListener("mouseout", handleMouseOut);
-        });
-    };
-
-    useEffect(() => {
-        if (dropdownVisible) {
-            initKeywordEvent();
-        }
-
-        return () => {
-
-        }
-    }, [dropdownVisible, companyList]);
-
     return (
         <div className="container main-content">
-            <HomeHeader 
-            keyword={keyword} 
-            dropdownVisible={dropdownVisible} 
-            subDropdownVisible={subDropdownVisible}
-            companyList={companyList}
-            recruitList={recruitList}
-            refs={{ inputRef, dropdownRef }}
-            handleKeywordChange={handleKeywordChange}
+            <HomeHeader
+                keyword={keyword}
+                option={option}
+                dropdownVisible={dropdownVisible}
+                subDropdownVisible={subDropdownVisible}
+                companyList={companyList}
+                recruitList={recruitList}
+                refs={{ inputRef, dropdownRef, optionRef }}
+                handleKeywordChange={handleKeywordChange}
+                handleOptionChange={handleOptionChange}
+                count={count}
             />
-            <CardList />
+            <Card data={data} />
+            <div ref={loader} className="loading-indicator">
+                {loading && <p>Loading more items...</p>}
+            </div>
         </div>
-    )
-}
+    );
+};
 
-export default HomeContainer
+export default HomeContainer;
