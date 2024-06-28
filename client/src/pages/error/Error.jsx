@@ -1,6 +1,6 @@
 import React from 'react'
 import './css/Error.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const error = () => {
     return (

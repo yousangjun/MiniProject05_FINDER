@@ -1,6 +1,6 @@
 import React, { useEffect  } from 'react'
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import './Success.css';
 import BtnLong from '../main/BtnLong';
 
