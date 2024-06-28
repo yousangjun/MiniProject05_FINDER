@@ -1,5 +1,4 @@
 import React from 'react'
-
 import JoinUserContainer from '../../containers/user/JoinUserContainer'
 import MainLayout from '../../layouts/MainLayout'
 
