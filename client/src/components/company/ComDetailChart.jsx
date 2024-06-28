@@ -79,7 +79,7 @@ const ComDetailChart = () => {
     }
 
     return (
-        <div className="row justify-content-center column-gap-5 visualization-chart">
+        <div className="d-flex justify-content-center visualization-chart">
             <div className="chart-container gender-chart">
                 <Doughnut data={genderData} options={genderOptions} />
             </div>

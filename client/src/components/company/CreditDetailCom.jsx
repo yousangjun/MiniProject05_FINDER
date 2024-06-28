@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-
 import './CreditDetailCom.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
 import BtnLong from '../main/BtnLong';
+import BtnShort from '../main/BtnShort';
 
 const CreditDetailCom = () => {
     const [modalShow, setModalShow] = useState(false);
@@ -12,30 +12,6 @@ const CreditDetailCom = () => {
 
     const handleBuyCheck = () => {
         setIsAgreed(true);
-    };
-
-    const handlePostOrder = () => {
-        const productNo = 2; // 예시 값, 실제 데이터로 변경 필요
-        const url = "/company/credit/checkout";
-        
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ productNo })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                navigate(`/company/credit/checkout?productNo=${productNo}&orderNo=${data.orderNo}`);
-            } else {
-                navigate('/company/credit/fail?error');
-            }
-        })
-        .catch(error => {
-            alert('에러 발생');
-        });
     };
 
     return (
@@ -49,7 +25,7 @@ const CreditDetailCom = () => {
                             <span style={{ fontSize: '30px' }}>스탠다드</span>
                             <span> / 3개월 5건</span>
                         </h3>
-                        <ul className="credit-list-info">
+                        <ul className="credit-list-info1">
                             <li>채용공고 작성 건수</li>
                             <li>AI 평가 사용</li>
                             <li>건당 <span>3</span>개월 유지 가능</li>
@@ -59,10 +35,9 @@ const CreditDetailCom = () => {
             </div>
 
             <div className="container mt-5 payment-form-wrap">
-                <div className="payment-form">
+                <div className="payment-form1">
                     <form className="d-flex flex-column justify-content-between">
                         <div className="credit_user_info">
-                            <input type="hidden" name="productNo" id="productNo" value="2" />
                             
                             <div>
                                 <p>결제 금액 : <span>100,000</span>원</p>
@@ -73,42 +48,40 @@ const CreditDetailCom = () => {
                                 <p>결제자 : <span>홍길동</span></p>
                                 <div className="d-flex justify-content-between align-items-center">
                                     <p>연락처 : <span>010-1234-5678</span></p>
-                                    <BtnLong 
-                                        btnLongText={"구매 동의"}
+                                    <button
+                                        className='btn-long'
                                         type="button" 
                                         id="buyCheck" 
                                         onClick={(e) => {
                                             e.preventDefault();
                                             setModalShow(true);
                                         }}
-                                    />
+                                    >구매동의</button>
                                 </div>
                                 <hr />
                             </div>
                         </div>
 
-                        <div className="d-flex credit-form-btn align-items-center">
+                        <div className="d-flex">
                             <div>
                                 <p>결제 수단 :</p>
                             </div>
-                            <div className="d-flex gap-4 align-self-end">
+                            <div className="d-flex credit-form-btn align-items-end">
                                 <Link to="/company/checkout">
-                                <BtnLong 
-                                    btnLongText={"신용카드 결제"}
-                                    type="button"
-                                    disabled={!isAgreed}
-                                    onClick={handlePostOrder}
-                                    className={isAgreed ? "btn-agreed" : "btn-not-agreed"}
-                                />
+                                    <button 
+                                        className={`btn-long ${isAgreed ? 'btn-agreed' : 'btn-not-agreed'}`} 
+                                        type="button"
+                                        disabled={!isAgreed}
+                                    >간편 결제</button>
                                 </Link>
-                                <BtnLong 
-                                    btnLongText={"취소"} 
-                                    type="button" 
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        navigate('/company/credit_com');
+                                <button 
+                                className='btn-long'
+                                type="button"
+                                onClick={(e) => {
+                                        e.preventDefault()   
+                                        window.history.back()
                                     }}
-                                />
+                                >취소</button>
                             </div>
                         </div>
                     </form>
@@ -122,22 +95,20 @@ const CreditDetailCom = () => {
                 <Modal.Body style={{ textAlign: 'center' }}>
                     <strong>해당 항목 구매에 동의하시겠습니까?</strong>
                     <br /><br />
-                    <Button 
-                        id="confirmBtn" 
-                        className="btn-short" 
-                        onClick={() => {
-                            handleBuyCheck();
-                            setModalShow(false);
-                        }}
-                    >
-                        확인
-                    </Button>
-                    <Button 
-                        className="btn-short" 
-                        onClick={() => setModalShow(false)}
-                    >
-                        닫기
-                    </Button>
+                    <div className='d-flex justify-content-center gap-2'>
+                        <button 
+                            id="confirmBtn" 
+                            className="btn-short" 
+                            onClick={() => {
+                                handleBuyCheck();
+                                setModalShow(false);
+                            }}
+                        >확인</button>
+                        <button 
+                            className="btn-short" 
+                            onClick={() => setModalShow(false)}
+                        >닫기</button>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer></Modal.Footer>
             </Modal>

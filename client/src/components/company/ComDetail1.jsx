@@ -5,7 +5,7 @@ import './ComDetail1.css'
 const ComDetail1 = ({ companyDetail }) => {
     return (
         <>
-            <div className="d-flex flex-row justify-content-between mb-4 mx-5" style={{ fontSize: '20px' }}>
+            <div className="d-flex flex-row justify-content-evenly" style={{ fontSize: '30px', margin: '100px 10px' }}>
                 <div>
                     <div className="d-flex w-100 column-gap-3" style={{ marginBottom: '20px' }}>
                             <label htmlFor="com_name" style={{ fontWeight: 'bold' }}>회사이름 :</label>

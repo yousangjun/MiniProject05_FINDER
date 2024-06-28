@@ -5,7 +5,7 @@ import './ComDetail2.css'
 const ComDetail2 = () => {
     return (
         <>
-            <div className="row w-100 justify-content-center">
+            <div className="row w-75 justify-content-center" style={{margin: '10px auto'}}>
                 <div className="d-flex flex-column row-gap-3 col-3 text-center">
                     <img src="/img/연차1.png" alt="업력연차" style={{ width: '190px', padding: '26px 12px 10px' }} className="align-self-center" />
                     <div className="mb-3">
@@ -34,10 +34,9 @@ const ComDetail2 = () => {
                         <input type="text" readOnly className="form-control-plaintext" id="com_sales" placeholder="" value="1000억" style={{ textAlign: 'center' }} />
                     </div>
                 </div>
+                <br />
+                <hr />
             </div>
-
-            <hr />
-            <br />
 
             <div className="w-100">
                 <div className="d-flex flex-column mx-auto">
