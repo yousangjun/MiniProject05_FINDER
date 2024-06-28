@@ -21,51 +21,46 @@
 # 3. React 전환
 4일
 
-CSS이름 = jsx이름 이랑 같은 이름으로 만들어야함
+CSS이름 = jsx이름 이랑 같은 이름으로 만들어야함 ( className = 겹치지 않게 만들어서 스타일 입히기! )
 
 컴포넌트 --------------------------------------------------------------
 
-헤더 푸터
-com_detail_user
-credit 전체
-
 ➡ 승헌
+⭕헤더 
+⭕푸터
+⭕com_detail_user
+⭕credit 전체
 
-
-
-컨텐츠헤더
-컨텐츠사이드바
-
-컨텐츠리스트아이템 (키워드까지 하면됨)
-카드 (키워드까지 하면됨)
-detail_jobs_user
-(post_jobs_com
-post_jobs_read_com 비슷함 알아서 하면됨
-cv_list
-)
-버튼 숏 in숏 롱 
-index
-cv_create_user
-cv_read_user
 
 
 ➡ 준범
+❌컨텐츠헤더
+⭕컨텐츠사이드바
+⭕컨텐츠리스트아이템 (키워드까지 하면됨)
+⭕카드 (키워드까지 하면됨)
+❌detail_jobs_user
+❌(post_jobs_com
+❌post_jobs_read_com 비슷함 알아서 하면됨
+❌cv_list)
 
-
-페이징
-
-login
-find_com, user
-join com, user, social
-update_user
+⭕버튼 숏 in숏 롱 
+⭕index
+❌cv_create_user
+❌cv_read_user
 
 
 
 ➡ 상준
+⭕페이징 (Company Component 에 있다)
+⭕login
+❌find_com, ❌find_user
+⭕join_com, ⭕join_user, ❌social
+❌update_user
 
 
 
-컨텐츠 타이틀
-에러
-introduce_com
+
 ➡ 주빈
+⭕컨텐츠 타이틀
+⭕에러
+⭕introduce_com
