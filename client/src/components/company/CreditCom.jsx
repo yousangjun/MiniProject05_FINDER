@@ -14,7 +14,7 @@ const CreditCom = () => {
 
                     <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
                         <div className="card">
-                            <div className="card-body d-flex flex-column credit-body">
+                            <div className="card-body d-flex flex-column credit-body justify-content-between">
                                 <h3>10만원<span> / 2개월 30건</span></h3>
                                 <ul className="credit-list-info">
                                     <li>채용공고 작성 건수</li>
@@ -27,7 +27,7 @@ const CreditCom = () => {
 
                     <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
                         <div className="card">
-                            <div className="card-body d-flex flex-column credit-body">
+                            <div className="card-body d-flex flex-column credit-body justify-content-between">
                                 <h3>30만원<span> / 3개월 80건</span></h3>
                                 <ul className="credit-list-info">
                                     <li>채용공고 작성 건수</li>
@@ -41,7 +41,7 @@ const CreditCom = () => {
 
                     <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
                         <div className="card">
-                            <div className="card-body d-flex flex-column credit-body">
+                            <div className="card-body d-flex flex-column credit-body justify-content-between">
                                 <h3>50만원<span> / 3개월 150건</span></h3>
                                 <ul className="credit-list-info">
                                     <li>채용공고 작성 건수</li>

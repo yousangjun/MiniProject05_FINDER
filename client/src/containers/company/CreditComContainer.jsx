@@ -3,7 +3,7 @@ import CreditCom from '../../components/company/CreditCom'
 
 const CreditComContainer = () => {
     return (
-        <div className='container'>
+        <div className='container main-content'>
             <CreditCom />
         </div>
     )

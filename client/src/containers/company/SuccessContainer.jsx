@@ -4,7 +4,7 @@ import Success from '../../components/company/Success'
 
 const SuccessContainer = () => {
     return (
-        <div className='container'>
+        <div className='container main-content'>
             <Success />
         </div>
     )
