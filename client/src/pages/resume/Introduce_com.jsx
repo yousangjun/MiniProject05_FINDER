@@ -1,17 +1,17 @@
 import React from 'react'
 import Header from '../../layouts/Header'
 import Footer from '../../layouts/Footer'
-import Introduce_com_Controller from '../../containers/resume/Introduce_com_Controller'
-import Resume from './Resume'
 import BtnShort from '../../components/main/BtnShort'
+import ContentTitle from '../../components/resume/ContentTitle'
+import Introduce_com_Container from '../../containers/resume/Introduce_com_Container'
 
 const Introduce_com = () => {
   return (
     <>
     <Header/>
-    <Resume/>
+    <ContentTitle SubTitle1={"기업 소개"} SubTitle2={"ㅇㅁㄴㅇㅁ"}/>
     <BtnShort btnShortText={"수정"}/>
-    <Introduce_com_Controller/>
+    <Introduce_com_Container/>
     <Footer/>
     </>
   )

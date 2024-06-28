@@ -1,11 +1,11 @@
 import React from 'react'
-import ContentTitleController from '../../containers/resume/ContentTitleController'
+import ContentTitle from '../../components/resume/ContentTitle'
 
 
 const Resume = () => {
   return (
     <>
-    <ContentTitleController />
+    <ContentTitle/>
     </>
   )
 }
