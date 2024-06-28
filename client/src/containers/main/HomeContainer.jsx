@@ -4,8 +4,8 @@ import HomeHeader from '../../components/main/HomeHeader';
 import './HomeContainer.css'
 
 const HomeContainer = () => {
+    const [selectedOption, setSelectedOption] = useState('');
     const [keyword, setKeyword] = useState('');
-    const [option, setOption] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -16,10 +16,8 @@ const HomeContainer = () => {
     const [count, setCount] = useState(0);
     const inputRef = useRef(null);
     const dropdownRef = useRef(null);
-    const optionRef = useRef(null);
     const loader = useRef(null);
     const rowsPerPage = 12;
-
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -38,17 +36,15 @@ const HomeContainer = () => {
     const handleObserver = (entities) => {
         const target = entities[0];
         if (target.isIntersecting && !loading) {
-            fetchCardList();
+            setCurrentPage(prev => prev + 1);
         }
     };
-
-
 
     useEffect(() => {
         const observer = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "20px",
-            threshold: 0.8
+            rootMargin: "0px",
+            threshold: 0.9
         });
 
         if (loader.current) {
@@ -61,6 +57,47 @@ const HomeContainer = () => {
             }
         };
     }, []);
+
+    useEffect(() => {
+        const fetchInitialData = () => {
+            setLoading(true);
+            const url = `/cardList?page=1&rows=${rowsPerPage}&code=${selectedOption}&keyword=${encodeURIComponent(keyword)}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(newData => {
+                    setData(newData.recruitList);
+                    setCount(newData.count);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    setLoading(false);
+                });
+        };
+
+        fetchInitialData();
+    }, [selectedOption, keyword]);
+
+    useEffect(() => {
+        if (currentPage === 1) return; // 초기 페이지는 이미 로드되었으므로 무시
+
+        const fetchMoreData = () => {
+            setLoading(true);
+            const url = `/cardList?page=${currentPage}&rows=${rowsPerPage}&code=${selectedOption}&keyword=${encodeURIComponent(keyword)}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(newData => {
+                    setData(prevData => [...prevData, ...newData.recruitList]);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    setLoading(false);
+                });
+        };
+
+        fetchMoreData();
+    }, [currentPage]);
 
     const handleKeywordChange = (e) => {
         const newKeyword = e.target.value;
@@ -82,36 +119,17 @@ const HomeContainer = () => {
     };
 
     const handleOptionChange = (e) => {
-        setOption(e.target.value);
+        setSelectedOption(e.target.value);
         setCurrentPage(1); // Reset pagination on option change
     };
 
-    const fetchCardList = () => {
-        if (loading) return;  // 이미 로딩 중인 경우 요청을 시작하지 않음
-        setLoading(true);
-        const url = `/cardList?page=${currentPage}&rows=${rowsPerPage}&code=${option}&keyword=${encodeURIComponent(keyword)}`;
-        fetch(url)
-            .then(response => response.json())
-            .then(newData => {
-                if (newData.recruitList.length === 0) {
-                    setLoading(false); // 더 이상 로드할 데이터가 없음
-                    return; // 함수 종료
-                }
-                setCount(newData.count);
-                setData(prevData => [...prevData, ...newData.recruitList]);
-                setCurrentPage(prev => prev + 1);  // 페이지 번호 안전하게 증가
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                setLoading(false);
-            });
-    };
+    
 
     const handleMouseOver = (comNo) => {
         fetch(`/keyword?comNo=${encodeURIComponent(comNo)}`)
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 setRecruitList(prevState => ({ ...prevState, [comNo]: data.recruitPosts }));
             })
             .catch(error => {
@@ -119,29 +137,28 @@ const HomeContainer = () => {
             });
     };
 
-    const handleMouseOut = (comNo) => {
-        // 해당 컴포넌트를 숨기기
-        const updatedRecruitList = { ...recruitList };
-        delete updatedRecruitList[comNo];  // 해당 comNo의 데이터 삭제
-        setRecruitList(updatedRecruitList);
-    };
-
+    // const handleMouseOut = (comNo) => {
+    //     // 해당 컴포넌트를 숨기기
+    //     const updatedRecruitList = { ...recruitList };
+    //     delete updatedRecruitList[comNo];  // 해당 comNo의 데이터 삭제
+    //     setRecruitList(updatedRecruitList);
+    // };
 
     return (
         <>
             <HomeHeader
                 keyword={keyword}
-                option={option}
                 dropdownVisible={dropdownVisible}
                 subDropdownVisible={subDropdownVisible}
                 companyList={companyList}
                 recruitList={recruitList}
-                refs={{ inputRef, dropdownRef, optionRef }}
+                refs={{ inputRef, dropdownRef }}
                 handleKeywordChange={handleKeywordChange}
                 handleOptionChange={handleOptionChange}
                 count={count}
                 handleMouseOver={handleMouseOver}
-                handleMouseOut={handleMouseOut}
+                // handleMouseOut={handleMouseOut}
+                selectedOption={selectedOption}
             />
             <Card data={data} />
             <div ref={loader} className="loading-indicator">

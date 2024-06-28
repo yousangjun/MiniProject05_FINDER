@@ -125,11 +125,11 @@
           AND file_code = 1
     ) f ON r.recruit_no = f.parent_no
     <where> 
-        <if test="option.code == 0">
+        <if test="option.code == 1">
             r.recruit_title LIKE CONCAT('%', #{option.keyword}, '%')
         </if>
 
-        <if test="option.code == 1">
+        <if test="option.code == 0">
             c.com_name LIKE CONCAT('%', #{option.keyword}, '%')
         </if>
         

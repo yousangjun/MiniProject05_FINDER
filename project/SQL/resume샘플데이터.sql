@@ -59,3 +59,36 @@ SELECT c.*, u.*
     DELETE FROM file
         WHERE parent_table = 'resume'
           AND parent_no = 49;
+ SELECT c.*, r.*, f.file_no AS file_no, f.file_name, f.file_path, f.file_code, rk.recruit_keyword
+    FROM company c
+    INNER JOIN recruit r ON c.com_no = r.com_no
+    LEFT JOIN (
+        SELECT rk.recruit_no, GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ') AS recruit_keyword
+        FROM recruit_keyword rk
+        GROUP BY rk.recruit_no
+    ) rk ON r.recruit_no = rk.recruit_no
+    LEFT JOIN (
+        SELECT *
+        FROM file
+        WHERE parent_table = 'recruit'
+          AND file_code = 1
+    ) f ON r.recruit_no = f.parent_no
+    <where> 
+        <if test="option.code == 0">
+            r.recruit_title LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+
+        <if test="option.code == 1">
+            c.com_name LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+        
+        <if test="option.code == 2">
+            rk.recruit_keyword LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+        
+        <if test="option.code == 3">
+            c.com_category LIKE CONCAT('%', #{option.keyword}, '%')
+        </if>
+    </where>
+    ORDER BY r.com_reg_date DESC
+    LIMIT #{page.index}, #{page.rows}
