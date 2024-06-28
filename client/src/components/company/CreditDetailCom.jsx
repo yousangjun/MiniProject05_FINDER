@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CreditDetailCom.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
+import BtnLong from '../main/BtnLong';
 
 const CreditDetailCom = () => {
     const [modalShow, setModalShow] = useState(false);
     const [isAgreed, setIsAgreed] = useState(false);
+    const navigate = useNavigate();
 
     const handleBuyCheck = () => {
         setIsAgreed(true);
@@ -26,9 +28,9 @@ const CreditDetailCom = () => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                window.history.push(`/company/credit/checkout?productNo=${productNo}&orderNo=${data.orderNo}`);
+                navigate(`/company/credit/checkout?productNo=${productNo}&orderNo=${data.orderNo}`);
             } else {
-                window.history.push('/company/credit/fail?error');
+                navigate('/company/credit/fail?error');
             }
         })
         .catch(error => {
@@ -71,14 +73,16 @@ const CreditDetailCom = () => {
                                 <p>결제자 : <span>홍길동</span></p>
                                 <div className="d-flex justify-content-between align-items-center">
                                     <p>연락처 : <span>010-1234-5678</span></p>
-                                    <Button 
+                                    <button 
+                                        type="button" 
                                         id="buyCheck" 
-                                        style={{ alignSelf: 'self-end' }} 
-                                        className="btn-long" 
-                                        onClick={() => setModalShow(true)}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setModalShow(true);
+                                        }}
                                     >
-                                        구매 동의
-                                    </Button>
+                                        <BtnLong btnLongText={"구매 동의"}/>
+                                    </button>
                                 </div>
                                 <hr />
                             </div>
@@ -88,16 +92,23 @@ const CreditDetailCom = () => {
                             <div>
                                 <p>결제 수단 :</p>
                             </div>
-                            <div className="align-self-end">
-                                <Button 
-                                    id="tossURL" 
-                                    className="btn-long" 
-                                    disabled={!isAgreed}
-                                    onClick={handlePostOrder}
+                            <div className="d-flex gap-4 align-self-end">
+                                <button 
+                                        type="button"
+                                        disabled={!isAgreed}
+                                        onClick={handlePostOrder}
                                 >
-                                    신용카드 결제
-                                </Button>
-                                <Link to="/company/credit_com" className="btn-long">취소</Link>
+                                    <BtnLong btnLongText={"신용카드 결제"}/>
+                                </button>                          
+                                <button 
+                                    type="button" 
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        navigate('/company/credit_com');
+                                    }}
+                                >
+                                    <BtnLong btnLongText={"취소"} />
+                                </button>
                             </div>
                         </div>
                     </form>
