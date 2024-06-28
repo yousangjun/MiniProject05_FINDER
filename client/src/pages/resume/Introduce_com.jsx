@@ -9,7 +9,7 @@ const Introduce_com = () => {
   return (
     <>
     <Header/>
-    <ContentTitle SubTitle1={"기업 소개"} SubTitle2={"ㅇㅁㄴㅇㅁ"}/>
+    <ContentTitle SubTitle1={"기업 소개"} SubTitle2={"사람을 소중히 대하라"}/>
     <BtnShort btnShortText={"수정"}/>
     <Introduce_com_Container/>
     <Footer/>
