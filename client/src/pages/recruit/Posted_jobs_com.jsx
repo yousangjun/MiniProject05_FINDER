@@ -1,13 +1,12 @@
 import React from 'react'
 import MainLayout from '../../layouts/MainLayout'
-import NewJobsUserContainer from '../../containers/recruit/NewJobsUserContainer'
-import PostedJobsCom from '../../containers/recruit/PostedJobsCom'
+import PostedJobsComContainer from '../../containers/recruit/PostedJobsComContainer'
 
 const Posted_jobs_com = () => {
     return (
         <>
             <MainLayout>
-                <PostedJobsCom />
+                <PostedJobsComContainer />
             </MainLayout>
         </>
     )
