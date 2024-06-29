@@ -37,10 +37,12 @@ CSS이름 = jsx이름 이랑 같은 이름으로 만들어야함 ( className = �
 
 
 ➡ 준범
-❌컨텐츠헤더
+⭕컨텐츠헤더
 ⭕컨텐츠사이드바
 ⭕컨텐츠리스트아이템 (키워드까지 하면됨)
 ⭕카드 (키워드까지 하면됨)
+⭕app~
+⭕new~
 ❌(post_jobs_com
 ❌post_jobs_read_com 비슷함 알아서 하면됨
 ❌cv_list)

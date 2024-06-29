@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Doughnut, Bar } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, BarElement } from 'chart.js'
-import './ComDetailChart.css'
+import './css/ComDetailChart.css'
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, BarElement)
 
@@ -79,11 +79,11 @@ const ComDetailChart = () => {
     }
 
     return (
-        <div className="d-flex justify-content-center visualization-chart">
-            <div className="chart-container gender-chart">
+        <div className="d-flex justify-content-center visualization-chart1">
+            <div className="chart-container1 gender-chart">
                 <Doughnut data={genderData} options={genderOptions} />
             </div>
-            <div className="chart-container age-chart">
+            <div className="chart-container1 age-chart">
                 <Bar data={ageData} options={ageOptions} width={500} height={500} />
             </div>
         </div>

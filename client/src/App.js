@@ -1,21 +1,19 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
-import { BrowserRouter, Route, Routes, Switch } from "react-router-dom";
 import Home from './pages/Home';
 import Company from './pages/company/Company';
 import Checkout from './pages/company/checkout';
 import Com_detail_user from './pages/company/com_detail_user';
 import Credit_com from './pages/company/credit_com';
 import Credit_detail_com from './pages/company/credit_detail_com';
-import Success from './pages/company/success';
-import Fail from './pages/company/fail';
 import Credit_list_com from './pages/company/credit_list_com';
-import { Recruit } from './pages/recruit/Recruit';
-import Detail_jobs_user from './pages/recruit/detail_jobs_user';
+import Fail from './pages/company/fail';
+import Success from './pages/company/success';
 
 
+import Error from './pages/error/Error';
 import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
-import Error from './pages/error/Error';
 
 import Introduce_com from './pages/resume/Introduce_com';
 import Login from './pages/user/Login';
@@ -25,11 +23,17 @@ import CvCreate_user from './pages/resume/CvCreate_user';
 
 import Join_user from './pages/user/join_user';
 import Join_com from './pages/user/join_com';
-import CvReadContainer_user from './containers/resume/CvReadContainer_user';
 import Post_jobs_com from './pages/resume/Post_jobs_com';
 import CvRead_user from './pages/resume/CvRead_user';
 
 
+import Applied_jobs_user from "./pages/recruit/Applied_jobs_user";
+import Cv_list_user from "./pages/recruit/Cv_list_user";
+import New_jobs_user from "./pages/recruit/New_jobs_user";
+import Posted_jobs_com from "./pages/recruit/Posted_jobs_com";
+import Recruit_list_com from "./pages/recruit/Recruit_list_com";
+import Join_com from './pages/user/join_com';
+import Join_user from './pages/user/join_user';
 
 
 
@@ -52,8 +56,15 @@ function App() {
           
           {/* 채용공고 페이지 */}
           <Route path="/recruit" element={<Home/>}></Route>
+
           <Route path="/recruit/detail_jobs_user" element={<Detail_jobs_user/>}></Route>
           <Route path="/recruit/post_jobs_com" element={<Post_jobs_com/>}></Route>
+
+
+          <Route path="/recruit/applied_jobs_user" element={<Applied_jobs_user/>}></Route>
+          <Route path="/recruit/new_jobs_user" element={<New_jobs_user/>}></Route>
+          <Route path="/recruit/cv_list_user" element={<Cv_list_user/>}></Route>
+          <Route path="/recruit/recruit_list_com" element={<Recruit_list_com/>}></Route>
 
 
           {/* 이력서 페이지 */}

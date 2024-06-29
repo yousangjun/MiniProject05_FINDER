@@ -1,0 +1,22 @@
+.credit-error-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .credit-error-page img {
+    width: 400px;
+    height: auto;
+  }
+
+  .credit-error-page h1 {
+    font-size: 3rem;
+    color: #007bff;
+  }
+  
+  .credit-error-page p {
+    font-size: 20px;
+    color: grey;
+  }
