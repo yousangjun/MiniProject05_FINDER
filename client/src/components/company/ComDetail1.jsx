@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './ComDetail1.css'
+import './css/ComDetail1.css'
 
 const ComDetail1 = ({ companyDetail }) => {
     return (

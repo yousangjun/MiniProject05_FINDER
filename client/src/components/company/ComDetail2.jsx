@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './ComDetail2.css'
+import './css/ComDetail2.css'
 
 const ComDetail2 = () => {
     return (
@@ -41,19 +41,19 @@ const ComDetail2 = () => {
             <div className="w-100">
                 <div className="d-flex flex-column mx-auto">
                     <label htmlFor="com_content" className="fs-2 mb-3" style={{ textAlign: 'center' }}>기술 소개</label>
-                    <textarea readOnly className="w-75 mx-auto detail-content" id="com_content" placeholder="기술 소개 내용" value="이 회사는 최첨단 기술을 보유하고 있습니다."></textarea>
+                    <textarea readOnly className="w-75 mx-auto detail-content2" id="com_content" placeholder="기술 소개 내용" value="이 회사는 최첨단 기술을 보유하고 있습니다."></textarea>
                 </div>
             </div>
             <div className="w-100">
                 <div className="d-flex flex-column mx-auto">
                     <label htmlFor="com_vision" className="fs-2 mb-3" style={{ textAlign: 'center' }}>기업 비전</label>
-                    <textarea readOnly className="w-75 mx-auto detail-content" id="com_vision" placeholder="기업 비전 내용" value="글로벌 리더로 도약하는 것이 우리의 목표입니다."></textarea>
+                    <textarea readOnly className="w-75 mx-auto detail-content2" id="com_vision" placeholder="기업 비전 내용" value="글로벌 리더로 도약하는 것이 우리의 목표입니다."></textarea>
                 </div>
             </div>
             <div className="w-100">
                 <div className="d-flex flex-column mx-auto">
                     <label htmlFor="com_welfare" className="fs-2 mb-3" style={{ textAlign: 'center' }}>기업 복지</label>
-                    <textarea readOnly className="w-75 mx-auto detail-content" id="com_welfare" placeholder="기업 복지 내용" value="직원들을 위한 다양한 복지 혜택을 제공합니다."></textarea>
+                    <textarea readOnly className="w-75 mx-auto detail-content2" id="com_welfare" placeholder="기업 복지 내용" value="직원들을 위한 다양한 복지 혜택을 제공합니다."></textarea>
                 </div>
             </div>
         </>

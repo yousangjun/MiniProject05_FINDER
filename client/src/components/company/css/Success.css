@@ -1,6 +1,6 @@
 /* success */
 /* 아래 폼 양식 */
-.payment-form {
+.payment-form-success {
   border: 1px solid lightgrey;
   border-radius: 10px;
   box-shadow: 1px 2px 2px 3px lightgrey;
@@ -12,38 +12,38 @@
   flex-direction: column;
   justify-content: space-evenly;
 }
-.payment-form .credit-form-btn {
+.payment-form-success .credit-form-btn-success {
   display: flex;
   justify-content: space-between;
   column-gap: 10px;
 }
 
-.payment-form p {
+.payment-form-success p {
   font-size: 20px;
 }
 
-.credit-form-btn a {
+.credit-form-btn-success a {
     text-decoration: none;
     text-align: center;
     padding-top: 4px;
 }
 
 
-.credit-list-info li {
+.credit-list-info-success li {
     font-size: 20px ;
 }
 
-.credit-list-info {
+.credit-list-info-success {
   padding-left: 0 ;
   
 }
 
 
-.credit-list-info {
+.credit-list-info-success {
   list-style-type: disc;
 }
 
-.credit-body {
+.credit-body-success {
   row-gap: 20px;
   margin: 10px 10px;
   justify-content: center;
@@ -51,20 +51,15 @@
   height: 298px;
 }
 
-.credit-body  {
+.credit-body-success  {
   font-size: 20px;
   text-align: left;
 }
 
-.credit-body h3 {
+.credit-body-success h3 {
   font-size: 40px;
 }
 
-.credit-body h3 span {
+.credit-body-success h3 span {
   font-size: 20px;
-}
-
-
-a {
-  width: 100px;
 }
