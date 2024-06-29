@@ -4,15 +4,15 @@ import Sidebar from '../../components/main/Sidebar'
 import ContentHeader from '../../components/main/ContentHeader'
 import ContentListItem from '../../components/main/ContentListItem'
 
-const PostedJobsCom = () => {
+const PostedJobsComContainer = () => {
     return (
         <>
-            <ContentTitle SubTitle1={"채용공고 관리"} SubTitle2={"혁신과 열정을 바탕으로, 미래를 창조하는 기업."} />
+            <ContentTitle SubTitle1={"이력서 관리"} SubTitle2={"앞으로의 길을 내다볼 때 필요한 것은 올바른 판단이다."} />
             <div className="row justify-content-center" style={{ padding: '0 40px' }}>
                 <Sidebar />
                 <main1 className="col-12 col-md-12 col-lg-8 main-content1 d-flex justify-content-end align-items-start">
                     <div className="job-listings1">
-                        <ContentHeader ContentHeaderText={"등록한 채용공고"} />
+                        <ContentHeader ContentHeaderText={"제출된 이력서"} />
                         <ContentListItem />
                     </div>
                 </main1>
@@ -21,4 +21,4 @@ const PostedJobsCom = () => {
     )
 }
 
-export default PostedJobsCom
+export default PostedJobsComContainer

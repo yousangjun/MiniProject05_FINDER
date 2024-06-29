@@ -139,7 +139,7 @@ const HomeContainer = () => {
 
     const handleMouseOut = (comNo) => {
         // 해당 컴포넌트를 숨기기
-        setDropdownVisible(false)           // 👩‍🏫 DropDown 출력여부 false
+        // setDropdownVisible(false)           // 👩‍🏫 DropDown 출력여부 false
         const updatedRecruitList = { ...recruitList };
         delete updatedRecruitList[comNo];  // 해당 comNo의 데이터 삭제
         setRecruitList(updatedRecruitList);

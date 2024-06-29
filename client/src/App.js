@@ -20,11 +20,13 @@ import Login from './pages/user/Login';
 
 import CvCreate_user from './pages/resume/CvCreate_user';
 
-import AppliedJobsUserContainer from './containers/recruit/AppliedJobsUserContainer';
+import Applied_jobs_user from "./pages/recruit/Applied_jobs_user";
+import Cv_list_user from "./pages/recruit/Cv_list_user";
+import New_jobs_user from "./pages/recruit/New_jobs_user";
+import Posted_jobs_com from "./pages/recruit/Posted_jobs_com";
+import Recruit_list_com from "./pages/recruit/Recruit_list_com";
 import Join_com from './pages/user/join_com';
 import Join_user from './pages/user/join_user';
-import Applied_jobs_user from "./pages/recruit/Applied_jobs_user";
-import New_jobs_user from "./pages/recruit/New_jobs_user";
 
 
 
@@ -49,8 +51,10 @@ function App() {
           {/* 채용공고 페이지 */}
           <Route path="/recruit" element={<Home/>}></Route>
           <Route path="/recruit/applied_jobs_user" element={<Applied_jobs_user/>}></Route>
-          <Route path="/ContentListItem1" element={<New_jobs_user/>}></Route>
-          <Route path="/ContentListItem" element={<AppliedJobsUserContainer/>}></Route>
+          <Route path="/recruit/new_jobs_user" element={<New_jobs_user/>}></Route>
+          <Route path="/recruit/cv_list_user" element={<Cv_list_user/>}></Route>
+          <Route path="/recruit/posted_jobs_com" element={<Posted_jobs_com/>}></Route>
+          <Route path="/recruit/recruit_list_com" element={<Recruit_list_com/>}></Route>
 
           {/* 이력서 페이지 */}
           <Route path="/resume" element={<Resume/>}></Route>
