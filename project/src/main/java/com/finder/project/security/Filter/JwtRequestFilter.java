@@ -36,7 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         // HTTP 헤더에서 토큰을 가져옴
         String header = request.getHeader(SecurityConstants.TOKEN_HEADER);
-        log.info("authorization : " + header);
+        log.info("authorization1 : " + header);
 
         
         //✅ Bearer + {jwt} 체크
@@ -54,6 +54,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // 토큰을 사용하여 Authentication 객체 생성
         Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
 
+        log.info("authorization2 : " + authentication);
         // 토큰 유효 검사 (토큰이 만료되지 않았으면)
         if( jwtTokenProvider.validateToken(jwt) ) {
             log.info("유효한 JWT 토큰입니다.");

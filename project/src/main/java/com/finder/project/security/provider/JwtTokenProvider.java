@@ -88,7 +88,7 @@ public class JwtTokenProvider {
                 .and()
                 .expiration(new Date(System.currentTimeMillis() + 864000000))  // 토큰 만료 시간 설정 (10일)
                 .claim("uno", "" + userNo)                                // 클레임 설정: 사용자 번호
-                .claim("uid", user)                                     // 클레임 설정: 사용자 아이디
+                .claim("uid", userId)                                     // 클레임 설정: 사용자 아이디
                 .claim("rol", roles)                                      // 클레임 설정: 권한
                 .compact();      
 

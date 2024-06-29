@@ -3,15 +3,16 @@ import './css/Login.css'
 import { LoginContext } from '../../contexts/LoginContextProvider'
 
 const Login = ({ sets }) => {
-
-  const { login, isLogin } = useContext(LoginContext)
+  const { login } = useContext(LoginContext);
 
   const onLogin = (e) => {
-    e.preventDefault() // 기본 폼 제출 동작을 방지
-    const username = e.target.username.value // 폼태그 안에서 입력한 값 가져옴
-    const password = e.target.password.value
-    login(username, password, sets.rememberId, sets.rememberMe)
-  }
+    e.preventDefault();
+    const form = e.target;
+    const username = form.userId.value; // 폼 요소의 이름을 통해 값 가져오기
+    const password = form.userPw.value;
+
+    login(username, password, sets.rememberId, sets.rememberMe);
+  };
 
   return (
     <>
@@ -32,49 +33,71 @@ const Login = ({ sets }) => {
         </div>
 
 
-        <form id="loginForm" onSubmit={(e) => onLogin(e)} >
+        <form id="loginForm" onSubmit={(e) => onLogin(e)}>
+      {/* 아이디 */}
+      <input
+        type="text"
+        className='id'
+        id="id"
+        name="userId"
+        placeholder="아이디"
+        required
+        value={sets.username} // 사용자가 입력한 값
+        autoComplete="off"
+        onChange={(e) => {
+          sets.setUsername(e.target.value); // 상태를 업데이트 하는 함수
+        }}
+      />
 
-          {/* 아이디 */}
-          <input type="text" className='id' id="id" name="userId" placeholder="아이디" required
-            value={sets.username} // 사용자가 입력한값
-            autoComplete="off"
+      {/* 비밀번호 */}
+      <input
+        type="password"
+        className='pw'
+        id="password"
+        name="userPw"
+        placeholder="비밀번호"
+        required
+        autoComplete="off"
+        value={sets.password}
+        onChange={(e) => {
+          sets.setPassword(e.target.value);
+        }}
+      />
+      <button type="submit" className="btn-long w-100 login-btn">
+        로그인
+      </button>
+
+      <div className="d-flex">
+        <div className="w-100 d-flex">
+          {/* 아이디 저장 */}
+          <input
+            type="checkbox"
+            id="remember-id"
+            name="remember-id"
+            className='keep'
+            checked={sets.rememberId} // 체크상태를 담당
+            onChange={(e) => { // 사용자가 체크하면 업데이트
+              sets.setRememberId(e.target.checked);
+            }}
+          />
+          <label htmlFor="remember-id" className="w-100">아이디 저장</label>
+        </div>
+        <div className="w-100 d-flex">
+          {/* 자동 로그인 */}
+          <input
+            type="checkbox"
+            id="remember-me"
+            name="remember-me"
+            className='keep'
+            checked={sets.rememberMe}
             onChange={(e) => {
-              sets.setUsername(e.target.value) // 상태를 업데이트 하는 함수 
-            }} />
-
-          {/* 비빌번호 */}
-          <input type="password" className='pw' id="password" name="userPw" placeholder="비밀번호" required
-            autoComplete="off"
-            value={sets.password}
-            onChange={(e) => {
-              sets.setPassword(e.target.value)
-            }} />
-          <button type="submit" className="btn-long w-100 login-btn">
-            로그인
-          </button>
-
-          <div className="d-flex">
-            <div className="w-100 d-flex">
-              {/* 아이디 저장 */}
-              <input type="checkbox" id="remember-id" name="remember-id" className='keep'
-                checked={sets.rememberId}  // 체크상태를 담당
-                onChange={(e) => {         // 사용자가 체크하면 업데이트
-                  sets.setRememberId(e.target.checked)
-                }} />
-              <label htmlFor="remember-id" className="w-100">아이디 저장</label>
-            </div>
-            <div className="w-100 d-flex">
-              {/* 자동로그인 */}
-              <input type="checkbox" id="remember-me" name="remember-me" className='keep'
-                checked={sets.rememberMe}
-                onChange={(e) => {
-                  sets.setRememberMe(e.target.checked)
-                }} />
-              <label htmlFor="remember-me" className="w-100">자동 로그인</label>
-            </div>
-          </div>
-
-        </form>
+              sets.setRememberMe(e.target.checked);
+            }}
+          />
+          <label htmlFor="remember-me" className="w-100">자동 로그인</label>
+        </div>
+      </div>
+    </form>
 
         <div className="row find-id-password">
           <div className="col-md-6 text-center">

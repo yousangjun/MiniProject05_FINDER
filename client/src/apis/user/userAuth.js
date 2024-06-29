@@ -12,7 +12,7 @@ export const login = (username, password) => userApi.post(`/login?username=${use
 
 // 사용자 정보
 export const userInfo = () => {
-    return userApi.get(`/users/info`)
+    return userApi.get(`/user/info`)
 }
 
 // 회원가입

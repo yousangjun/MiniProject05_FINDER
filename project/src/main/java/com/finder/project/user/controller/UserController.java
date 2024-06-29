@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +48,23 @@ public class UserController {
 
     @Autowired
     private EmailService emailService;
+    
+    @GetMapping("/info")
+    public ResponseEntity<?> userInfo(@AuthenticationPrincipal CustomUser customUser) {
+
+        log.info("::::: customUser :::::");
+        log.info("customUser : " + customUser);
+
+        Users user = customUser.getUser();
+        log.info("user : " + user);
+
+        // 인증된 사용자 정보
+        if (user != null)
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
+        // 인증 되지 않음
+        return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+    }
 
     // ⭕ 사용자 회원가입 (해결~!~!~!~!!~~!~~!)
     @PostMapping("/join_user")
@@ -258,26 +276,6 @@ public class UserController {
         // 데이터 처리 실패
         return ResponseEntity.ok(result); // 코드 인증 실패
     }
-
-    @GetMapping("/info")
-    public ResponseEntity<?> userInfo(@AuthenticationPrincipal CustomUser customUser) {
-        
-        log.info("::::: customUser :::::");
-        log.info("customUser : "+ customUser);
-
-        Users user = customUser.getUser();
-        log.info("user : " + user);
-
-        // 인증된 사용자 정보 
-        if( user != null )
-            return new ResponseEntity<>(user, HttpStatus.OK);
-
-        // 인증 되지 않음
-        return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
-    }
-
-
-
 
     // import org.springframework.stereotype.Controller;
     // import org.springframework.web.bind.annotation.ModelAttribute;
