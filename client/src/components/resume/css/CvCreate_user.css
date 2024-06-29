@@ -67,12 +67,9 @@ h5{
 }
 
 .userImgTitle{
-  width:180px;
-  height:auto;
-  margin-left:70px;
+  width: 250px;
 }
-
-.Preview{
+.preview{
     border:none;
     min-height:210px;
     max-height:210px;

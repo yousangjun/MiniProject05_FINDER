@@ -1,0 +1,29 @@
+.logo1{
+    margin-right: 1rem;
+}
+
+.file-input{
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.PostJobTitle{
+    border: 1px solid var(--bs-border-color);
+    padding: 1rem .75rem;
+    border-radius: 8px;
+}
+
+.PostJobKeyWord{
+    border: 1px solid var(--bs-border-color);
+    padding: 1rem .75rem;
+    border-radius: 8px;
+}
+
+.PostJobContents{
+    height: 500px;
+}
