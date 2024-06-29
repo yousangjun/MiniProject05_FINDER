@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 import SearchRecruit from './SearchRecruit';
 
 const HomeHeader = forwardRef((props, ref) => {
-    const { keyword, dropdownVisible, subDropdownVisible, companyList, recruitList, refs, handleKeywordChange, handleOptionChange, count, handleMouseOver } = props;
+    const { keyword, dropdownVisible, subDropdownVisible, companyList, recruitList, refs, handleKeywordChange, handleOptionChange, count, handleMouseOver, handleMouseOut } = props;
     const option = [
         { value: 0, label: "회사명" },
         { value: 1, label: "제목" },
@@ -31,6 +31,7 @@ const HomeHeader = forwardRef((props, ref) => {
                                     name="keyword"
                                     value={keyword}
                                     onChange={handleKeywordChange}
+                                    onClick={handleKeywordChange}/* 👩‍🏫 onClick 이벤트 추가 */
                                     autoComplete="off"
                                 />
                             </div>
@@ -56,21 +57,24 @@ const HomeHeader = forwardRef((props, ref) => {
                         <div className={`custom-dropdown-menu ${dropdownVisible ? 'show' : ''}`} id="customDropdownMenu" ref={refs.dropdownRef}>
                             {dropdownVisible && companyList.map((company) => (
                                 <React.Fragment key={company.comNo}>
-                                    <div className="d-flex company-item" data-id={company.comNo} ></div>
-                                    <div className="company-item">
-                                        <ul className="item">
-                                            <li className="d-flex"  >
-                                                <div className={`custom-dropdown-item w-50 custom-dropdown-item-${company.comNo}`} data-id={company.comNo} onMouseOver={() => handleMouseOver(company.comNo)}>
-                                                    <a href={`/company/com_detail_user?comNo=${company.comNo}`} style={{ display: 'block' }}>{company.comName}</a>
-                                                </div>
-                                                <ul className="recruit-wrab w-50">
-                                                    <div className={`item recruit-list-item custom-dropdown-item-${company.comNo}`} data-id={company.comNo} >
-                                                        <SearchRecruit recruitList={recruitList[company.comNo] || []} />
-                                                        {/* {console.log(recruitList[company.comNo] || [] + "??")} */}
+                                    {/* 👩‍🏫 MouseLeave 이벤트 */}
+                                    <div onMouseLeave={() => handleMouseOut(company.comNo)}>
+                                        <div className="d-flex company-item" data-id={company.comNo} ></div>
+                                        <div className="company-item">
+                                            <ul className="item">
+                                                <li className="d-flex"  >
+                                                    <div className={`custom-dropdown-item w-50 custom-dropdown-item-${company.comNo}`} data-id={company.comNo} onMouseOver={() => handleMouseOver(company.comNo)}>
+                                                        <a href={`/company/com_detail_user?comNo=${company.comNo}`} style={{ display: 'block' }}>{company.comName}</a>
                                                     </div>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                                    <ul className="recruit-wrab w-50">
+                                                        <div className={`item recruit-list-item custom-dropdown-item-${company.comNo}`} data-id={company.comNo} >
+                                                            <SearchRecruit recruitList={recruitList[company.comNo] || []} />
+                                                            {/* {console.log(recruitList[company.comNo] || [] + "??")} */}
+                                                        </div>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </React.Fragment>
                             ))}
