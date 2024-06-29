@@ -126,9 +126,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // 🔐 JWT
         String token = jwtTokenProvider.createToken(userNo, userId, roles);
-
+        log.info("token 번호: " + token);
+        
         // 💍 { Authorization : Bearer + {jwt} } 
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+        log.info("response 번호: " + response);
         response.setStatus(200);
     }
 
