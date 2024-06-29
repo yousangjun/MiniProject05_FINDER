@@ -1,5 +1,6 @@
 import React from 'react';
 import BtnShort from './BtnShort'; // 예시로 사용한 버튼 컴포넌트
+import { Link } from 'react-router-dom';
 
 const Card = ({ data }) => {
   // console.log(data);
@@ -36,9 +37,13 @@ const Card = ({ data }) => {
                   <p>키워드가 존재하지 않습니다.</p>
                 )}
               </div>
-              <div className="d-flex justify-content-between">
+              <div className="d-flex justify-content-between align-items-end">
                 <div>{item.recruitRegDate}</div>
-                <BtnShort btnShortText="조회" />
+                <div className="ms-auto">
+                  <Link className='' to={`/recruit/detail_jobs_user?recruitNo=${item.recruitNo}`}>
+                    <BtnShort btnShortText="조회" />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
