@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import RecruitListBtn from '../recruit/RecruitListBtn';
 
-const ContentListItem = ({ }) => {
+const ContentListItem = ({ ContentListItemText, ShowBtn }) => {
     const [recruits, setRecruits] = useState([]);
     return (
 
@@ -34,7 +35,7 @@ const ContentListItem = ({ }) => {
                 </div>
 
                 <div className="item d-flex justify-content-between">
-                    
+
                     <div className="keyword-span1">
                         {/* {recruit.keywordList.map((keyword, index) => ( */}
                         <span key="{index}">키워드가어디까지길어질수있나테스트중입니다</span>
@@ -44,18 +45,9 @@ const ContentListItem = ({ }) => {
                     </div>
 
                     <div className="gap-2 d-flex">
-                        <div>
-                            <button
-                                type="button"
-                                className="btn-short1"
-                                id="btn-stop"
-                                data-recruit-no=""
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal"
-                            >
-                                <strong>합격조회</strong>
-                            </button>
-                        </div>
+                        {ShowBtn &&
+                            <RecruitListBtn ContentListItemText={ContentListItemText} />
+                        }
 
                         <div className="d-flex justify-content-center m-1">
                             <strong style={{ color: '#024FDF' }}>FINDER</strong>

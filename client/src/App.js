@@ -1,32 +1,30 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
-import { BrowserRouter, Route, Routes, Switch } from "react-router-dom";
 import Home from './pages/Home';
 import Company from './pages/company/Company';
 import Checkout from './pages/company/checkout';
 import Com_detail_user from './pages/company/com_detail_user';
 import Credit_com from './pages/company/credit_com';
 import Credit_detail_com from './pages/company/credit_detail_com';
-import Success from './pages/company/success';
-import Fail from './pages/company/fail';
 import Credit_list_com from './pages/company/credit_list_com';
-import { Recruit } from './pages/recruit/Recruit';
-import Detail_jobs_user from './pages/recruit/detail_jobs_user';
+import Fail from './pages/company/fail';
+import Success from './pages/company/success';
 
 
+import Error from './pages/error/Error';
 import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
-import Error from './pages/error/Error';
 
 import Introduce_com from './pages/resume/Introduce_com';
 import Login from './pages/user/Login';
 
 import CvCreate_user from './pages/resume/CvCreate_user';
 
-import Join_user from './pages/user/join_user';
-import Join_com from './pages/user/join_com';
-import ContentListItem from './components/main/ContentListItem';
 import AppliedJobsUserContainer from './containers/recruit/AppliedJobsUserContainer';
-import Applied_jobs_user from './pages/resume/Applied_jobs_user';
+import Join_com from './pages/user/join_com';
+import Join_user from './pages/user/join_user';
+import Applied_jobs_user from "./pages/recruit/Applied_jobs_user";
+import New_jobs_user from "./pages/recruit/New_jobs_user";
 
 
 
@@ -50,12 +48,13 @@ function App() {
           
           {/* 채용공고 페이지 */}
           <Route path="/recruit" element={<Home/>}></Route>
+          <Route path="/recruit/applied_jobs_user" element={<Applied_jobs_user/>}></Route>
+          <Route path="/ContentListItem1" element={<New_jobs_user/>}></Route>
           <Route path="/ContentListItem" element={<AppliedJobsUserContainer/>}></Route>
 
           {/* 이력서 페이지 */}
           <Route path="/resume" element={<Resume/>}></Route>
           <Route path="/resume/cvCreate_user" element={<CvCreate_user/>}></Route>
-          <Route path="/resume/applied_jobs_user" element={<Applied_jobs_user/>}></Route>
 
 
           {/* 회원 페이지 */}
