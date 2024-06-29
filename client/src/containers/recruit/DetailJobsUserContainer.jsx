@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import './css/DetailJobsUserContainer.css';
 
 const DetailJobsUserContainer = () => {
-  const [aeCount, setAeCount] = useState(0); // aeCount 임시 데이터
-  const [recruitPost, setRecruitPost] = useState({
-    company: { comName: '회사명' }, // 회사명 임시 데이터
-    recruitTitle: '채용 제목', // 채용 제목 임시 데이터
-    keywordList: [{ id: 1, recruitKeyword: '키워드1' }, { id: 2, recruitKeyword: '키워드2' }], // 키워드 목록 임시 데이터
-    recruitResponsibilities: '담당업무 내용', // 담당업무 임시 데이터
-    recruitQualifications: '자격조건 내용', // 자격조건 임시 데이터
-    recruitPreferredQualifications: '우대사항 내용', // 우대사항 임시 데이터
-    recruitContent: '추가 정보 내용' // 추가 정보 임시 데이터
+  const [aeCount, setAeCount] = useState(0);
+  const [resumeList, setResumeList] = useState([]); // 이력서 목록 임시 데이터
+  const [recruitPost, setRecruitPost] = useState({ // 채용공고 게시 임시 데이터
+    company: { comName: '용달' },
+    recruitTitle: '리액트 2명 타세요',
+    keywordList: [{ id: 1, recruitKeyword: '키워드1' }, { id: 2, recruitKeyword: '키워드2' }],
+    recruitResponsibilities: '담당업무 내용',
+    recruitQualifications: '자격조건 내용',
+    recruitPreferredQualifications: '우대사항 내용',
+    recruitContent: '추가 정보 내용'
   });
 
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false); // 모달 키고 끄기
 
   const [fileList, setFileList] = useState([
     { id: 1, fileNo: '파일번호1' },
@@ -22,7 +23,7 @@ const DetailJobsUserContainer = () => {
 
   const [companyDetail, setCompanyDetail] = useState({
     thumbnail: { fileNo: '썸네일 파일번호' }, // 썸네일 파일 번호 임시 데이터
-    comBirth: '업력 연차' // 업력 연차 임시 데이터
+    comBirth: '5' // 업력 연차 임시 데이터
   });
 
   const [user, setUser] = useState({}); // 사용자 데이터 (임시로 비어있음)
@@ -75,12 +76,12 @@ const DetailJobsUserContainer = () => {
   };
 
 
-  
+
   return (
     <>
       <div className="w-100 d-flex justify-content-center">
         <div className="container-fluid container row" style={{ height: 'auto' }}>
-          {/* 좌측 컨텐츠 */}
+
           <div className="col-md-12 col-lg-9 order-2 order-lg-1">
             {/* 상세 정보 헤더 */}
             <div className="wrapper d-flex flex-column">
@@ -101,7 +102,7 @@ const DetailJobsUserContainer = () => {
                 </div>
                 {/* 키워드 목록 */}
                 <div className="item d-flex justify-content-between">
-                  <div className="keyword-span">
+                  <div className="keyword-span-detail">
                     {recruitPost.keywordList?.map((keyword) => (
                       <span key={keyword.id}>{keyword.recruitKeyword}</span>
                     ))}
@@ -142,25 +143,98 @@ const DetailJobsUserContainer = () => {
                 {/* 회사 상세 정보 */}
                 {companyDetail && (
                   <div className="d-flex justify-content-center">
-                    <div className="company-introduce d-flex flex-column w-75">
-                      {/* 회사 정보 */}
+                    <div className="d-flex flex-column w-75">
+
                       <div className="row">
+
                         <div className="d-flex flex-column row-gap-3 col-3">
                           <img src="/img/연차1.png" alt="업력연차" style={{ width: '8vw', padding: '26px 12px 10px' }} />
                           <div className="form-floating mb-3">
-                            <input
-                              type="text"
-                              readOnly
-                              className="form-control-plaintext"
-                              id="floatingPlaintextInput"
-                              placeholder=""
-                              value={`${companyDetail.comBirth} 년`}
-                            />
-                            <label htmlFor="floatingPlaintextInput" style={{ textAlign: 'center' }}>업력 연차</label>
+                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value='5년' />
+                            <label htmlFor="floatingPlaintextInput">업력 연차</label>
                           </div>
                         </div>
-                        {/* 기타 회사 정보들... */}
+
+                        <div className="d-flex flex-column row-gap-3 col-3">
+                          <img src="/img/대기업1.png" alt="기업규모" style={{ width: "8vw", padding: "26px 12px 10px" }} />
+                          <div className="form-floating mb-3">
+                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value="대기업" />
+                            <label htmlFor="floatingPlaintextInput">기업 규모</label>
+                          </div>
+                        </div>
+
+                        <div className="d-flex flex-column row-gap-3 col-3">
+                          <img src="/img/사원수1.png" alt="사원수" style={{ width: "8vw", padding: "26px 12px 10px" }} />
+                          <div className="form-floating mb-3">
+                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value="500명" />
+                            <label htmlFor="floatingPlaintextInput">사원 수</label>
+                          </div>
+                        </div>
+
+                        <div className="d-flex flex-column row-gap-3 col-3">
+                          <img src="/img/매출액1.png" alt="매출액" style={{ width: "8vw", padding: "26px 12px 10px" }} />
+                          <div className="form-floating mb-3">
+                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value="1000억" />
+                            <label htmlFor="floatingPlaintextInput">매출액</label>
+                          </div>
+                        </div>
+
                       </div>
+
+                      <div className="d-flex justify-content-between introduce-col2 mb-3" style={{ columnGap: "25px" }}>
+                        <div className="d-flex w-100">
+                          <div className="col-3">
+                            <label htmlFor="" style={{ fontWeight: "bold" }}>
+                              회사이름
+                            </label>
+                          </div>
+                          <div className="col-9">
+                            <span>회사 이름</span>
+                          </div>
+                        </div>
+
+                        <div className="d-flex w-100">
+                          <div className="col-3">
+                            <label htmlFor="com_represent" style={{ fontWeight: "bold" }}>
+                              대표명
+                            </label>
+                          </div>
+                          <div className="col-9">
+                            <span>대표명</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="d-flex justify-content-between introduce-col2 mb-3" style={{ columnGap: "25px" }}>
+                        <div className="d-flex w-100">
+                          <div className="col-3">
+                            <label htmlFor="com_category" style={{ fontWeight: "bold" }}>
+                              업종
+                            </label>
+                          </div>
+                          <div className="col-9">
+                            <span>업종</span>
+                          </div>
+                        </div>
+                        <div className="d-flex w-100">
+                          <div className="col-3">
+                            <label htmlFor="com_address" style={{ fontWeight: "bold" }}>
+                              주소
+                            </label>
+                          </div>
+                          <div className="col-9">
+                            <span>주소</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="w-100 introduce-col4">
+                        <div className="form-floating mb-3">
+                          <textarea readOnly className="form-control-plaintext textarea-comContent" id="floatingPlaintextInput" value="기술 소개" style={{ overflowY: "hidden", resize: "none", color: "#475067" }}></textarea>
+                          <label htmlFor="floatingPlaintextInput">기술 소개</label>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 )}
@@ -193,16 +267,16 @@ const DetailJobsUserContainer = () => {
             </div>
 
             {modalOpen && (
-            <div className="modal fade show" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: 'block' }}>
+              <div className="modal fade show" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: 'block' }}>
                 <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                <div className="modal-content">
+                  <div className="modal-content">
                     <div className="modal-header d-flex justify-content-center">
-                    <h1 className="modal-title fs-5" id="exampleModalLabel">이력서를 지원하시려면 회원가입을 해주세요.</h1>
-                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setModalOpen(false)}></button>
+                      <h1 className="modal-title fs-5" id="exampleModalLabel">이력서를 지원하시려면 회원가입을 해주세요.</h1>
+                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setModalOpen(false)}></button>
                     </div>
+                  </div>
                 </div>
-                </div>
-            </div>
+              </div>
             )}
             {aeCount !== null && aeCount === 0 && (
               <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

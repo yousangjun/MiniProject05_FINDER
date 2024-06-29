@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Sidebar from '../main/Sidebar';
-import './CreditList.css'
+import './css/CreditList.css'
 import Paging from './Paging';
 
 const CreditList = ({ orderCreditList }) => {
@@ -12,8 +12,8 @@ const CreditList = ({ orderCreditList }) => {
     return (
         <div className="row justify-content-center" style={{ padding: '0 40px' }}>
             <Sidebar />
-            <main className="col-12 col-md-12 col-lg-8 main-content d-flex flex-column justify-content-start align-items-start">
-                <div className="table-wrap">
+            <main className=".main1 col-12 col-md-12 col-lg-8 main-content d-flex flex-column justify-content-start align-items-start">
+                <div className="credit-table-wrap">
                     <table className="table-credit" style={{ minWidth: '100%' }}>
                         <thead>
                             <tr style={{ textAlign: 'center' }}>

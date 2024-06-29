@@ -1,0 +1,11 @@
+.visualization-chart1 {
+    margin-top: 50px;
+    width: 75%;
+    margin: 100px auto;
+}
+
+.chart-container1 {
+    width: 300px;
+    height: 300px; /* 높이를 추가하여 크기를 고정 */
+    margin: 0 auto;
+}

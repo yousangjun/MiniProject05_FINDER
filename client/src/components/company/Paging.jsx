@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import './Paging.css';
+import './css/Paging.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesLeft, faAngleLeft, faAngleRight, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
 
 const Paging = ({ page }) => {
     return (
-        <div className="pagination-container justify-content-center d-flex mt-4">
+        <div className="pagination-container justify-content-center d-flex mt-4 m-auto">
             <div className="pagination d-flex">
                 <Link className="page-item page-first" to={`/company/credit/credit_list_com?page=${page.first}`}>
                     <FontAwesomeIcon icon={faAnglesLeft} />

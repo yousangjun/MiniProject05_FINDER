@@ -1,0 +1,36 @@
+  .main1 {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .credit-table-wrap {
+    min-height: 500px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+}
+
+.credit-table-wrap th {
+    text-align: center;
+    width: auto;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ccc;
+}
+
+.credit-table-wrap td {
+  text-align: center;
+  padding: 15px 0;
+}
+
+.credit-table-wrap td a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+
+.creditList-item:hover {
+    background-color: #f4f4f4;
+}
