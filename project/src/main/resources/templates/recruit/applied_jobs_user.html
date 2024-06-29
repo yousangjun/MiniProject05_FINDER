@@ -24,10 +24,11 @@
 
 <body layout:fragment="content">
 
-    
+
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: transparent !important;">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        style="background-color: transparent !important;">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -152,16 +153,6 @@
                         <div style="padding: 15px;"><strong>지원한 채용공고</strong></div>
                         <!-- <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-right: 20px;"> -->
                         <div class="d-flex justify-content-end align-items-center me-3 mb-2">
-                            <!-- <select name="filter" id="filter" class="form-control"> -->
-                            <!-- <select name="filter" class="form-control w-auto mx-3"
-                                style="color: #828282; padding: 3px 12px 3px 12px;">
-                                <option value="1">최근 날짜</option>
-                            </select> -->
-                            <!-- <input class="form-control form_input" type="text" name="search_filter" id="search_filter"
-                                placeholder="검색어를 입력해주세요">
-                            <button class="d-flex justify-content-center align-items-center btn-in-short fw-bold">
-                                찾기
-                            </button> -->
                         </div>
                     </form>
 
@@ -219,17 +210,17 @@
                             </div>
                         </a>
                     </th:block>
-                    
-                    
+
+
                 </div>
             </main>
         </div>
-        
+
         <div class="buttonContainer" style="display: none;">
             <button class="canvasBtn" id="stopButton">Stop Confetti</button>
             <button class="canvasBtn" id="startButton">Drop Confetti</button>
         </div>
-    
+
         <canvas id="canvas"></canvas>
 
     </div>
@@ -243,7 +234,7 @@
                 setTimeout(function () {
                     $("#stopButton").trigger("click");
                 }, 300000);
-                
+
             }
 
             var checkBtn = $('#btn-stop')
@@ -259,22 +250,22 @@
                 fetch(`/recruit/applied_jobs_user_check?recruitNo=${recruitNo}`)
                     .then(response => response.json())
                     .then(data => {
-                        
+
                         if (data != -1) {
                             // 받은 데이터를 처리하는 로직
                             $('#result1').html((data === 1 ? `<p style="font-size: 32px;" class="p-0">서류전형에 <span style="color:var(--main-color); font-size:40px;">합격</span>하셨습니다.</p>` : '서류전형에 탈락하셨습니다.'));
                             $('#result2').text((data === 1 ? '축하드립니다! 귀하의 서류가 성공적으로 통과되었습니다. 저희 채용 과정에 관심을 가져주셔서 감사드리며, 다음 단계로 진행하게 된 것을 기쁘게 생각합니다. 향후 절차에 대한 자세한 안내는 이메일로 보내드릴 예정이니, 확인해 주시기 바랍니다. 함께 일할 날을 기대하겠습니다.' : '안녕하세요. 귀하의 지원서에 대해 신중히 검토한 결과, 안타깝게도 이번 채용 과정에서는 다음 단계로 진행하지 않기로 결정하였습니다. 귀하의 노력과 관심에 깊은 감사의 말씀을 드리며, 앞으로 더욱 멋진 기회를 맞이하시길 진심으로 기원합니다. 저희 회사에 대한 관심에 다시 한 번 감사드립니다.'));
                             $('#result3').text((data === 1 ? '감사합니다.' : '귀하의 앞날에 무궁한 발전과 성공이 함께하길 바랍니다.'));
-                            
+
                             if (data == 1) {
                                 reAction();
-                                
+
                             }
-                            
+
                         } else {
                             $('#result1').text('합격발표가 조회되지 않습니다.')
-                            
-                            
+
+
                         }
                         console.log(data);
                     })
@@ -282,7 +273,7 @@
             });
             //티스토리 공감버튼 이벤트
 
-           
+
 
 
         });

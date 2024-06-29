@@ -25,7 +25,7 @@ const Card = ({ data }) => {
                 <p className="card-text" style={{ fontSize: 12 }}>{item.company.comName}</p>
               </div>
               <strong>{item.recruitTitle}</strong>
-              <div className="keyword-span">
+              <div className="keyword-span1">
                 {item.keywordList && item.keywordList.length > 0 ? (
 
                   <div className="span-wrapper">
