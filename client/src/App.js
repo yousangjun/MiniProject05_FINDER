@@ -10,6 +10,9 @@ import Success from './pages/company/success';
 import Fail from './pages/company/fail';
 import Credit_list_com from './pages/company/credit_list_com';
 import { Recruit } from './pages/recruit/Recruit';
+import Detail_jobs_user from './pages/recruit/detail_jobs_user';
+
+
 import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
 import Error from './pages/error/Error';
@@ -44,6 +47,7 @@ function App() {
           
           {/* 채용공고 페이지 */}
           <Route path="/recruit" element={<Home/>}></Route>
+          <Route path="/recruit/detail_jobs_user" element={<Detail_jobs_user/>}></Route>
 
           {/* 이력서 페이지 */}
           <Route path="/resume" element={<Resume/>}></Route>
