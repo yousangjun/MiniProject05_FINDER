@@ -24,6 +24,9 @@ import CvCreate_user from './pages/resume/CvCreate_user';
 
 import Join_user from './pages/user/join_user';
 import Join_com from './pages/user/join_com';
+import ContentListItem from './components/main/ContentListItem';
+import AppliedJobsUserContainer from './containers/recruit/AppliedJobsUserContainer';
+import Applied_jobs_user from './pages/resume/Applied_jobs_user';
 
 
 
@@ -47,11 +50,12 @@ function App() {
           
           {/* 채용공고 페이지 */}
           <Route path="/recruit" element={<Home/>}></Route>
-          <Route path="/recruit/detail_jobs_user" element={<Detail_jobs_user/>}></Route>
+          <Route path="/ContentListItem" element={<AppliedJobsUserContainer/>}></Route>
 
           {/* 이력서 페이지 */}
           <Route path="/resume" element={<Resume/>}></Route>
           <Route path="/resume/cvCreate_user" element={<CvCreate_user/>}></Route>
+          <Route path="/resume/applied_jobs_user" element={<Applied_jobs_user/>}></Route>
 
 
           {/* 회원 페이지 */}

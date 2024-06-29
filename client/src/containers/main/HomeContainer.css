@@ -84,7 +84,121 @@
     outline: 0 !important;
 }
 
-.keyword-span span {
+
+.sidebar1 {
+    background-color: #FAFAFA;
+    padding: 20px;
+    border-radius: 20px;
+    width: 230px;
+    height: 700px;
+}
+
+.sidebar1 h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar1 ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar1 ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar1 ul li a {
+    color: #000;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.ul-header1 {
+    margin-bottom: 30px !important;
+}
+
+.nav-link1 {
+    padding: 3% !important;
+}
+
+.nav-item1 {
+    height: 40px;
+}
+
+.nav-item1 > a {
+    width: 100%;
+}
+
+.nav-item1 > div > {
+    display: flex;
+}
+
+.nav-item1 > div > div > img {
+    width: 24px;
+    height: 24px;
+}
+.nav-item1 img {
+    width: 24px;
+    height: 24px;
+}
+
+.li-header1 {
+    margin: 0 0 5px 15px;
+}
+
+
+.job-item-link1 {
+    text-decoration: none;
+    /* 링크의 밑줄 제거 */
+    color: #1B1B1B;
+    /* 링크 글씨 색상 설정 */
+    /* display: block; */
+    /* 전체 영역 클릭 가능하게 블록 요소로 변경 */
+}
+
+.job-item-link1 * {
+    color: inherit;
+    /* 자식 요소가 부모 요소의 색상 상속 */
+}
+
+.job-item1 {
+    background-color: #fff;
+    padding: 15px 36px 15px 36px;
+    /* width: 100%; */
+    margin: 20px 0 20px 0;
+    border-radius: 20px;
+    cursor: pointer;
+    /* 커서를 포인터로 변경 */
+    transition: background-color 0.5s ease;
+}
+
+.job-item1:hover {
+    background-color: #F7F9FC;
+
+
+}
+
+.job-listings1 {
+    background-color: #fff;
+    padding: 0px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.job-listings1 h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 28px;
+    margin-bottom: 10px;
+
+}
+
+.main-content1 h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.keyword-span1 span {
     background-color: #f8f8f8;
     color: #5d5d5d;
     border-radius: 20px;
@@ -102,7 +216,7 @@
 
 }
 
-.keyword-span .input-keyword {
+.keyword-span1 .input-keyword {
     background-color: #f8f8f8;
     color: #5d5d5d;
     border-radius: 20px;
@@ -119,3 +233,53 @@
 
 
 }
+.job-item1:hover .keyword-span1 span {
+    background-color: #fff;
+}
+
+.btn-short1 {
+    width: 70px;
+    height: 34px;
+    /* padding : 4px 2px; */
+    border-radius: 20px;
+    background-color: var(--short-btn-color);
+    border: none;
+    color: #fff;
+    font-size: var(--text-normal);
+  }
+  
+  .btn-short1:hover {
+    background-color: var(--main-color);
+  }
+  
+  .btn-in-short1 {
+    width: 70px;
+    height: 34px;
+    /* padding : 4px 2px; */
+    border-radius: 20px;
+    background-color: var(--sub-color);
+    border: none;
+    color: #fff;
+    font-size: var(--text-normal);
+  }
+  
+  .btn-in-short1:hover {
+    background-color: var(--sub-color);
+  }
+  
+  .btn-long1 {
+    width: 120px;
+    height: 34px;
+    /* padding : 4px 2px; */
+    border-radius: 8px;
+    background-color: var(--long-btn-color);
+    border: none;
+    color: #fff;
+    font-size: var(--text-normal);
+    text-decoration: none;
+    text-align: center;
+  }
+  
+  .btn-long1:hover {
+    background-color: var(--main-color);
+  }

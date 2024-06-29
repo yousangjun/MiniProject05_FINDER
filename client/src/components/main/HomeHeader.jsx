@@ -78,6 +78,7 @@ const HomeHeader = forwardRef((props, ref) => {
                     </div>
                 </form>
             </div>
+            
             <div style={{ margin: '15px 0' }}>
                 <strong>총 <span style={{ color: 'blue' }}>{count}</span>개의 정보를 탐색 하였습니다.</strong>
             </div>
