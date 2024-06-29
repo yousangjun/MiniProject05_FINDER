@@ -13,6 +13,7 @@ import { Recruit } from './pages/recruit/Recruit';
 import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
 import Error from './pages/error/Error';
+import LoginContextProvider from './contexts/LoginContextProvider';
 
 import Introduce_com from './pages/resume/Introduce_com';
 import Login from './pages/user/Login';
@@ -28,6 +29,7 @@ import Join_com from './pages/user/join_com';
 function App() {
   return (
     <BrowserRouter>
+    <LoginContextProvider>    {/* 로그인, 로그아웃 관련 context */}
         <Routes>
           <Route path="/" element={<Home/>}></Route>
           {/* 기업 페이지 */}
@@ -60,6 +62,7 @@ function App() {
           <Route path="/join_user" element={<Join_user/>}></Route>
           <Route path="/join_com" element={<Join_com/>}></Route>
         </Routes>
+        </LoginContextProvider>
     </BrowserRouter>
   );
 }
