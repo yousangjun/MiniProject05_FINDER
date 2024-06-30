@@ -58,6 +58,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // 사용자 인증정보 객체 생성
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+        log.info(authenticationManager + "어센티케이션 머라뜸 ?");
 
          // // 사용자 인증정보 객체 생성
         // Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
@@ -82,7 +83,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
          */
 
         log.info("authenticationManager : " + authenticationManager);
-        log.info("authentication : " + authentication);
+        log.info("authentication ????: " + authentication);
         log.info("인증 여부(isAuthenticated) : " + authentication.isAuthenticated());
 
         // 인증 실패 (username, password 불일치)
@@ -132,6 +133,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
         log.info("response 번호: " + response);
         response.setStatus(200);
+
+        // 요청 헤더 로그 출력
+    log.info("=== Request Headers ===");
+    request.getHeaderNames().asIterator().forEachRemaining(headerName -> {
+        log.info(headerName + ": " + request.getHeader(headerName));
+    });
+
+    // 응답 헤더 로그 출력
+    log.info("=== Response Headers ===");
+    response.getHeaderNames().forEach(headerName -> {
+        log.info(headerName + ": " + response.getHeader(headerName));
+    });
     }
 
 
