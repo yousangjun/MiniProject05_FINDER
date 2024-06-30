@@ -98,7 +98,16 @@ const Post_jobs_com = () => {
                     <button className="btn-long file-upload-button">파일 첨부</button>
                     <div>
                         <input type="file" name="file" id="file-input" className="file-input hidden-file-input" multiple/>
-                        <div id='file-names' className="mt-2"></div>
+                        <div id='file-names' className="PostFileName mt-2">
+                            {/*      <th:block th:each="file : ${fileList}">
+                                        <div class="file-name d-flex">
+                                            <span th:text="${file.originName}"></span>
+                                            <span class="remove-file" role="button"
+                                                th:onclick="|deleteFile(event, ${file.fileNo})|"
+                                                style="text-align: center; display: inline-block">X</span>
+                                        </div>
+                                    </th:block> */}
+                        </div>
                     </div>
                 </div>
             </div>
