@@ -10,9 +10,7 @@ const CreditList = ({ orderCreditList }) => {
     const page = { first: 1, prev: 1, page: 2, next: 3, last: 5, start: 1, end: 5 };
 
     return (
-        <div className="row justify-content-center" style={{ padding: '0 40px' }}>
-            <Sidebar />
-            <main className=".main1 col-12 col-md-12 col-lg-8 main-content d-flex flex-column justify-content-start align-items-start">
+            <>
                 <div className="credit-table-wrap">
                     <table className="table-credit" style={{ minWidth: '100%' }}>
                         <thead>
@@ -63,8 +61,7 @@ const CreditList = ({ orderCreditList }) => {
                     </table>
                 </div>
                 <Paging page={page} />
-            </main>
-        </div>
+            </>
     );
 };
 
