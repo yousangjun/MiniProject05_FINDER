@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import RecruitListBtn from '../recruit/RecruitListBtn';
+import { Link } from 'react-router-dom';
 
-const ContentListItem = ({ ContentListItemText, ShowBtn }) => {
+const ContentListItem = ({ ContentListItemText, ShowBtn , LinkToHref }) => {
     const [recruits, setRecruits] = useState([]);
     return (
 
-        <a
-            href={`/recruit/detail_jobs_user?recruitNo=`}
+        <Link 
+            to={LinkToHref}
             className="job-item-link1"
             id={`recruit_`}
             key=""
@@ -55,7 +56,7 @@ const ContentListItem = ({ ContentListItemText, ShowBtn }) => {
                     </div>
                 </div>
             </div>
-        </a>
+        </Link>
 
     );
 };

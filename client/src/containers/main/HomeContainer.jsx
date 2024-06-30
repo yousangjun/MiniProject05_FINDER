@@ -167,7 +167,7 @@ const HomeContainer = () => {
                 selectedOption={selectedOption}
             />
             <Card data={data} />
-            <div ref={loader} className="loading-indicator" style={{height: "50px", backgroundColor: "grey"}}>
+            <div ref={loader} className="loading-indicator" style={{height: "50px"}}>
                 {loading && <p>Loading more items...</p>}
             </div>
         </>
