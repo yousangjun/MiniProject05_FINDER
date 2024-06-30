@@ -13,7 +13,7 @@ const CvListUserContainer = () => {
                 <main1 className="col-12 col-md-12 col-lg-8 main-content1 d-flex justify-content-end align-items-start">
                     <div className="job-listings1">
                         <ContentHeader ContentHeaderText={"나의 이력서"} />
-                        <ContentListItem />
+                        <ContentListItem LinkToHref={``}/>
                     </div>
                 </main1>
             </div>
