@@ -41,16 +41,16 @@ const HomeContainer = () => {
     };
 
     useEffect(() => {
-        const observer = new IntersectionObserver(handleObserver, {
-            root: null,
-            rootMargin: "0px",
-            threshold: 0.9
-        });
-
+        let observer;
         if (loader.current) {
-            observer.observe(loader.current);
+            observer = new IntersectionObserver(handleObserver, {
+                root: null,
+                rootMargin: '0px',
+                threshold: 1
+            });
         }
-
+        
+        observer.observe(loader.current);
         return () => {
             if (loader.current) {
                 observer.unobserve(loader.current);
@@ -79,24 +79,26 @@ const HomeContainer = () => {
     }, [selectedOption, keyword]);
 
     useEffect(() => {
-        if (currentPage === 1) return; // 초기 페이지는 이미 로드되었으므로 무시
+        if (currentPage === 1) return
 
-        const fetchMoreData = () => {
-            setLoading(true);
-            const url = `/cardList?page=${currentPage}&rows=${rowsPerPage}&code=${selectedOption}&keyword=${encodeURIComponent(keyword)}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(newData => {
-                    setData(prevData => [...prevData, ...newData.recruitList]);
-                    setLoading(false);
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                    setLoading(false);
-                });
-        };
+            const fetchMoreData = () => {
+                setLoading(true);
+                const url = `/cardList?page=${currentPage}&rows=${rowsPerPage}&code=${selectedOption}&keyword=${encodeURIComponent(keyword)}`;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(newData => {
 
-        fetchMoreData();
+                        setData(prevData => [...prevData, ...newData.recruitList]);
+                        setLoading(false);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        setLoading(false);
+                    });
+            };
+
+            fetchMoreData();
+        
     }, [currentPage]);
 
     const handleKeywordChange = (e) => {
@@ -123,7 +125,10 @@ const HomeContainer = () => {
         setCurrentPage(1); // Reset pagination on option change
     };
 
-    
+    useEffect(() => {
+        console.log(currentPage, "페이지 변경됨");
+    }, [currentPage]);
+
 
     const handleMouseOver = (comNo) => {
         fetch(`/keyword?comNo=${encodeURIComponent(comNo)}`)
