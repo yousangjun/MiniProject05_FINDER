@@ -1,10 +1,13 @@
 import React from 'react'
 import CvReadContainer_user from '../../containers/resume/CvReadContainer_user'
+import MainLayout from '../../layouts/MainLayout'
 
 const CvRead_user = () => {
   return (
     <>
-        <CvReadContainer_user/>
+    <MainLayout>
+      <CvReadContainer_user/>
+    </MainLayout>
     </>
   )
 }

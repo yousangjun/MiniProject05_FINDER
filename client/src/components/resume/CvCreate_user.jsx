@@ -124,7 +124,8 @@ const CvCreate_user = () => {
                     <div className="col-12 p-2">
                         {/* 경력 리스트 */}
                         <div id="employmenthistory-list">
-                            {/* 리스트 아이템들을 여기에 추가 */}
+                            {/* 리스트 아이템들을 여기에 추가 
+                            이거 그냥 추가되는건 아니면 import 시켜야 하는 건지 알아야 함*/}
                         </div>
                     </div>
                 </div>

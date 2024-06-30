@@ -1,14 +1,14 @@
 import React from 'react'
 import CvCreateContainer_user from '../../containers/resume/CvCreateContainer_user'
-import Header from '../../layouts/Header'
-import Footer from '../../layouts/Footer'
+
+import MainLayout from '../../layouts/MainLayout'
 
 const CvCreate_user = () => {
   return (
     <>
-        <Header/>
+    <MainLayout>
         <CvCreateContainer_user/>
-        <Footer/>
+    </MainLayout>
     </>
   )
 }

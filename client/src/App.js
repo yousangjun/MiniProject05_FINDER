@@ -33,6 +33,8 @@ import Posted_jobs_com from "./pages/recruit/Posted_jobs_com";
 import Recruit_list_com from "./pages/recruit/Recruit_list_com";
 import Join_com from './pages/user/join_com';
 import Join_user from './pages/user/join_user';
+import Post_jobsRead_com from "./pages/resume/Post_jobsRead_com";
+import Update_user from "./pages/resume/Update_user";
 
 
 
@@ -58,6 +60,7 @@ function App() {
           <Route path="/recruit/detail_jobs_user" element={<Detail_jobs_user/>}></Route>  {/* 채용공고 상세 [공통] */}
 
           <Route path="/recruit/post_jobs_com" element={<Post_jobs_com/>}></Route>        {/* 채용공고 등록 [기업] */}
+          <Route path="/recruit/post_jobsRead_com" element={<Post_jobsRead_com/>}></Route> {/* 채용공고 조회 [기업] */}
           <Route path="/recruit/recruit_list_com" element={<Recruit_list_com/>}></Route>    {/* 등록한 채용공고 [기업] */}
           <Route path="/recruit/posted_jobs_com" element={<Posted_jobs_com/>}></Route>    {/* 제출된 이력서 [기업] */}
 
@@ -81,6 +84,9 @@ function App() {
           {/* 회원가입 페이지 */}
           <Route path="/join_user" element={<Join_user/>}></Route>
           <Route path="/join_com" element={<Join_com/>}></Route>
+
+          {/* 유저페이지 */}
+          <Route path="/user/update_user" element={<Update_user/>}></Route>
         </Routes>
     </BrowserRouter>
   );
