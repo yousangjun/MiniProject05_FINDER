@@ -123,6 +123,7 @@ public class MainController {
         response.put("optionList", optionList);
         response.put("option", option);
 
+        log.info("리스폰스", response);
         // model.addAttribute("page", pageRequest);
         // model.addAttribute("recruitList", recruitList);
         // return "/recruit/card";
