@@ -118,23 +118,31 @@
 
 .job_notice_detail {}
 
-.modal-list {}
+.modal-list-detail {
+    /* background-color: #fff; */
+}
 
-.modal-list .job-item {}
+.modal-list-detail .job-item-detail {
+    padding: 10px;
+    border-radius: 20px;
+}
+.modal-list-detail .job-item-detail:hover {
+    background-color: #F7F9FC;
+}
 
-.modal-list .job-item:focus,
-.modal-list .job-item:focus:hover {
-    background-color: #F7F9FC !important;
+.modal-list-detail .job-item-detail:focus,
+.modal-list-detail .job-item-detail:focus:hover {
+    background-color: #F7F9FC;
     border: 2px solid #bdbdbd;
 
 
 }
 
-.modal-list .job-item:hover:focus {
-    background-color: #F7F9FC !important;
+.modal-list-detail .job-item-detail:hover:focus {
+    background-color: #F7F9FC;
 }
 
 #floatingSelectGrid:focus {
-    border-color: #005AAB !important;
-    outline: 0 !important;
+    border-color: #005AAB ;
+    outline: 0 ;
 }
