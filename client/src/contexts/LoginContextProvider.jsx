@@ -25,6 +25,8 @@ const LoginContextProvider = ({ children }) => {
 
         try {
             const response = await userAuth.userInfo();
+            console.log(`리스폰` + response);
+            console.log(`데이터` + data);
             const data = response.data;
 
             if (data === 'UNAUTHRIZED' || response.status === 401) {
@@ -57,9 +59,12 @@ const LoginContextProvider = ({ children }) => {
             const authorization = response.headers.authorization;
             const accessToken = authorization.replace("Bearer ", "");
             console.log(`accessToken : ` + accessToken);
+            console.dir(`리스폰` + response);
+            console.dir(`데이터` + data);
 
             if (status === 200) {
                 Cookies.set("accessToken", accessToken);
+                console.dir(`200아래 if 문` + data);
                 await loginCheck();
                 navigate("");
             }

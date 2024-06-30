@@ -66,18 +66,18 @@ public class JwtTokenProvider {
     public String createToken(int userNo, String userId, List<String> roles) {
         byte[] signingKey = getSigningKey();
 
-        Users user = new Users();
+        // Users user = new Users();
 
-        Company company = companyService.selectByUserNo(userNo);
-        if (company != null) {
-            int comNo = company.getComNo();
-            CompanyDetail companyDetail = companyService.selectCompanyDetailByComNo(comNo);
-            Order order = recruitService.selectOrdersByUserNo(userNo);
+        // Company company = companyService.selectByUserNo(userNo);
+        // if (company != null) {
+        //     int comNo = company.getComNo();
+        //     CompanyDetail companyDetail = companyService.selectCompanyDetailByComNo(comNo);
+        //     Order order = recruitService.selectOrdersByUserNo(userNo);
 
-            user.setOrder(order);
-            user.setCompany(company);
-            user.setCompanyDetail(companyDetail);
-        }
+        //     user.setOrder(order);
+        //     user.setCompany(company);
+        //     user.setCompanyDetail(companyDetail);
+        // }
 
         // JWT 토큰 생성
         String jwt = Jwts.builder()
@@ -109,6 +109,7 @@ public class JwtTokenProvider {
      * @throws Exception
      */
     public UsernamePasswordAuthenticationToken getAuthentication(String authHeader) {
+        log.info("authHeader : asdasd " + authHeader);
         if(authHeader == null || authHeader.length() == 0 ) 
             return null;
 
