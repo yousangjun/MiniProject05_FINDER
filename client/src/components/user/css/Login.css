@@ -160,7 +160,7 @@ main {
     align-items: center;
 }
 
-.register-form {
+.register-form-login {
     width: 100%;
     max-width: 570px;
     padding: 20px;
@@ -177,18 +177,18 @@ main {
 
 
 
-.register-form h2 {
+.register-form-login h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.register-form label {
+.register-form-login label {
     display: block;
     margin: 10px 0 5px;
 }
 
-.register-form input,
-.register-form select {
+.register-form-login input,
+.register-form-login select {
     width: calc(100% - 8px);
     padding: 10px;
     margin-bottom: 10px;

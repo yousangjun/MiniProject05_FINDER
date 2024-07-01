@@ -3,17 +3,26 @@ import Post_jobs_com from '../../components/resume/Post_jobs_com'
 import ContentTitle from '../../components/resume/ContentTitle'
 import BtnLong from '../../components/main/BtnLong'
 import './css/Post_job_btn.css'
+import Sidebar from '../../components/main/Sidebar'
 
 const Post_jobsContainer_com = () => {
   return (
-    <div className='container main-content'>
-        <ContentTitle SubTitle1={"채용공고 관리"}
-        SubTitle2={"혁신과 열정을 바탕으로, 미래를 창조하라"}/>
-        <Post_jobs_com/>
-        <div className='PostBtn'>
-        <BtnLong btnLongText={"등록"}/>
+    <>
+      <ContentTitle SubTitle1={"채용공고 관리"}
+      SubTitle2={"혁신과 열정을 바탕으로, 미래를 창조하라"}/>
+      <div className="row justify-content-center" style={{padding: '0 40px'}}>
+        <Sidebar/>
+        <main className="col-12 col-md-12 col-lg-8 main-content1 d-flex justify-content-end align-items-start"
+        style={{marginLeft: '50px'}}>
+        <div className='job-listings1'>
+          <Post_jobs_com/>
+          <div className='PostBtn'>
+          <BtnLong btnLongText={"등록"}/>
+          </div>
         </div>
-    </div>
+        </main>
+      </div>
+    </>
   )
 }
 
