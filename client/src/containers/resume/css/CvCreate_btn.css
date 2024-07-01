@@ -1,4 +1,18 @@
 .cvCreate-btn{
+    margin-top: 8px;
     position: relative;
     float: right;
+    margin-right: 20px;
+}
+
+.cvUpdate-btn{
+    margin-top: 8px;
+    float: inline-end;
+    margin-left: 8px;
+    margin-right: 20px;
+}
+
+.cvDelete-btn{
+    margin-top: 8px;
+    float: inline-end;
 }
