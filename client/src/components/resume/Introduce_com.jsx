@@ -4,7 +4,8 @@ import './css/Introduce_com.css';
 import BtnShort from '../main/BtnShort';
 
 const Introduce_com = () => {
-  const [formData, setFormData] = useState({  // 임시데이터
+  const [formData, setFormData] = useState([
+    /*  임시데이터  
     comName: 'asd',
     comBirth: 'asd',
     comSize: '기업선택',
@@ -13,8 +14,8 @@ const Introduce_com = () => {
     comRepresent: 'asd',
     comCategory: 'asd',
     comAddress: 'asd',
-    comContent: 'asd'
-  });
+    comContent: 'asd' */
+  ]);
 
   // false : 등록버튼, true : 수정버튼
   const [isEditMode, setIsEditMode] = useState(false);
@@ -22,7 +23,7 @@ const Introduce_com = () => {
   useEffect(() => {
     // 데이터 가져오기
     axios.get('/company/get_detail')
-      .then(response => {
+      .then(response => { // request에 대한 response 응답 확인
         if (response.data) {
           setFormData(response.data);
           setIsEditMode(true);
@@ -68,7 +69,9 @@ const Introduce_com = () => {
         <div className='btnShort'>
           <BtnShort btnShortText={isEditMode ? "수정" : "등록"} />
         </div>
+
         <div>
+          <formList formData = {formData}/>
           <input
             type="text"
             name="comName"
