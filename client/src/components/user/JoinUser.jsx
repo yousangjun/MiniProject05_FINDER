@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './css/JoinUser.css'
+import axios from 'axios';
 // import axios from 'axios';
 
 const JoinUser = () => {
     const [formData, setFormData] = useState({
-        userId: '',
+        userId: '',                          // 3.)여기 초기상태는 빈 문자열이지만 'userId: 더조은' 이렇게 됨
         userPw: '',
         pw_confirm: '',
         userPhone: '',
@@ -20,14 +21,14 @@ const JoinUser = () => {
     const [isEmailVerified, setIsEmailVerified] = useState(false);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
+        const { name, value } = e.target;  // 속성 name 을 쓰는 value 를 가져온다. e.target.name, e.target.value 
+        setFormData((prevData) => ({       // 예 1.) userId가 name input에 더조은을 입력하면 여기 함수로 오고 
             ...prevData,
-            [name]: value,
+            [name]: value,                 //    2.)'userId : 더조은'   이렇게 되고 위로 올라가서 
         }));
     };
 
-    const validateId = (id) => {    
+    const validateId = (id) => {
         return /^[a-zA-Z0-9_]{4,20}$/.test(id);
     };
 
@@ -75,19 +76,21 @@ const JoinUser = () => {
     //     }
     // };
 
-    // const checkIdAvailability = async () => {
-    //     try {
-    //         const response = await axios.get(`/user/check/${formData.userId}`);
+    const checkIdAvailability = async () => {
+        try {
+            const response = await axios.get(`/user/check/${formData.userId}`);
 
-    //         if (response.data === 'true') {
-    //             alert('사용 가능한 아이디입니다.');
-    //         } else {
-    //             alert('중복된 아이디입니다.');
-    //         }
-    //     } catch (error) {
-    //         alert('서버 에러가 발생했습니다.');
-    //     }
-    // };
+            console.log(`response 회원가입 시 불러오는 ` + response.data)
+
+            if (response.data === true) {
+                alert('사용 가능한 아이디입니다.');
+            } else {
+                alert('중복된 아이디입니다.');
+            }
+        } catch (error) {
+            alert('서버 에러가 발생했습니다.');
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -154,10 +157,14 @@ const JoinUser = () => {
                                     placeholder="4~20자리/영문,숫자,특수문자 '_'사용가능" required
                                     onChange={handleChange} />
 
-                                <button type="button" className="btn-male"
+                                <button
+                                    type="button"
+                                    className="btn-male"
                                     style={{ backgroundColor: '#007bff', color: 'white', marginLeft: '15px' }}
-                                    >중복</button>
-
+                                    onClick={checkIdAvailability}  // onClick 이벤트 핸들러 추가
+                                >
+                                    중복
+                                </button>
                                 <img id="id_check_sucess" style={{ display: 'none' }} />
                             </div>
                         </div>
