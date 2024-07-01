@@ -66,6 +66,7 @@ h5{
     min-height: 300px;
     border: 1px solid #dadada;
     border-radius: 0 0 8PX 8PX;
+    resize: none;
 }
 
 /* 미디어쿼리 1400px 이상부터 적용 */
