@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Header.css';
 import { Link } from 'react-router-dom'
-
+import { LoginContext } from '../contexts/LoginContextProvider'
 
 const Header = () => {
+    const { isLogin, roles } = useContext(LoginContext);
+
     return (
         <div className='header'>
             <div className="header-wrap">
@@ -15,27 +17,36 @@ const Header = () => {
                         </h1>
                     </Link>
                 </div>
-                <div className="nav-menu">
+                <div className="nav-menu no-wrap">
+                    {isLogin && roles.isCompany && (
+                        <>
+                            <Link to="/company/introduce_com"><b>기업 정보</b></Link>
+                            <Link to="/recruit/applied_jobs_user"><b>제출된 이력서</b></Link>
+                            <Link to="/company/credit_com" id="paymentLink"><b>결제</b></Link>
+                            <Link to="/user/update_user"><b>담당자 정보</b></Link>
+                        </>
+                    )}
 
-                    {/* 기업 권한 */}
-                        <Link to="/company/introduce_com"><b>기업 정보</b></Link>
-                        <Link to="/company/resume"><b>제출된 이력서</b></Link>
-                        <Link to="/company/credit_com" id="paymentLink"><b>결제</b></Link>
-                        <Link to="/info"><b>담당자 정보</b></Link>
+                    {isLogin && roles.isUser && !roles.isCompany && (
+                        <>
+                            <Link to="/user/update_user"><b>내 정보</b></Link> 
+                            <Link to="/recruit/cv_list_user"><b>이력서 관리</b></Link> 
+                        </>
+                    )}
 
-                    {/* 사용자 권한 */}
-                        <Link to="/info"><b>내 정보</b></Link> 
-                        <Link to="/user/resume"><b>이력서 관리</b></Link> 
-
-                    {/* 비로그인 시 */}
-                        <Link to="/"><b>채용공고</b></Link> 
-                        <Link to="/login"><b>로그인</b></Link> 
-
-                    {/* 로그인 시 */}
-                    <form action="/logout" method="post">
-                        <Link to="/"><b>채용공고</b></Link> 
-                        <button className="logout-button" type="submit"><b>로그아웃</b></button>
-                    </form>
+                    {!isLogin ? (
+                        <>
+                            <Link to="/"><b>채용공고</b></Link> 
+                            <Link to="/login"><b>로그인</b></Link> 
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/"><b>채용공고</b></Link> 
+                            <form action="/logout" method="post" className='d-inline-block'>
+                                <button className="logout-button" type="submit"><b>로그아웃</b></button>
+                            </form>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
