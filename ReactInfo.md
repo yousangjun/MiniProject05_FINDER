@@ -32,7 +32,7 @@ CSS이름 = jsx이름 이랑 같은 이름으로 만들어야함 ( className = �
 ⭕푸터
 ⭕com_detail_user
 ⭕credit 전체
-❌detail_jobs_user (상세채용공고)
+⭕detail_jobs_user (상세채용공고)
 
 
 
@@ -44,7 +44,7 @@ CSS이름 = jsx이름 이랑 같은 이름으로 만들어야함 ( className = �
 ⭕app~
 ⭕new~
 ⭕list
-❌post_jobs_com
+⭕post_jobs_com
 ❌post_jobs_read_com 비슷함 알아서 하면됨
 
 ⭕버튼 숏 in숏 롱 
@@ -55,9 +55,9 @@ CSS이름 = jsx이름 이랑 같은 이름으로 만들어야함 ( className = �
 ➡ 상준
 ⭕페이징 (Company Component 에 있다)
 ⭕login
-❌find_com, ❌find_user
+⭕find_com, ⭕find_user
 ⭕join_com, ⭕join_user, ❌social
-❌update_user
+⭕update_user
 
 
 
