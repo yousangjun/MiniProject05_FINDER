@@ -36,6 +36,9 @@ import Join_com from './pages/user/join_com';
 import Join_user from './pages/user/join_user';
 import Post_jobsRead_com from "./pages/resume/Post_jobsRead_com";
 import Update_user from "./pages/resume/Update_user";
+import Find_com from "./pages/resume/Find_com";
+import Find_user from "./pages/resume/Find_user";
+
 
 
 
@@ -89,6 +92,11 @@ function App() {
 
           {/* 유저페이지 */}
           <Route path="/user/update_user" element={<Update_user/>}></Route>
+
+          {/* 아이디비밀번호 찾기 */}
+          <Route path="/com/find_com" element={<Find_com/>}></Route>
+          <Route path="/user/find_user" element={<Find_user/>}></Route>
+
         </Routes>
         </LoginContextProvider>
     </BrowserRouter>

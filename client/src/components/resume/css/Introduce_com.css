@@ -3,12 +3,12 @@
 }
 
 
-img{
+.introImg{
     width: 50%;
     align-self: center;
 }
 
-h4{
+.introduceCom{
     text-align: center;
     margin: auto 100px;
  /*    outline: dashed 1px #bebebe; */
