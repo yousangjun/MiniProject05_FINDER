@@ -18,7 +18,7 @@ const LoginContextProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null)
 
   // 권한 정보
-  const [roles, setRoles] = useState({isUser: false, isAdmin: false})
+  const [roles, setRoles] = useState({isUser: false, isAdmin: false, isCompany: false})
 
   /* -------------------------------------------------------- */
 
@@ -133,10 +133,11 @@ const LoginContextProvider = ({ children }) => {
     setUserInfo(updatedUserInfo)
 
     // 👮‍♀️ 권한 정보 세팅
-    const updatedRoles = { isUser: false, isAdmin: false }
+    const updatedRoles = { isUser: false, isAdmin: false, isCompany: false}
     roleList.forEach((role) => {
       if (role === 'ROLE_USER') updatedRoles.isUser = true
       if (role === 'ROLE_ADMIN') updatedRoles.isAdmin = true
+      if (role === 'ROLE_COMPANY') updatedRoles.isCompany = true
     })
     setRoles(updatedRoles)
   }
@@ -156,7 +157,7 @@ const LoginContextProvider = ({ children }) => {
     setUserInfo(null)
 
     // 👮‍♀️❌ 권한 정보 초기화
-    setRoles({ isUser: false, isAdmin: false })
+    setRoles({ isUser: false, isAdmin: false, isCompany: false })
   }
 
   // 🔓 로그아웃
