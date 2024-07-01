@@ -6,7 +6,9 @@ import * as auth from '../apis/user/auth'
 import * as Swal from '../apis/user/alert'
 
 // 📦컨텍스트 생성
-export const LoginContext = createContext()
+export const LoginContext = React.createContext();
+LoginContext.displayName = 'LoginContextName'
+
 
 const LoginContextProvider = ({ children }) => {
 
@@ -18,12 +20,18 @@ const LoginContextProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null)
 
   // 권한 정보
-  const [roles, setRoles] = useState({isUser: false, isAdmin: false, isCompany: false})
+  const [roles, setRoles] = useState({ isUser: false, isAdmin: false, isCompany: false })
 
-  /* -------------------------------------------------------- */
+  // 아이디 저장
+  const [rememberId, setRememberId] = useState();
+
+  // 자동 로그인
+  const [rememberMe, setRememberMe] = useState()
 
   // 페이지 이동
   const navigate = useNavigate()
+  /* -------------------------------------------------------- */
+
 
   // 🍪➡💍 로그인 체크
   const loginCheck = async () => {
@@ -62,7 +70,7 @@ const LoginContextProvider = ({ children }) => {
 
       // 로그인 세팅
       loginSetting(data, accessToken)
-      
+
     } catch (error) {
       if (error.response) {
         console.log(`error : ${error}`);
@@ -74,9 +82,19 @@ const LoginContextProvider = ({ children }) => {
   }
 
   // 🔐 로그인
-  const login = async (username, password) => {
+  const login = async (username, password, rememberId, rememberMe) => {
     console.log(`username: ${username}`);
     console.log(`password: ${password}`);
+    console.log(`rememberId : ${rememberId}`);
+    console.log(`rememberMe : ${rememberMe}`);
+
+    // 아이디 저장
+    if (rememberId) Cookies.set("rememberId", username)
+    else Cookies.remove("rememberId")
+
+    // 자동 로그인
+    if (rememberMe) Cookies.set("rememberMe", username)
+    else Cookies.remove("rememberMe")
 
     try {
       const response = await auth.login(username, password)
@@ -124,16 +142,25 @@ const LoginContextProvider = ({ children }) => {
     // axios common header - Authorizaion 헤더에 jwt 등록
     api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
+    if (Cookies.get('rememberMe') != null) {
+      Cookies.set("accessToken", accessToken, { expires: 7 });
+      // Cookies.set("rememberMe", rememberMe, {expires:7});
+      // window.alert("rememberMe가 null이 아닐 때 7일 설정.")
+    } else {
+      Cookies.set("accessToken", accessToken);
+      // window.alert("rememberMe가 null일 때 설정하지 않음.")
+    }
+
     // 📦 Context 에 정보 등록
     // 🔐 로그인 여부 세팅
     setLogin(true)
-    
+
     // 👩‍💼 유저 정보 세팅
     const updatedUserInfo = { userNo, userId, roleList }
     setUserInfo(updatedUserInfo)
 
     // 👮‍♀️ 권한 정보 세팅
-    const updatedRoles = { isUser: false, isAdmin: false, isCompany: false}
+    const updatedRoles = { isUser: false, isAdmin: false, isCompany: false }
     roleList.forEach((role) => {
       if (role === 'ROLE_USER') updatedRoles.isUser = true
       if (role === 'ROLE_ADMIN') updatedRoles.isAdmin = true
@@ -166,7 +193,7 @@ const LoginContextProvider = ({ children }) => {
     if (force) {
       // 로그아웃 세팅
       logoutSetting()
-  
+
       // 페이지 이동 ➡ "/" (메인)
       navigate("/")
       return
