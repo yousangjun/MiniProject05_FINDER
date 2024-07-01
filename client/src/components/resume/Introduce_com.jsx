@@ -93,10 +93,11 @@ const Introduce_com = () => {
               />
               <span>년</span>
             </div>
-            <h4>업력연차</h4>
+            <h4 className='introduceCom'>업력연차</h4>
           </div>
           <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
-            <img src="/img/대기업1.png" alt="기업규모" />
+
+            <img src="/img/대기업1.png" alt="기업규모" className='introImg' />
             <select
               name="comSize"
               id="comSize"
@@ -105,11 +106,12 @@ const Introduce_com = () => {
               onChange={handleChange}
             >
               <option value="기업선택">기업선택</option>
+
               <option value="대기업">대기업</option>
               <option value="중견기업">중견기업</option>
               <option value="중소기업">중소기업</option>
             </select>
-            <h4>기업 규모</h4>
+            <h4 className='introduceCom'>기업 규모</h4>
           </div>
           <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
             <img src="/img/사원수1.png" alt="사원수" />
@@ -124,7 +126,7 @@ const Introduce_com = () => {
               />
               <span>명</span>
             </div>
-            <h4>사원 수</h4>
+            <h4 className='introduceCom'>사원 수</h4>
           </div>
           <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
             <img src="/img/매출액1.png" alt="매출액" />
@@ -139,7 +141,7 @@ const Introduce_com = () => {
               />
               <span>억</span>
             </div>
-            <h4>매출액</h4>
+            <h4 className='introduceCom'>매출액</h4>
           </div>
         </div>
         <div className="ComName d-flex justify-content-between introduce-col2 mb-3">

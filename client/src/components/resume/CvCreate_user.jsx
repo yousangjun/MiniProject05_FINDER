@@ -32,7 +32,7 @@ const CvCreate_user = () => {
                 </div>
             </div>
 
-            <div className="profile-pic col-6 userImgTitle">
+            <div className="profile-pic userImgTitle">
                 <div id='preview' className='preview'>
                     <img src="" alt="썸네일에 따라 다르게 올라가야함" className='img-thumbnail' />
                 </div>
@@ -134,14 +134,14 @@ const CvCreate_user = () => {
             <div className="mt-5" style={{padding: 0}}>
                 <h5 className='introduceMe'>자기소개서</h5>
                 <hr className='hrrr'/>
-                <textarea name="coverLetter" id="coverLetter" minLength={10} className="introduceMe1 form-control border bg-light round-3" 
+                <textarea name="coverLetter" id="coverLetter" minLength={10} className="introduceMe1 form-controller border bg-light round-3" 
                 rows={5} placeholder='최소 10자이상 작성해야 합니다.' ></textarea>
             </div>
 
             <div className="file-upload upload-btn d-flex justify-content-between">
                 <div>
                     <input type="file" name="uploadFile" id="uploadFile" multiple style={{display: 'none'}} />
-                    <button className="btn-long file-input" type='button' id='uploadBtn' name='uploadBtn'>파일 선택</button>
+                    <button className="btn-long InsertFile" type='button' id='uploadBtn' name='uploadBtn'>파일 선택</button>
                     <button className="btn-long deleteFile" type='button' id='deleteBtn' name='deleteBtn'>파일 삭제</button>
                     <span id='fileName'>파일을 추가해주세요.</span>
                     <div id='fileAddList'>
