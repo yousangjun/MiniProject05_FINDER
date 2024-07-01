@@ -170,6 +170,7 @@ public class JwtTokenProvider {
                 if( userInfo != null ) {
                     user.setUserName(userInfo.getUserName());
                     user.setUserId(userInfo.getUserId());
+                    user.setUserEmail(userInfo.getUserEmail());
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());
