@@ -141,41 +141,11 @@
     margin-top: 10px;
 }
 
-.phone {
-    gap: 10px;
-}
-
-.phone-check {
-    display: flex;
-    align-items: center;
-}
-
-
-
-
-main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .register-form-login {
     width: 100%;
     max-width: 570px;
     padding: 20px;
 }
-
-
-.search-form {
-    width: 100%;
-    max-width: 80%;
-    padding: 20px;
-    justify-content: center;
-
-}
-
-
 
 .register-form-login h2 {
     text-align: center;
@@ -304,63 +274,3 @@ main {
     vertical-align: middle;
 
 }
-
-
-.check-btn {
-    display: flex;
-    align-items: center;
-}
-
-.id {
-    display: flex;
-    gap: 10px;
-}
-
-
-.check-,
-.verify-button,
-.submit-button {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 8px;
-    background-color: #2065E8;
-    color: #fff;
-    cursor: pointer;
-}
-
-.check-button,
-.verify-button {
-    width: auto;
-}
-
-.submit-button {
-    width: 100%;
-    margin-top: 20px;
-}
-
-
-
-/* find_user */
-.header-logo img {
-    height: 50px;
-  }
-  .recovery-form {
-    margin-top: 20px;
-  }
-  .form-header {
-    background-color: #005AAB;
-    color: white;
-    padding: 10px;
-    border-radius: 28px;
-    text-align: center;
-    font-size: 20px;
-  }
-  .divider {
-    border-left: 1px solid #E6E6E6;
-    height: 100%;
-    left: 50%;
-    margin: 0 20px 0 20px;
-    top: 0;
-  }   
