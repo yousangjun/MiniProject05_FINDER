@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-
+import './css/Checkout.css'
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
 

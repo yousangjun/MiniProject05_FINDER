@@ -12,7 +12,7 @@
   flex-direction: column;
   justify-content: space-evenly;
 }
-.payment-form1 .credit-form-btn {
+.payment-form1 .credit-form-btn1 {
   display: flex;
   column-gap: 30px;
   position: absolute;
@@ -24,7 +24,7 @@
   font-size: 20px;
 }
 
-.credit-form-btn a {
+.credit-form-btn1 a {
     text-decoration: none;
     text-align: center;
     padding-top: 4px;
@@ -32,6 +32,7 @@
 
 .credit-list-info1 li {
     font-size: 20px ;
+    text-align: left;
 }
 
 .credit-list-info1 {
@@ -39,7 +40,7 @@
   list-style: disc;
 }
 
-.credit-form-btn>a {
+.credit-form-btn1>a {
 }
 
 

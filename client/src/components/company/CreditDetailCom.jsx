@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import './CreditDetailCom.css';
+import './css/CreditDetailCom.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
-import BtnLong from '../main/BtnLong';
-import BtnShort from '../main/BtnShort';
 
 const CreditDetailCom = () => {
     const [modalShow, setModalShow] = useState(false);
@@ -66,7 +64,7 @@ const CreditDetailCom = () => {
                             <div>
                                 <p>결제 수단 :</p>
                             </div>
-                            <div className="d-flex credit-form-btn align-items-end">
+                            <div className="d-flex credit-form-btn1 align-items-end">
                                 <Link to="/company/checkout">
                                     <button 
                                         className={`btn-long ${isAgreed ? 'btn-agreed' : 'btn-not-agreed'}`} 

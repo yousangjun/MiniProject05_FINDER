@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './CreditCom.css';
+import './css/CreditCom.css';
 
 const CreditCom = () => {
     return (

@@ -44,7 +44,7 @@ const HomeContainer = () => {
         const observer = new IntersectionObserver(handleObserver, {
             root: null,
             rootMargin: "0px",
-            threshold: 0.9
+            threshold: 1
         });
 
         if (loader.current) {
@@ -56,7 +56,10 @@ const HomeContainer = () => {
                 observer.unobserve(loader.current);
             }
         };
-    }, []);
+        // 처음엔 의존성 없이 실행하니 첫 로딩할때 2번쨰페이지까지 보여지게됨 의존성 생기니 무한로딩 .
+        // 무한로딩 오류해결방법은 전체 데이터 개수를알고 개수를 넘으면 로딩을 안하면 됨.
+    }, [loading]);
+    
 
     useEffect(() => {
         const fetchInitialData = () => {
@@ -80,6 +83,7 @@ const HomeContainer = () => {
 
     useEffect(() => {
         if (currentPage === 1) return; // 초기 페이지는 이미 로드되었으므로 무시
+        if ((currentPage - 1) * rowsPerPage >= count) return; // 로드할 데이터가 없으면 무시
 
         const fetchMoreData = () => {
             setLoading(true);
@@ -123,6 +127,9 @@ const HomeContainer = () => {
         setCurrentPage(1); // Reset pagination on option change
     };
 
+    useEffect (() => {
+     console.log(currentPage, "페이지 로드됨");
+    },[currentPage])
     
 
     const handleMouseOver = (comNo) => {
@@ -137,12 +144,11 @@ const HomeContainer = () => {
             });
     };
 
-    // const handleMouseOut = (comNo) => {
-    //     // 해당 컴포넌트를 숨기기
-    //     const updatedRecruitList = { ...recruitList };
-    //     delete updatedRecruitList[comNo];  // 해당 comNo의 데이터 삭제
-    //     setRecruitList(updatedRecruitList);
-    // };
+    const handleMouseOut = (comNo) => {
+        const updatedRecruitList = { ...recruitList };
+        delete updatedRecruitList[comNo]; 
+        setRecruitList(updatedRecruitList);
+    };
 
     return (
         <>
@@ -157,11 +163,11 @@ const HomeContainer = () => {
                 handleOptionChange={handleOptionChange}
                 count={count}
                 handleMouseOver={handleMouseOver}
-                // handleMouseOut={handleMouseOut}
+                handleMouseOut={handleMouseOut}
                 selectedOption={selectedOption}
             />
             <Card data={data} />
-            <div ref={loader} className="loading-indicator">
+            <div ref={loader} className="loading-indicator" style={{height: "50px"}}>
                 {loading && <p>Loading more items...</p>}
             </div>
         </>

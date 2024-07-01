@@ -33,7 +33,7 @@ const CvCreate_user = () => {
             </div>
 
             <div className="profile-pic col-6 userImgTitle">
-                <div id='preview' className='Preview'>
+                <div id='preview' className='preview'>
                     <img src="" alt="썸네일에 따라 다르게 올라가야함" className='img-thumbnail' />
                 </div>
 
@@ -75,10 +75,10 @@ const CvCreate_user = () => {
                     </div>
 
                     <div className="col-12 p-2">
-                    {/* 학력 리스트 */}
-                    <div id="education-list">
-                        {/* 리스트 아이템들을 여기에 추가 */}
-                    </div>
+                        {/* 학력 리스트 */}
+                        <div id="education-list">
+                            {/* 리스트 아이템들을 여기에 추가 */}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,7 +124,8 @@ const CvCreate_user = () => {
                     <div className="col-12 p-2">
                         {/* 경력 리스트 */}
                         <div id="employmenthistory-list">
-                            {/* 리스트 아이템들을 여기에 추가 */}
+                            {/* 리스트 아이템들을 여기에 추가 
+                            이거 그냥 추가되는건 아니면 import 시켜야 하는 건지 알아야 함*/}
                         </div>
                     </div>
                 </div>

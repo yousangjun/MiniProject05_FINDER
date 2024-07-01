@@ -27,6 +27,7 @@
     "sweetalert2-react-content": "^5.0.7",
     "web-vitals": "^2.1.4"
   },
+  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -39,6 +40,7 @@
       "react-app/jest"
     ]
   },
+  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -51,8 +53,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080",
-  "devDependencies": {
-    "eslint-plugin-react": "^7.34.3"
-  }
+  "proxy": "http://localhost:8080"
+  
 }

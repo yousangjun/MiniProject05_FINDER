@@ -1,0 +1,148 @@
+
+
+.a-wrapper>a {
+    text-decoration: none;
+    /* 링크의 밑줄 제거 */
+    color: #fff;
+    /* 링크 글씨 색상 설정 */
+    display: block;
+    /* 전체 영역 클릭 가능하게 블록 요소로 변경 */
+
+    width: 300px;
+    height: 90px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    /* 가로 중앙 정렬 */
+    align-items: center;
+    /* 세로 중앙 정렬 */
+    text-align: center;
+    /* 텍스트 중앙 정렬 */
+    padding: 10px 20px;
+    /* 버튼 패딩 설정 */
+    text-decoration: none;
+    /* 링크 밑줄 제거 */
+
+}
+
+.a-wrapper .detail-form {
+    text-decoration: none;
+    /* 링크의 밑줄 제거 */
+    color: #fff;
+    /* 링크 글씨 색상 설정 */
+    display: block;
+    /* 전체 영역 클릭 가능하게 블록 요소로 변경 */
+
+    width: 300px;
+    height: 90px;
+
+    margin-bottom: 15px;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    /* 가로 중앙 정렬 */
+    align-items: center;
+    /* 세로 중앙 정렬 */
+    text-align: center;
+    /* 텍스트 중앙 정렬 */
+    padding: 10px 20px;
+    /* 버튼 패딩 설정 */
+    text-decoration: none;
+    /* 링크 밑줄 제거 */
+
+}
+
+.keyword-span-detail {}
+
+.keyword-span-detail span {
+    background-color: #f8f8f8;
+    color: #5d5d5d;
+    border-radius: 20px;
+    padding: 0 8px 0 8px;
+    font-size: 11px;
+    opacity: 0.8;
+    font-weight: bold;
+    transition: background-color 0.5s ease;
+    text-align: center;
+    margin: 0 5px 5px 0;
+    width: auto !important;
+    height: 24px !important;
+    line-height: 24px;
+    display: inline-block !important;
+
+}
+
+.keyword-span-detail .input-keyword {
+    background-color: #f8f8f8;
+    color: #5d5d5d;
+    border-radius: 20px;
+    padding: 0 8px 0 8px;
+    font-size: 11px;
+    opacity: 0.8;
+    font-weight: bold;
+    transition: background-color 0.5s ease;
+    text-align: center;
+    margin: 0 5px 5px 0;
+    height: 24px !important;
+    line-height: 24px;
+    display: inline-block !important;
+
+
+}
+
+
+.detail-header>div {
+    margin-bottom: 9px;
+}
+
+.detail-logo {
+    margin-bottom: 44px;
+}
+
+.sec_detail {
+    padding-bottom: 80px;
+}
+
+.sec_detail>div {
+    margin-bottom: 27px;
+}
+
+.detail_box01,
+.detail_box02,
+.detail_box03 {
+    margin-bottom: 26px;
+}
+
+.job_notice_detail {}
+
+.modal-list-detail {
+    /* background-color: #fff; */
+}
+
+.modal-list-detail .job-item-detail {
+    padding: 10px;
+    border-radius: 20px;
+}
+.modal-list-detail .job-item-detail:hover {
+    background-color: #F7F9FC;
+}
+
+.modal-list-detail .job-item-detail:focus,
+.modal-list-detail .job-item-detail:focus:hover {
+    background-color: #F7F9FC;
+    border: 2px solid #bdbdbd;
+
+
+}
+
+.modal-list-detail .job-item-detail:hover:focus {
+    background-color: #F7F9FC;
+}
+
+#floatingSelectGrid:focus {
+    border-color: #005AAB ;
+    outline: 0 ;
+}
