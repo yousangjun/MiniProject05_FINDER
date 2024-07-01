@@ -14,3 +14,8 @@ export const update = (data) => api.put(`/users`, data)
 
 // 회원 탈퇴
 export const remove = (userId) => api.delete(`/users/${userId}`)
+
+// 아이디 체크
+export const usernameCheck = (username) => {
+    return userApi.get(`/user/check?username=${username}`)
+}
