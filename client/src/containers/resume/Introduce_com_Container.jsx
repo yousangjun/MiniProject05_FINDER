@@ -12,12 +12,12 @@ const Introduce_com_Container = () => {
       <ContentTitle SubTitle1={"기업 소개"} SubTitle2={"사람을 소중히 대하라"} />
       <div className="row justify-content-center" style={{ padding: '0 40px' }}>
           <Sidebar />
-          <main1 className="col-12 col-md-12 col-lg-8 main-content1 d-flex justify-content-end align-items-start">
+          <main className="col-12 col-md-12 col-lg-8 main-content1 d-flex justify-content-end align-items-start">
               <div className="job-listings1">
                   <ContentHeader ContentHeaderText={"기업 정보"} />
                   <Introduce_com />
               </div>
-          </main1>
+          </main>
       </div>
     </>
 
