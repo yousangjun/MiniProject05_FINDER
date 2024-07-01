@@ -87,29 +87,15 @@ const JoinUserContainer = () => {
         setUserPwCheck,
         name,
         setName,
-        nickname,
-        setNickname,
         auth,
         setAuth,
         email,
         setEmail,
         phone,
         setPhone,
-        file,
-        setFile,
-        fileSource,
-        setFileSource,
-        fileName,
-        setFileName,
         usernameChecked,
         setUsernameChecked,
-        nicknameChecked,
-        setNicknameChecked,
-        phoneChecked,
-        setPhoneChecked,
         usernameCheckedHandler,
-        nicknameCheckedHandler,
-        phoneCheckedHandler,
     };
 
     // 회원가입 요청
@@ -131,15 +117,7 @@ const JoinUserContainer = () => {
             return;
         }
 
-        if (!nicknameChecked) {
-            alert("닉네임 중복검사를 실시해주세요.");
-            return;
-        }
 
-        if (!phoneChecked) {
-            alert("연락처 중복검사를 실시해주세요.");
-            return;
-        }
 
         // 유효성 검사 부분
         // 1. 비밀번호에 대한 유효성 검사
@@ -187,7 +165,7 @@ const JoinUserContainer = () => {
         }
     };
 
-    useEffectt(() => {
+    useEffect(() => {
 
     }, []);
 

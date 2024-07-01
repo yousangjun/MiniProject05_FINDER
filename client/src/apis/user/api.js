@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 // axios 객체 생성
