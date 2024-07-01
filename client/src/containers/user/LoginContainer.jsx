@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Login from '../../components/user/Login'
 import { useNavigate } from 'react-router-dom'
-import * as userAuth from '../../apis/user/userAuth'
+import * as userAuth from '../../apis/user/auth'
 
 
 const LoginContainer = () => {
@@ -20,26 +20,26 @@ const LoginContainer = () => {
     if (data != null) {
       navi(`/`)
     } else {
-      getCookies()
+      // getCookies()
       navi(`/login`)
     }
   }
 
-  const getCookies = () => {
-    if(userAuth.getCookieValue('rememberId') != null){
-      setRememberId(true)
-      setUsername(userAuth.getCookieValue('rememberId'))
-    }else{
-      setRememberId(false)
-    }
+  // const getCookies = () => {
+  //   if(userAuth.getCookieValue('rememberId') != null){
+  //     setRememberId(true)
+  //     setUsername(userAuth.getCookieValue('rememberId'))
+  //   }else{
+  //     setRememberId(false)
+  //   }
 
-    if(userAuth.getCookieValue('rememberMe') != null){
-      setRememberMe(true)
-      setUsername(userAuth.getCookieValue('rememberMe'))
-    }else{
-      setRememberMe(false)
-    }
-  }
+  //   if(userAuth.getCookieValue('rememberMe') != null){
+  //     setRememberMe(true)
+  //     setUsername(userAuth.getCookieValue('rememberMe'))
+  //   }else{
+  //     setRememberMe(false)
+  //   }
+  // }
 
   const sets = {
     username,
@@ -53,9 +53,9 @@ const LoginContainer = () => {
     loginHandler
   }
 
-  useEffect(() => {
-    getCookies()
-  }, [])
+  // useEffect(() => {
+  //   getCookies()
+  // }, [])
 
 
   return (
