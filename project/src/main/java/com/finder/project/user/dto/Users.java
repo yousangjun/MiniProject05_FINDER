@@ -18,6 +18,9 @@ public class Users {
     private String userBeforePw;
     private String userBirth;
 
+    // private String username;
+    // private String password;
+    
     private String userPhone;
     private String userEmail;
     private Date userRegDate;
