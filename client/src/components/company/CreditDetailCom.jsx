@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './css/CreditDetailCom.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { Modal, Button } from 'react-bootstrap';
+import * as credit from '../../apis/company/credit';
+import { Link, useLocation } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
 
 const CreditDetailCom = () => {
     const [modalShow, setModalShow] = useState(false);
     const [isAgreed, setIsAgreed] = useState(false);
-    const navigate = useNavigate();
+    const [product, setProduct] = useState(null);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const productNo = queryParams.get('productNo');
+
+    useEffect(() => {
+        if (productNo) {
+            const fetchProduct = async () => {
+                try {
+                    const response = await credit.getProduct(productNo);
+                    setProduct(response.data);
+                } catch (error) {
+                    console.error('상품 정보를 불러오는 중 에러 발생:', error);
+                }
+            };
+            fetchProduct();
+        }
+    }, [productNo]);
 
     const handleBuyCheck = () => {
         setIsAgreed(true);
@@ -16,21 +34,25 @@ const CreditDetailCom = () => {
         <div className="d-flex flex-column container main-content align-items-center">
             <h1 className="my-5">상품을 선택하셨습니다.</h1>
 
-            <div className="col-lg-4 col-md-6 col-sm-12 credit-content-wrap">
-                <div className="card text-center">
-                    <div className="card-body d-flex flex-column credit-body">
-                        <h3>
-                            <span style={{ fontSize: '30px' }}>스탠다드</span>
-                            <span> / 3개월 5건</span>
-                        </h3>
-                        <ul className="credit-list-info1">
-                            <li>채용공고 작성 건수</li>
-                            <li>AI 평가 사용</li>
-                            <li>건당 <span>3</span>개월 유지 가능</li>
-                        </ul>
+            {product ? (
+                <div className="col-lg-4 col-md-6 col-sm-12 credit-content-wrap">
+                    <div className="card text-center">
+                        <div className="card-body d-flex flex-column credit-body">
+                            <h3>
+                                <span style={{ fontSize: '30px' }}>{product.productName}</span>
+                                <span> / {product.productDuration}개월 {product.productCount}건</span>
+                            </h3>
+                            <ul className="credit-list-info1">
+                                <li>채용공고 작성 건수</li>
+                                <li>AI 평가 사용 : {product.aiEvaluation ? '사용 가능' : '사용 불가'}</li>
+                                <li>건당 <span>{product.productDuration}</span>개월 유지 가능</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <div>상품 정보를 불러오는 중입니다...</div>
+            )}
 
             <div className="container mt-5 payment-form-wrap">
                 <div className="payment-form1">
@@ -38,7 +60,7 @@ const CreditDetailCom = () => {
                         <div className="credit_user_info">
                             
                             <div>
-                                <p>결제 금액 : <span>100,000</span>원</p>
+                                <p>결제 금액 : <span>{product ? product.price : '...'}</span>원</p>
                                 <hr />
                             </div>
 
