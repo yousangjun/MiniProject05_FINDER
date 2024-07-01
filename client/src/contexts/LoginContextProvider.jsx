@@ -190,14 +190,14 @@ const LoginContextProvider = ({ children }) => {
   // 🔓 로그아웃
   const logout = (force = false) => {
 
-    if (force) {
-      // 로그아웃 세팅
-      logoutSetting()
+    // if (force) {
+    //   // 로그아웃 세팅
+    //   logoutSetting()
 
-      // 페이지 이동 ➡ "/" (메인)
-      navigate("/")
-      return
-    }
+    //   // 페이지 이동 ➡ "/" (메인)
+    //   navigate("/")
+    //   return
+    // }
 
     Swal.confirm("로그아웃하시겠습니까?", "로그아웃을 진행합니다.", "warning",
       (result) => {

@@ -13,7 +13,7 @@ const AppliedJobsUserContainer = () => {
                 <Sidebar />
                 <main1 className="col-12 col-md-12 col-lg-8 main-content1 d-flex justify-content-end align-items-start">
                     <div className="job-listings1">
-                        <ContentHeader ContentHeaderText={"지원 한 채용공고"}/>
+                        <ContentHeader ContentHeaderText={"지원한 채용공고"}/>
                         <ContentListItem ContentListItemText={"합격조회"} ShowBtn={true} LinkToHref={``} />
                     </div>
                 </main1>

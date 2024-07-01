@@ -42,9 +42,9 @@ const Header = () => {
                     ) : (
                         <>
                             <Link to="/"><b>채용공고</b></Link> 
-                            <form action="/logout" method="post" className='d-inline-block'>
+                            {/* <form action="/logout" method="post" className='d-inline-block'> */}
                                 <button className="logout-button" type="submit"onClick={logout}><b>로그아웃</b></button>
-                            </form>
+                            {/* </form> */}
                         </>
                     )}
                 </div>

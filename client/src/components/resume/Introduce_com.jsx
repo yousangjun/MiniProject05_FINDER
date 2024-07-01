@@ -81,7 +81,7 @@ const Introduce_com = () => {
         </div>
         <div className='row ComRow pt-4'>
           <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
-            <img src="/img/연차1.png" alt="업력연차" />
+            <img src="/img/연차1.png" alt="업력연차" className='introImg' />
             <div className='com-intro-input'>
               <input
                 type="text"
@@ -114,7 +114,7 @@ const Introduce_com = () => {
             <h4 className='introduceCom'>기업 규모</h4>
           </div>
           <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
-            <img src="/img/사원수1.png" alt="사원수" />
+            <img src="/img/사원수1.png" alt="사원수" className='introImg' />
             <div className='com-intro-input'>
               <input
                 type="text"
@@ -129,7 +129,7 @@ const Introduce_com = () => {
             <h4 className='introduceCom'>사원 수</h4>
           </div>
           <div className="d-flex flex-column row-gap-3 col-3 align-items-center">
-            <img src="/img/매출액1.png" alt="매출액" />
+            <img src="/img/매출액1.png" alt="매출액" className='introImg' />
             <div className='com-intro-input'>
               <input
                 type="text"
