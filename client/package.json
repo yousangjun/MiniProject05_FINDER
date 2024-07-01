@@ -27,7 +27,6 @@
     "sweetalert2-react-content": "^5.0.7",
     "web-vitals": "^2.1.4"
   },
-  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -40,7 +39,6 @@
       "react-app/jest"
     ]
   },
-  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -54,5 +52,4 @@
     ]
   },
   "proxy": "http://localhost:8080"
-  
 }
