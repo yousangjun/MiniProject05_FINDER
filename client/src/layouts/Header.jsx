@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { LoginContext } from '../contexts/LoginContextProvider'
 
 const Header = () => {
-    const { isLogin, roles } = useContext(LoginContext);
+    const { isLogin, roles,logout } = useContext(LoginContext);
 
     return (
         <div className='header'>
@@ -43,7 +43,7 @@ const Header = () => {
                         <>
                             <Link to="/"><b>채용공고</b></Link> 
                             <form action="/logout" method="post" className='d-inline-block'>
-                                <button className="logout-button" type="submit"><b>로그아웃</b></button>
+                                <button className="logout-button" type="submit"onClick={logout}><b>로그아웃</b></button>
                             </form>
                         </>
                     )}
