@@ -16,9 +16,6 @@ const Post_jobsContainer_com = () => {
         style={{marginLeft: '50px'}}>
         <div className='job-listings1'>
           <Post_jobs_com/>
-          <div className='PostBtn'>
-          <BtnLong btnLongText={"등록"}/>
-          </div>
         </div>
         </main>
       </div>
