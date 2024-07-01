@@ -86,7 +86,7 @@ const Post_jobs_com = () => {
                 <div>
                 <span>내용</span>
                     <div className="PostJobContents form-floating">
-                        <input type="text" className="form-control w-100 keyword-main"
+                        <textarea type="text" className="form-control w-100 h-100 keyword-main"
                         name='recruitContent' id='floatingTextarea2' placeholder='Leave a comment here'/>
                         <label htmlFor="floatingTextarea2">내용을 입력해주세요.</label>
                     </div>

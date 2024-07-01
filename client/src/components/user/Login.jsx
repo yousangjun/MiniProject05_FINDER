@@ -1,4 +1,6 @@
+
 import React, { useContext } from 'react'
+
 import './css/Login.css'
 import { LoginContext } from '../../contexts/LoginContextProvider'
 
@@ -19,18 +21,22 @@ const Login = ({ sets }) => {
       <div className="register-form row flex-column row-gap-2 align-items-center m-auto">
 
         <div className="row login-which mb-4">
+
           {/*  onClick={switchUser}, onClick={switchCom}가 있었음 */}
           <div className="col-md-6 text-center p-0">
             <button id="login-user" className="login-user"><strong>일반 회원</strong></button>
           </div>
           <div className="col-md-6 text-center p-0">
             <button id="login-com" className="login-com" ><strong>기업 회원</strong></button>
+
           </div>
         </div>
+
 
         <div className="login-title">
           <h2 style={{ textAlign: 'center' }}><strong id="login-title">로그인</strong></h2>
         </div>
+
 
 
         <form id="loginForm" onSubmit={(e) => onLogin(e)}>
@@ -67,6 +73,7 @@ const Login = ({ sets }) => {
         로그인
       </button>
 
+
       <div className="d-flex">
         <div className="w-100 d-flex">
           {/* 아이디 저장 */}
@@ -99,10 +106,12 @@ const Login = ({ sets }) => {
       </div>
     </form>
 
+
         <div className="row find-id-password">
           <div className="col-md-6 text-center">
             {/* <Link to='/user/join_user' id="join" className='joinUser'><strong>가입</strong></Link> */}
             <a href='/user/join_user' id="join" className='joinUser'><strong>회원가입</strong></a>
+
           </div>
           <div className="col-md-6 text-center">
             {/* <Link to='/user/find_user' id="find" className='findUser'>아이디/비밀번호 찾기</Link> */}
@@ -119,6 +128,7 @@ const Login = ({ sets }) => {
             <img src="/img/kakao_login_large.png" className='kakao' alt="카카오 로그인" />
           </a>
         </div>
+
 
       </div>
     </>
