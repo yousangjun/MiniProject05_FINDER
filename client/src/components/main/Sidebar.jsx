@@ -2,7 +2,7 @@ import React from 'react'
 
 const Sidebar = () => {
   return (
-      <nav className="col-12 col-sm-12 col-lg-3 sidebar1" style={{ position: 'sticky', top: '120px' }}>
+      <nav className="col-12 col-sm-12 col-lg-3 sidebar1" style={{ position: 'sticky', top: '120px', boxShadow: '-4px 8px 20px rgba(0, 0, 0, 0.1)' }}>
         <div style={{ margin: '15px 0 45px 15px' }}>
           <strong style={{ fontSize: '24px' }}>마이페이지</strong>
         </div>
