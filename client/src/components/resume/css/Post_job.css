@@ -28,6 +28,9 @@
     flex-wrap: wrap;
 }
 
+.PostJobContents{
+    height: 500px;
+}
 
 /* ---------------------------------- */
 
