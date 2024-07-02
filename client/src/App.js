@@ -52,8 +52,8 @@ function App() {
           <Route path="/company" element={<Company/>}></Route>
           <Route path="/company/com_detail_user" element={<Com_detail_user/>}></Route>
           <Route path="/company/credit_com" element={<Credit_com/>}></Route>
-          <Route path="/company/credit_detail_com" element={<Credit_detail_com/>}></Route>
-          <Route path="/company/checkout" element={<Checkout/>}></Route>
+          <Route path="/company/credit_detail_com/:productNo" element={<Credit_detail_com/>}></Route>
+          <Route path="/company/checkout/:productNo/:orderNo" element={<Checkout/>}></Route>
           <Route path="/company/Introduce_Com" element={<Introduce_com/>}></Route>          {/* 기업소개 등록/수정 */}
           <Route path="/company/success" element={<Success/>}></Route>
           <Route path="/company/fail" element={<Fail/>}></Route>

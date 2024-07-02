@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './css/CreditDetailCom.css';
 import * as credit from '../../apis/company/credit';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
+import { LoginContext } from '../../contexts/LoginContextProvider'
 
 const CreditDetailCom = () => {
     const [modalShow, setModalShow] = useState(false);
     const [isAgreed, setIsAgreed] = useState(false);
     const [product, setProduct] = useState(null);
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const productNo = queryParams.get('productNo');
+    const { productNo, orderNo } = useParams();
+    const navigate = useNavigate();
+    
+    // Context
+    const {userInfo} = useContext( LoginContext ) 
+    const userNo = userInfo ? userInfo.userNo : null;
 
     useEffect(() => {
         if (productNo) {
@@ -30,11 +34,38 @@ const CreditDetailCom = () => {
         setIsAgreed(true);
     };
 
+    const handlePayment = async () => {
+        if (isAgreed) {
+            if (!userNo) {
+                alert('로그인이 필요합니다.');
+                navigate('/login');
+                return;
+            }
+
+            try {
+                const response = await credit.insertOrder({ productNo, userNo });
+                if (response.data.success) {
+                    const orderNo = response.data.orderNo
+                    navigate(`/company/checkout/${productNo}/${orderNo}`);
+                } else {
+                    alert('결제에 실패했습니다. 다시 시도해주세요.');
+                }
+            } catch (error) {
+                console.error('결제 요청 중 에러 발생:', error);
+                alert('결제 중 에러가 발생했습니다. 다시 시도해주세요.');
+            }
+        }
+    };
+
+    const handleCancel = () => {
+        navigate(-1);
+    };
+
     return (
         <div className="d-flex flex-column container main-content align-items-center">
             <h1 className="my-5">상품을 선택하셨습니다.</h1>
 
-            {product ? (
+            {product && (
                 <div className="col-lg-4 col-md-6 col-sm-12 credit-content-wrap">
                     <div className="card text-center">
                         <div className="card-body d-flex flex-column credit-body">
@@ -44,14 +75,12 @@ const CreditDetailCom = () => {
                             </h3>
                             <ul className="credit-list-info1">
                                 <li>채용공고 작성 건수</li>
-                                <li>AI 평가 사용 : {product.aiEvaluation ? '사용 가능' : '사용 불가'}</li>
+                                <li>AI 평가 사용 : {productNo != 1 ? '사용 가능' : '사용 불가'}</li>
                                 <li>건당 <span>{product.productDuration}</span>개월 유지 가능</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            ) : (
-                <div>상품 정보를 불러오는 중입니다...</div>
             )}
 
             <div className="container mt-5 payment-form-wrap">
@@ -60,7 +89,7 @@ const CreditDetailCom = () => {
                         <div className="credit_user_info">
                             
                             <div>
-                                <p>결제 금액 : <span>{product ? product.price : '...'}</span>원</p>
+                                <p>결제 금액 : <span>{product ? product.productPrice : '...'}</span>원</p>
                                 <hr />
                             </div>
 
@@ -87,20 +116,18 @@ const CreditDetailCom = () => {
                                 <p>결제 수단 :</p>
                             </div>
                             <div className="d-flex credit-form-btn1 align-items-end">
-                                <Link to="/company/checkout">
-                                    <button 
-                                        className={`btn-long ${isAgreed ? 'btn-agreed' : 'btn-not-agreed'}`} 
-                                        type="button"
-                                        disabled={!isAgreed}
-                                    >간편 결제</button>
-                                </Link>
+                                <button 
+                                    className={`btn-long ${isAgreed ? 'btn-agreed' : 'btn-not-agreed'}`} 
+                                    type="button"
+                                    onClick={handlePayment}
+                                    disabled={!isAgreed}
+                                >
+                                    간편 결제
+                                </button>
                                 <button 
                                 className='btn-long'
                                 type="button"
-                                onClick={(e) => {
-                                        e.preventDefault()   
-                                        window.history.back()
-                                    }}
+                                onClick={handleCancel}
                                 >취소</button>
                             </div>
                         </div>

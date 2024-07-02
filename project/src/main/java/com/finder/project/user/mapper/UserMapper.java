@@ -9,6 +9,7 @@ import com.finder.project.user.dto.EmailVerification;
 import com.finder.project.user.dto.UserAuth;
 import com.finder.project.user.dto.UserSocial;
 import com.finder.project.user.dto.Users;
+import com.nimbusds.jwt.JWT;
 
 @Mapper
 public interface UserMapper {
@@ -73,5 +74,11 @@ public interface UserMapper {
 
     // 소셜 정보로 회원 조회
     public Users selectBySocial(UserSocial userSocial) throws Exception;
+
+
+
+        
+    // JWT 로 User 객체 가져오기
+    public Users selectByUserNo(int userNo) throws Exception;
 
 }

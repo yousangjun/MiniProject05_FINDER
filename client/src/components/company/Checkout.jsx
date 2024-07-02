@@ -1,5 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import './css/Checkout.css'
+import { LoginContext } from '../../contexts/LoginContextProvider';
+import * as credit from '../../apis/company/credit';
+
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
 
@@ -10,6 +13,10 @@ const CreditDetailCom = () => {
     const [paymentWidget, setPaymentWidget] = useState(null);
     const paymentMethodsWidgetRef = useRef(null);
     const [price, setPrice] = useState(50_000);
+
+    // Context
+    const { userInfo } = useContext(LoginContext);
+    const userNo = userInfo ? userInfo.userNo : null;  // 사용자 정보에서 userNo 가져오기
 
     useEffect(() => {
         const fetchPaymentWidget = async () => {
@@ -52,15 +59,24 @@ const CreditDetailCom = () => {
 
     const handlePaymentRequest = async () => {
         try {
-            await paymentWidget?.requestPayment({
-                orderId: nanoid(),
-                orderName: "토스 티셔츠 외 2건",
-                customerName: "김토스",
-                customerEmail: "customer123@gmail.com",
-                customerMobilePhone: "01012341234",
-                successUrl: `${window.location.origin}/success`,
-                failUrl: `${window.location.origin}/fail`,
-            });
+        const checkoutData = {
+            productNo: 2,  // 임시 값 설정
+            orderNo: 1234567890  // 임시 값 설정
+        };
+
+        // userNo를 추가하여 getCheckout 호출
+        const response = await credit.getCheckout({ ...checkoutData, userNo });
+        console.log("결제 상품 및 주문 정보:", response.data);
+
+        await paymentWidget?.requestPayment({
+            orderId: nanoid(),
+            orderName: "토스 티셔츠 외 2건",
+            customerName: "김토스",
+            customerEmail: "customer123@gmail.com",
+            customerMobilePhone: "01012341234",
+            successUrl: `${window.location.origin}/company/success`,
+            failUrl: `${window.location.origin}/company/fail`,
+        });
         } catch (error) {
             console.error("Error requesting payment:", error);
         }
