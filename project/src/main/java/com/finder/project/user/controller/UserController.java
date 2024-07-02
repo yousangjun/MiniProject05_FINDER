@@ -2,6 +2,8 @@ package com.finder.project.user.controller;
 
 import java.util.UUID;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -238,9 +240,12 @@ public class UserController {
 
         // 데이터베이스에서 사용자 정보 가져오기
         Company company = userService.getComName(request.getComName());
-        Users users = userService.getUserById(request.getUserId());ㅈ
+        Users users = userService.getUserById(request.getUserId());
 
-        if (company == null) {
+        int comNo = company.getComNo();
+        int userNo = users.getUserNo();
+
+        if (comNo != userNo) {
             // 사용자가 존재하지 않는 경우 false 반환
             return ResponseEntity.ok(false);
         }
@@ -248,6 +253,7 @@ public class UserController {
         // 사용자 정보 비교
         boolean isMatch = request.getComName().equals(company.getComName()) &&
                 request.getUserId().equals(users.getUserId());
+        log.info("isMatch는 뭘까? " + isMatch);
 
         return ResponseEntity.ok(isMatch);
     }

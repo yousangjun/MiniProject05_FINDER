@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './css/Find.css';
+import { useNavigate } from 'react-router-dom';
 
 const Find = () => {
     const [findUserEmail, setFindUserEmail] = useState('');
@@ -16,6 +17,8 @@ const Find = () => {
     const [updateConfirmComName, setUpdateConfirmComName] = useState('');
     const [isInfoVerified, setIsInfoVerified] = useState(false);
     const [showPasswordForm, setShowPasswordForm] = useState(false); // 상태 추가
+
+    const navi = useNavigate()
 
     const handleFindUserSubmit = async (event) => {
         event.preventDefault();
@@ -50,7 +53,7 @@ const Find = () => {
     const handleUpdatePwSubmit = async (event) => {
         event.preventDefault();
 
-        if (!updatePwUserId || !updatePwFirstEmail || !updatePwUserName || !updatePw || !updateConfirmPw) {
+        if (!updatePw || !updateConfirmPw) {
             alert('모든 필드를 입력해주세요.');
             return;
         }
@@ -78,6 +81,7 @@ const Find = () => {
                 const data = response.data;
                 console.log(data);
                 alert('비밀번호를 변경했습니다.');
+                navi("/")
             } else {
                 throw new Error('서버 오류');
             }
@@ -90,19 +94,20 @@ const Find = () => {
     const handleInfoCheck = async (event) => {
         event.preventDefault();
 
-        if (!updatePwUserId || !updatePwFirstEmail || !updatePwUserName) {
+        if (!updateConfirmComName || !updatePwUserId) {
             alert('모든 필드를 입력해주세요.');
             return;
         }
 
         const formData = {
-            id: updatePwUserId,
-            email: `${updatePwFirstEmail}@${updatePwLastEmail}`,
-            name: updatePwUserName,
+            userId: updatePwUserId,
+            comName: updateConfirmComName,
         };
-
+        
+        console.log(`userId의 값은? : ` + formData.userId)
+        console.log(`comName의 값은? : ` + formData.comName)
         try {
-            const response = await axios.post('/user/info_check', formData);
+            const response = await axios.post('/user/info_com_check', formData);
             if (response.data) {
                 const data = response.data;
                 console.log(data);
@@ -114,7 +119,7 @@ const Find = () => {
             }
         } catch (error) {
             console.error('오류 발생:', error);
-            alert('서버 오류가 발생했습니다.');
+            alert('정보가 일치하지 않습니다');
         }
     };
 
@@ -180,7 +185,7 @@ const Find = () => {
                                 <div className="d-flex justify-content-between">
                                     {/* 사업체명 입력태그 */}
                                     <input type="text" name="comName" id="comName" className="form-control" placeholder='사업체명을 입력해주세요' value={updateConfirmComName} onChange={(e) => setUpdateConfirmComName(e.target.value)} />
-                                    <button type="button" className="FindCheck btn btn-primary">
+                                    <button type="button" className="FindCheck btn btn-primary" onClick={handleInfoCheck}>
                                         {/* onclick: Pw_Confirm() */}
                                         확인
                                     </button>
