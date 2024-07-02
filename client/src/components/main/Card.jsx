@@ -40,7 +40,7 @@ const Card = ({ data }) => {
               <div className="d-flex justify-content-between align-items-end">
                 <div>{item.recruitRegDate}</div>
                 <div className="ms-auto">
-                  <Link className='' to={`/recruit/detail_jobs_user?recruitNo=${item.recruitNo}`}>
+                  <Link className='' to={`/recruit/detail_jobs_user/${item.recruitNo}`}>
                     <BtnShort btnShortText="조회" />
                   </Link>
                 </div>

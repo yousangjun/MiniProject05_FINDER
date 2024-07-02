@@ -14,20 +14,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.finder.project.main.dto.Files;
 import com.finder.project.main.service.FileService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 
 @Slf4j
-@Controller
+@RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/file")
 public class FileController {
     @Autowired

@@ -13,7 +13,7 @@ const Post_jobsContainer_com = () => {
       <div className="row justify-content-center" style={{padding: '0 40px'}}>
         <Sidebar/>
         <main className="col-12 col-md-12 col-lg-8 main-content1 d-flex justify-content-end align-items-start"
-        style={{marginLeft: '50px'}}>
+        >
         <div className='job-listings1'>
           <Post_jobs_com/>
         </div>

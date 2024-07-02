@@ -59,49 +59,49 @@ public class RecruitController {
 
     // 채용공고 상세 페이지 ----
     @GetMapping("/detail_jobs_user")
-    public String getMethodName(@RequestParam("recruitNo") Integer recruitNo, Model model, Files file,
-            HttpSession session) throws Exception {
+    public ResponseEntity<Map<String,Object>> getMethodName(@RequestParam("recruitNo") Integer recruitNo, @RequestParam("userNo") Integer userNo, Files file  ) throws Exception {
+        log.info(recruitNo + ": recruitNo");
+        Map<String, Object> response = new HashMap<>();
+        // Users user = (Users) session.getAttribute("user");
 
-        Users user = (Users) session.getAttribute("user");
+        // if (userNo != null) {
+        //     // Integer userNo = user.getUserNo();
+        //     log.info(" 유저번호는 : " + userNo);
 
-        if (user != null) {
-            Integer userNo = user.getUserNo();
-            log.info(" 유저번호는 : " + userNo);
+        //     if (userNo != null) { // userNo가 null이 아닌지 확인
 
-            if (userNo != null) { // userNo가 null이 아닌지 확인
+        //         List<Resume> resumeList = resumeService.resumelist(userNo);
 
-                List<Resume> resumeList = resumeService.resumelist(userNo);
+        //         if (resumeList != null) {
+        //             // log.info("이력서 목록이 있구나 : " + resumeList.size() + "건");
+        //             // 모델 등록
+        //             // model.addAttribute("resumeList", resumeList);
+        //             // model.addAttribute("user", user);
+        //             // 뷰페이지 지정
+        //         }
 
-                if (resumeList != null) {
-                    // log.info("이력서 목록이 있구나 : " + resumeList.size() + "건");
-                    // 모델 등록
-                    model.addAttribute("resumeList", resumeList);
-                    model.addAttribute("user", user);
-                    // 뷰페이지 지정
-                }
+        //         // 유저 번호에 해당하는 recruitNo 집합 가져오기
+        //         Map<Integer, Set<Integer>> userVisitedRecruitNos = (Map<Integer, Set<Integer>>) session
+        //                 .getAttribute("userVisitedRecruitNos");
+        //         if (userVisitedRecruitNos == null) {
+        //             userVisitedRecruitNos = new HashMap<>();
+        //             session.setAttribute("userVisitedRecruitNos", userVisitedRecruitNos);
+        //         }
 
-                // 유저 번호에 해당하는 recruitNo 집합 가져오기
-                Map<Integer, Set<Integer>> userVisitedRecruitNos = (Map<Integer, Set<Integer>>) session
-                        .getAttribute("userVisitedRecruitNos");
-                if (userVisitedRecruitNos == null) {
-                    userVisitedRecruitNos = new HashMap<>();
-                    session.setAttribute("userVisitedRecruitNos", userVisitedRecruitNos);
-                }
+        //         Set<Integer> visitedRecruitNos = userVisitedRecruitNos.get(userNo);
+        //         if (visitedRecruitNos == null) {
+        //             visitedRecruitNos = new HashSet<>();
+        //             userVisitedRecruitNos.put(userNo, visitedRecruitNos);
+        //         }
 
-                Set<Integer> visitedRecruitNos = userVisitedRecruitNos.get(userNo);
-                if (visitedRecruitNos == null) {
-                    visitedRecruitNos = new HashSet<>();
-                    userVisitedRecruitNos.put(userNo, visitedRecruitNos);
-                }
+        //         visitedRecruitNos.add(recruitNo);
+        //         int aeCount = recruitService.userNoToDistnctRecruitNo(userNo, recruitNo);
+        //         log.info("ae?? : " + aeCount);
+        //         model.addAttribute("aeCount", aeCount);
+        //     }
+        // } else {
 
-                visitedRecruitNos.add(recruitNo);
-                int aeCount = recruitService.userNoToDistnctRecruitNo(userNo, recruitNo);
-                log.info("ae?? : " + aeCount);
-                model.addAttribute("aeCount", aeCount);
-            }
-        } else {
-
-        }
+        // }
 
         RecruitPost recruitPost = recruitService.recruitRead(recruitNo);
         if (recruitPost == null) {
@@ -116,17 +116,26 @@ public class RecruitController {
 
         int comNo = recruitPost.getCompany().getComNo();
         CompanyDetail companyDetail = recruitService.selectCompanyDetailsWithRecruit(comNo);
+        log.info(companyDetail + "companyDetail tlqkf ");
 
         List<Files> fileList = fileService.listByParent(file);
 
         Files Thumbnail = fileService.listByParentThumbnail(file);
         // log.info("companyDetail", companyDetail);
-        model.addAttribute("companyDetail", companyDetail);
-        model.addAttribute("Thumbnail", Thumbnail);
-        model.addAttribute("recruitPost", recruitPost);
-        model.addAttribute("fileList", fileList);
 
-        return "/recruit/detail_jobs_user";
+        log.info(companyDetail + " 뭐가꼬옴 ????????????????????????" + fileList);
+
+        response.put("companyDetail", companyDetail);
+        response.put("Thumbnail", Thumbnail);
+        response.put("recruitPost", recruitPost);
+        response.put("fileList", fileList);
+
+        // model.addAttribute("companyDetail", companyDetail);
+        // model.addAttribute("Thumbnail", Thumbnail);
+        // model.addAttribute("recruitPost", recruitPost);
+        // model.addAttribute("fileList", fileList);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 지원하기 비동기 삭제
