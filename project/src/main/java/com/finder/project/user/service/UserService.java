@@ -39,4 +39,10 @@ public interface UserService {
     public int updatePw(Users userPw) throws Exception;
 
     // 메일 코드 조회
+
+
+
+
+    // JWT 로 User 객체 가져오기
+    public Users selectByUserNo(int userNo) throws Exception;
 }

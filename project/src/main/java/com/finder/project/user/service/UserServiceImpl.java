@@ -146,4 +146,10 @@ public class UserServiceImpl implements UserService {
         return company;
 
     }
+
+    @Override
+    public Users selectByUserNo(int userNo) throws Exception {
+        Users user = userMapper.selectByUserNo(userNo);
+        return user;
+    }
 }

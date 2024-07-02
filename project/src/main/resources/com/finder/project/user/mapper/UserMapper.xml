@@ -247,4 +247,11 @@
                     )
     </select>
     
+    <!-- JWT(userNo)으로 User 객체 가져오기 -->
+    <select id="selectByUserNo" resultType="Users">
+    SELECT *
+    FROM user
+    WHERE user_no = #{userNo}
+    </select>
+
 </mapper>

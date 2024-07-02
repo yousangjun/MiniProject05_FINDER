@@ -35,6 +35,7 @@ import com.finder.project.recruit.service.RecruitService;
 import com.finder.project.resume.dto.Resume;
 import com.finder.project.user.dto.CustomUser;
 import com.finder.project.user.dto.Users;
+import com.finder.project.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,6 +48,9 @@ public class CompanyController {
 
     @Autowired
     CompanyService companyService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     PasswordEncoder passwordEncoder; 
@@ -397,8 +401,8 @@ public class CompanyController {
     @GetMapping("/credit/checkout")
     public ResponseEntity<?> checkout(@RequestParam("productNo") int productNo, @RequestParam("orderNo") int orderNo) {
         try {
-            Order order = companyService.selectOrder(orderNo);  // orderNo로 주문 정보 조회
-            Product product = companyService.selectProduct(productNo);  // productNo로 제품 정보 조회
+            Order order = companyService.selectOrder(orderNo);  
+            Product product = companyService.selectProduct(productNo); 
 
             if ( product == null || order == null ) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -533,13 +537,13 @@ public class CompanyController {
     // 주문 테이블 추가 [POST]
     @ResponseBody
     @PostMapping("/credit/checkout")
-    public Map<String, Object> successPro(HttpSession session,
-                                        @RequestBody Map<String, Integer> requestBody) throws Exception {
-        int productNo = requestBody.get("productNo");
+    public ResponseEntity<?> successPro(
+                @RequestParam("userNo") int userNo,
+                @RequestParam("productNo") int productNo) throws Exception {
+
         log.info("제품번호 : " + productNo);
 
-        // 세션에서 사용자 정보 가져오기
-        Users user = (Users) session.getAttribute("user");
+        Users user = userService.selectByUserNo(userNo);
 
         // 결제진행시 주문테이블에 미결제 등록
         Order order = new Order();
@@ -559,18 +563,11 @@ public class CompanyController {
         int orderNo = companyService.insertOrder(order);
         log.info("주문번호 : " + orderNo);
 
-        Map<String, Object> response = new HashMap<>();
-        if (orderNo > 0) {
-            // 주문이 성공적으로 추가된 경우, 세션에 새로운 주문 정보 갱신
-            user.setOrder(order);
-            session.setAttribute("user", user);
-            
-            response.put("success", true);
-            response.put("orderNo", orderNo);
+        if (orderNo > 0) {            
+            return new ResponseEntity<>("주문은 일단 됐다", HttpStatus.OK);
         } else {
-            response.put("success", false);
+            return new ResponseEntity<>("주문은 일단 됐다", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return response;
     }
 
 

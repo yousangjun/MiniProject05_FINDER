@@ -21,7 +21,7 @@ public interface CompanyService {
     // 기업 수정 리액트
     public int updateCompany(Company company) throws Exception;
 
- 
+
 
     // 기업 정보 조회 (기업 정보)
     public Company selectCompanyByComNo(int comNo) throws Exception;

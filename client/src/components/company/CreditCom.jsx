@@ -18,7 +18,7 @@ const CreditCom = () => {
                                     <li>채용공고 작성 건수</li>
                                     <li>건당 2개월 유지 가능</li>
                                 </ul>
-                                <Link to="/company/credit_detail_com?productNo=1" className="btn-long credit-option-btn">결제</Link>
+                                <Link to="/company/credit_detail_com/1" className="btn-long credit-option-btn">결제</Link>
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@ const CreditCom = () => {
                                     <li>AI 평가 사용</li>
                                     <li>건당 3개월 유지 가능</li>
                                 </ul>
-                                <Link to="/company/credit_detail_com?productNo=2" className="btn-long credit-option-btn">결제</Link>
+                                <Link to="/company/credit_detail_com/2" className="btn-long credit-option-btn">결제</Link>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@ const CreditCom = () => {
                                     <li>AI 평가 사용</li>
                                     <li>건당 5개월 유지 가능</li>
                                 </ul>
-                                <Link to="/company/credit_detail_com?productNo=3" className="btn-long credit-option-btn">결제</Link>
+                                <Link to="/company/credit_detail_com/3" className="btn-long credit-option-btn">결제</Link>
                             </div>
                         </div>
                     </div>
