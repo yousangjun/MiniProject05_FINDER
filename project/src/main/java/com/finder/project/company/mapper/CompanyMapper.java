@@ -20,6 +20,8 @@ public interface CompanyMapper {
 
     // 기업 상세 정보 수정 (기업 소개) ⭕
     public int updateCompanyDetail(CompanyDetail companyDetail) throws Exception;
+    // 기업 수정 리액트
+    public int updateCompany(Company company) throws Exception;
 
     // 기업 상세 정보 삭제는 없음 (기업 소개)
 
