@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './css/JoinUser.css'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 
 const JoinUser = () => {
@@ -17,6 +18,7 @@ const JoinUser = () => {
         userEmail: '',
         emailCode: '',
     });
+    const navi = useNavigate()
 
     const [isEmailVerified, setIsEmailVerified] = useState(false);
 
@@ -40,42 +42,46 @@ const JoinUser = () => {
         return phone.length === 11 && /^[0-9]+$/.test(phone);
     };
 
-    // const combineEmail = async () => {
-    //     const email = `${formData.firstEmail}@${formData.lastEmail}`;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         userEmail: email,
-    //     }));
+    // ✅ 이메일 코드 전송 완료 
+    const combineEmail = async () => {
+        const userEmail = `${formData.firstEmail}@${formData.lastEmail}`;
+        setFormData((prevData) => ({
+            ...prevData,
+            userEmail: userEmail,
+        }));
 
-    //     try {
-    //         const response = await axios.post('/user/find_users', { email });
+        try {
+            const response = await axios.post('/user/find_users', { userEmail });
+            
+            if (response.data === 'SUCCESS') {
+                alert('이메일에서 인증코드를 확인해주세요.');
+                setIsEmailVerified(true);
+            } else {
+                alert('에러가 발생했습니다.');
+            }
+        } catch (error) {
+            alert('서버 에러가 발생했습니다.');
+        }
+    };
 
-    //         if (response.data === '1') {
-    //             alert('이메일에서 인증코드를 확인해주세요.');
-    //             setIsEmailVerified(true);
-    //         } else {
-    //             alert('에러가 발생했습니다.');
-    //         }
-    //     } catch (error) {
-    //         alert('서버 에러가 발생했습니다.');
-    //     }
-    // };
+    //  ✅ 이메일 코드 검사
+    const emailCodeVerification = async () => {
+        try {
+            const response = await axios.post('/user/email_code_check', { verificationCode: formData.emailCode });
 
-    // const emailCodeVerification = async () => {
-    //     try {
-    //         const response = await axios.post('/user/email_code_check', { verificationCode: formData.emailCode });
 
-    //         if (response.data === '성공') {
-    //             alert('코드 인증에 성공하였습니다.');
-    //             document.getElementById('joinbutton').style.display = 'flex';
-    //         } else {
-    //             alert('코드 인증에 실패하였습니다.');
-    //         }
-    //     } catch (error) {
-    //         alert('서버 에러가 발생했습니다.');
-    //     }
-    // };
+            if (response.data === formData.emailCode) {
+                alert('코드 인증에 성공하였습니다.');
+                document.getElementById('joinbutton').style.display = 'flex';
+            } else {
+                alert('코드 인증에 실패하였습니다.');
+            }
+        } catch (error) {
+            alert('서버 에러가 발생했습니다.');
+        }
+    };
 
+    // ✅ 아이디 중복 검사
     const checkIdAvailability = async () => {
         try {
             const response = await axios.get(`/user/check/${formData.userId}`);
@@ -83,6 +89,7 @@ const JoinUser = () => {
             console.log(`response 회원가입 시 불러오는 ` + response.data)
 
             if (response.data === true) {
+                
                 alert('사용 가능한 아이디입니다.');
             } else {
                 alert('중복된 아이디입니다.');
@@ -124,17 +131,20 @@ const JoinUser = () => {
             alert("이메일 인증이 필요합니다.");
             return;
         }
+ 
 
-        // try {
-        //     const response = await axios.post('/user/join_user', formData);
-        //     if (response.data.success) {
-        //         alert('회원가입이 완료되었습니다.');
-        //     } else {
-        //         alert('회원가입에 실패했습니다.');
-        //     }
-        // } catch (error) {
-        //     alert('서버 에러가 발생했습니다.');
-        // }
+        // ✅ 회원가입 
+        try {
+            const response = await axios.post('/user/join_user', formData);
+            if (response.data) {
+                alert('회원가입이 완료되었습니다.');
+                navi("/")
+            } else {
+                alert('회원가입에 실패했습니다.');
+            }
+        } catch (error) {
+            alert('서버 에러가 발생했습니다.');
+        }
     };
 
     return (
@@ -194,9 +204,8 @@ const JoinUser = () => {
                             <input className="input-name" type="text" id="name" name="userName" required placeholder="이름"
                                 onChange={handleChange} />
                             <div className="gender-btn">
-                                <input type="hidden" id="userGender" name="userGender" value={formData.userGender} />
-                                <button type="button" className={`btn-male ${formData.userGender === '남자' ? 'selected' : ''}`} onClick={() => setFormData({ ...formData, userGender: '남자' })}>남</button>
-                                <button type="button" className={`btn-female ${formData.userGender === '여자' ? 'selected' : ''}`} onClick={() => setFormData({ ...formData, userGender: '여자' })}>여</button>
+                                <button type="button" className={`btn-male-join ${formData.userGender === '남자' ? 'selected' : ''}`} onClick={() => setFormData({ ...formData, userGender: '남자' })}>남</button>
+                                <button type="button" className={`btn-female-join ${formData.userGender === '여자' ? 'selected' : ''}`} onClick={() => setFormData({ ...formData, userGender: '여자' })}>여</button>
                             </div>
                         </div>
 
@@ -225,7 +234,7 @@ const JoinUser = () => {
                                 <input type="hidden" id="userEmail" name="userEmail" value={formData.userEmail} />
 
                                 <div className="justify-content-end">
-                                    <button type="button" className="btn-male" style={{ backgroundColor: '#007bff', color: 'white', marginLeft: '10px' }} >인증</button>
+                                    <button type="button" className="btn-male" style={{ backgroundColor: '#007bff', color: 'white', marginLeft: '10px' }} onClick={combineEmail}>인증</button>
                                 </div>
                             </div>
 
@@ -233,12 +242,12 @@ const JoinUser = () => {
                                 <div id="passwordChange" className="d-flex flex-column">
                                     <div className="check-btn">
                                         <input type="text" className="username_input" name="emailCode" id="emailCode" placeholder="이메일 인증코드를 입력해주세요" onChange={handleChange} />
-                                        <button type="button" className="btn-male" style={{ backgroundColor: '#007bff', color: 'white', marginLeft: '15px' }} >확인</button>
+                                        <button type="button" className="btn-male" style={{ backgroundColor: '#007bff', color: 'white', marginLeft: '15px' }} onClick={emailCodeVerification}>확인</button>
                                     </div>
                                 </div>
                             )}
 
-                            <div className="d-grid gap-2" id="joinbutton" style={{ display: 'none' }}>
+                            <div className="d-grid gap-2 join-user-btn" id="joinbutton">
                                 <button className="btn mt-4" type="submit" style={{ backgroundColor: 'var(--main-color)', color: '#fff' }}>회원가입</button>
                             </div>
                         </div>

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './css/JoinCom.css'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 
 const JoinCom = () => {
     const [formData, setFormData] = useState({
         userId: '',
         userPw: '',
-        pw_confirm: '',
         userName: '',
         userGender: '',
         userPhone: '',
@@ -19,8 +20,8 @@ const JoinCom = () => {
         comCategory: '',
         comBusiness: '',
         comAddress: '',
-        file: null,
     });
+    const navi = useNavigate()
 
     const [isEmailVerified, setIsEmailVerified] = useState(false);
 
@@ -51,55 +52,62 @@ const JoinCom = () => {
         return phone.length === 11 && /^[0-9]+$/.test(phone);
     };
 
-    // const combineEmail = async () => {
-    //     const email = `${formData.firstEmail}@${formData.lastEmail}`;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         userEmail: email,
-    //     }));
+    // ✅ 이메일 코드 전송 완료 
+    const combineEmail = async () => {
+        const userEmail = `${formData.firstEmail}@${formData.lastEmail}`;
+        setFormData((prevData) => ({
+            ...prevData,
+            userEmail: userEmail,
+        }));
 
-    //     try {
-    //         const response = await axios.post('/user/find_users', { email });
+        try {
+            const response = await axios.post('/user/find_users', { userEmail });
 
-    //         if (response.data === '1') {
-    //             alert('이메일에서 인증코드를 확인해주세요.');
-    //             setIsEmailVerified(true);
-    //         } else {
-    //             alert('에러가 발생했습니다.');
-    //         }
-    //     } catch (error) {
-    //         alert('서버 에러가 발생했습니다.');
-    //     }
-    // };
+            if (response.data === 'SUCCESS') {
+                alert('이메일에서 인증코드를 확인해주세요.');
+                setIsEmailVerified(true);
+            } else {
+                alert('에러가 발생했습니다.');
+            }
+        } catch (error) {
+            alert('서버 에러가 발생했습니다.');
+        }
+    };
 
-    // const emailCodeVerification = async () => {
-    //     try {
-    //         const response = await axios.post('/user/email_code_check', { verificationCode: formData.emailCode });
+    //  ✅ 이메일 코드 검사
+    const emailCodeVerification = async () => {
+        try {
+            const response = await axios.post('/user/email_code_check', { verificationCode: formData.emailCode });
 
-    //         if (response.data === '성공') {
-    //             alert('코드 인증에 성공하였습니다.');
-    //             document.getElementById('joinbutton').style.display = 'flex';
-    //         } else {
-    //             alert('코드 인증에 실패하였습니다.');
-    //         }
-    //     } catch (error) {
-    //         alert('서버 에러가 발생했습니다.');
-    //     }
-    // };
 
-    // const checkIdAvailability = async () => {
-    //     try {
-    //         const response = await axios.get(`/user/check/${formData.userId}`);
+            if (response.data === formData.emailCode) {
+                alert('코드 인증에 성공하였습니다.');
+                document.getElementById('joinbutton').style.display = 'flex';
+            } else {
+                alert('코드 인증에 실패하였습니다.');
+            }
+        } catch (error) {
+            alert('서버 에러가 발생했습니다.');
+        }
+    };
 
-    //         if (response.data === 'true') {
-    //             alert('사용 가능한 아이디입니다.');
-    //         } else {
-    //             alert('중복된 아이디입니다.');
-    //         }
-    //     } catch (error) {
-    //         alert('서버 에러가 발생했습니다.');
-    //     }
-    // };
+    // ✅ 아이디 중복 검사
+    const checkIdAvailability = async () => {
+        try {
+            const response = await axios.get(`/user/check/${formData.userId}`);
+
+            console.log(`response 회원가입 시 불러오는 ` + response.data)
+
+            if (response.data === true) {
+
+                alert('사용 가능한 아이디입니다.');
+            } else {
+                alert('중복된 아이디입니다.');
+            }
+        } catch (error) {
+            alert('서버 에러가 발생했습니다.');
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -142,17 +150,18 @@ const JoinCom = () => {
                 data.append(key, formData[key]);
             }
         }
-
-        // try {
-        //     const response = await axios.post('/user/join_com', data);
-        //     if (response.data.success) {
-        //         alert('회원가입이 완료되었습니다.');
-        //     } else {
-        //         alert('회원가입에 실패했습니다.');
-        //     }
-        // } catch (error) {
-        //     alert('서버 에러가 발생했습니다.');
-        // }
+        // 기업 회원가입 
+        try {
+            const response = await axios.post('/user/join_com', data);
+            if (response.data) {
+                alert('회원가입이 완료되었습니다.');
+                navi("/")
+            } else {
+                alert('회원가입에 실패했습니다.');
+            }
+        } catch (error) {
+            alert('서버 에러가 발생했습니다.');
+        }
     };
 
     return (
@@ -176,7 +185,8 @@ const JoinCom = () => {
 
                             <button type="button" className="btn-male"
                                 style={{ backgroundColor: '#007bff', color: 'white', marginLeft: '15px' }}
-                                >중복</button>
+                                onClick={checkIdAvailability}
+                            >중복</button>
 
                             <img id="id_check_sucess" style={{ display: 'none' }} />
                         </div>
@@ -194,12 +204,12 @@ const JoinCom = () => {
 
                     <div htmlFor="name" className="username" style={{ width: '55px', textAlign: 'center' }}>이름</div>
 
+
                     <div className="gender">
                         <input className="input-name" type="text" id="name" name="userName" required placeholder="이름" onChange={handleChange} />
                         <div className="gender-btn">
-                            <input type="hidden" id="userGender" name="userGender" value={formData.userGender} />
-                            <button type="button" className={`btn-male ${formData.userGender === '남자' ? 'selected' : ''}`} onClick={() => setFormData({ ...formData, userGender: '남자' })}>남</button>
-                            <button type="button" className={`btn-female ${formData.userGender === '여자' ? 'selected' : ''}`} onClick={() => setFormData({ ...formData, userGender: '여자' })}>여</button>
+                            <button type="button" className={`btn-male-join ${formData.userGender === '남자' ? 'selected' : ''}`} onClick={() => setFormData({ ...formData, userGender: '남자' })}>남</button>
+                            <button type="button" className={`btn-female-join ${formData.userGender === '여자' ? 'selected' : ''}`} onClick={() => setFormData({ ...formData, userGender: '여자' })}>여</button>
                         </div>
                     </div>
 
@@ -221,11 +231,11 @@ const JoinCom = () => {
                             <img className="img2" src="/img/인증서.png" alt="인증서png" />
                         </div>
                         <div style={{ textAlign: 'center' }}>
-                            <button type="button" className="btn-short w-auto" onClick={() => document.getElementById('fileInput').click()}>파일 선택</button>
-                            <span id="fileName">{formData.file ? formData.file.name : '파일을 추가해주세요.'}</span>
+                            {/* <button type="button" className="btn-short w-auto" onClick={() => document.getElementById('fileInput').click()}>파일 선택</button>
+                            <span id="fileName">{formData.file ? formData.file.name : '파일을 추가해주세요.'}</span> */}
                         </div>
                         <input type="file" id="fileInput" style={{ display: 'none' }} onChange={handleFileChange} />
-                        <h2 style={{ color: '#787979', borderBottom: '1px solid lightgrey', paddingBottom: '10px' }}>사업자 인증서 제출해주세요</h2>
+                        <h2 style={{ color: '#787979', borderBottom: '1px solid lightgrey', paddingBottom: '10px' }}>기업정보를 입력해주세요</h2>
                     </div>
 
                     <div htmlFor="com-name" className="userphone">기업명</div>
@@ -255,7 +265,7 @@ const JoinCom = () => {
                             <input type="hidden" id="userEmail" name="userEmail" value={formData.userEmail} />
 
                             <div className="justify-content-end">
-                                <button type="button" className="btn-male" style={{ backgroundColor: '#007bff', color: 'white', marginLeft: '10px' }} >인증</button>
+                                <button type="button" className="btn-male" style={{ backgroundColor: '#007bff', color: 'white', marginLeft: '10px' }} onClick={combineEmail} >인증</button>
                             </div>
                         </div>
 
@@ -263,7 +273,7 @@ const JoinCom = () => {
                             <div id="passwordChange" className="d-flex flex-column">
                                 <div className="check-btn">
                                     <input type="text" className="username_input" name="emailCode" id="emailCode" placeholder="이메일 인증코드를 입력해주세요" onChange={handleChange} />
-                                    <button type="button" className="btn-male" style={{ backgroundColor: '#007bff', color: 'white', marginLeft: '15px' }} >확인</button>
+                                    <button type="button" className="btn-male" style={{ backgroundColor: '#007bff', color: 'white', marginLeft: '15px' }} onClick={emailCodeVerification}>확인</button>
                                 </div>
                             </div>
                         )}
