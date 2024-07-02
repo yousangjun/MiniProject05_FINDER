@@ -1,8 +1,66 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import './css/Post_job.css'
 import BtnLong from '../main/BtnLong'
+import KeywordItem from '../main/KeywordItem';
 
 const Post_jobs_com = () => {
+
+    const [keywords, setKeywords] = useState([]);
+    const [thumbnail, setThumbnail] = useState('/img/no-image.png');
+    const [files, setFiles] = useState([]);
+    const thumbnailImg = useRef(null);
+    const handleKeywordKeyDown = (event) => {
+        
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const newKeyword = event.target.value.trim();
+            if (newKeyword) {
+                setKeywords([...keywords, newKeyword]);
+                event.target.value = '';
+            }
+        }
+    };
+    
+
+    const handleThumbnailChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setThumbnail(reader.result); // 상태를 업데이트하여 React 내에서 관리
+                if (thumbnailImg.current) {
+                    thumbnailImg.current.src = reader.result; // 이미지 태그의 src 속성 업데이트
+                }
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setThumbnail('/img/no-image.png');
+        }
+    };
+
+    const handleFileChange = (event) => {
+        const newFiles = [...event.target.files];
+        setFiles(newFiles);
+    };
+
+    const handleFileRemove = (index) => {
+        const newFiles = files.filter((_, i) => i !== index);
+        setFiles(newFiles);
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Check if all required fields are filled
+        // Assuming all necessary validation checks are made here
+        if (keywords.length === 0 || files.length === 0) {
+            alert('Please ensure all fields are filled and files are attached.');
+            return;
+        }
+
+        // Submit form logic here
+        console.log('Form submitted');
+    };
+
     return (
         <>
         <form encType='multipart/form-data' id='recruitForm' method='POST' className='job-listings'>
@@ -20,14 +78,14 @@ const Post_jobs_com = () => {
                             로고
                         </div>
                         <div>
-                            <button className='btn-short file-upload-button1'>선택</button>
+                            <button type='button' className='btn-short file-upload-button1' >선택</button>
                             <button class="btn-short file-upload-button2" style={{display: 'none'}}>삭제</button>
                         </div>
                     </div>
 
-                    <div className="thumbnail-wrapper d-flex">
-                        <input type="file" name="thumbnail" id="thumbnail" className='file-input thumbnail-preview-recruit' accept='image/*'/>
-                        <img src="/img/no-image.png" id='thumbnail-preview' className='thumbnail-preview-recruit' alt="이미지 없다" />
+                    <div className="thumbnail-wrapper d-flex" style={{ height: '75px', width: '75px'}}>
+                        <input type="file" name="thumbnail" id="thumbnail" className='file-input thumbnail-preview-recruit' accept='image/*' onChange={handleThumbnailChange}/>
+                        <img ref={thumbnailImg} src="/img/no-image.png" id='thumbnail-preview' className='thumbnail-preview-recruit' alt="이미지 없다" style={{ height: '100%', width: '100%'}}/>
                     </div>
                 </div>
 
@@ -35,15 +93,17 @@ const Post_jobs_com = () => {
                 <div>
                     <input type="text" name="recruitTitle" placeholder='제목을 입력해주세요' className="PostJobTitle input-none keyword-main" />
                 </div>
-                <div>keyword</div>
+                <div style={{ marginBottom: "15px" }}>keyword</div>
                 <div className="item d-flex justify-content-between">
                     <div className="keyword-span" id='outputContainer'>
-
+                        <KeywordItem keywords={keywords} />
                     </div>
                     <div className="gap-2 d-flex">
                         <div className="d-flex justify-content-center">
                             <div className="d-flex justify-content-center">
-                                <input type="text" name="keyword" id="keyword" className="PostJobKeyWord p-1" placeholder='keyword'/>    
+                                <input type="text" name="keyword" id="keyword" 
+                                className="PostJobKeyWord p-1" placeholder='keyword' 
+                                onKeyDown={handleKeywordKeyDown}/>    
                             </div>
                         </div>
                     </div>

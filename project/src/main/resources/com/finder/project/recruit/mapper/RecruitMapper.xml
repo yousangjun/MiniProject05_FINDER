@@ -157,11 +157,13 @@
 
   <!-- 상세조회 -->
   <select id="recruitRead" resultMap="RecruitPostResultMap">
-    SELECT c.*, r.*, rk.*
+    SELECT c.*, r.*, 
+       (SELECT GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ')
+        FROM recruit_keyword rk
+        WHERE rk.recruit_no = r.recruit_no) AS recruit_keyword
     FROM company c
     INNER JOIN recruit r ON c.com_no = r.com_no
-    LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
-    WHERE r.recruit_no = #{recruitNo}
+    WHERE r.recruit_no = #{recruitNo};
     
   </select>
 
