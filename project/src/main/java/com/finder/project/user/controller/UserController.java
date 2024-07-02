@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -238,7 +237,7 @@ public class UserController {
 
         // 데이터베이스에서 사용자 정보 가져오기
         Company company = userService.getComName(request.getComName());
-        Users users = userService.getUserById(request.getUserId());ㅈ
+        Users users = userService.getUserById(request.getUserId());
 
         if (company == null) {
             // 사용자가 존재하지 않는 경우 false 반환
