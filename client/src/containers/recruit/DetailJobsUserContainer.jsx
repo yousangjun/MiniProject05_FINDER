@@ -10,26 +10,27 @@ const DetailJobsUserContainer = () => {
   const { recruitNo } = useParams();
   const [textareaHeight, setTextareaHeight] = useState('auto');
   const textareaRef = useRef(null); // useRef 훅을 사용하여 ref 생성
+  const userNo = userInfo ? userInfo.userNo : null;
   // console.log(userInfo.userNo);
 
 
   useEffect(() => {
-    recruitApi.jobDetails(recruitNo, userInfo.userNo)
-      .then(response => {
-        // 성공적으로 데이터를 받아왔을 때 처리
-        console.log(response);
-        setThumbnail(response.data.Thumbnail)
-        setCompanyDetail(response.data.companyDetail)
-        setRecruitPost(response.data.recruitPost)
-        setFileList(response.data.fileList)
-      })
-      .catch(error => {
-        // 에러 발생 시 처리
-        console.error('Error fetching job details:', error);
-      });
-
-
-  }, []); // 두 번째 인자가 빈 배열이므로 컴포넌트가 처음 렌더링될 때 한 번만 실행됩니다.
+    if (userNo) {
+      recruitApi.jobDetails(recruitNo, userInfo.userNo)
+        .then(response => {
+          // 성공적으로 데이터를 받아왔을 때 처리
+          console.log(response);
+          setThumbnail(response.data.Thumbnail)
+          setCompanyDetail(response.data.companyDetail)
+          setRecruitPost(response.data.recruitPost)
+          setFileList(response.data.fileList)
+        })
+        .catch(error => {
+          // 에러 발생 시 처리
+          console.error('Error fetching job details:', error);
+        });
+    }
+  }, [userNo]);
 
   useLayoutEffect(() => {
     adjustTextareaHeight();
