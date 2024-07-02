@@ -18,6 +18,8 @@ public interface CompanyService {
     public int insertCompanyDetail(CompanyDetail companyDetail) throws Exception;
     // 기업 상세 정보 수정 (기업 소개)
     public int updateCompanyDetail(CompanyDetail companyDetail) throws Exception;
+    // 기업 수정 리액트
+    public int updateCompany(Company company) throws Exception;
 
  
 

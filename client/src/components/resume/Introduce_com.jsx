@@ -22,20 +22,7 @@ const Introduce_com = () => {
     comContent: ''
   });
 
-  // Define structured form data state
-  const [formData, setFormData] = useState({
-    comInfo: {
-      comName: '',
-      comBirth: '',
-      comSize: '',
-      comEmpCount: '',
-      comsales: '',
-      comRepresent: '',
-      comCategory: '',
-      comAddress: '',
-      comContent: ''
-    }
-  });
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -45,6 +32,9 @@ const Introduce_com = () => {
           console.log(response.data);
           setCompany(response.data.company || {});
           setComDetail(response.data.comDetail || {});
+
+          // isEditMode 플래그 설정
+          setIsEditMode(response.data.company && response.data.comDetail);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -55,41 +45,39 @@ const Introduce_com = () => {
     fetchData();
   }, [userNo]); // Run effect when userNo changes
 
-  // Function to handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      comInfo: {
-        ...prevState.comInfo,
-        [name]: value
-      }
+    setCompany(prevState => ({
+      ...prevState,
+      [name]: value
     }));
-    if (company.hasOwnProperty(name)) {
-      setCompany(prevState => ({
-        ...prevState,
-        [name]: value
-      }));
-    } else if (comDetail.hasOwnProperty(name)) {
-      setComDetail(prevState => ({
-        ...prevState,
-        [name]: value
-      }));
-    }
+    setComDetail(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-
-  // 등록 / 수정
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = {
+      comName: company.comName,
+      comBirth: comDetail.comBirth,
+      comSize: comDetail.comSize,
+      comEmpCount: comDetail.comEmpCount,
+      comsales: comDetail.comsales,
+      comRepresent: comDetail.comRepresent,
+      comCategory: company.comCategory,
+      comAddress: company.comAddress,
+      comContent: comDetail.comContent
+    };
     try {
       if (isEditMode) {
         // 수정
-        const response = await introCom.UpdateIntroCom(formData.comInfo);
+        const response = await introCom.UpdateIntroCom({ userNo, formData });
         console.log('Update successful:', response);
       } else {
-        
         // 등록
-        const response = await introCom.InsertIntroCom({ userNo });
+        const response = await introCom.InsertIntroCom({ userNo, formData });
         console.log('Insert successful:', response);
       }
     } catch (error) {
@@ -97,14 +85,12 @@ const Introduce_com = () => {
     }
   };
 
-  const [isEditMode, setIsEditMode] = useState(false);
-
   return (
     <>
       <div id='form'>
-      <div className='btnShort'>
-      <BtnShort btnShortText={company.comName || comDetail.comBirth || comDetail.comSize || comDetail.comEmpCount || comDetail.comsales || comDetail.comRepresent || comDetail.comContent ? "수정" : "등록"} onClick={handleSubmit} />
-      </div>
+        <div className='btnShort'>
+          <BtnShort btnShortText={isEditMode ? "수정" : "등록"} onClick={handleSubmit} />
+        </div>
         {company && comDetail ? (
           <>
             <div>
@@ -170,8 +156,8 @@ const Introduce_com = () => {
                 <div className='com-intro-input'>
                   <input
                     type="text"
-                    id='ComSales2'
-                    name='ComSales2'
+                    id='comsales'
+                    name='comsales'
                     className="w-75 ComInput"
                     value={comDetail.comSales}
                     onChange={handleChange}

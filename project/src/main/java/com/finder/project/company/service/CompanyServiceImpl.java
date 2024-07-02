@@ -48,6 +48,13 @@ public class CompanyServiceImpl implements CompanyService {
 
         return result;
     }
+    @Override
+    // 리액트 상세 정보 수정
+    public int updateCompany(Company company) throws Exception {
+        int result = companyMapper.updateCompany(company);
+
+        return result;
+    }
 
 
 
@@ -170,6 +177,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         return companies;
     }
+
 
 
 
