@@ -1,7 +1,7 @@
 import api from '../user/api';
 
 // 상품 정보 가져오기
-export const getProduct = (productNo) => api.get(`/company/credit/credit_detail_com?productNo=${productNo}` );
+export const getProduct = (productNo, userNo) => api.get(`/company/credit/credit_detail_com?productNo=${productNo}&userNo=${userNo}`);
 
 
 // 미결제 주문 등록하기
