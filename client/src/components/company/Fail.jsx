@@ -1,9 +1,10 @@
 import React from 'react';
 import './css/Fail.css'
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, Link, useNavigate } from "react-router-dom";
 
 const Fail = () => {
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     return (
         <div className="container credit-error-page h-auto">
@@ -12,12 +13,11 @@ const Fail = () => {
             <p id="code"></p>
             <p id="message"></p>
             <Link 
-                to="#"
-                onClick={() => window.history.back()}
+                to='/company/credit_com'
                 style={{ fontSize: '30px', textDecoration: 'none', padding: "0px 20px 40px 20px", lineHeight: "40px" }}
                 className='btn-long w-auto'
             >
-                이전페이지로 돌아가기
+                결제페이지로 돌아가기
             </Link>
         </div>
     );

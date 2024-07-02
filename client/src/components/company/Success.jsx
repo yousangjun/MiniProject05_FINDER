@@ -1,44 +1,45 @@
 import React, { useEffect  } from 'react'
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-
 import './css/Success.css';
 import BtnLong from '../main/BtnLong';
+import * as credit from '../../apis/company/credit';
 
-const Success = ( {  } ) => {
+const Success = () => {
 
-    // const navigate = useNavigate();
-    // const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
-    // useEffect(() => {
-    //     // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
-    //     // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.  
-    //     const requestData = {
-    //     orderId: searchParams.get("orderId"),
-    //     amount: searchParams.get("amount"),
-    //     paymentKey: searchParams.get("paymentKey"),
-    //     };
+    useEffect(() => {
+        // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
+        // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.  
+        const requestData = {
+            orderId: searchParams.get("orderId"),
+            amount: searchParams.get("amount"),
+            paymentKey: searchParams.get("paymentKey"),
+            productNo: searchParams.get("productNo"),
+            orderNo: searchParams.get("orderNo"),
+        };
 
-    //     async function confirm() {
-    //     const response = await fetch("/confirm", {
-    //         method: "POST",
-    //         headers: {
-    //         "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify(requestData),
-    //     });
+        async function confirm() {
+            try {
+                const response = await credit.insertCredit(requestData);
 
-    //     const json = await response.json();
+                if (response.status !== 200) {
+                    // 결제 실패 비즈니스 로직을 구현하세요.
+                    const json = await response.json();
+                    navigate(`/fail?message=${json.message}&code=${json.code}`);
+                    return;
+                }
 
-    //     if (!response.ok) {
-    //         // 결제 실패 비즈니스 로직을 구현하세요.
-    //         navigate(`/fail?message=${json.message}&code=${json.code}`);
-    //         return;
-    //     }
+                // 결제 성공 비즈니스 로직을 구현하세요.
+            } catch (error) {
+                console.error("Error processing payment:", error);
+                navigate(`/company/fail?message=${error.message}`);
+            }
+        }
 
-    //     // 결제 성공 비즈니스 로직을 구현하세요.
-    //     }
-    //     confirm();
-    // }, []);
+        confirm();
+    }, [searchParams]);
 
     return (
         <div className="d-flex flex-column container main-content align-items-center">
@@ -88,4 +89,4 @@ const Success = ( {  } ) => {
     )
 }
 
-export default Success
+export default Success;

@@ -2,23 +2,30 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import './css/Checkout.css'
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import * as credit from '../../apis/company/credit';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate  } from 'react-router-dom';
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
 
 const widgetClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "JawM9IYDGWc4GGIhj2Yz9";
 
-const CreditDetailCom = () => {
+const Checkout = () => {
     const [paymentWidget, setPaymentWidget] = useState(null);
     const paymentMethodsWidgetRef = useRef(null);
-    const [price, setPrice] = useState(50_000);
+    const [price, setPrice] = useState(1);
     const { productNo, orderNo } = useParams();
+    const [product, setProduct] = useState({});
+    const [user, setUser] = useState({});
+    const [order, setOrder] = useState({});
+    
 
 
     // Context
     const { userInfo } = useContext(LoginContext);
     const userNo = userInfo ? userInfo.userNo : null;  // 사용자 정보에서 userNo 가져오기
+
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchPaymentWidget = async () => {
@@ -37,7 +44,6 @@ const CreditDetailCom = () => {
         if (paymentWidget == null) {
             return;
         }
-
         const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
             "#payment-method",
             { value: price },
@@ -55,33 +61,50 @@ const CreditDetailCom = () => {
         if (paymentMethodsWidget == null) {
             return;
         }
+        setPrice(product.productPrice)
 
         paymentMethodsWidget.updateAmount(price);
     }, [price]);
 
     const handlePaymentRequest = async () => {
         try {
-        const checkoutData = {
-            productNo: 2,  // 임시 값 설정
-            orderNo: 1234567890  // 임시 값 설정
-        };
+            const checkoutData = {
+                productNo,
+                orderNo,
+                userNo
+            };
 
-        // userNo를 추가하여 getCheckout 호출
-        const response = await credit.getCheckout({ ...checkoutData, userNo });
-        console.log("결제 상품 및 주문 정보:", response.data);
+            // userNo를 추가하여 getCheckout 호출
+            const response = await credit.getCheckout(checkoutData);
+            console.log("결제 상품 및 주문 정보:", response.data);
+            setProduct(response.data.product)
+            setOrder(response.data.order)
+            setUser(response.data.user)
 
-        await paymentWidget?.requestPayment({
-            orderId: nanoid(),
-            orderName: "토스 티셔츠 외 2건",
-            customerName: "김토스",
-            customerEmail: "customer123@gmail.com",
-            customerMobilePhone: "01012341234",
-            successUrl: `${window.location.origin}/company/success`,
-            failUrl: `${window.location.origin}/company/fail`,
-        });
+            await paymentWidget?.requestPayment({
+                orderId: nanoid(),
+                orderName: product.productName,
+                customerName: user.userName,
+                customerEmail: user.userEmail,
+                customerMobilePhone: user.userPhone,
+                successUrl: `${window.location.origin}/company/success`,
+                failUrl: `${window.location.origin}/company/fail`,
+                onPaymentSuccess: () => navigate('/company/success'),
+                onPaymentFail: () => navigate('/company/fail')
+            });
         } catch (error) {
             console.error("Error requesting payment:", error);
         }
+    };
+
+    useEffect(() => {
+        handlePaymentRequest();
+    }, [userNo, productNo, orderNo]);
+
+    // 전화번호 형식 변환 함수
+    const formatPhoneNumber = (phoneNumber) => {
+        if (!phoneNumber) return '';
+        return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
     };
 
     return (
@@ -92,13 +115,13 @@ const CreditDetailCom = () => {
                 <div className="card text-center">
                     <div className="card-body d-flex flex-column credit-body">
                         <h3>
-                            <span style={{fontSize: '30px'}}>스탠다드</span>
-                            <span> / 3개월 5건</span>
+                            <span style={{fontSize: '30px'}}>{product.productName}</span>
+                            <span> / {product.productDuration}개월 {product.productCount}건</span>
                         </h3>
                         <ul className="credit-list-info">
                             <li>채용공고 작성 건수</li>   
-                            <li>AI 평가 사용</li> 
-                            <li>건당 <span>3</span>개월 유지 가능</li>
+                            <li>AI 평가 사용 : {productNo != 1 ? '사용 가능' : '사용 불가'}</li> 
+                            <li>건당 <span>{product.productDuration}</span>개월 유지 가능</li>
                         </ul>
                     </div>
                 </div>
@@ -108,21 +131,12 @@ const CreditDetailCom = () => {
                 <div className="payment-form">
                     <div className="d-flex flex-column justify-content-between">
                         <div className="credit_user_info">
-                            <input type="hidden" name="productNo" id="productNo" value="2" />
-                            <input type="hidden" name="productName" id="productName" value="스탠다드" />
-                            <input type="hidden" name="productPrice" id="productPrice" value="100000" />
-                            <input type="hidden" name="productCount" id="productCount" value="5" />
-                            <input type="hidden" name="productDuration" id="productDuration" value="3" />
-                            <input type="hidden" name="userName" id="userName" value="김토스" />
-                            <input type="hidden" name="userEmail" id="userEmail" value="customer123@gmail.com" />
-                            <input type="hidden" name="userPhone" id="userPhone" value="01012341234" />
-                            <input type="hidden" name="orderNo" id="orderNo" value="1234567890" />
 
-                            <p>결제 금액 : <span>100,000</span>원</p>
+                            <p>결제 금액 : <span>{product.productPrice}</span>원</p>
                             <hr />
-                            <p>결제자 : <span>김토스</span></p>
+                            <p>결제자 : <span>{user.userName}</span></p>
                             <div className="d-flex justify-content-between align-items-center">
-                                <p style={{margin: 0}}>연락처 : <span>01012341234</span></p>
+                                <p style={{margin: 0}}>연락처 : <span>{formatPhoneNumber(user.userPhone)}</span></p>
                             </div>
                             <hr />
                         </div>
@@ -142,4 +156,4 @@ const CreditDetailCom = () => {
     );
 }
 
-export default CreditDetailCom;
+export default Checkout;
