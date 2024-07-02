@@ -162,41 +162,46 @@ const Find = () => {
                     <div className="divider">
                     </div>
 
-                   
+
 
                     <div className="col-md-6">
                         <h4><strong>비밀번호 찾기</strong></h4>
-                        <form onSubmit={handleUpdatePwSubmit}>
+
                         {/* 토큰 있던 자리 */}
-                        <div className="form-group">
-                            <label htmlFor="user-id" className='FindId2'><strong>아이디</strong></label>
-                            <input className='form-control' type="text" name="userId" id="userId" placeholder='아이디를 입력해주세요' value={updatePwUserId} onChange={(e) => setUpdatePwUserId(e.target.value)} />
-                        </div>
+                        <form action="">
 
-                        <div className="FindGroup2 form-group">
-                            <label htmlFor="email"><strong>기업명</strong></label>
-                            <div className="d-flex justify-content-between">
-                                {/* 사업체명 입력태그 */}
-                                <input type="text" name="comName" id="comName" className="form-control" placeholder='사업체명을 입력해주세요' value={updateConfirmComName} onChange={(e) => setUpdateConfirmComName(e.target.value)}/>
-                                <button type="button" className="FindCheck btn btn-primary">
-                                    {/* onclick: Pw_Confirm() */}
-                                    확인
-                                </button>
+                            <div className="form-group">
+                                <label htmlFor="user-id" className='FindId2'><strong>아이디</strong></label>
+                                <input className='form-control' type="text" name="userId" id="userId" placeholder='아이디를 입력해주세요' value={updatePwUserId} onChange={(e) => setUpdatePwUserId(e.target.value)} />
                             </div>
 
-                            <div id='passwordChange' className="PwChange d-flex flex-clumn gap-3">
-                                <input type="password" name="userPw" id="userPw" className="PwChange2 form-control"
-                                    placeholder='비밀번호' required  value={updatePw} onChange={(e) => setUpdatePw(e.target.value)}/>
-
-                                <input type="password" name="confirm-password" id="confirm-password"
-                                    className="PwCheck2 form-control" required placeholder='비밀번호 확인' value={updateConfirmPw} onChange={(e) => setUpdateConfirmPw(e.target.value)}/>
-                                <button type="submit" id='UpdatePw' className='FindChange btn btn-primary'>변경</button>
+                            <div className="FindGroup2 form-group">
+                                <label htmlFor="email"><strong>기업명</strong></label>
+                                <div className="d-flex justify-content-between">
+                                    {/* 사업체명 입력태그 */}
+                                    <input type="text" name="comName" id="comName" className="form-control" placeholder='사업체명을 입력해주세요' value={updateConfirmComName} onChange={(e) => setUpdateConfirmComName(e.target.value)} />
+                                    <button type="button" className="FindCheck btn btn-primary">
+                                        {/* onclick: Pw_Confirm() */}
+                                        확인
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                        {isInfoVerified && (
+                            <form onSubmit={handleUpdatePwSubmit}>
+                                <div id='passwordChange' className="PwChange d-flex flex-clumn gap-3">
+                                    <input type="password" name="userPw" id="userPw" className="PwChange2 form-control"
+                                        placeholder='비밀번호' required value={updatePw} onChange={(e) => setUpdatePw(e.target.value)} />
+
+                                    <input type="password" name="confirm-password" id="confirm-password"
+                                        className="PwCheck2 form-control" required placeholder='비밀번호 확인' value={updateConfirmPw} onChange={(e) => setUpdateConfirmPw(e.target.value)} />
+                                    <button type="submit" id='UpdatePw' className='FindChange btn btn-primary'>변경</button>
+                                </div>
+                            </form>
+                        )}
                     </div>
                 </div>
-            </div>
+            </div >
 
             <div className="alert alert-primary mt-4" role='alert'>
                 고객님께서 검색하신 아이디 비밀번호는 이메일로 전송됩니다.

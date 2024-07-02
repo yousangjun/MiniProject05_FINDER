@@ -238,7 +238,7 @@ public class UserController {
 
         // 데이터베이스에서 사용자 정보 가져오기
         Company company = userService.getComName(request.getComName());
-        Users users = userService.getUserById(request.getUserId());
+        Users users = userService.getUserById(request.getUserId());ㅈ
 
         if (company == null) {
             // 사용자가 존재하지 않는 경우 false 반환
