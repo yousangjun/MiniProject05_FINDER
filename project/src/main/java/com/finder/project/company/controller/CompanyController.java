@@ -403,18 +403,22 @@ public class CompanyController {
 
     // 토스 페이먼츠 메인 [GET] ⭕⭕⭕
     @GetMapping("/credit/checkout")
-    public ResponseEntity<?> checkout(@RequestParam("productNo") int productNo, @RequestParam("orderNo") int orderNo) {
+    public ResponseEntity<?> checkout(@RequestParam("productNo") int productNo, 
+                                      @RequestParam("orderNo") int orderNo,
+                                      @RequestParam("userNo") int userNo) {
         try {
             Order order = companyService.selectOrder(orderNo);  
-            Product product = companyService.selectProduct(productNo); 
+            Product product = companyService.selectProduct(productNo);
+            Users user = userService.selectByUserNo(userNo); 
 
-            if ( product == null || order == null ) {
+            if (product == null || order == null || user == null) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             Map<String, Object> response = new HashMap<>();
             response.put("order", order);
             response.put("product", product);
+            response.put("user", user); 
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
@@ -431,6 +435,95 @@ public class CompanyController {
         
     //     return "/company/credit/process";
     // }
+
+
+
+
+
+    // 주문 테이블 추가 [POST] ⭕⭕⭕
+    @ResponseBody
+    @PostMapping("/credit/checkout")
+    public ResponseEntity<?> successPro(@RequestBody Map<String, Integer> request) throws Exception {
+        int userNo = request.get("userNo");
+        int productNo = request.get("productNo");
+
+        log.info("제품번호 : " + productNo);
+
+        Users user = userService.selectByUserNo(userNo);
+
+        // 결제진행시 주문테이블에 미결제 등록
+        Order order = new Order();
+        Product product = companyService.selectProduct(productNo);
+
+        order.setUserNo(user.getUserNo()); 
+        order.setProductNo(product.getProductNo());
+        order.setTotalQuantity(product.getProductCount()); // 필요한 경우 적절히 설정
+        order.setTotalPrice(product.getProductPrice());
+        order.setOrderStatus("PENDING");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, product.getProductDuration());
+        order.setExpirationDate(calendar.getTime()); // 만료일 개월수만큼 더해서 나오게끔해야됨
+        order.setAccessOrder(1);
+
+        // order_no를 반환하는 insertOrder 메서드 호출
+        int orderNo = companyService.insertOrder(order);
+        log.info("주문번호 : " + orderNo);
+
+        if (orderNo > 0) {            
+            return new ResponseEntity<>(Map.of("success", true, "orderNo", orderNo), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(Map.of("success", false), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
+     // 결제 테이블 추가 [POST]
+    @ResponseBody
+    @PostMapping("/credit/process")
+    public ResponseEntity<?> successPro(@RequestParam("paymentKey") String paymentKey
+                                                        ,@RequestParam("orderId") String orderId
+                                                        ,@RequestParam("price") int price
+                                                        ,@RequestParam("productNo") int productNo
+                                                        ,@RequestParam("orderNo") int orderNo
+                                                        ) throws Exception {
+        log.info("주문번호 : " + orderNo);
+        log.info("상품번호 : " + productNo);
+        log.info("가격 : " + price);
+        
+
+        Order order = companyService.selectOrder(orderNo);
+        Product product = companyService.selectProduct(productNo);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, product.getProductDuration());
+        order.setExpirationDate(calendar.getTime()); // 만료일 개월수만큼 더해서 나오게끔해야됨
+        order.setRemainQuantity(order.getTotalQuantity());
+
+        int result = companyService.updateOrder(order); // 주문 갱신
+
+        if(result>0){
+            log.info(" order_status / updated_date / expiration_date 갱신 ");
+        }else{
+            log.info(" 주문 갱신 실패 ");
+        }
+    
+        Credit credit = new Credit();
+        credit.setOrderNo(orderNo);
+        credit.setCreditCode(orderId);
+        credit.setCreditMethod("간편결제");
+        credit.setCreditStatus("PAID");
+
+        int creditResult = companyService.insertCredit(credit); // 결제 등록
+
+        if(creditResult > 0) {
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
 
@@ -474,106 +567,6 @@ public class CompanyController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
-
-
-     // 결제 테이블 추가 [POST]
-    @ResponseBody
-    @PostMapping("/credit/process")
-    public ResponseEntity<Map<String, Object>> successPro(HttpSession session
-                                ,@RequestParam("paymentKey") String paymentKey
-                                ,@RequestParam("orderId") String orderId
-                                ,@RequestParam("price") int price
-                                ,@RequestParam("productNo") int productNo
-                                ,@RequestParam("orderNo") int orderNo
-                                ) throws Exception {
-    
-        // 세션에서 사용자 정보 가져오기
-        // Users user = (Users) session.getAttribute("user");
-        log.info("주문번호 : " + orderNo);
-
-        Order order = companyService.selectOrder(orderNo);
-        Product product = companyService.selectProduct(productNo);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, product.getProductDuration());
-        order.setExpirationDate(calendar.getTime()); // 만료일 개월수만큼 더해서 나오게끔해야됨
-        order.setRemainQuantity(order.getTotalQuantity());
-
-        int result = companyService.updateOrder(order); // 주문 갱신
-
-        if(result>0){
-            log.info(" order_status / updated_date / expiration_date 갱신 ");
-        }else{
-            log.info(" 주문 갱신 실패 ");
-        }
-    
-        Credit credit = new Credit();
-        credit.setOrderNo(orderNo);
-        credit.setCreditCode(orderId);
-        credit.setCreditMethod("간편결제");
-        credit.setCreditStatus("PAID");
-
-        int creditResult = companyService.insertCredit(credit); // 결제 등록
-
-        Map<String, Object> response = new HashMap<>();
-
-        if(creditResult > 0) {
-            response.put("status", "success");
-        } else {
-            response.put("status", "fail");
-        }
-
-        Users user = (Users) session.getAttribute("user");
-
-        user.setOrder(order);
-        session.setAttribute("user", user);
-        
-        response.put("productNo", productNo);
-        response.put("orderNo", orderNo);
-
-        return ResponseEntity.ok(response);
-    }
-
-
-    // 주문 테이블 추가 [POST]
-    @ResponseBody
-    @PostMapping("/credit/checkout")
-    public ResponseEntity<?> successPro(@RequestBody Map<String, Integer> request) throws Exception {
-        int userNo = request.get("userNo");
-        int productNo = request.get("productNo");
-
-        log.info("제품번호 : " + productNo);
-
-        Users user = userService.selectByUserNo(userNo);
-
-        // 결제진행시 주문테이블에 미결제 등록
-        Order order = new Order();
-        Product product = companyService.selectProduct(productNo);
-
-        order.setUserNo(user.getUserNo()); 
-        order.setProductNo(product.getProductNo());
-        order.setTotalQuantity(product.getProductCount()); // 필요한 경우 적절히 설정
-        order.setTotalPrice(product.getProductPrice());
-        order.setOrderStatus("PENDING");
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, product.getProductDuration());
-        order.setExpirationDate(calendar.getTime()); // 만료일 개월수만큼 더해서 나오게끔해야됨
-        order.setAccessOrder(1);
-
-        // order_no를 반환하는 insertOrder 메서드 호출
-        int orderNo = companyService.insertOrder(order);
-        log.info("주문번호 : " + orderNo);
-
-        if (orderNo > 0) {            
-            return new ResponseEntity<>(Map.of("success", true, "orderNo", orderNo), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(Map.of("success", false), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 
 
     // 토스 페이먼츠 fail [GET]
