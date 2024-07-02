@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,7 +32,6 @@ import com.finder.project.company.service.CompanyService;
 import com.finder.project.main.dto.Page;
 import com.finder.project.recruit.service.RecruitService;
 import com.finder.project.resume.dto.Resume;
-import com.finder.project.user.dto.CustomUser;
 import com.finder.project.user.dto.Users;
 import com.finder.project.user.service.UserService;
 

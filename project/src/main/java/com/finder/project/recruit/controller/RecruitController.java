@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.client.HttpServerErrorException.BadGateway;
 
 import com.finder.project.company.dto.Company;
 import com.finder.project.company.dto.CompanyDetail;
@@ -178,41 +180,40 @@ public class RecruitController {
 
     // 채용공고 등록 페이지 ----
     @GetMapping("/post_jobs_com")
-    public String getPost_jobs_com(@SessionAttribute("user") Users user, Model model) {
-        Company company = companyService.selectByUserNo(user.getUserNo());
+    public ResponseEntity<?> getPost_jobs_com(@RequestParam("userNo") int userNo) {
+        Company company = companyService.selectByUserNo(userNo);
 
-        model.addAttribute("company", company);
-        return "/recruit/post_jobs_com";
+        return new ResponseEntity<>(company, HttpStatus.OK);
     }
 
     @PostMapping("/post_jobs_com")
-    public String postPost_jobs_com(RecruitPost recruitPost, HttpSession session) throws Exception {
-
+    public ResponseEntity<?> postPost_jobs_com(@ModelAttribute RecruitPost recruitPost) throws Exception {
+        log.info(recruitPost + " 잘담기고있니 ? recruitPost");
         int result = recruitService.recruitPost(recruitPost);
 
         if (result > 0) {
-            log.info(" insert 성공 ");
+            return new ResponseEntity<>(HttpStatus.OK);
         }
 
-        Users user = (Users) session.getAttribute("user");
-        Order order = user.getOrder();
-        int remainQuantity = order.getRemainQuantity();
-        int accessOrder = order.getAccessOrder();
-        if (remainQuantity > 1) {
-            remainQuantity = remainQuantity - 1;
-            order.setRemainQuantity(remainQuantity);
-            recruitService.updateRemainQuantityByOrderNo(order);
-        }
+        // Users user = (Users) session.getAttribute("user");
+        // Order order = user.getOrder();
+        // int remainQuantity = order.getRemainQuantity();
+        // int accessOrder = order.getAccessOrder();
+        // if (remainQuantity > 1) {
+        //     remainQuantity = remainQuantity - 1;
+        //     order.setRemainQuantity(remainQuantity);
+        //     recruitService.updateRemainQuantityByOrderNo(order);
+        // }
 
-        if (remainQuantity == 1) {
-            remainQuantity = remainQuantity - 1;
-            accessOrder = accessOrder - 1;
-            order.setRemainQuantity(remainQuantity);
-            order.setAccessOrder(accessOrder);
-            recruitService.updateRemainQuantityAndAccessOrderByOrderNo(order);
-        }
+        // if (remainQuantity == 1) {
+        //     remainQuantity = remainQuantity - 1;
+        //     accessOrder = accessOrder - 1;
+        //     order.setRemainQuantity(remainQuantity);
+        //     order.setAccessOrder(accessOrder);
+        //     recruitService.updateRemainQuantityAndAccessOrderByOrderNo(order);
+        // }
 
-        return "redirect:/index";
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     // 채용공고 등록 페이지 ---- 끝
 

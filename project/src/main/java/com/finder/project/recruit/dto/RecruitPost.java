@@ -45,6 +45,21 @@ public class RecruitPost {
         }
         return keywordList;
     }
+    public List<String> getKeyword() {
+        if (keywordList == null) {
+            keywordList = new ArrayList<>();
+            if (keywordString != null && !keywordString.isEmpty()) {
+                String[] keywords = keywordString.split(", ");
+                for (String keyword : keywords) {
+                    // log.info("???" + keyword);
+                    Keyword kw = new Keyword();
+                    kw.setRecruitKeyword("#" + keyword);
+                    keywordList.add(kw);
+                }
+            }
+        }
+        return keyword;
+    }
     
     // Company 테이블 참조
     private Company company;
