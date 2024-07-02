@@ -133,16 +133,16 @@ public class UserController {
     // 이거 아이디 찾기 할때 alert 해야함
     // return "<script>alert('해당 이메일로 ID를 발송하였습니다.');
     // location.href='/login';</script>"; 이거 뻄
-    @ResponseBody
-    @GetMapping("/find_user")
+    // @ResponseBody
+    @PostMapping("/find_user")
     // ✅ 아이디 찾기 이메일로 전송 (해결~!~!~!~!!~~!~~!)
     // 이거 get방식이긴 한데 물어봐야함 ❓❓❓❓❓❓❓❓
-    public ResponseEntity<String> findId(@RequestBody Users users) throws Exception {
+    public ResponseEntity<?> findId(@RequestBody Users users) throws Exception {
 
-        Users user = new Users();
         String userEmail = users.getUserEmail();
         String userName = users.getUserName();
-
+        Users user = new Users();
+        
         log.info("이메일 파라미터 : " + userEmail);
         log.info("유저 이름 파라미터 : " + userName);
 
@@ -212,9 +212,11 @@ public class UserController {
     }
 
     // ✅ 사용자 아이디 찾기⭕ (해결~!~!~!~!!~~!~~!)
+    @ResponseBody
     @PostMapping("/info_check")
     public ResponseEntity<Boolean> infoUserCheck(@RequestBody InformationCheck request) throws Exception {
 
+        log.info("서버로 받아오는 사용자 아이디" + request);
         // 데이터베이스에서 사용자 정보 가져오기
         Users user = userService.getUserById(request.getId());
 
