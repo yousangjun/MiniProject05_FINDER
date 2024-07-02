@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.client.HttpServerErrorException.BadGateway;
 
 import com.finder.project.company.dto.Company;
 import com.finder.project.company.dto.CompanyDetail;
@@ -59,49 +61,49 @@ public class RecruitController {
 
     // 채용공고 상세 페이지 ----
     @GetMapping("/detail_jobs_user")
-    public String getMethodName(@RequestParam("recruitNo") Integer recruitNo, Model model, Files file,
-            HttpSession session) throws Exception {
+    public ResponseEntity<Map<String,Object>> getMethodName(@RequestParam("recruitNo") Integer recruitNo, @RequestParam("userNo") Integer userNo, Files file  ) throws Exception {
+        log.info(recruitNo + ": recruitNo");
+        Map<String, Object> response = new HashMap<>();
+        // Users user = (Users) session.getAttribute("user");
 
-        Users user = (Users) session.getAttribute("user");
+        // if (userNo != null) {
+        //     // Integer userNo = user.getUserNo();
+        //     log.info(" 유저번호는 : " + userNo);
 
-        if (user != null) {
-            Integer userNo = user.getUserNo();
-            log.info(" 유저번호는 : " + userNo);
+        //     if (userNo != null) { // userNo가 null이 아닌지 확인
 
-            if (userNo != null) { // userNo가 null이 아닌지 확인
+        //         List<Resume> resumeList = resumeService.resumelist(userNo);
 
-                List<Resume> resumeList = resumeService.resumelist(userNo);
+        //         if (resumeList != null) {
+        //             // log.info("이력서 목록이 있구나 : " + resumeList.size() + "건");
+        //             // 모델 등록
+        //             // model.addAttribute("resumeList", resumeList);
+        //             // model.addAttribute("user", user);
+        //             // 뷰페이지 지정
+        //         }
 
-                if (resumeList != null) {
-                    // log.info("이력서 목록이 있구나 : " + resumeList.size() + "건");
-                    // 모델 등록
-                    model.addAttribute("resumeList", resumeList);
-                    model.addAttribute("user", user);
-                    // 뷰페이지 지정
-                }
+        //         // 유저 번호에 해당하는 recruitNo 집합 가져오기
+        //         Map<Integer, Set<Integer>> userVisitedRecruitNos = (Map<Integer, Set<Integer>>) session
+        //                 .getAttribute("userVisitedRecruitNos");
+        //         if (userVisitedRecruitNos == null) {
+        //             userVisitedRecruitNos = new HashMap<>();
+        //             session.setAttribute("userVisitedRecruitNos", userVisitedRecruitNos);
+        //         }
 
-                // 유저 번호에 해당하는 recruitNo 집합 가져오기
-                Map<Integer, Set<Integer>> userVisitedRecruitNos = (Map<Integer, Set<Integer>>) session
-                        .getAttribute("userVisitedRecruitNos");
-                if (userVisitedRecruitNos == null) {
-                    userVisitedRecruitNos = new HashMap<>();
-                    session.setAttribute("userVisitedRecruitNos", userVisitedRecruitNos);
-                }
+        //         Set<Integer> visitedRecruitNos = userVisitedRecruitNos.get(userNo);
+        //         if (visitedRecruitNos == null) {
+        //             visitedRecruitNos = new HashSet<>();
+        //             userVisitedRecruitNos.put(userNo, visitedRecruitNos);
+        //         }
 
-                Set<Integer> visitedRecruitNos = userVisitedRecruitNos.get(userNo);
-                if (visitedRecruitNos == null) {
-                    visitedRecruitNos = new HashSet<>();
-                    userVisitedRecruitNos.put(userNo, visitedRecruitNos);
-                }
+        //         visitedRecruitNos.add(recruitNo);
+        //         int aeCount = recruitService.userNoToDistnctRecruitNo(userNo, recruitNo);
+        //         log.info("ae?? : " + aeCount);
+        //         model.addAttribute("aeCount", aeCount);
+        //     }
+        // } else {
 
-                visitedRecruitNos.add(recruitNo);
-                int aeCount = recruitService.userNoToDistnctRecruitNo(userNo, recruitNo);
-                log.info("ae?? : " + aeCount);
-                model.addAttribute("aeCount", aeCount);
-            }
-        } else {
-
-        }
+        // }
 
         RecruitPost recruitPost = recruitService.recruitRead(recruitNo);
         if (recruitPost == null) {
@@ -116,17 +118,26 @@ public class RecruitController {
 
         int comNo = recruitPost.getCompany().getComNo();
         CompanyDetail companyDetail = recruitService.selectCompanyDetailsWithRecruit(comNo);
+        log.info(companyDetail + "companyDetail tlqkf ");
 
         List<Files> fileList = fileService.listByParent(file);
 
         Files Thumbnail = fileService.listByParentThumbnail(file);
         // log.info("companyDetail", companyDetail);
-        model.addAttribute("companyDetail", companyDetail);
-        model.addAttribute("Thumbnail", Thumbnail);
-        model.addAttribute("recruitPost", recruitPost);
-        model.addAttribute("fileList", fileList);
 
-        return "/recruit/detail_jobs_user";
+        log.info(companyDetail + " 뭐가꼬옴 ????????????????????????" + fileList);
+
+        response.put("companyDetail", companyDetail);
+        response.put("Thumbnail", Thumbnail);
+        response.put("recruitPost", recruitPost);
+        response.put("fileList", fileList);
+
+        // model.addAttribute("companyDetail", companyDetail);
+        // model.addAttribute("Thumbnail", Thumbnail);
+        // model.addAttribute("recruitPost", recruitPost);
+        // model.addAttribute("fileList", fileList);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 지원하기 비동기 삭제
@@ -169,41 +180,40 @@ public class RecruitController {
 
     // 채용공고 등록 페이지 ----
     @GetMapping("/post_jobs_com")
-    public String getPost_jobs_com(@SessionAttribute("user") Users user, Model model) {
-        Company company = companyService.selectByUserNo(user.getUserNo());
+    public ResponseEntity<?> getPost_jobs_com(@RequestParam("userNo") int userNo) {
+        Company company = companyService.selectByUserNo(userNo);
 
-        model.addAttribute("company", company);
-        return "/recruit/post_jobs_com";
+        return new ResponseEntity<>(company, HttpStatus.OK);
     }
 
     @PostMapping("/post_jobs_com")
-    public String postPost_jobs_com(RecruitPost recruitPost, HttpSession session) throws Exception {
-
+    public ResponseEntity<?> postPost_jobs_com(@ModelAttribute RecruitPost recruitPost) throws Exception {
+        log.info(recruitPost + " 잘담기고있니 ? recruitPost");
         int result = recruitService.recruitPost(recruitPost);
 
         if (result > 0) {
-            log.info(" insert 성공 ");
+            return new ResponseEntity<>(HttpStatus.OK);
         }
 
-        Users user = (Users) session.getAttribute("user");
-        Order order = user.getOrder();
-        int remainQuantity = order.getRemainQuantity();
-        int accessOrder = order.getAccessOrder();
-        if (remainQuantity > 1) {
-            remainQuantity = remainQuantity - 1;
-            order.setRemainQuantity(remainQuantity);
-            recruitService.updateRemainQuantityByOrderNo(order);
-        }
+        // Users user = (Users) session.getAttribute("user");
+        // Order order = user.getOrder();
+        // int remainQuantity = order.getRemainQuantity();
+        // int accessOrder = order.getAccessOrder();
+        // if (remainQuantity > 1) {
+        //     remainQuantity = remainQuantity - 1;
+        //     order.setRemainQuantity(remainQuantity);
+        //     recruitService.updateRemainQuantityByOrderNo(order);
+        // }
 
-        if (remainQuantity == 1) {
-            remainQuantity = remainQuantity - 1;
-            accessOrder = accessOrder - 1;
-            order.setRemainQuantity(remainQuantity);
-            order.setAccessOrder(accessOrder);
-            recruitService.updateRemainQuantityAndAccessOrderByOrderNo(order);
-        }
+        // if (remainQuantity == 1) {
+        //     remainQuantity = remainQuantity - 1;
+        //     accessOrder = accessOrder - 1;
+        //     order.setRemainQuantity(remainQuantity);
+        //     order.setAccessOrder(accessOrder);
+        //     recruitService.updateRemainQuantityAndAccessOrderByOrderNo(order);
+        // }
 
-        return "redirect:/index";
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     // 채용공고 등록 페이지 ---- 끝
 

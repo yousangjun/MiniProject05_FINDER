@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,7 +32,6 @@ import com.finder.project.company.service.CompanyService;
 import com.finder.project.main.dto.Page;
 import com.finder.project.recruit.service.RecruitService;
 import com.finder.project.resume.dto.Resume;
-import com.finder.project.user.dto.CustomUser;
 import com.finder.project.user.dto.Users;
 import com.finder.project.user.service.UserService;
 
@@ -365,15 +363,21 @@ public class CompanyController {
     // 결제상품 세부 화면 [GET]
     // 일단 데이터 찍힘 ⭕⭕⭕
     @GetMapping("credit/credit_detail_com")
-    public ResponseEntity<?> credit_detail_com(@RequestParam("productNo") Integer productNo) {
+    public ResponseEntity<?> credit_detail_com(@RequestParam("productNo") Integer productNo
+                                             , @RequestParam("userNo") Integer userNo) {
         try {
             Product product = companyService.selectProduct(productNo);
+            Users user = userService.selectByUserNo(userNo);
 
-            if ( product == null ) {
+            if (product == null || user == null) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
             
-            return new ResponseEntity<>(product, HttpStatus.OK);
+            Map<String, Object> response = new HashMap<>();
+            response.put("product", product);
+            response.put("user", user);
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -537,9 +541,9 @@ public class CompanyController {
     // 주문 테이블 추가 [POST]
     @ResponseBody
     @PostMapping("/credit/checkout")
-    public ResponseEntity<?> successPro(
-                @RequestParam("userNo") int userNo,
-                @RequestParam("productNo") int productNo) throws Exception {
+    public ResponseEntity<?> successPro(@RequestBody Map<String, Integer> request) throws Exception {
+        int userNo = request.get("userNo");
+        int productNo = request.get("productNo");
 
         log.info("제품번호 : " + productNo);
 
@@ -564,11 +568,12 @@ public class CompanyController {
         log.info("주문번호 : " + orderNo);
 
         if (orderNo > 0) {            
-            return new ResponseEntity<>("주문은 일단 됐다", HttpStatus.OK);
+            return new ResponseEntity<>(Map.of("success", true, "orderNo", orderNo), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("주문은 일단 됐다", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Map.of("success", false), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
     // 토스 페이먼츠 fail [GET]

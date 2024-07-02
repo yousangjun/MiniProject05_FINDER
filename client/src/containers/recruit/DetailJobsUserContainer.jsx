@@ -1,10 +1,46 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-// import axios from 'axios';
+import { Link, useParams } from 'react-router-dom';
+import * as recruitApi from '../../apis/recruit/recruit.js'
 import './css/DetailJobsUserContainer.css';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const DetailJobsUserContainer = () => {
+  const { userInfo } = useContext(LoginContext);
+  const { recruitNo } = useParams();
+  const [textareaHeight, setTextareaHeight] = useState('auto');
+  const textareaRef = useRef(null); // useRef 훅을 사용하여 ref 생성
+  const userNo = userInfo ? userInfo.userNo : null;
+  // console.log(userInfo.userNo);
+
+
+  useEffect(() => {
+    if (userNo) {
+      recruitApi.jobDetails(recruitNo, userInfo.userNo)
+        .then(response => {
+          // 성공적으로 데이터를 받아왔을 때 처리
+          console.log(response);
+          setThumbnail(response.data.Thumbnail)
+          setCompanyDetail(response.data.companyDetail)
+          setRecruitPost(response.data.recruitPost)
+          setFileList(response.data.fileList)
+        })
+        .catch(error => {
+          // 에러 발생 시 처리
+          console.error('Error fetching job details:', error);
+        });
+    }
+  }, [userNo]);
+
+  useLayoutEffect(() => {
+    adjustTextareaHeight();
+    window.addEventListener('resize', adjustTextareaHeight);
+
+    return () => {
+      window.removeEventListener('resize', adjustTextareaHeight);
+    }
+  }, []);
+
   const [aeCount, setAeCount] = useState(0);
   const [resumeList, setResumeList] = useState([
 
@@ -38,13 +74,22 @@ const DetailJobsUserContainer = () => {
   const [focusedCvNo, setFocusedCvNo] = useState('');
   const [user, setUser] = useState({});
   const [companyDetail, setCompanyDetail] = useState({
-    thumbnail: { fileNo: '썸네일 파일번호' },
     comBirth: '5년',
     comSize: '대기업',
     comEmpCount: '500명',
     comSales: '1000억'
   });
+  const [thumbnail, setThumbnail] = useState([]);
+  const [fileList, setFileList] = useState([])
 
+
+  function adjustTextareaHeight() {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'; // 기본 높이로 초기화
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'; // 실제 내용의 높이로 설정
+      setTextareaHeight(`${textareaRef.current.scrollHeight}px`);
+    }
+  }
 
   // 이력서 제출
   const handleFormSubmit = async (event) => {
@@ -100,16 +145,22 @@ const DetailJobsUserContainer = () => {
           <div className="col-md-12 col-lg-9 order-2 order-lg-1">
 
             <div className="wrapper d-flex flex-column">
-              <div className="detail-header">
-                <div className="detail-logo d-flex justify-content-start">
-                  <img src={companyDetail ? `/file/img/${companyDetail.thumbnail.fileNo}` : '/img/no-image.png'} alt="썸네일" width="100px" height="100px" />
-                  <span style={{ fontSize: '14px' }}>{recruitPost.company?.comName}</span>
-                  <span style={{ fontSize: '32px', fontWeight: 'bold' }}>{recruitPost.recruitTitle}</span>
+              <div className="detail-header ">
+                <div className="detail-logo justify-content-start flex-column">
+                  <div>
+                    <img src={thumbnail ? `/file/img/${thumbnail.fileNo}` : '/img/no-image.png'} alt="썸네일" width="100px" height="100px" />
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '14px' }}>{recruitPost.company?.comName}</span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '32px', fontWeight: 'bold' }}>{recruitPost.recruitTitle}</span>
+                  </div>
                 </div>
                 <div className="item d-flex justify-content-between">
                   <div className="keyword-span-detail">
-                    {recruitPost.keywordList?.map((keyword) => (
-                      <span key={keyword.id}>{keyword.recruitKeyword}</span>
+                    {recruitPost.keywordList?.map((keyword, index) => (
+                      <span key={index}>{keyword.recruitKeyword}</span>
                     ))}
                   </div>
                 </div>
@@ -137,11 +188,13 @@ const DetailJobsUserContainer = () => {
                 <div>
                   <p>{recruitPost.recruitContent}</p>
                 </div>
-                {resumeList.map((file) => (
-                  <div key={file.id}>
-                    <img src={`/file/img/${file.fileNo}`} alt="파일 썸네일" style={{ width: '100%' }} />
-                  </div>
-                ))}
+                {fileList &&
+                  fileList.map((file) => (
+                    <div key={file.fileNo}>
+                      <img src={`/file/img/${file.fileNo}`} alt="파일 썸네일" style={{ width: '100%' }} />
+                    </div>
+                  ))
+                }
                 {companyDetail && (
                   <div className="d-flex justify-content-center">
                     <div className="d-flex flex-column w-75">
@@ -149,28 +202,28 @@ const DetailJobsUserContainer = () => {
                         <div className="d-flex flex-column row-gap-3 col-3">
                           <img src="/img/연차1.png" alt="업력연차" style={{ width: '8vw', padding: '26px 12px 10px' }} />
                           <div className="form-floating mb-3">
-                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value='5년' />
+                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value={`${companyDetail.comBirth}년`} />
                             <label htmlFor="floatingPlaintextInput">업력 연차</label>
                           </div>
                         </div>
                         <div className="d-flex flex-column row-gap-3 col-3">
                           <img src="/img/대기업1.png" alt="기업규모" style={{ width: "8vw", padding: "26px 12px 10px" }} />
                           <div className="form-floating mb-3">
-                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value="대기업" />
+                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value={`${companyDetail.comSize}`} />
                             <label htmlFor="floatingPlaintextInput">기업 규모</label>
                           </div>
                         </div>
                         <div className="d-flex flex-column row-gap-3 col-3">
                           <img src="/img/사원수1.png" alt="사원수" style={{ width: "8vw", padding: "26px 12px 10px" }} />
                           <div className="form-floating mb-3">
-                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value="500명" />
+                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value={`${companyDetail.comEmpCount}명`} />
                             <label htmlFor="floatingPlaintextInput">사원 수</label>
                           </div>
                         </div>
                         <div className="d-flex flex-column row-gap-3 col-3">
                           <img src="/img/매출액1.png" alt="매출액" style={{ width: "8vw", padding: "26px 12px 10px" }} />
                           <div className="form-floating mb-3">
-                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value="1000억" />
+                            <input type="text" readOnly className="form-control-plaintext" id="floatingPlaintextInput" value={`${companyDetail.comSales}`} />
                             <label htmlFor="floatingPlaintextInput">매출액</label>
                           </div>
                         </div>
@@ -181,7 +234,7 @@ const DetailJobsUserContainer = () => {
                             <label htmlFor="" style={{ fontWeight: "bold" }}>회사이름</label>
                           </div>
                           <div className="col-9">
-                            <span>회사 이름</span>
+                            <span> {companyDetail.company && companyDetail.company.comName} </span>
                           </div>
                         </div>
                         <div className="d-flex w-100">
@@ -189,7 +242,7 @@ const DetailJobsUserContainer = () => {
                             <label htmlFor="com_represent" style={{ fontWeight: "bold" }}>대표명</label>
                           </div>
                           <div className="col-9">
-                            <span>대표명</span>
+                            <span>{companyDetail.comRepresent}</span>
                           </div>
                         </div>
                       </div>
@@ -199,7 +252,7 @@ const DetailJobsUserContainer = () => {
                             <label htmlFor="com_category" style={{ fontWeight: "bold" }}>업종</label>
                           </div>
                           <div className="col-9">
-                            <span>업종</span>
+                            <span>{companyDetail.company && companyDetail.company.comCategory}</span>
                           </div>
                         </div>
                         <div className="d-flex w-100">
@@ -207,13 +260,13 @@ const DetailJobsUserContainer = () => {
                             <label htmlFor="com_address" style={{ fontWeight: "bold" }}>주소</label>
                           </div>
                           <div className="col-9">
-                            <span>주소</span>
+                            <span>{companyDetail.company && companyDetail.company.comAddress}</span>
                           </div>
                         </div>
                       </div>
                       <div className="w-100 introduce-col4">
                         <div className="form-floating mb-3">
-                          <textarea readOnly className="form-control-plaintext textarea-comContent" id="floatingPlaintextInput" value="기술 소개" style={{ overflowY: "hidden", resize: "none", color: "#475067" }}></textarea>
+                          <textarea ref={textareaRef} readOnly className="form-control-plaintext textarea-comContent" id="floatingPlaintextInput" value={`${companyDetail.comContent}`} style={{ overflowY: "hidden", resize: "none", color: "#475067", height: textareaHeight }}></textarea>
                           <label htmlFor="floatingPlaintextInput">기술 소개</label>
                         </div>
                       </div>

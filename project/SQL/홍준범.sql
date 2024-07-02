@@ -19,3 +19,11 @@ React를 이용한 프론트엔드 개발에도 능숙하여, 사용자 친화�
         '2021-12-31',
         '데이터베이스 관리자'
     ),
+
+SELECT c.*, r.*, 
+       (SELECT GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ')
+        FROM recruit_keyword rk
+        WHERE rk.recruit_no = r.recruit_no) AS recruit_keyword
+FROM company c
+INNER JOIN recruit r ON c.com_no = r.com_no
+WHERE r.recruit_no = 33;

@@ -63,7 +63,7 @@ function App() {
           
           {/* 채용공고 페이지 */}
           <Route path="/" element={<Home/>}></Route>
-          <Route path="/recruit/detail_jobs_user" element={<Detail_jobs_user/>}></Route>  {/* 채용공고 상세 [공통] */}
+          <Route path="/recruit/detail_jobs_user/:recruitNo" element={<Detail_jobs_user/>}></Route>  {/* 채용공고 상세 [공통] */}
 
           <Route path="/recruit/post_jobs_com" element={<Post_jobs_com/>}></Route>        {/* 채용공고 등록 [기업] */}
           <Route path="/recruit/post_jobsRead_com" element={<Post_jobsRead_com/>}></Route> {/* 채용공고 조회 [기업] */}
