@@ -8,8 +8,9 @@ import { LoginContext } from '../../contexts/LoginContextProvider'
 const CreditDetailCom = () => {
     const [modalShow, setModalShow] = useState(false);
     const [isAgreed, setIsAgreed] = useState(false);
-    const [product, setProduct] = useState(null);
-    const { productNo, orderNo } = useParams();
+    const [product, setProduct] = useState({});
+    const [user, setUser] = useState({});
+    const { productNo } = useParams();
     const navigate = useNavigate();
     
     // Context
@@ -17,18 +18,19 @@ const CreditDetailCom = () => {
     const userNo = userInfo ? userInfo.userNo : null;
 
     useEffect(() => {
-        if (productNo) {
+        if (productNo && userNo) {
             const fetchProduct = async () => {
                 try {
-                    const response = await credit.getProduct(productNo);
-                    setProduct(response.data);
+                    const response = await credit.getProduct(productNo, userNo);
+                    setProduct(response.data.product);
+                    setUser(response.data.user);
                 } catch (error) {
                     console.error('상품 정보를 불러오는 중 에러 발생:', error);
                 }
             };
             fetchProduct();
         }
-    }, [productNo]);
+    }, [userNo, productNo]);
 
     const handleBuyCheck = () => {
         setIsAgreed(true);
@@ -61,6 +63,12 @@ const CreditDetailCom = () => {
         navigate(-1);
     };
 
+    // 전화번호 형식 변환 함수
+    const formatPhoneNumber = (phoneNumber) => {
+        if (!phoneNumber) return '';
+        return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    };
+
     return (
         <div className="d-flex flex-column container main-content align-items-center">
             <h1 className="my-5">상품을 선택하셨습니다.</h1>
@@ -89,14 +97,14 @@ const CreditDetailCom = () => {
                         <div className="credit_user_info">
                             
                             <div>
-                                <p>결제 금액 : <span>{product ? product.productPrice : '...'}</span>원</p>
+                                <p>결제 금액 : <span>{product.productPrice}</span>원</p>
                                 <hr />
                             </div>
 
                             <div>
-                                <p>결제자 : <span>홍길동</span></p>
+                                <p>결제자 : <span>{user.userName}</span></p>
                                 <div className="d-flex justify-content-between align-items-center">
-                                    <p>연락처 : <span>010-1234-5678</span></p>
+                                    <p>연락처 : <span>{formatPhoneNumber(user.userPhone)}</span></p>
                                     <button
                                         className='btn-long'
                                         type="button" 

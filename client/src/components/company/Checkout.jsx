@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import './css/Checkout.css'
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import * as credit from '../../apis/company/credit';
-
+import { useParams } from 'react-router-dom';
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
 
@@ -13,6 +13,8 @@ const CreditDetailCom = () => {
     const [paymentWidget, setPaymentWidget] = useState(null);
     const paymentMethodsWidgetRef = useRef(null);
     const [price, setPrice] = useState(50_000);
+    const { productNo, orderNo } = useParams();
+
 
     // Context
     const { userInfo } = useContext(LoginContext);
