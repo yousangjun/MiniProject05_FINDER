@@ -133,12 +133,12 @@ main {
 
 }
 
-.btn-male {
+.btn-male-join {
     width: 70px;
     height: 42px;
     /* input의 height와 padding을 고려하여 맞춤 */
     border-radius: 8px;
-    background-color: var(--short-btn-color, #007BFF);
+    background-color: var(#007BFF);
     /* 기본 색상 설정 */
     border: none;
     color: #fff;
@@ -150,7 +150,7 @@ main {
     vertical-align: middle;
 }
 
-.btn-female {
+.btn-female-join {
     width: 70px;
     height: 42px;
     /* input의 height와 padding을 고려하여 맞춤 */
@@ -282,16 +282,20 @@ margin: 0 20px 0 20px;
 top: 0;
 }   
 
-.btn-male,
-.btn-female {
+.btn-male-join,
+.btn-female-join {
     padding: 10px 10px;
     color: black;
     background-color: #EDEDED;
     cursor: pointer;
 }
 
-.btn-male.selected,
-.btn-female.selected {
+.btn-male-join.selected,
+.btn-female-join.selected {
     background-color: #007bff;
     color: white;
 }
+
+/* .join-user-btn {
+    display: none !important;
+} */

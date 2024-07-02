@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import api from './api';
 
 // 로그인
@@ -14,3 +15,8 @@ export const update = (data) => api.put(`/users`, data)
 
 // 회원 탈퇴
 export const remove = (userId) => api.delete(`/users/${userId}`)
+
+// 아이디 체크
+export const usernameCheck = (username) => {
+    return api.get(`/user/check?userId=${username}`)
+}

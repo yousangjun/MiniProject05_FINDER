@@ -70,6 +70,7 @@ public class UserController {
     public ResponseEntity<?> userjoinPro(@RequestBody Users users) throws Exception {
 
         String userEmail = users.getUserEmail();
+        log.info("회원가입시 이메일 db랑 중복검사" + userEmail);
         String checkEmail = userMapper.checkEmail(userEmail);
 
         log.info("db에서 가져오는 이메일" + checkEmail);
@@ -78,19 +79,20 @@ public class UserController {
             // 회원가입 성공
             userService.join(users);
             log.info("회원가입 성공! - SUCCESS");
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         }
         // 회원가입 실패
         log.info("회원가입 실패! - FAIL");
-        return new ResponseEntity<>(users, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
     // ---------------------------------------------------------------------------------
 
     // ⭕ 기업 회원가입 (해결~!~!~!~!!~~!~~!)
     @PostMapping("/join_com")
-    public ResponseEntity<?> companyjoinPro(@RequestBody Users users) throws Exception {
+    public ResponseEntity<?> companyjoinPro(Users users,Company company) throws Exception {
 
-        Company company = users.getCompany();
+        // Company company = users.getCompany();
+        log.info("users의 뭐들어있나여?" + users);
         log.info("company의 뭐들어있나여?" + company);
 
         String userEmail = users.getUserEmail();
@@ -103,11 +105,11 @@ public class UserController {
             company.setUserNo(userNo);
             userService.comJoin(company);
             log.info("회원가입 성공! - SUCCESS");
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         }
         // 회원가입 실패
         log.info("회원가입 실패! - FAIL");
-        return new ResponseEntity<>(users, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
 
     // ⭕ 아이디 중복확인 (해결~!~!~!~!!~~!~~!)
@@ -131,16 +133,16 @@ public class UserController {
     // 이거 아이디 찾기 할때 alert 해야함
     // return "<script>alert('해당 이메일로 ID를 발송하였습니다.');
     // location.href='/login';</script>"; 이거 뻄
-    @ResponseBody
-    @GetMapping("/find_user")
+    // @ResponseBody
+    @PostMapping("/find_user")
     // ✅ 아이디 찾기 이메일로 전송 (해결~!~!~!~!!~~!~~!)
     // 이거 get방식이긴 한데 물어봐야함 ❓❓❓❓❓❓❓❓
-    public ResponseEntity<String> findId(@RequestBody Users users) throws Exception {
+    public ResponseEntity<?> findId(@RequestBody Users users) throws Exception {
 
-        Users user = new Users();
         String userEmail = users.getUserEmail();
         String userName = users.getUserName();
-
+        Users user = new Users();
+        
         log.info("이메일 파라미터 : " + userEmail);
         log.info("유저 이름 파라미터 : " + userName);
 
@@ -195,7 +197,7 @@ public class UserController {
     }
 
     // ✅ db에 있는 자동생성된 code랑 사용자가 입력한 코드랑 비교 (해결~!~!~!~!!~~!~~!)
-    @GetMapping("/email_code_check")
+    @PostMapping("/email_code_check")
     public ResponseEntity<String> codeCheck(@RequestBody EmailVerification request) throws Exception {
 
         String checkCode = request.getVerificationCode();
@@ -210,9 +212,11 @@ public class UserController {
     }
 
     // ✅ 사용자 아이디 찾기⭕ (해결~!~!~!~!!~~!~~!)
+    @ResponseBody
     @PostMapping("/info_check")
     public ResponseEntity<Boolean> infoUserCheck(@RequestBody InformationCheck request) throws Exception {
 
+        log.info("서버로 받아오는 사용자 아이디" + request);
         // 데이터베이스에서 사용자 정보 가져오기
         Users user = userService.getUserById(request.getId());
 
@@ -234,7 +238,7 @@ public class UserController {
 
         // 데이터베이스에서 사용자 정보 가져오기
         Company company = userService.getComName(request.getComName());
-        Users users = userService.getUserById(request.getUserId());
+        Users users = userService.getUserById(request.getUserId());ㅈ
 
         if (company == null) {
             // 사용자가 존재하지 않는 경우 false 반환

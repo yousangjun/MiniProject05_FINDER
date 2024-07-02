@@ -1,12 +1,12 @@
-import React from 'react'
 import JoinUser from '../../components/user/JoinUser'
+import React, { useState, useEffect, useContext } from "react";
 
 const JoinUserContainer = () => {
     return (
         <>
-            <JoinUser />
+            <JoinUser></JoinUser>
         </>
-    )
-}
+    );
+};
 
 export default JoinUserContainer
