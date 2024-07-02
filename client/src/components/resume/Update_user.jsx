@@ -4,60 +4,6 @@ import './css/Update.css';
 
 const Update_user = () => {
 
-    const [passwordChangeVisible, setPasswordChangeVisible] = useState(false);
-
-    const handlePwFormSubmit = async (e) => {
-        e.preventDefault();
-        const username = document.getElementById('username').value;
-        const userBeforePw = document.getElementById('userBeforePw').value;
-        const userPw = document.getElementById('userPw').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
-
-        // try {
-        //     const response = await axios.post('/company/update_pw', {
-        //         username,
-        //         userBeforePw,
-        //         userPw,
-        //         confirmPassword
-        //     });
-        //     console.log(response.data);
-        // } catch (error) {
-        //     console.error(error);
-        // }
-    };
-
-    const handleInfoFormSubmit = async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('name').value;
-        const gender = document.querySelector('.gender-btn-update .active').id; // 선택된 성별 버튼의 id 가져오기
-        const userBirth = document.getElementById('startDate').value;
-        const userPhone = document.getElementById('phone').value;
-        const userEmail = document.getElementById('email').value;
-
-        // try {
-        //     const response = await axios.post('/company/update_info', {
-        //         name,
-        //         gender,
-        //         userBirth,
-        //         userPhone,
-        //         userEmail
-        //     });
-        //     console.log(response.data);
-        // } catch (error) {
-        //     console.error(error);
-        // }
-    };
-
-    const handlePasswordConfirm = () => {
-        setPasswordChangeVisible(true);
-    };
-
-    const handleGenderClick = (e) => {
-        document.getElementById('male').classList.remove('selected');
-        document.getElementById('female').classList.remove('selected');
-        e.target.classList.add('selected');
-    };
-
     return (
         <div className='d-flex flex-column align-items-center'>
 
