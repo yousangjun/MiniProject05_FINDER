@@ -1,8 +1,14 @@
 import React from 'react'
 import './css/Error.css'
+import { useNavigate } from 'react-router-dom';
 
 
 const error = () => {
+
+    // const handleBack = () => {
+    //   navigate()
+    // };
+
     return (
       <>
       <title>Error 페이지</title>
