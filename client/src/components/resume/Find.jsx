@@ -14,19 +14,18 @@ const Find = () => {
             <div className="col-md-6">
                 <h4><strong>아이디 찾기</strong></h4>
                 <form action="/user/find_user" method='POST'>
-                    {/* <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"> */}
                     <div className="form-group">
                         <label htmlFor="email" className='FindEmail'><strong>이메일</strong></label>
                         <div className="d-flex">
                             {/* 이메일 태그 */}
-                            <input type="text" name="firstEmail" id="firstEmail" className="form-control"
+                            <input type="text" name="firstEmail" id="firstEmail" className="form-control w-100"
                             placeholder='이메일을 입력해주세요'/>
                             <span className="mx-2">@</span>
-                            <select name="lastEmail" id="lastEmail" className='SelectEmail'>
-                                <option value="gmail.com">gmail.com</option>
-                                <option value="naver.com">naver.com</option>
-                                <option value="daum.com">daum.com</option>
-                            </select>
+                                <select name="lastEmail" id="lastEmail" className='SelectEmail w-100'>
+                                    <option value="gmail.com">gmail.com</option>
+                                    <option value="naver.com">naver.com</option>
+                                    <option value="daum.com">daum.com</option>
+                                </select>
                             <input type="hidden" name="userEmail" id="userEmail" />
                         </div>
                     </div>
@@ -70,19 +69,13 @@ const Find = () => {
                             </button>
                         </div>
 
-                        <div id='passwordChange' className="PwChange d-flex flex-clumn">
+                        <div id='passwordChange' className="PwChange d-flex flex-clumn gap-3">
                             <input type="password" name="userPw" id="userPw" className="PwChange2 form-control" 
-                            placeholder='8~16자리/영문 대소문자, 숫자, 특수문자 조합' required/>
+                            placeholder='비밀번호' required/>
 
                             <input type="password" name="confirm-password" id="confirm-password"
                             className="PwCheck2 form-control" required placeholder='비밀번호 확인'/>
-                            <div className="d-flex justify-content-end">
-                                <button type="submit" id='UpdatePw' className='FindChange btn btn-primart'>
-                                    {/* onclick="validatePasswordConfirmation()" */}
-                                    변경
-                                </button>
-                            </div>
-                            <br/>
+                            <button type="submit" id='UpdatePw' className='FindChange btn btn-primary'>변경</button>
                         </div>
                     </div>
                 </form>

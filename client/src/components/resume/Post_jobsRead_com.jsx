@@ -10,7 +10,7 @@ const Post_jobs_com = () => {
             <input type="hidden" name="remainQuantity" id="remainQuantity"/>
 
             <div className='job-header'>
-                <div style={{padding: '15px'}}> <strong>채용공고 등록</strong></div>
+                <div style={{padding: '15px'}}> <strong>채용공고 수정</strong></div>
             </div>
 
             <div className='post-main'>
@@ -97,7 +97,10 @@ const Post_jobs_com = () => {
                     <div className="file-input-wrapper w-100">
                         <div className='d-flex justify-content-between'>
                             <button className="btn-long file-upload-button">파일 첨부</button>
-                            <BtnLong btnLongText={"등록"}/>
+                            <div class="d-flex gap-3">
+                                <BtnLong btnLongText={"수정"}/>
+                                <BtnLong btnLongText={"삭제"}/>
+                            </div>
                         </div>
                         <div>
                             <input type="file" name="file" id="file-input" className="file-input hidden-file-input" multiple/>

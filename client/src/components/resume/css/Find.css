@@ -11,8 +11,11 @@
 }
 
 .FindCheck{
-    width: 16% !important;
+    padding: 6px 12px !important;
+    width: 20%;
     margin-left: 15px;
+    margin-bottom: 10px;
+    padding: 0 !important;
 }
 
 .FindId2{
@@ -20,7 +23,7 @@
 }
 
 .FindGroup2{
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .FindPwCheck{
@@ -31,17 +34,23 @@
 .PwChange{
     display: none !important;
 }
+
 .PwChange2{
     margin-top: 10px;
+    width: 30%;
 }
 
 .PwCheck2{
     margin-top: 10px;
+    width: 30%;
 }
 
 .FindChange{
-    margin-left: 15px; 
     margin-top: 10px;
+    margin-left: 6px;
+    padding: 0 !important;
+    width: 46%;
+    height: 34px;
 }
 
 .ChangeBtnF{
@@ -52,6 +61,7 @@
 
 .SelectEmail{
     color: #464646;
+    border: 1px solid #dee2e6;
     font-size: 13px !important;
     width: 100px !important;
     height: 32px !important;

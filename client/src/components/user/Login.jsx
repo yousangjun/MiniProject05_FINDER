@@ -103,7 +103,7 @@ const Login = ({ sets }) => {
             </Link>
           </div>
           <div className="col-md-6 text-center">
-            <Link to={isCompany ? '/find_com' : '/find_user'} id="find" className='findUser'>
+            <Link to={isCompany ? '/com/find_com' : '/user/find_user'} id="find" className='findUser'>
               {isCompany ? '기업 아이디/비밀번호 찾기' : '일반 아이디/비밀번호 찾기'}
             </Link>
           </div>

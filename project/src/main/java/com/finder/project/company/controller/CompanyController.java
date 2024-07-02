@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,6 +32,7 @@ import com.finder.project.company.service.CompanyService;
 import com.finder.project.main.dto.Page;
 import com.finder.project.recruit.service.RecruitService;
 import com.finder.project.resume.dto.Resume;
+import com.finder.project.user.dto.CustomUser;
 import com.finder.project.user.dto.Users;
 
 import lombok.extern.slf4j.Slf4j;
@@ -55,10 +57,15 @@ public class CompanyController {
     // introduce_com 화면 (기업소개)
     // 조회는 세션에서 해주고 있다. (Users에서 Company CompanyDetail 받아옴)
     @GetMapping("/introduce_com")
-    public String introduce_com(HttpSession session, Model model) throws Exception {
-        
+    public ResponseEntity<?> introduce_com(@AuthenticationPrincipal CustomUser customUser) throws Exception {
+/*         Users user = customUser.getUser();
+        log.info("유저 정보왔다 ~ " + user); */
 
-        return "/company/introduce_com";
+/*         CompanyDetail companyDetail = user.getCompanyDetail(); //기업정보도 담아야함.
+        log.info("기업 정보 왔다" + companyDetail);
+ */
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
