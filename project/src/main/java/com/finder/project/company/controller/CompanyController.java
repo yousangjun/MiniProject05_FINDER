@@ -53,53 +53,77 @@ public class CompanyController {
     @Autowired
     RecruitService recruitService;
 
+    /*     // introduce_com 화면 (기업소개)
+    // 조회는 세션에서 해주고 있다. (Users에서 Company CompanyDetail 받아옴)
+    @GetMapping("/introduce_com")
+    public String introduce_com(@AuthenticationPrincipal CustomUser customUser) throws Exception {
+
+        return "/company/introduce_com";
+    } */
+
 
     // introduce_com 화면 (기업소개)
     // 조회는 세션에서 해주고 있다. (Users에서 Company CompanyDetail 받아옴)
     @GetMapping("/introduce_com")
-    public ResponseEntity<?> introduce_com(@AuthenticationPrincipal CustomUser customUser) throws Exception {
-/*         Users user = customUser.getUser();
-        log.info("유저 정보왔다 ~ " + user); */
+    public ResponseEntity<?> introduce_com(@RequestParam("userNo") int userNo) throws Exception {
+        Company company = companyService.selectByUserNo(userNo);
 
-/*         CompanyDetail companyDetail = user.getCompanyDetail(); //기업정보도 담아야함.
-        log.info("기업 정보 왔다" + companyDetail);
- */
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            CompanyDetail ComDetail = companyService.selectCompanyDetailByComNo(company.getComNo());
+            
+            if (ComDetail != null) {
+                log.info("기업 정보 가지고 오기" + ComDetail);
+            }
+
+            Map<String , Object> response = new HashMap<>();
+            response.put("company", company);
+            response.put("comDetail", ComDetail);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
 
     // 기업 상세 정보 등록 (기업소개)
-    @PostMapping("/insert_detail")
-    // public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
-    public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
-        // 세션에서 사용자 정보 가져오기
-        Users user = (Users) session.getAttribute("user");
+    // @PostMapping("/insert_detail")
+    // // public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
+    // public ResponseEntity<?> introduceComInsertPro(@RequestParam("userNo") int userNo) throws Exception {
         
-        if (user == null) {
-            // 사용자 정보가 없으면 로그인 페이지로 리다이렉트
-            return "redirect:/login";
-        }
+    //     try {
+    //         // 세션에서 사용자 정보 가져오기
+            
+            
+    //         if (user == null) {
+    //             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //         }
+    
+    //         Company company = companyService.selectByUserNo(user.getUserNo());
+            
+    //         // CompanyDetail 객체에 사용자 정보 설정
+    //         companyDetail.setComNo(company.getComNo());
+    
+    //         // 데이터 삽입 요청
+    //         int result = companyService.insertCompanyDetail(companyDetail);
+    
+    //         // 데이터 처리 성공
+    //         if (result > 0) {
+    //             user.setCompanyDetail(companyDetail);
+    //            /*  session.setAttribute("user", user); */
+    //             // session.setAttribute("companyDetail", companyDetail);
+    //             return new ResponseEntity<>(HttpStatus.OK);
+    //         }
+            
+    //     } catch (Exception e) {
+            
+    //     }
 
-        Company company = companyService.selectByUserNo(user.getUserNo());
-        
-        // CompanyDetail 객체에 사용자 정보 설정
-        companyDetail.setComNo(company.getComNo());
-
-        // 데이터 삽입 요청
-        int result = companyService.insertCompanyDetail(companyDetail);
-
-        // 데이터 처리 성공
-        if (result > 0) {
-            user.setCompanyDetail(companyDetail);
-            session.setAttribute("user", user);
-            // session.setAttribute("companyDetail", companyDetail);
-            return "redirect:/company/introduce_com";
-        }
-        // 데이터 처리 실패
-        return "redirect:/error";
-    }
+    //     // 데이터 처리 실패
+    //     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
 
 
     

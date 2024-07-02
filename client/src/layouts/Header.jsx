@@ -5,6 +5,7 @@ import { LoginContext } from '../contexts/LoginContextProvider'
 
 const Header = () => {
     const { isLogin, roles,logout } = useContext(LoginContext);
+    // const userNo = userInfo.userNo;
 
     return (
         <div className='header'>
@@ -20,7 +21,7 @@ const Header = () => {
                 <div className="nav-menu no-wrap">
                     {isLogin && roles.isCompany && (
                         <>
-                            <Link to="/company/introduce_com"><b>기업 정보</b></Link>
+                            <Link to='/company/introduce_com'><b>기업 정보</b></Link>
                             <Link to="/recruit/applied_jobs_user"><b>제출된 이력서</b></Link>
                             <Link to="/company/credit_com" id="paymentLink"><b>결제</b></Link>
                             <Link to="/user/update_user"><b>담당자 정보</b></Link>
