@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,84 +58,134 @@ public class CompanyController {
     @Autowired
     RecruitService recruitService;
 
+    /*     // introduce_com 화면 (기업소개)
+    // 조회는 세션에서 해주고 있다. (Users에서 Company CompanyDetail 받아옴)
+    @GetMapping("/introduce_com")
+    public String introduce_com(@AuthenticationPrincipal CustomUser customUser) throws Exception {
+
+        return "/company/introduce_com";
+    } */
+
 
     // introduce_com 화면 (기업소개)
     // 조회는 세션에서 해주고 있다. (Users에서 Company CompanyDetail 받아옴)
     @GetMapping("/introduce_com")
-    public ResponseEntity<?> introduce_com(@AuthenticationPrincipal CustomUser customUser) throws Exception {
-/*         Users user = customUser.getUser();
-        log.info("유저 정보왔다 ~ " + user); */
+    public ResponseEntity<?> introduce_com(@RequestParam("userNo") int userNo) throws Exception {
+        Company company = companyService.selectByUserNo(userNo);
 
-/*         CompanyDetail companyDetail = user.getCompanyDetail(); //기업정보도 담아야함.
-        log.info("기업 정보 왔다" + companyDetail);
- */
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            CompanyDetail ComDetail = companyService.selectCompanyDetailByComNo(company.getComNo());
+            
+            if (ComDetail != null) {
+                log.info("기업 정보 가지고 오기" + ComDetail);
+            }
+
+            Map<String , Object> response = new HashMap<>();
+            response.put("company", company);
+            response.put("comDetail", ComDetail);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
 
     // 기업 상세 정보 등록 (기업소개)
-    @PostMapping("/insert_detail")
-    // public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
-    public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
-        // 세션에서 사용자 정보 가져오기
-        Users user = (Users) session.getAttribute("user");
+    // @PostMapping("/insert_detail")
+    // // public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
+    // public ResponseEntity<?> introduceComInsertPro(@RequestParam("userNo") int userNo) throws Exception {
         
-        if (user == null) {
-            // 사용자 정보가 없으면 로그인 페이지로 리다이렉트
-            return "redirect:/login";
-        }
+    //     try {
+    //         // 세션에서 사용자 정보 가져오기
+            
+            
+    //         if (user == null) {
+    //             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //         }
+    
+    //         Company company = companyService.selectByUserNo(user.getUserNo());
+            
+    //         // CompanyDetail 객체에 사용자 정보 설정
+    //         companyDetail.setComNo(company.getComNo());
+    
+    //         // 데이터 삽입 요청
+    //         int result = companyService.insertCompanyDetail(companyDetail);
+    
+    //         // 데이터 처리 성공
+    //         if (result > 0) {
+    //             user.setCompanyDetail(companyDetail);
+    //            /*  session.setAttribute("user", user); */
+    //             // session.setAttribute("companyDetail", companyDetail);
+    //             return new ResponseEntity<>(HttpStatus.OK);
+    //         }
+            
+    //     } catch (Exception e) {
+            
+    //     }
 
-        Company company = companyService.selectByUserNo(user.getUserNo());
-        
-        // CompanyDetail 객체에 사용자 정보 설정
-        companyDetail.setComNo(company.getComNo());
-
-        // 데이터 삽입 요청
-        int result = companyService.insertCompanyDetail(companyDetail);
-
-        // 데이터 처리 성공
-        if (result > 0) {
-            user.setCompanyDetail(companyDetail);
-            session.setAttribute("user", user);
-            // session.setAttribute("companyDetail", companyDetail);
-            return "redirect:/company/introduce_com";
-        }
-        // 데이터 처리 실패
-        return "redirect:/error";
-    }
+    //     // 데이터 처리 실패
+    //     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
 
 
     
-    // 기업 상세 정보 수정 (기업소개)
-    @PostMapping("/update_detail")
-    public String introduce_com_updatePro(HttpSession session, CompanyDetail companyDetail) throws Exception {
+    @PutMapping("/update_detail")
+    public ResponseEntity<?> introduce_com_updatePro(@RequestParam("userNo") int userNo, Map<String, Object> formData) {
 
-        // 세션에서 사용자 정보 가져오기
-        Users user = (Users) session.getAttribute("user");
-        
-        if (user == null) {
-            // 사용자 정보가 없으면 로그인 페이지로 리다이렉트
-            return "redirect:/login";
+        log.info("아아아넝누ㅡㄴ우: " + userNo);
+        log.info("Received formData: " + formData);
+        try {
+            log.info("Received formData: " + formData);
+
+            Company company = companyService.selectByUserNo(userNo);
+            if (company == null) {
+                return new ResponseEntity<>("Company not found", HttpStatus.NOT_FOUND);
+            }
+
+            CompanyDetail comDetail = companyService.selectCompanyDetailByComNo(company.getComNo());
+            if (comDetail == null) {
+                return new ResponseEntity<>("CompanyDetail not found", HttpStatus.NOT_FOUND);
+            }
+
+            // formData에서 데이터를 추출하여 객체에 설정
+            company.setComName((String) formData.get("comName"));
+            company.setComCategory((String) formData.get("comCategory"));
+            company.setComAddress((String) formData.get("comAddress"));
+
+            try {
+                comDetail.setComBirth(Integer.parseInt((String) formData.get("comBirth")));
+                comDetail.setComEmpCount(Integer.parseInt((String) formData.get("comEmpCount")));
+                comDetail.setComSales(Integer.parseInt((String) formData.get("comsales")));
+            } catch (NumberFormatException e) {
+                return new ResponseEntity<>("Invalid number format", HttpStatus.BAD_REQUEST);
+            }
+
+            comDetail.setComSize((String) formData.get("comSize"));
+            comDetail.setComRepresent((String) formData.get("comRepresent"));
+            comDetail.setComContent((String) formData.get("comContent"));
+            comDetail.setComNo(company.getComNo()); // 사용자 정보 설정
+
+            // 데이터 요청
+            int result = companyService.updateCompanyDetail(comDetail);
+            int result2 = companyService.updateCompany(company);
+
+            // 데이터 처리 성공 
+            if (result > 0 && result2 > 0) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("company", company);
+                response.put("comDetail", comDetail);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Update failed", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        Company company = companyService.selectByUserNo(user.getUserNo());
-
-        // CompanyDetail 객체에 사용자 정보 설정
-        companyDetail.setComNo(company.getComNo());
-
-        // 데이터 요청
-        int result = companyService.updateCompanyDetail(companyDetail);
-        
-        // 데이터 처리 성공 
-        if( result > 0 ) {
-            user.setCompanyDetail(companyDetail);
-            session.setAttribute("user", user);
-            return "redirect:/company/introduce_com";
-        }
-        // 데이터 처리 실패
-        return "redirect:/error";
     }
 
 

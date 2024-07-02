@@ -31,7 +31,14 @@
             com_content = #{comContent}
         WHERE com_no = #{comNo}
     </update>
-
+    <!-- 리액트에서 기업 정보수정 company -->
+    <update id="updateCompany">
+        UPDATE company
+        SET com_name = #{comName},
+            com_address = #{comAddress},
+            com_category = #{comCategory}
+        WHERE com_no = #{comNo}
+    </update>
 
 
 

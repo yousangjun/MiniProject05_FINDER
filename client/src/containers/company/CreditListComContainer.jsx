@@ -17,12 +17,12 @@ const CreditListComContainer = () => {
             <ContentTitle SubTitle1={"기업 정보"} SubTitle2={"앞으로의 길을 내다볼 때 필요한 건 아닌 판단이다."}/>
             <div className="row justify-content-center" style={{ padding: '0 40px' }}>
                 <Sidebar />
-                <main1 className="col-12 col-md-12 col-lg-8 main-content1 d-flex justify-content-end align-items-start">
+                <main className="col-12 col-md-12 col-lg-8 main-content1 d-flex justify-content-end align-items-start">
                     <div className="job-listings1">
                         <ContentHeader ContentHeaderText={"결제 내역"} />
                         <CreditList orderCreditList={orderCreditList} />
                     </div>
-                </main1>
+                </main>
             </div>
         </>
     )

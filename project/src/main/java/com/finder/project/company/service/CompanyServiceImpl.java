@@ -29,11 +29,11 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     // 기업 상세 정보 조회 (기업 소개)
-    @Override
-    public CompanyDetail selectCompanyDetail(int no) throws Exception {
-        CompanyDetail companyDetail = companyMapper.selectCompanyDetail(no);
-        return companyDetail;
-    }
+    // @Override
+    // public List<CompanyDetail> selectCompanyDetail(int no) throws Exception {
+    //     CompanyDetail companyDetail = companyMapper.selectCompanyDetail(no);
+    //     return (List<CompanyDetail>) companyDetail;
+    // }
     // 기업 상세 정보 등록 (기업 소개)
     @Override
     public int insertCompanyDetail(CompanyDetail companyDetail) throws Exception {
@@ -45,6 +45,13 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public int updateCompanyDetail(CompanyDetail companyDetail) throws Exception {
         int result = companyMapper.updateCompanyDetail(companyDetail);
+
+        return result;
+    }
+    @Override
+    // 리액트 상세 정보 수정
+    public int updateCompany(Company company) throws Exception {
+        int result = companyMapper.updateCompany(company);
 
         return result;
     }
@@ -170,6 +177,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         return companies;
     }
+
 
 
 
