@@ -508,7 +508,7 @@ public class CompanyController {
         int creditResult = companyService.insertCredit(credit); // 결제 등록
 
         if(creditResult > 0) {
-            return new ResponseEntity<String>("success", HttpStatus.OK);
+            return new ResponseEntity<Object>(credit, HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -572,24 +572,24 @@ public class CompanyController {
 
     // 결제 목록 내역 화면 [GET]
     @GetMapping("/credit/credit_list_com")
-    public String credit_list_com(HttpSession session, Model model, Page page
-                                ) throws Exception {
-
-    Users user = (Users) session.getAttribute("user");
-    int userNo = user.getUserNo();
-
-    List<Order> orderCreditList = companyService.orderCreditList(userNo, page);
-
-    // 페이징
-    log.info("page : " + page);
-
-
-    model.addAttribute("orderCreditList", orderCreditList);
-    model.addAttribute("page", page);
-
-        return "/company/credit/credit_list_com";
+    public ResponseEntity<Map<String, Object>> creditListCom(@RequestParam("userNo") int userNo,
+                                                            Page page) {
+        try {
+            log.info("userNo" + userNo);
+    
+            Users user = userService.selectByUserNo(userNo);
+            List<Order> orderCreditList = companyService.orderCreditList(userNo, page);
+    
+            Map<String, Object> response = new HashMap<>();
+            response.put("orderCreditList", orderCreditList);
+            response.put("user", user);
+    
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
+    
 
 
 

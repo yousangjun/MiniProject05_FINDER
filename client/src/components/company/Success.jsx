@@ -15,7 +15,6 @@ const Success = () => {
     const [order, setOrder] = useState({});
     const [credits, setCredits] = useState({});
 
-
     // Context
     const { userInfo } = useContext(LoginContext);
     const userNo = userInfo ? userInfo.userNo : null;  // 사용자 정보에서 userNo 가져오기
@@ -27,7 +26,7 @@ const Success = () => {
                 const SuccessData = {
                     productNo,
                     orderNo,
-                    userNo
+                    userNo,
                 };
     
                 // userNo를 추가하여 getCheckout 호출
@@ -36,6 +35,7 @@ const Success = () => {
                 setProduct(response.data.product);
                 setOrder(response.data.order);
                 setUser(response.data.user);
+                setCredits()
             } catch (error) {
                 console.error("결제 정보를 가져오는 중 오류 발생:", error);
                 // 여기에 오류 처리 로직을 추가할 수 있습니다.
@@ -141,7 +141,7 @@ const Success = () => {
                                 <p>결제 수단 : <span>신용카드</span></p>
                             </div>
                             <div className="align-self-end credit-list-btn">
-                                <Link to={`/company/credit_list_com/${productNo}/${orderNo}/`}><BtnLong btnLongText={"결제내역"}/></Link>
+                                <Link to={`/company/credit_list_com/${productNo}/${orderNo}`}><BtnLong btnLongText={"결제내역"}/></Link>
                             </div>
                         </div>
                     </form>
