@@ -46,12 +46,12 @@ const Introduce_com = () => {
   }, [userNo]); // Run effect when userNo changes
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCompany(prevState => ({
+    const { name, value } = e.target; //속성 name을 쓰는 value 가지고오는 거 
+    setCompany((prevState) => ({ 
       ...prevState,
-      [name]: value
+      [name]: value                   
     }));
-    setComDetail(prevState => ({
+    setComDetail((prevState) => ({
       ...prevState,
       [name]: value
     }));
