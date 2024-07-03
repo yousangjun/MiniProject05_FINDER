@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -129,6 +130,21 @@ public class UserController {
         return new ResponseEntity<>(true, HttpStatus.OK);
 
     }
+
+    @ResponseBody
+    @GetMapping("/info_user")
+    public ResponseEntity<Users> userInfo(@RequestParam("userNo") int userNo) throws Exception {
+        Users user = userService.selectByUserNo(userNo);
+    
+        log.info("유저 정보를 불러옵니다: " + user);
+    
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    
     // ---------------------------------------------------
 
     // 이거 아이디 찾기 할때 alert 해야함
@@ -279,9 +295,11 @@ public class UserController {
         // 데이터 처리 성공
         if (result > 0) {
 
+            log.info("데이터 처리 실패");
             return ResponseEntity.ok(result); // 코드 인증 성공
         }
         // 데이터 처리 실패
+        log.info("데이터 처리 실패");
         return ResponseEntity.ok(result); // 코드 인증 실패
     }
 
