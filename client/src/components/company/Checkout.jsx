@@ -7,17 +7,18 @@ import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
 
 const widgetClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-const customerKey = "JawM9IYDGWc4GGIhj2Yz9";
+const customerKey = "qF7B0uJ_uq5qwBCFSElDc";
 
 const Checkout = () => {
+    // toss 꺼
     const [paymentWidget, setPaymentWidget] = useState(null);
     const paymentMethodsWidgetRef = useRef(null);
-    const [price, setPrice] = useState(1);
+    const [price, setPrice] = useState(100000);
+
     const { productNo, orderNo } = useParams();
     const [product, setProduct] = useState({});
     const [user, setUser] = useState({});
     const [order, setOrder] = useState({});
-    
 
 
     // Context
@@ -50,7 +51,10 @@ const Checkout = () => {
             { variantKey: "DEFAULT" }
         );
 
-        paymentWidget.renderAgreement("#agreement", { variantKey: "AGREEMENT" });
+        paymentWidget.renderAgreement(
+            "#agreement", 
+            { variantKey: "AGREEMENT" }
+        );
 
         paymentMethodsWidgetRef.current = paymentMethodsWidget;
     }, [paymentWidget, price]);
@@ -61,36 +65,54 @@ const Checkout = () => {
         if (paymentMethodsWidget == null) {
             return;
         }
-        setPrice(product.productPrice)
 
         paymentMethodsWidget.updateAmount(price);
     }, [price]);
 
+    useEffect(() => {
+        if (product.productPrice) {
+            setPrice(product.productPrice);
+        }
+    }, [product]);
+
+    useEffect(() => {
+        const fetchCheckoutData = async () => {
+            try {
+                const checkoutData = {
+                    productNo,
+                    orderNo,
+                    userNo
+                };
+    
+                // userNo를 추가하여 getCheckout 호출
+                const response = await credit.getCheckout(checkoutData);
+                console.log("결제 상품 및 주문 정보:", response.data);
+                setProduct(response.data.product);
+                setOrder(response.data.order);
+                setUser(response.data.user);
+            } catch (error) {
+                console.error("결제 정보를 가져오는 중 오류 발생:", error);
+                // 여기에 오류 처리 로직을 추가할 수 있습니다.
+                // 예: 사용자에게 오류 메시지 표시
+            }
+        };
+    
+        fetchCheckoutData();
+    }, [productNo, orderNo, userNo]);
+
+
     const handlePaymentRequest = async () => {
         try {
-            const checkoutData = {
-                productNo,
-                orderNo,
-                userNo
-            };
-
-            // userNo를 추가하여 getCheckout 호출
-            const response = await credit.getCheckout(checkoutData);
-            console.log("결제 상품 및 주문 정보:", response.data);
-            setProduct(response.data.product)
-            setOrder(response.data.order)
-            setUser(response.data.user)
-
             await paymentWidget?.requestPayment({
                 orderId: nanoid(),
                 orderName: product.productName,
+                orderNo: orderNo,
+                productNo: productNo,
                 customerName: user.userName,
                 customerEmail: user.userEmail,
                 customerMobilePhone: user.userPhone,
-                successUrl: `${window.location.origin}/company/success`,
-                failUrl: `${window.location.origin}/company/fail`,
-                onPaymentSuccess: () => navigate('/company/success'),
-                onPaymentFail: () => navigate('/company/fail')
+                successUrl: `${window.location.origin}/company/process/${productNo}/${orderNo}`,
+                failUrl: `${window.location.origin}/company/fail`
             });
         } catch (error) {
             console.error("Error requesting payment:", error);

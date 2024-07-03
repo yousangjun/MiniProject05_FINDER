@@ -11,8 +11,11 @@ export const insertOrder = ({ productNo, userNo }) => api.post('/company/credit/
 export const getCheckout = ({ productNo, orderNo, userNo }) => api.get(`/company/credit/checkout?productNo=${productNo}&orderNo=${orderNo}&userNo=${userNo}`);
 
 // 결제 등록하기 + 주문 갱신하기
-export const insertCredit = ({ paymentKey, orderId, amount, productNo, orderNo }) => 
-    api.post('/company/credit/process', { paymentKey, orderId, amount, productNo, orderNo });
+export const insertCredit = (orderCreditDTO) => api.post('/company/credit/process', orderCreditDTO );
+
+// 결제 완료 화면 데이터 가져오기  
+export const getSuccess = ({ productNo, orderNo, userNo }) => api.get(`/company/credit/success?productNo=${productNo}&orderNo=${orderNo}&userNo=${userNo}`);
+
 
 
 // 회원 가입 
