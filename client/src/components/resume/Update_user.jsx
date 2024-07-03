@@ -8,7 +8,7 @@ const UpdateUser = () => {
     const { userInfo } = useContext(LoginContext);
 
     useEffect(() => {
-        console.log(`userInfo에 뭐가들어가있나요? `, userInfo);
+        console.log("userInfo에 뭐가 들어가있나요?", userInfo);
     }, [userInfo]);
 
     const [formData, setFormData] = useState({
@@ -22,15 +22,16 @@ const UpdateUser = () => {
         userPhone: '',
         userEmail: ''
     });
-    const navi = useNavigate()
 
+    const navi = useNavigate();
     const [passwordChangeVisible, setPasswordChangeVisible] = useState(false);
+    const [genderSet, setGenderSet] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 if (userInfo && userInfo.userNo) {
-                    const response = await axios.get(`/user/info_user`, {
+                    const response = await axios.get('/user/info_user', {
                         params: {
                             userNo: userInfo.userNo
                         }
@@ -38,7 +39,6 @@ const UpdateUser = () => {
                     const userData = response.data;
                     console.log(userData, "???//Asdf'dskljsaflksafjdk;afsjdk;lfjlkaasfdjok");
 
-                    // 날짜 형식을 YYYY-MM-DD 형식으로 변환
                     const formattedDate = `${userData.userBirth.slice(0, 4)}-${userData.userBirth.slice(4, 6)}-${userData.userBirth.slice(6, 8)}`;
 
                     setFormData({
@@ -52,15 +52,14 @@ const UpdateUser = () => {
                         userPw: '',
                         confirmPassword: ''
                     });
+                    setGenderSet(true);
                 }
             } catch (error) {
                 console.error("Failed to fetch user data", error);
             }
         };
 
-        if (userInfo && userInfo.userNo) {
-            fetchUserData();
-        }
+        fetchUserData();
     }, [userInfo]);
 
     const handleInputChange = (e) => {
@@ -68,13 +67,11 @@ const UpdateUser = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    // db에 있는 유저 정보랑 비밀번호랑 
     const handlePasswordConfirm = async () => {
-
         try {
             const response = await axios.post('/company/update_pw_confirm', {
-                userNo: userInfo.userNo,  // userInfo에서 userNo 가져오기
-                userPw: formData.userBeforePw  // formData에서 userPw 가져오기
+                userNo: userInfo.userNo,
+                userPw: formData.userBeforePw
             });
 
             if (response.data) {
@@ -94,7 +91,7 @@ const UpdateUser = () => {
 
         const { userPw, confirmPassword } = formData;
 
-        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}[\]:;"'<>,.?\\/]).{8,16}$/.test(userPw)) {
+        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+\-={}[\]:;"'<>,.?\\/]).{8,16}$/.test(userPw)) {
             alert("비밀번호는 8~16자리의 영문 대소문자, 숫자, 특수문자를 모두 포함해야 합니다.");
             return;
         }
@@ -109,12 +106,10 @@ const UpdateUser = () => {
                 userNo: userInfo.userNo,
                 userPw: formData.confirmPassword,
             });
-            console.log(response.data + "dsdsdssds sdsd")
 
             if (response.data) {
                 alert('비밀번호를 수정하였습니다.');
-                navi("/")
-                
+                navi("/");
                 setPasswordChangeVisible(true);
             } else {
                 alert('비밀번호가 일치하지 않습니다.');
@@ -141,18 +136,15 @@ const UpdateUser = () => {
         }
 
         try {
-
-            console.log(`handleInfoFormSubmit 함수 실행 `)
             const response = await axios.post('/company/update_info', {
                 userNo: userInfo.userNo,
-                userEmail:formData.userEmail,
-                userBirth:formData.userBirth,
-                userPhone:formData.userPhone,
-                userGender:formData.userGender,
+                userEmail: formData.userEmail,
+                userBirth: formData.userBirth,
+                userPhone: formData.userPhone,
+                userGender: formData.userGender,
             });
 
-            if (response.status == 200) {
-
+            if (response.status === 200) {
                 alert('정보가 변경되었습니다.');
             }
         } catch (error) {
@@ -182,9 +174,23 @@ const UpdateUser = () => {
                 <div className='gender-update px-4'>
                     <input type="text" name="name" id="name" className="input-name" required placeholder='이름' readOnly value={formData.name} onChange={handleInputChange} />
                     <div className="gender">
-                            <div className="gender-btn">
-                            <button type="button" className={`btn-male-join ${formData.userGender === '남자' ? 'selected' : ''}`} onClick={() => setFormData({ ...formData, userGender: '남자' })}>남</button>
-                            <button type="button" className={`btn-female-join ${formData.userGender === '여자' ? 'selected' : ''}`} onClick={() => setFormData({ ...formData, userGender: '여자' })}>여</button>
+                        <div className="gender-btn">
+                            <button
+                                type="button"
+                                className={`btn-male-join ${formData.userGender === '남자' ? 'selected' : ''}`}
+                                disabled={genderSet}
+                                onClick={() => setFormData({ ...formData, userGender: '남자' })}
+                            >
+                                남
+                            </button>
+                            <button
+                                type="button"
+                                className={`btn-female-join ${formData.userGender === '여자' ? 'selected' : ''}`}
+                                disabled={genderSet}
+                                onClick={() => setFormData({ ...formData, userGender: '여자' })}
+                            >
+                                여
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -192,7 +198,7 @@ const UpdateUser = () => {
                 <div className='px-4'>
                     <div className='userbirth-update' style={{ width: '84px', textAlign: 'center' }}>생년월일</div>
                     <div className='birthdate-update'>
-                        <input type="date" name="userBirth" id="startDate" className="keyword-main" value={formData.userBirth} onChange={handleInputChange} />
+                        <input type="date" name="userBirth" id="startDate" className="keyword-main" readOnly value={formData.userBirth} onChange={handleInputChange} />
                     </div>
                 </div>
 
