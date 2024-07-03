@@ -53,7 +53,7 @@ public class RecruitPost {
                 for (String keyword : keywords) {
                     // log.info("???" + keyword);
                     Keyword kw = new Keyword();
-                    kw.setRecruitKeyword("#" + keyword);
+                    kw.setRecruitKeyword(keyword);
                     keywordList.add(kw);
                 }
             }
