@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import RecruitListBtn from '../recruit/RecruitListBtn';
 import { Link } from 'react-router-dom';
+import KeywordItem from './KeywordItem';
 
-const ContentListItem = ({ ContentListItemText, ShowBtn , LinkToHref }) => {
-    const [recruits, setRecruits] = useState([]);
+const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref }) => {
+    // const [keyword, setKeyword] = useState([])
+    const keywordsArray = recruit.keywordString.split(", ");
+
+    console.log(recruit);
+    
     return (
 
-        <Link 
+        <Link
             to={LinkToHref}
             className="job-item-link1"
             id={`recruit_`}
@@ -25,24 +30,25 @@ const ContentListItem = ({ ContentListItemText, ShowBtn , LinkToHref }) => {
                 </div>
 
                 <div style={{ fontSize: '12px' }}>
-                    <span>1</span>
-                    <span>|</span>
-                    <span>기간 : </span>
-                    <span>2</span>
+                    <span>
+                        {recruit &&
+                            recruit.recruitRegDate
+                        }
+                    </span>
                 </div>
 
                 <div style={{ fontSize: '17px', marginBottom: '15px', fontWeight: 'bold' }}>
-                    제목
+                    {recruit &&
+                        recruit.recruitTitle
+                    }
                 </div>
 
                 <div className="item d-flex justify-content-between">
 
                     <div className="keyword-span1">
-                        {/* {recruit.keywordList.map((keyword, index) => ( */}
-                        <span key="{index}">키워드가어디까지길어질수있나테스트중입니다</span>
-                        <span key="{index}">키워드</span>
-                        <span key="{index}">키워드</span>
-                        {/* ))} */}
+                        {recruit &&
+                            <KeywordItem keywords={keywordsArray} />
+                        }
                     </div>
 
                     <div className="gap-2 d-flex">

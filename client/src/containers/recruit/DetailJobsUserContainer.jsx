@@ -7,7 +7,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const DetailJobsUserContainer = () => {
   const { userInfo } = useContext(LoginContext);
-  const { recruitNo } = useParams();
+  const { recruitNo } = useParams('');
   const [textareaHeight, setTextareaHeight] = useState('auto');
   const textareaRef = useRef(null); // useRef 훅을 사용하여 ref 생성
   const userNo = userInfo ? userInfo.userNo : null;
@@ -15,22 +15,22 @@ const DetailJobsUserContainer = () => {
 
 
   useEffect(() => {
-    if (userNo) {
-      recruitApi.jobDetails(recruitNo, userInfo.userNo)
-        .then(response => {
-          // 성공적으로 데이터를 받아왔을 때 처리
-          console.log(response);
-          setThumbnail(response.data.Thumbnail)
-          setCompanyDetail(response.data.companyDetail)
-          setRecruitPost(response.data.recruitPost)
-          setFileList(response.data.fileList)
-        })
-        .catch(error => {
-          // 에러 발생 시 처리
-          console.error('Error fetching job details:', error);
-        });
-    }
-  }, [userNo]);
+    
+    recruitApi.jobDetails(recruitNo)
+      .then(response => {
+        // 성공적으로 데이터를 받아왔을 때 처리
+        setThumbnail(response.data.Thumbnail);
+        setCompanyDetail(response.data.companyDetail);
+        setRecruitPost(response.data.recruitPost);
+        setFileList(response.data.fileList);
+        adjustTextareaHeight()
+      })
+      .catch(error => {
+        // 에러 발생 시 처리
+        console.error('Error fetching job details:', error);
+      });
+
+  },[]);
 
   useLayoutEffect(() => {
     adjustTextareaHeight();
