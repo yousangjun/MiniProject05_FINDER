@@ -187,8 +187,24 @@ const Post_jobs_read_com = () => {
     };
 
     const handleFileChange = (event) => {
-        const newFiles = [...event.target.files];
-        setFiles(newFiles);
+        setFiles((prevFiles) => [...prevFiles, ...event.target.files]);
+        
+    };
+
+    const deleteThumbnailClick = async () => {
+        if (thumbnail) {
+            try {
+                await deleteFile(thumbnail.fileNo);
+                setThumbnail(null); // 썸네일 상태를 null로 설정하여 삭제
+                    Swal.fire({
+                        icon: 'success',
+                        title: '삭제 성공',
+                        text: '썸네일을 삭제하였습니다.',
+                    });
+            } catch (error) {
+                console.error('Error deleting thumbnail:', error);
+            }
+        }
     };
 
     const deleteFileClick = (fileNo, index) => {
@@ -228,8 +244,13 @@ const Post_jobs_read_com = () => {
                                 로고
                             </div>
                             <div>
-                                <button type='button' className='btn-short file-upload-button1' onClick={handleFileUploadClick} >선택</button>
-                                <button type='button' className="btn-short file-upload-button2" style={{ display: 'none' }}>삭제</button>
+                            {
+                                thumbnail != null ? (
+                                    <button type='button' className="btn-short file-upload-button2" onClick={deleteThumbnailClick}>삭제</button>
+                                ) : (
+                                    <button type='button' className='btn-short file-upload-button1' onClick={handleFileUploadClick} >선택</button>
+                                )
+                            }
                             </div>
                         </div>
 
