@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.finder.project.company.dto.Company;
 import com.finder.project.company.dto.CompanyDetail;
 import com.finder.project.company.dto.Credit;
+import com.finder.project.company.dto.IntroCom;
 import com.finder.project.company.dto.Order;
 import com.finder.project.company.dto.PasswordConfirmRequest;
 import com.finder.project.company.dto.Product;
@@ -131,13 +133,8 @@ public class CompanyController {
 
     
     @PutMapping("/update_detail")
-    public ResponseEntity<?> introduce_com_updatePro(@RequestParam("userNo") int userNo, Map<String, Object> formData) {
-
-        log.info("아아아넝누ㅡㄴ우: " + userNo);
-        log.info("Received formData: " + formData);
+    public ResponseEntity<?> introduce_com_updatePro(@RequestParam("userNo") int userNo, @Validated @RequestBody IntroCom introCom) {
         try {
-            log.info("Received formData: " + formData);
-
             Company company = companyService.selectByUserNo(userNo);
             if (company == null) {
                 return new ResponseEntity<>("Company not found", HttpStatus.NOT_FOUND);
@@ -148,45 +145,39 @@ public class CompanyController {
                 return new ResponseEntity<>("CompanyDetail not found", HttpStatus.NOT_FOUND);
             }
 
-            // formData에서 데이터를 추출하여 객체에 설정
-            company.setComName((String) formData.get("comName"));
-            company.setComCategory((String) formData.get("comCategory"));
-            company.setComAddress((String) formData.get("comAddress"));
+            // IntroCom에서 데이터를 추출하여 객체에 설정
+            company.setComName(introCom.getComName());
+            company.setComCategory(introCom.getComCategory());
+            company.setComAddress(introCom.getComAddress());
 
-            try {
-                comDetail.setComBirth(Integer.parseInt((String) formData.get("comBirth")));
-                comDetail.setComEmpCount(Integer.parseInt((String) formData.get("comEmpCount")));
-                comDetail.setComSales(Integer.parseInt((String) formData.get("comsales")));
-            } catch (NumberFormatException e) {
-                return new ResponseEntity<>("Invalid number format", HttpStatus.BAD_REQUEST);
-            }
+            comDetail.setComBirth(introCom.getComBirth());
+            comDetail.setComEmpCount(introCom.getComEmpCount());
+            comDetail.setComSales(introCom.getComSales());
+            comDetail.setComSize(introCom.getComSize());
+            comDetail.setComRepresent(introCom.getComRepresent());
+            comDetail.setComContent(introCom.getComContent());
+            comDetail.setComNo(company.getComNo());
 
-            comDetail.setComSize((String) formData.get("comSize"));
-            comDetail.setComRepresent((String) formData.get("comRepresent"));
-            comDetail.setComContent((String) formData.get("comContent"));
-            comDetail.setComNo(company.getComNo()); // 사용자 정보 설정
-
-            // 데이터 요청
+            // 데이터 업데이트
             int result = companyService.updateCompanyDetail(comDetail);
             int result2 = companyService.updateCompany(company);
 
-            // 데이터 처리 성공 
+            // 처리 결과 반환
             if (result > 0 && result2 > 0) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("company", company);
                 response.put("comDetail", comDetail);
-
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Update failed", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>("Invalid number format", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 
 
 
