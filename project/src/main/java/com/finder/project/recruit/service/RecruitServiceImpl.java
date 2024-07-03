@@ -88,17 +88,19 @@ public class RecruitServiceImpl implements RecruitService {
 
         // 첨부파일 업로드
         List<MultipartFile> fileList = recruitPost.getFile();
+        log.info(recruitPost.getFile() + "이건 겟파일");
         if (fileList != null && !fileList.isEmpty()) {
             for (MultipartFile file : fileList) {
-                if (file.isEmpty())
-                    continue;
+                if (file.isEmpty())  continue;
+                
+                log.info(file + " file!!!!!!!!");
 
                 // 파일 정보 등록
                 Files uploadFile = new Files();
                 uploadFile.setParentTable(parentTable);
                 uploadFile.setParentNo(parentNo);
                 uploadFile.setFile(file);
-
+                
                 fileService.upload(uploadFile);
 
             }

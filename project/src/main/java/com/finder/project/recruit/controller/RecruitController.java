@@ -24,12 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.client.HttpServerErrorException.BadGateway;
 
 import com.finder.project.company.dto.Company;
 import com.finder.project.company.dto.CompanyDetail;
-import com.finder.project.company.dto.Order;
 import com.finder.project.company.service.CompanyService;
 import com.finder.project.main.dto.Files;
 import com.finder.project.main.dto.Page;
@@ -61,7 +58,7 @@ public class RecruitController {
 
     // 채용공고 상세 페이지 ----
     @GetMapping("/detail_jobs_user")
-    public ResponseEntity<Map<String,Object>> getMethodName(@RequestParam("recruitNo") Integer recruitNo, @RequestParam("userNo") Integer userNo, Files file  ) throws Exception {
+    public ResponseEntity<Map<String,Object>> getMethodName(@RequestParam("recruitNo") Integer recruitNo, Files file  ) throws Exception {
         log.info(recruitNo + ": recruitNo");
         Map<String, Object> response = new HashMap<>();
         // Users user = (Users) session.getAttribute("user");
@@ -118,7 +115,7 @@ public class RecruitController {
 
         int comNo = recruitPost.getCompany().getComNo();
         CompanyDetail companyDetail = recruitService.selectCompanyDetailsWithRecruit(comNo);
-        log.info(companyDetail + "companyDetail tlqkf ");
+        // log.info(companyDetail + "companyDetail tlqkf ");
 
         List<Files> fileList = fileService.listByParent(file);
 
@@ -268,7 +265,7 @@ public class RecruitController {
 
     @DeleteMapping("/post_jobs_read_com/{recruitNo}") //////////////////////////// Rest 끝
     public ResponseEntity<?> postPost_jobs_read_com(@PathVariable("recruitNo") int recruitNo) throws Exception {
-        // log.info("여기까지 넘어오니 ??" + recruitNo);
+        log.info("여기까지 넘어오니 ??" + recruitNo);
         int result = recruitService.deleteRecruitList(recruitNo);
 
         if (result > 0) {
@@ -300,22 +297,24 @@ public class RecruitController {
 
     // 기업이 등록 한 채용공고 목록
     @GetMapping("/posted_jobs_com")
-    public String getPosted_jobs_com(@SessionAttribute("user") Users user, Model model, Page page) throws Exception {
-
-        Company company = companyService.selectByUserNo(user.getUserNo());
-        int comNo = company.getComNo();
+    public ResponseEntity<Map<String,Object>> getPosted_jobs_com(@RequestParam("comNo") Integer comNo , Page page) throws Exception {
+        Map<String,Object> response = new HashMap<>();
+        
 
         List<RecruitPost> recruitPosts = recruitService.pagedPostsRecruitList(comNo, page);
-        model.addAttribute("recruitPosts", recruitPosts);
-        model.addAttribute("page", page);
 
-        return "/recruit/posted_jobs_com";
+        response.put("recruitPosts", recruitPosts);
+
+        // model.addAttribute("recruitPosts", recruitPosts);
+        // model.addAttribute("page", page);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 채용공고 삭제 비동기
     
-    @DeleteMapping("/posted_jobs_com/{recruitNo}")
-    public ResponseEntity<Boolean> deleteRecruit(@PathVariable("recruitNo") int recruitNo) throws Exception {
+    @DeleteMapping("/posted_jobs_com")
+    public ResponseEntity<Boolean> deleteRecruit(@RequestParam("recruitNo") int recruitNo) throws Exception {
 
         log.info("채용공고 삭제 : " + recruitNo);
         int result = recruitService.deleteRecruitList(recruitNo);

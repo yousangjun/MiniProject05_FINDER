@@ -3,12 +3,14 @@ import './css/Post_job.css';
 import BtnLong from '../main/BtnLong';
 import KeywordItem from '../main/KeywordItem';
 import Swal from 'sweetalert2';
-import { postRecruit, getComToUserNo } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
-import { useNavigate } from 'react-router-dom';
+import { updateRecruit, getComToUserNo, readRecruit, deleteFile, deleteRecruit } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
+import { useNavigate, useParams } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
-const Post_jobs_com = () => {
+
+const Post_jobs_read_com = () => {
     const { userInfo } = useContext(LoginContext);
+    const { recruitNo } = useParams('');
     const [keyword, setKeywords] = useState([]);
     const [thumbnail, setThumbnail] = useState('/img/no-image.png');
     const [files, setFiles] = useState([]);
@@ -18,32 +20,57 @@ const Post_jobs_com = () => {
     const [recruitPreferredQualifications, setRecruitPreferredQualifications] = useState('');
     const [recruitRegDate, setRecruitRegDate] = useState('');
     const [recruitContent, setRecruitContent] = useState('');
+    const [recruit, setRecruit] = useState([]);
     const userNo = userInfo ? userInfo.userNo : null;
-    
+
+
     const navigate = useNavigate();
     const thumbnailImg = useRef(null);
     const fileInputRef = useRef(null);
     const fileInputRef2 = useRef(null);
     const companyNo = useRef(null);
-    
-    const handleGetCompany = async () => {
-        try {
-            companyNo.current = await getComToUserNo(userInfo.userNo);
-            
-            console.dir(companyNo.current.data.comNo);
-        } catch (error) {
-            console.error('Error fetching company data:', error);
-        }
-    };
-    
+
+
+
     // 예를 들어 컴포넌트가 마운트될 때 이 함수를 호출하려면 useEffect 훅을 사용할 수 있습니다.
     useEffect(() => {
-        if (userNo) {
+
+        if (userNo && recruitNo) {
+
+            const handleGetCompany = async () => {
+                try {
+                    companyNo.current = await getComToUserNo(userInfo.userNo);
+
+                    // console.dir(companyNo.current.data.comNo);
+                } catch (error) {
+                    console.error('Error fetching company data:', error);
+                }
+            };
+
+            const handleReadRecruit = async () => {
+
+                try {
+                    const response = await readRecruit(recruitNo);
+                    // const data = response ? response.data : null 
+                    setThumbnail(response.data.Thumbnail)
+                    setFiles(response.data.fileList)
+                    setRecruit(response.data)
+                    console.log('공고조회 :', response.data.fileList);
+
+                    // console.log('공고조회1 :', response.data.Thumbnail.fileNo);
+
+                } catch (error) {
+                    console.error('Error posting job:', error);
+                }
+            }
+
+
             handleGetCompany();
+            handleReadRecruit();
         }
     }, [userNo]);
 
-    const handleSubmit = async (event) => {
+    const handleUpdate = async (event) => {
         event.preventDefault();
 
         // 필수 필드 값 검증
@@ -76,31 +103,45 @@ const Post_jobs_com = () => {
         formData.append('comNo', companyNo.current.data.comNo);
         keyword.forEach((keyword, index) => {
             formData.append(`keyword`, keyword);
-        }); // 키워드를 JSON 문자열로 변환하여 추가
+        });
 
-    
-        
+
+
         // 썸네일 추가
         if (thumbnail instanceof File) {
             formData.append('thumbnail', thumbnail);
         }
-        
+
         // 파일 첨부
         files.forEach((file, index) => {
             formData.append('file', file); // files 배열을 순회하며 각각의 파일을 추가
         });
-        
+
         for (let [key, value] of formData.entries()) {
             console.log(key, value);
         }
         try {
-            const response = await postRecruit(formData);
+            const response = await updateRecruit(formData);
             console.log('Job posted successfully:', response.data);
-            navigate('/'); // 성공적으로 등록된 후 네비게이트
+            navigate(-1); // 성공적으로 등록된 후 네비게이트
         } catch (error) {
             console.error('Error posting job:', error);
         }
     };
+
+    const deleteRecruitClick = () => {
+        deleteRecruit(recruitNo)
+            .then(response => {
+                if (response.status === 200 && response.data > 0) {
+                    navigate(-1); // 성공적으로 등록된 후 네비게이트
+                    console.log('채용공고가 성공적으로 삭제되었습니다.');
+                }
+            })
+            .catch(error => {
+                alert(`삭제 실패: ${error.response.status} ${error.response.statusText}`);
+            });
+    }
+
 
     const handleKeywordKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -126,16 +167,15 @@ const Post_jobs_com = () => {
     const handleFileUploadClick2 = () => {
         fileInputRef2.current.click();
     };
-    const deleteFile = (index) => {
-        setFiles(files.filter((_, i) => i !== index));
-    };
+
 
     const handleThumbnailChange = (event) => {
         const file = event.target.files[0];
+        console.log(file);
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                setThumbnail(file); // 상태를 업데이트하여 React 내에서 관리
+                // setThumbnail(file); // 상태를 업데이트하여 React 내에서 관리
                 if (thumbnailImg.current) {
                     thumbnailImg.current.src = reader.result; // 이미지 태그의 src 속성 업데이트
                 }
@@ -151,9 +191,29 @@ const Post_jobs_com = () => {
         setFiles(newFiles);
     };
 
+    const deleteFileClick = (fileNo, index) => {
+        const encodedFileNo = encodeURIComponent(fileNo);
+
+        deleteFile(encodedFileNo)
+            .then(response => {
+                if (response.status === 200 && response.data === 'SUCCESS') {
+                    // 삭제 성공 후, 파일 목록에서 해당 파일 제거
+                    setFiles(prevFiles => prevFiles.filter(file => file.fileNo !== fileNo));
+                    console.log(files);
+                    console.log('파일이 성공적으로 삭제되었습니다.');
+                }
+            })
+            .catch(error => {
+                alert(`삭제 실패: ${error.response.status} ${error.response.statusText}`);
+            });
+    };
+
+
+    // 여기서 찍으면 오류남
+    // console.log(recruit.Thumbnail.fileNo);
     return (
         <>
-            <form encType='multipart/form-data' id='recruitForm' method='POST' className='job-listings' onSubmit={handleSubmit}>
+            <form encType='multipart/form-data' id='recruitForm' method='POST' className='job-listings' onSubmit={handleUpdate}>
                 <input type="hidden" name="comNo" />
                 <input type="hidden" name="remainQuantity" id="remainQuantity" />
 
@@ -169,13 +229,20 @@ const Post_jobs_com = () => {
                             </div>
                             <div>
                                 <button type='button' className='btn-short file-upload-button1' onClick={handleFileUploadClick} >선택</button>
-                                <button className="btn-short file-upload-button2" style={{ display: 'none' }}>삭제</button>
+                                <button type='button' className="btn-short file-upload-button2" style={{ display: 'none' }}>삭제</button>
                             </div>
                         </div>
 
                         <div className="thumbnail-wrapper d-flex" style={{ height: '75px', width: '75px' }}>
                             <input ref={fileInputRef} type="file" name="thumbnail" id="thumbnail" className='file-input thumbnail-preview-recruit' accept='image/*' onChange={handleThumbnailChange} />
-                            <img ref={thumbnailImg} src="/img/no-image.png" id='thumbnail-preview' className='thumbnail-preview-recruit' alt="이미지 없다" style={{ height: '100%', width: '100%' }} />
+
+                            {
+                                thumbnail != null ? (
+                                    <img ref={thumbnailImg} src={`/file/img/${thumbnail.fileNo}`} id='thumbnail-preview' className='thumbnail-preview-recruit' alt="이미지 없다" style={{ height: '100%', width: '100%' }} />
+                                ) : (
+                                    <img ref={thumbnailImg} src="/img/no-image.png" id='thumbnail-preview' className='thumbnail-preview-recruit' alt="이미지 없다" style={{ height: '100%', width: '100%' }} />
+                                )
+                            }
                         </div>
                     </div>
 
@@ -290,18 +357,23 @@ const Post_jobs_com = () => {
                         <div className="file-input-wrapper w-100">
                             <div className='d-flex justify-content-between'>
                                 <button type='button' className="btn-long file-upload-button" onClick={handleFileUploadClick2}>파일 첨부</button>
-                                <BtnLong btnLongText={"등록"} onClick={handleSubmit} />
+
+                                <div className="d-flex gap-2">
+                                    <BtnLong btnType='button' btnLongText={"수정"} onClick={handleUpdate} />
+
+                                    <BtnLong btnType='button' btnLongText={"삭제"} onClick={deleteRecruitClick} />
+                                </div>
                             </div>
                             <div>
                                 <input ref={fileInputRef2} onChange={handleFileChange} type="file" name="file" id="file-input" className="file-input hidden-file-input" multiple />
                                 <div id='file-names' className="PostFileName mt-2">
-                                    {files.map((file, index) => (
-                                        <div key={index} className="file-name">
-                                            {file.name}
+                                    {files.map((file) => (
+                                        <div key={file.fileNo} className="file-name">
+                                            {file.originName}
                                             <span
                                                 className="remove-file"
                                                 role="button"
-                                                onClick={() => deleteFile(index)}
+                                                onClick={() => deleteFileClick(file.fileNo)}
                                                 style={{ cursor: 'pointer', marginLeft: '10px' }}>
                                                 X
                                             </span>
@@ -318,4 +390,4 @@ const Post_jobs_com = () => {
     )
 }
 
-export default Post_jobs_com;
+export default Post_jobs_read_com;
