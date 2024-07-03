@@ -1,6 +1,8 @@
 package com.finder.project.company.dto;
 
 import lombok.Data;
+
+
 /* introduce에 사용할 dto 추가 */
 @Data
 public class IntroCom {

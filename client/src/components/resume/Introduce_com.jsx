@@ -17,7 +17,7 @@ const Introduce_com = () => {
     comBirth: '',
     comSize: '',
     comEmpCount: '',
-    comsales: '',
+    comSales: '',
     comRepresent: '',
     comContent: ''
   });
@@ -64,7 +64,7 @@ const Introduce_com = () => {
       comBirth: comDetail.comBirth,
       comSize: comDetail.comSize,
       comEmpCount: comDetail.comEmpCount,
-      comsales: comDetail.comsales,
+      comSales: comDetail.comSales,
       comRepresent: comDetail.comRepresent,
       comCategory: company.comCategory,
       comAddress: company.comAddress,
@@ -156,8 +156,8 @@ const Introduce_com = () => {
                 <div className='com-intro-input'>
                   <input
                     type="text"
-                    id='comsales'
-                    name='comsales'
+                    id='comSales'
+                    name='comSales'
                     className="w-75 ComInput"
                     value={comDetail.comSales}
                     onChange={handleChange}
