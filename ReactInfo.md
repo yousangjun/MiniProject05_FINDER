@@ -47,7 +47,12 @@ CSS이름 = jsx이름 이랑 같은 이름으로 만들어야함 ( className = �
 
 ⭕버튼 숏 in숏 롱 
 ⭕index
+
+기능
 ✅score_com
+✅applied (지원한이력서)
+✅newjobs (최근본 채용공고)
+하면끝
 
 
 ➡ 상준
