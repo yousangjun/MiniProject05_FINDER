@@ -5,7 +5,7 @@ const KeywordItem = ({ keywords }) => {
         <div className="keyword-span1">
             <div className="span-wrapper">
                 {keywords.map((keyword, index) => (
-                    <span key={index}>#{keyword}</span>
+                    <span key={index}>{keyword}</span>
                 ))}
             </div>
         </div>

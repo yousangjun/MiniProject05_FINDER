@@ -11,10 +11,10 @@ import Fail from './pages/company/fail';
 import Success from './pages/company/success';
 
 
+import LoginContextProvider from './contexts/LoginContextProvider';
 import Error from './pages/error/Error';
 import Resume from './pages/resume/Resume';
 import User from './pages/user/User';
-import LoginContextProvider from './contexts/LoginContextProvider';
 
 import Introduce_com from './pages/resume/Introduce_com';
 import Login from './pages/user/Login';
@@ -22,22 +22,24 @@ import Login from './pages/user/Login';
 import CvCreate_user from './pages/resume/CvCreate_user';
 
 
-import Post_jobs_com from './pages/resume/Post_jobs_com';
 import CvRead_user from './pages/resume/CvRead_user';
+import Post_jobs_com from './pages/resume/Post_jobs_com';
 
 
 import Applied_jobs_user from "./pages/recruit/Applied_jobs_user";
 import Cv_list_user from "./pages/recruit/Cv_list_user";
-import Detail_jobs_user from "./pages/recruit/detail_jobs_user"
 import New_jobs_user from "./pages/recruit/New_jobs_user";
 import Posted_jobs_com from "./pages/recruit/Posted_jobs_com";
 import Recruit_list_com from "./pages/recruit/Recruit_list_com";
-import Join_com from './pages/user/join_com';
-import Join_user from './pages/user/join_user';
-import Post_jobsRead_com from "./pages/resume/Post_jobsRead_com";
-import Update_user from "./pages/resume/Update_user";
+import Detail_jobs_user from "./pages/recruit/detail_jobs_user";
 import Find_com from "./pages/resume/Find_com";
 import Find_user from "./pages/resume/Find_user";
+import Process from "./components/company/Process";
+
+import Post_jobsRead_com from "./pages/resume/Post_jobsRead_com";
+import Update_user from "./pages/resume/Update_user";
+import Join_com from './pages/user/join_com';
+import Join_user from './pages/user/join_user';
 
 
 
@@ -54,8 +56,11 @@ function App() {
           <Route path="/company/credit_com" element={<Credit_com/>}></Route>
           <Route path="/company/credit_detail_com/:productNo" element={<Credit_detail_com/>}></Route>
           <Route path="/company/checkout/:productNo/:orderNo" element={<Checkout/>}></Route>
-          <Route path="/company/success" element={<Success/>}></Route>
+          <Route path="/company/process/:productNo/:orderNo" element={<Process/>}></Route>
+          <Route path="/company/success/:productNo/:orderNo" element={<Success/>}></Route>
           <Route path="/company/fail" element={<Fail/>}></Route>
+
+
           <Route path="/company/credit_list_com" element={<Credit_list_com/>}></Route>
 
           <Route path="/company/introduce_com" element={<Introduce_com/>}></Route>          {/* 기업소개 등록/수정 */}
@@ -66,7 +71,7 @@ function App() {
           <Route path="/recruit/detail_jobs_user/:recruitNo" element={<Detail_jobs_user/>}></Route>  {/* 채용공고 상세 [공통] */}
 
           <Route path="/recruit/post_jobs_com" element={<Post_jobs_com/>}></Route>        {/* 채용공고 등록 [기업] */}
-          <Route path="/recruit/post_jobsRead_com" element={<Post_jobsRead_com/>}></Route> {/* 채용공고 조회 [기업] */}
+          <Route path="/recruit/post_jobs_read_com/:recruitNo" element={<Post_jobsRead_com/>}></Route> {/* 채용공고 조회 [기업] */}
           <Route path="/recruit/recruit_list_com" element={<Recruit_list_com/>}></Route>    {/* 등록한 채용공고 [기업] */}
           <Route path="/recruit/posted_jobs_com" element={<Posted_jobs_com/>}></Route>    {/* 제출된 이력서 [기업] */}
 

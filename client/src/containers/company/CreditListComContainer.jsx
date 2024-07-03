@@ -7,10 +7,10 @@ import ContentHeader from '../../components/main/ContentHeader';
 const CreditListComContainer = () => {
 
     // 임시 데이터
-    const orderCreditList = [
-        { orderNo: '1', productNo: '3', creditMethod: '신용카드', creditDate: '2024/06/28 15:30:00', totalPrice: '100,000', orderStatus: 'PAID' },
-        { orderNo: '1', productNo: '3', creditMethod: '계좌이체', creditDate: '2024/06/27 14:20:00', totalPrice: '150,000', orderStatus: 'PENDING' },
-    ];
+    // const orderCreditList = [
+    //     { orderNo: '1', productNo: '3', creditMethod: '신용카드', creditDate: '2024/06/28 15:30:00', totalPrice: '100,000', orderStatus: 'PAID' },
+    //     { orderNo: '1', productNo: '3', creditMethod: '계좌이체', creditDate: '2024/06/27 14:20:00', totalPrice: '150,000', orderStatus: 'PENDING' },
+    // ];
 
     return (
         <>
@@ -20,7 +20,7 @@ const CreditListComContainer = () => {
                 <main className="col-12 col-md-12 col-lg-8 main-content1 d-flex justify-content-end align-items-start">
                     <div className="job-listings1">
                         <ContentHeader ContentHeaderText={"결제 내역"} />
-                        <CreditList orderCreditList={orderCreditList} />
+                        <CreditList  /*orderCreditList={orderCreditList}*/ />
                     </div>
                 </main>
             </div>

@@ -17,7 +17,7 @@ const Introduce_com = () => {
     comBirth: '',
     comSize: '',
     comEmpCount: '',
-    comsales: '',
+    comSales: '',
     comRepresent: '',
     comContent: ''
   });
@@ -45,31 +45,49 @@ const Introduce_com = () => {
     fetchData();
   }, [userNo]); // Run effect when userNo changes
 
+/*   const handleChange = (e) => {
+    const { name, value } = e.target; //속성 name을 쓰는 value 가지고오는 거 
+    setCompany((prevState) => ({ 
+      ...prevState,
+      [name]: value                   
+    }));
+    setComDetail((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  }; */
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCompany(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-    setComDetail(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    if (name in company) {
+      setCompany((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    } else if (name in comDetail) {
+      setComDetail((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
       comName: company.comName,
+      comCategory: company.comCategory,
+      comAddress: company.comAddress,
       comBirth: comDetail.comBirth,
       comSize: comDetail.comSize,
       comEmpCount: comDetail.comEmpCount,
-      comsales: comDetail.comsales,
+      comSales: comDetail.comSales,
       comRepresent: comDetail.comRepresent,
-      comCategory: company.comCategory,
-      comAddress: company.comAddress,
-      comContent: comDetail.comContent
+      comContent: comDetail.comContent,
     };
+    
+
     try {
       if (isEditMode) {
         // 수정
@@ -156,8 +174,8 @@ const Introduce_com = () => {
                 <div className='com-intro-input'>
                   <input
                     type="text"
-                    id='comsales'
-                    name='comsales'
+                    id='comSales'
+                    name='comSales'
                     className="w-75 ComInput"
                     value={comDetail.comSales}
                     onChange={handleChange}

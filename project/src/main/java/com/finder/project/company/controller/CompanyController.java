@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.finder.project.company.dto.Company;
 import com.finder.project.company.dto.CompanyDetail;
 import com.finder.project.company.dto.Credit;
+import com.finder.project.company.dto.IntroCom;
 import com.finder.project.company.dto.Order;
+import com.finder.project.company.dto.OrderCreditDTO;
 import com.finder.project.company.dto.PasswordConfirmRequest;
 import com.finder.project.company.dto.Product;
 import com.finder.project.company.service.CompanyService;
@@ -92,52 +95,63 @@ public class CompanyController {
 
 
     // 기업 상세 정보 등록 (기업소개)
-    // @PostMapping("/insert_detail")
-    // // public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
-    // public ResponseEntity<?> introduceComInsertPro(@RequestParam("userNo") int userNo) throws Exception {
-        
-    //     try {
-    //         // 세션에서 사용자 정보 가져오기
+    @PostMapping("/introduceInsert_com")
+    public ResponseEntity<?> introduceComInsertPro(
+            @RequestParam("userNo") int userNo,
+            @RequestBody IntroCom introCom) {
+        try {
+            log.info("introduceInsert  : : : : : : : :  : :: : : user" + userNo);
             
+            // IntroCom 객체를 Company, CompanyDetail 객체로 변환
+            Company company = new Company();
+            CompanyDetail comDetail = new CompanyDetail();
             
-    //         if (user == null) {
-    //             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    //         }
-    
-    //         Company company = companyService.selectByUserNo(user.getUserNo());
+            company.setComName(introCom.getComName());
+            company.setComCategory(introCom.getComCategory());
+            company.setComAddress(introCom.getComAddress());
             
-    //         // CompanyDetail 객체에 사용자 정보 설정
-    //         companyDetail.setComNo(company.getComNo());
-    
-    //         // 데이터 삽입 요청
-    //         int result = companyService.insertCompanyDetail(companyDetail);
-    
-    //         // 데이터 처리 성공
-    //         if (result > 0) {
-    //             user.setCompanyDetail(companyDetail);
-    //            /*  session.setAttribute("user", user); */
-    //             // session.setAttribute("companyDetail", companyDetail);
-    //             return new ResponseEntity<>(HttpStatus.OK);
-    //         }
+            comDetail.setComBirth(introCom.getComBirth());
+            comDetail.setComEmpCount(introCom.getComEmpCount());
+            comDetail.setComSales(introCom.getComSales());
+            comDetail.setComSize(introCom.getComSize());
+            comDetail.setComRepresent(introCom.getComRepresent());
+            comDetail.setComContent(introCom.getComContent());
+            comDetail.setComNo(company.getComNo());
             
-    //     } catch (Exception e) {
-            
-    //     }
+            log.info("-------------------------------------------------------" + introCom);
 
-    //     // 데이터 처리 실패
-    //     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    // }
+            // 데이터 삽입 요청
+            int result = companyService.insertCompany(company);
+            int result2 = companyService.insertCompanyDetail(comDetail);
+            
+            log.info("여기까지 오나 확인" + userNo );
+
+            if (result > 0 && result2 > 0) {
+                // 성공적으로 데이터 삽입됨
+                Map<String, Object> response = new HashMap<>();
+                response.put("company", company);
+                response.put("comDetail", comDetail);
+
+                log.info("정보 들어갔다 ~~~~~~~~~~~~~~~~~~~~~~~~~~" + introCom);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 삽입 실패
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+    
+        } catch (Exception e) {
+            // 예외 발생 시
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+
 
 
     
     @PutMapping("/update_detail")
-    public ResponseEntity<?> introduce_com_updatePro(@RequestParam("userNo") int userNo, Map<String, Object> formData) {
-
-        log.info("아아아넝누ㅡㄴ우: " + userNo);
-        log.info("Received formData: " + formData);
+    public ResponseEntity<?> introduce_com_updatePro(@RequestParam("userNo") int userNo, @Validated @RequestBody IntroCom introCom) {
         try {
-            log.info("Received formData: " + formData);
-
             Company company = companyService.selectByUserNo(userNo);
             if (company == null) {
                 return new ResponseEntity<>("Company not found", HttpStatus.NOT_FOUND);
@@ -148,45 +162,39 @@ public class CompanyController {
                 return new ResponseEntity<>("CompanyDetail not found", HttpStatus.NOT_FOUND);
             }
 
-            // formData에서 데이터를 추출하여 객체에 설정
-            company.setComName((String) formData.get("comName"));
-            company.setComCategory((String) formData.get("comCategory"));
-            company.setComAddress((String) formData.get("comAddress"));
+            // IntroCom에서 데이터를 추출하여 객체에 설정
+            company.setComName(introCom.getComName());
+            company.setComCategory(introCom.getComCategory());
+            company.setComAddress(introCom.getComAddress());
 
-            try {
-                comDetail.setComBirth(Integer.parseInt((String) formData.get("comBirth")));
-                comDetail.setComEmpCount(Integer.parseInt((String) formData.get("comEmpCount")));
-                comDetail.setComSales(Integer.parseInt((String) formData.get("comsales")));
-            } catch (NumberFormatException e) {
-                return new ResponseEntity<>("Invalid number format", HttpStatus.BAD_REQUEST);
-            }
+            comDetail.setComBirth(introCom.getComBirth());
+            comDetail.setComEmpCount(introCom.getComEmpCount());
+            comDetail.setComSales(introCom.getComSales());
+            comDetail.setComSize(introCom.getComSize());
+            comDetail.setComRepresent(introCom.getComRepresent());
+            comDetail.setComContent(introCom.getComContent());
+            comDetail.setComNo(company.getComNo());
 
-            comDetail.setComSize((String) formData.get("comSize"));
-            comDetail.setComRepresent((String) formData.get("comRepresent"));
-            comDetail.setComContent((String) formData.get("comContent"));
-            comDetail.setComNo(company.getComNo()); // 사용자 정보 설정
-
-            // 데이터 요청
+            // 데이터 업데이트
             int result = companyService.updateCompanyDetail(comDetail);
             int result2 = companyService.updateCompany(company);
 
-            // 데이터 처리 성공 
+            // 처리 결과 반환
             if (result > 0 && result2 > 0) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("company", company);
                 response.put("comDetail", comDetail);
-
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Update failed", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>("Invalid number format", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 
 
 
@@ -455,18 +463,22 @@ public class CompanyController {
 
     // 토스 페이먼츠 메인 [GET] ⭕⭕⭕
     @GetMapping("/credit/checkout")
-    public ResponseEntity<?> checkout(@RequestParam("productNo") int productNo, @RequestParam("orderNo") int orderNo) {
+    public ResponseEntity<?> checkout(@RequestParam("productNo") int productNo, 
+                                      @RequestParam("orderNo") int orderNo,
+                                      @RequestParam("userNo") int userNo) {
         try {
             Order order = companyService.selectOrder(orderNo);  
-            Product product = companyService.selectProduct(productNo); 
+            Product product = companyService.selectProduct(productNo);
+            Users user = userService.selectByUserNo(userNo); 
 
-            if ( product == null || order == null ) {
+            if (product == null || order == null || user == null) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             Map<String, Object> response = new HashMap<>();
             response.put("order", order);
             response.put("product", product);
+            response.put("user", user); 
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
@@ -488,109 +500,7 @@ public class CompanyController {
 
 
 
-    // 토스 페이먼츠 success [GET]
-    // @GetMapping("/credit/success")
-    // public String success(@RequestParam("productNo") int productNo
-    //                     ,@RequestParam("orderNo") int orderNo
-    //                     ,Model model) throws Exception {
-
-    //     Product product = companyService.selectProduct(productNo);
-    //     Order order = companyService.selectOrder(orderNo);
-    //     Credit credit = companyService.selectCredit(orderNo);
-
-    //     model.addAttribute("credit", credit);
-    //     model.addAttribute("order", order);
-    //     model.addAttribute("product", product);
-    //     return "/company/credit/success";
-    // }
-
-    // 토스 페이먼츠 success [GET] ⭕⭕⭕
-    @GetMapping("/credit/success")
-    public ResponseEntity<?> success(@RequestParam("productNo") int productNo, @RequestParam("orderNo") int orderNo) {
-        try {
-            Product product = companyService.selectProduct(productNo);
-            Order order = companyService.selectOrder(orderNo);
-            Credit credit = companyService.selectCredit(orderNo);
-
-            if (product == null || order == null || credit == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("product", product);
-            response.put("order", order);
-            response.put("credit", credit);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
-
-
-
-     // 결제 테이블 추가 [POST]
-    @ResponseBody
-    @PostMapping("/credit/process")
-    public ResponseEntity<Map<String, Object>> successPro(HttpSession session
-                                ,@RequestParam("paymentKey") String paymentKey
-                                ,@RequestParam("orderId") String orderId
-                                ,@RequestParam("price") int price
-                                ,@RequestParam("productNo") int productNo
-                                ,@RequestParam("orderNo") int orderNo
-                                ) throws Exception {
-    
-        // 세션에서 사용자 정보 가져오기
-        // Users user = (Users) session.getAttribute("user");
-        log.info("주문번호 : " + orderNo);
-
-        Order order = companyService.selectOrder(orderNo);
-        Product product = companyService.selectProduct(productNo);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, product.getProductDuration());
-        order.setExpirationDate(calendar.getTime()); // 만료일 개월수만큼 더해서 나오게끔해야됨
-        order.setRemainQuantity(order.getTotalQuantity());
-
-        int result = companyService.updateOrder(order); // 주문 갱신
-
-        if(result>0){
-            log.info(" order_status / updated_date / expiration_date 갱신 ");
-        }else{
-            log.info(" 주문 갱신 실패 ");
-        }
-    
-        Credit credit = new Credit();
-        credit.setOrderNo(orderNo);
-        credit.setCreditCode(orderId);
-        credit.setCreditMethod("간편결제");
-        credit.setCreditStatus("PAID");
-
-        int creditResult = companyService.insertCredit(credit); // 결제 등록
-
-        Map<String, Object> response = new HashMap<>();
-
-        if(creditResult > 0) {
-            response.put("status", "success");
-        } else {
-            response.put("status", "fail");
-        }
-
-        Users user = (Users) session.getAttribute("user");
-
-        user.setOrder(order);
-        session.setAttribute("user", user);
-        
-        response.put("productNo", productNo);
-        response.put("orderNo", orderNo);
-
-        return ResponseEntity.ok(response);
-    }
-
-
-    // 주문 테이블 추가 [POST]
+    // 주문 테이블 추가 [POST] ⭕⭕⭕
     @ResponseBody
     @PostMapping("/credit/checkout")
     public ResponseEntity<?> successPro(@RequestBody Map<String, Integer> request) throws Exception {
@@ -628,7 +538,100 @@ public class CompanyController {
 
 
 
-    // 토스 페이먼츠 fail [GET]
+
+     // 결제 테이블 추가 [POST] ⭕⭕⭕ 결제 2번 들어가는건 <StrictMode> 때문 
+    @PostMapping("/credit/process")
+    public ResponseEntity<?> successPro(@RequestBody OrderCreditDTO orderCreditDTO ) throws Exception {
+
+        int orderNo = orderCreditDTO.getOrderNo();
+        int productNo = orderCreditDTO.getProductNo();
+        String orderId = orderCreditDTO.getOrderId();
+
+        log.info(":::::::::::::::::::::::주문번호 : " + orderNo);
+        log.info(":::::::::::::::::::::::상품번호 : " + productNo);
+
+
+        Order order = companyService.selectOrder(orderNo);
+        Product product = companyService.selectProduct(productNo);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, product.getProductDuration());
+        order.setExpirationDate(calendar.getTime()); // 만료일 개월수만큼 더해서 나오게끔해야됨
+        order.setRemainQuantity(order.getTotalQuantity());
+
+        int result = companyService.updateOrder(order); // 주문 갱신
+
+        if(result>0){
+            log.info(" order_status / updated_date / expiration_date 갱신 ");
+        }else{
+            log.info(" 주문 갱신 실패 ");
+        }
+    
+        Credit credit = new Credit();
+        credit.setOrderNo(orderNo);
+        credit.setCreditCode(orderId);
+        credit.setCreditMethod("간편결제");
+        credit.setCreditStatus("PAID");
+
+        int creditResult = companyService.insertCredit(credit); // 결제 등록
+
+        if(creditResult > 0) {
+            return new ResponseEntity<Object>(credit, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
+
+
+    // 토스 페이먼츠 success [GET]
+    // @GetMapping("/credit/success")
+    // public String success(@RequestParam("productNo") int productNo
+    //                     ,@RequestParam("orderNo") int orderNo
+    //                     ,Model model) throws Exception {
+
+    //     Product product = companyService.selectProduct(productNo);
+    //     Order order = companyService.selectOrder(orderNo);
+    //     Credit credit = companyService.selectCredit(orderNo);
+
+    //     model.addAttribute("credit", credit);
+    //     model.addAttribute("order", order);
+    //     model.addAttribute("product", product);
+    //     return "/company/credit/success";
+    // }
+
+    // 토스 페이먼츠 success [GET] ⭕⭕⭕
+    @GetMapping("/credit/success")
+    public ResponseEntity<?> success(@RequestParam("productNo") int productNo
+                                    ,@RequestParam("orderNo") int orderNo
+                                    ,@RequestParam("userNo") int userNo) {
+        try {
+            Product product = companyService.selectProduct(productNo);
+            Order order = companyService.selectOrder(orderNo);
+            Credit credit = companyService.selectCredit(orderNo);
+            Users user = userService.selectByUserNo(userNo);
+
+            if (product == null || order == null || credit == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("product", product);
+            response.put("order", order);
+            response.put("credit", credit);
+            response.put("user", user);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    // 토스 페이먼츠 fail [GET] ⭕⭕⭕
     @GetMapping("/credit/fail")
     public String fail() {
         return "/company/credit/fail";
@@ -637,24 +640,24 @@ public class CompanyController {
 
     // 결제 목록 내역 화면 [GET]
     @GetMapping("/credit/credit_list_com")
-    public String credit_list_com(HttpSession session, Model model, Page page
-                                ) throws Exception {
-
-    Users user = (Users) session.getAttribute("user");
-    int userNo = user.getUserNo();
-
-    List<Order> orderCreditList = companyService.orderCreditList(userNo, page);
-
-    // 페이징
-    log.info("page : " + page);
-
-
-    model.addAttribute("orderCreditList", orderCreditList);
-    model.addAttribute("page", page);
-
-        return "/company/credit/credit_list_com";
+    public ResponseEntity<Map<String, Object>> creditListCom(@RequestParam("userNo") int userNo,
+                                                            Page page) {
+        try {
+            log.info("userNo" + userNo);
+    
+            Users user = userService.selectByUserNo(userNo);
+            List<Order> orderCreditList = companyService.orderCreditList(userNo, page);
+    
+            Map<String, Object> response = new HashMap<>();
+            response.put("orderCreditList", orderCreditList);
+            response.put("user", user);
+    
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
+    
 
 
 

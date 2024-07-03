@@ -210,7 +210,7 @@ const LoginContextProvider = ({ children }) => {
       }
     )
   }
-
+  const page = 12
   // Mount / Update
   useEffect(() => {
     // 로그인 체크

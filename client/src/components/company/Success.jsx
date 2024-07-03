@@ -1,44 +1,106 @@
-import React, { useEffect  } from 'react'
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-
+import React, { useContext, useState, useEffect  } from 'react'
+import { Link, useParams } from "react-router-dom";
 import './css/Success.css';
 import BtnLong from '../main/BtnLong';
+import * as credit from '../../apis/company/credit';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
-const Success = ( {  } ) => {
+const Success = () => {
 
     // const navigate = useNavigate();
     // const [searchParams] = useSearchParams();
+    const { productNo, orderNo } = useParams();
+    const [product, setProduct] = useState({});
+    const [user, setUser] = useState({});
+    const [order, setOrder] = useState({});
+    const [credits, setCredits] = useState({});
+
+    // Context
+    const { userInfo } = useContext(LoginContext);
+    const userNo = userInfo ? userInfo.userNo : null;  // 사용자 정보에서 userNo 가져오기
+
+
+    useEffect(() => {
+        const fetchCheckoutData = async () => {
+            try {
+                const SuccessData = {
+                    productNo,
+                    orderNo,
+                    userNo,
+                };
+    
+                // userNo를 추가하여 getCheckout 호출
+                const response = await credit.getCheckout(SuccessData);
+                console.log("결제 상품 및 주문 정보:", response.data);
+                setProduct(response.data.product);
+                setOrder(response.data.order);
+                setUser(response.data.user);
+                setCredits()
+            } catch (error) {
+                console.error("결제 정보를 가져오는 중 오류 발생:", error);
+                // 여기에 오류 처리 로직을 추가할 수 있습니다.
+                // 예: 사용자에게 오류 메시지 표시
+            }
+        };
+    
+        fetchCheckoutData();
+    }, [productNo, orderNo, userNo]);
+
 
     // useEffect(() => {
     //     // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
     //     // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.  
     //     const requestData = {
-    //     orderId: searchParams.get("orderId"),
-    //     amount: searchParams.get("amount"),
-    //     paymentKey: searchParams.get("paymentKey"),
+    //         orderId: searchParams.get("orderId"),
+    //         amount: searchParams.get("amount"),
+    //         paymentKey: searchParams.get("paymentKey"),
+    //         productNo: productNo,
+    //         orderNo: orderNo,
     //     };
+    //     console.log(requestData.orderNo)
+    //     console.log(requestData.productNo)
+    //     console.log(requestData.orderId)
 
     //     async function confirm() {
-    //     const response = await fetch("/confirm", {
-    //         method: "POST",
-    //         headers: {
-    //         "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify(requestData),
-    //     });
+    //         try {
+    //             const response = await credit.insertCredit(requestData);
+    //             console.log(response)
+    //             if (response.status !== 200) {
+    //                 // 결제 실패 비즈니스 로직을 구현하세요.
+    //                 const json = await response.json();
+    //                 navigate(`/fail?message=${json.message}&code=${json.code}`);
+    //                 return;
+    //             }
 
-    //     const json = await response.json();
-
-    //     if (!response.ok) {
-    //         // 결제 실패 비즈니스 로직을 구현하세요.
-    //         navigate(`/fail?message=${json.message}&code=${json.code}`);
-    //         return;
+    //             // 결제 성공 비즈니스 로직을 구현하세요.
+    //         } catch (error) {
+    //             console.error("Error processing payment:", error);
+    //             navigate(`/company/fail?message=${error.message}`);
+    //         }
     //     }
 
-    //     // 결제 성공 비즈니스 로직을 구현하세요.
-    //     }
     //     confirm();
     // }, []);
+    
+    // 전화번호 형식 변환 함수
+    const formatPhoneNumber = (phoneNumber) => {
+        if (!phoneNumber) return '';
+        return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    };
+
+    const formatDate = (isoDate) => {
+        if (!isoDate) return '';
+        
+        const date = new Date(isoDate);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+    
+        const formattedDate = `${year}/${month}/${day} 오후 ${hours}시 ${minutes}분`;
+        return formattedDate;
+    };
 
     return (
         <div className="d-flex flex-column container main-content align-items-center">
@@ -48,13 +110,13 @@ const Success = ( {  } ) => {
                 <div className="card text-center">
                     <div className="card-body d-flex flex-column credit-body-success justify-content-center" style={{rowGap: '20px'}}>
                         <h3>
-                            <span style={{fontSize: '30px'}}>스탠다드</span>
-                            <span> / 3개월 5건</span>
+                            <span style={{fontSize: '30px'}}>{product.productName}</span>
+                            <span> / {product.productDuration}개월 {product.productCount}건</span>
                         </h3>
                         <ul className="credit-list-info-success">
                             <li>채용공고 작성 건수</li>   
-                            <li>AI 평가 사용</li> 
-                            <li>건당 <span>3</span>개월 유지 가능</li>
+                            <li>AI 평가 사용 : {productNo != 1 ? '사용 가능' : '사용 불가'}</li> 
+                            <li>건당 <span>{product.productDuration}</span>개월 유지 가능</li>
                         </ul>
                     </div>
                 </div>
@@ -64,11 +126,12 @@ const Success = ( {  } ) => {
                 <div className="payment-form-success">
                     <form className="d-flex flex-column justify-content-between"> 
                         <div className="credit_user_info">
-                            <p>결제 일시 : <span>2024/06/27 오후 15시 30분</span></p>
+                        <p>결제 일시 : <span>{formatDate(order.updatedDate)}</span></p>
+                        <p>결제 금액 : <span>{product.productPrice}</span>원</p>
                             <hr/>
-                            <p>결제자 : <span>홍길동</span></p>
+                            <p>결제자 : <span>{user.userName}</span></p>
                             <div className="d-flex justify-content-between align-items-center">
-                                <p>연락처 : <span>010-1234-5678</span></p>
+                                <p>연락처 : <span>{formatPhoneNumber(user.userPhone)}</span></p>
                             </div>
                             <hr/>
                         </div>
@@ -78,7 +141,7 @@ const Success = ( {  } ) => {
                                 <p>결제 수단 : <span>신용카드</span></p>
                             </div>
                             <div className="align-self-end credit-list-btn">
-                                <Link to="/company/credit_list_com"><BtnLong btnLongText={"결제내역"}/></Link>
+                                <Link to={`/company/credit_list_com/${productNo}/${orderNo}`}><BtnLong btnLongText={"결제내역"}/></Link>
                             </div>
                         </div>
                     </form>
@@ -88,4 +151,4 @@ const Success = ( {  } ) => {
     )
 }
 
-export default Success
+export default Success;
