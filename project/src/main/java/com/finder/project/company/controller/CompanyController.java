@@ -599,6 +599,7 @@ public class CompanyController {
             Map<String, Object> response = new HashMap<>();
             response.put("orderCreditList", orderCreditList);
             response.put("user", user);
+            log.info("orderCreditList" + orderCreditList);
     
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './css/CreditCom.css';
+import BtnLong from '../main/BtnLong';
 
 const CreditCom = () => {
     return (
@@ -50,7 +51,10 @@ const CreditCom = () => {
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div className='d-flex justify-content-end mt-4 me-4'>
+                    <Link to={`/company/credit_list_com`} style={{textDecoration: "none"}}><BtnLong btnLongText={"결제내역"}/></Link>
                 </div>
             </div>
         </>

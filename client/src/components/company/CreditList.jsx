@@ -1,37 +1,59 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { Modal, Button } from 'react-bootstrap';
 import * as credit from '../../apis/company/credit';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import './css/CreditList.css';
 import Paging from './Paging';
 
 const CreditList = () => {
-    
-    // Context
-    const { userInfo } = useContext(LoginContext);
-    const userNo = userInfo ? userInfo.userNo : null;  // 사용자 정보에서 userNo 가져오기
-    // const { productNo, orderNo } = useParams();
-    const [orderCreditList, setOrderCreditList] = useState([]);
 
-    // console.log(productNo)
-    // console.log(orderNo)
-    console.log(userNo)
+    const { userInfo } = useContext(LoginContext);  // Context
+    const userNo = userInfo ? userInfo.userNo : null; 
+    const [orderCreditList, setOrderCreditList] = useState([]);
+    const [page, setPage] = useState(1);
+    const [rows] = useState(10); // 한 페이지에 보여줄 행의 수
+    const [selectedOrder, setSelectedOrder] = useState(null); // 선택된 주문
+    const [user, setUser] = useState()
+
+    console.log(userNo);
     
     useEffect(() => {
         const fetchCreditList = async () => {
             try {
-                const response = await credit.getCreditList(userNo);
-                setOrderCreditList(response.data);
+                const response = await credit.getCreditList(userNo, page, rows);
+                setOrderCreditList(response.data.orderCreditList);
+                setUser(response.data.user)
             } catch (error) {
                 console.error('결제 목록을 가져오는 중 오류 발생:', error);
             }
         };
 
         fetchCreditList();
-    }, [userNo]);
+    }, [userNo, page, rows]);
 
-    // 페이지네이션 임시 데이터
-    const page = { first: 1, prev: 1, page: 2, next: 3, last: 5, start: 1, end: 5 };
+
+    const formatDate = (isoDate) => {
+        if (!isoDate) return '';
+        
+        const date = new Date(isoDate);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const hours = date.getHours(); 
+        const minutes = date.getMinutes();
+    
+        const formattedDate = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+        return formattedDate;
+    };
+
+    const handleShow = (order) => {
+        setSelectedOrder(order);
+    };
+
+    const handleClose = () => {
+        setSelectedOrder(null);
+    };
 
     return (
         <>
@@ -58,9 +80,9 @@ const CreditList = () => {
                             orderCreditList.map((order, index) => (
                                 <tr key={index} className="creditList-item">
                                     <td>{order.orderNo}</td>
-                                    <td>{order.creditMethod}</td>
-                                    <td>{order.creditDate}</td>
-                                    <td>{order.totalPrice}</td>
+                                    <td>{order.credits[0].creditMethod ? order.credits[0].creditMethod : '-'}</td>
+                                    <td>{order.credits[0].creditDate ? formatDate(order.credits[0].creditDate) : '-'}</td>
+                                    <td>{order.totalPrice.toLocaleString()}원</td>
                                     <td>
                                         {order.orderStatus === 'PAID' && '결제완료'}
                                         {order.orderStatus === 'PENDING' && '결제대기'}
@@ -68,12 +90,12 @@ const CreditList = () => {
                                     </td>
                                     <td>
                                         {order.orderStatus === 'PAID' && (
-                                            <button className="btn-short w-auto m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                상세조회
+                                            <button className="btn-short w-auto m-auto" onClick={() => handleShow(order)}>
+                                            상세조회
                                             </button>
                                         )}
                                         {order.orderStatus === 'PENDING' && (
-                                            <Link to={`/company/credit/checkout?orderNo=${order.orderNo}&productNo=${order.productNo}`}>
+                                            <Link to={`/company/checkout/${order.productNo}/${order.orderNo}`}>
                                                 <button className='btn-short w-auto m-auto' >결제하기</button>                                            
                                             </Link>
                                         )}
@@ -84,7 +106,37 @@ const CreditList = () => {
                     </tbody>
                 </table>
             </div>
-            <Paging page={page} />
+            {/* <Paging onPageChange={setPage} /> */}
+
+            {selectedOrder && (
+                <Modal show={true} onHide={handleClose} centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>결제내역 상세 안내</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{ textAlign: 'center' }}>
+                        <strong>
+                            결제 날짜: {selectedOrder.credits.length > 0 && selectedOrder.credits[0].creditDate ? 
+                                        new Date(selectedOrder.credits[0].creditDate).toLocaleDateString() : 'N/A'}
+                        </strong>
+                        <br />
+                        <br />
+                        <span>{user.userName}</span>님의 결제 내역입니다<br />
+                        상품 옵션은  
+                        {selectedOrder.totalQuantity === 30 ? '\n2' : 
+                        selectedOrder.totalQuantity === 80 ? '\n3' : 
+                        selectedOrder.totalQuantity === 150 ? '\n5' : '0'}개월이며 <br />
+                        채용공고 작성수량은 <span>{selectedOrder.remainQuantity}회</span> 남았습니다.<br />
+                        <hr />
+                        구매해주셔서 감사합니다.<br />
+                        주문처리 일자: {new Date(selectedOrder.orderedDate).toLocaleDateString()}<br />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            닫기
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            )}
         </>
     );
 };
