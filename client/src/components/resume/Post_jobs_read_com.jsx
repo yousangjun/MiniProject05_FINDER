@@ -14,6 +14,7 @@ const Post_jobs_read_com = () => {
     const [keyword, setKeywords] = useState([]);
     const [thumbnail, setThumbnail] = useState('/img/no-image.png');
     const [files, setFiles] = useState([]);
+    const [newFiles, setNewFiles] = useState([]);
     const [recruitTitle, setRecruitTitle] = useState('');
     const [recruitResponsibilities, setRecruitResponsibilities] = useState('');
     const [recruitQualifications, setRecruitQualifications] = useState('');
@@ -113,8 +114,8 @@ const Post_jobs_read_com = () => {
         }
 
         // 파일 첨부
-        files.forEach((file, index) => {
-            formData.append('file', file); // files 배열을 순회하며 각각의 파일을 추가
+        newFiles.forEach((files, index) => {
+            formData.append('file', files); // files 배열을 순회하며 각각의 파일을 추가
         });
 
         for (let [key, value] of formData.entries()) {
@@ -187,8 +188,8 @@ const Post_jobs_read_com = () => {
     };
 
     const handleFileChange = (event) => {
-        setFiles((prevFiles) => [...prevFiles, ...event.target.files]);
-        
+        setNewFiles((prevFiles) => [...prevFiles, ...event.target.files]);
+        console.log(files);
     };
 
     const deleteThumbnailClick = async () => {
@@ -205,6 +206,11 @@ const Post_jobs_read_com = () => {
                 console.error('Error deleting thumbnail:', error);
             }
         }
+    };
+
+    const deleteNewFileClick = (index) => {
+        // alert('??')
+        setNewFiles(newFiles.filter((_, i) => i !== index));
     };
 
     const deleteFileClick = (fileNo, index) => {
@@ -390,11 +396,23 @@ const Post_jobs_read_com = () => {
                                 <div id='file-names' className="PostFileName mt-2">
                                     {files.map((file) => (
                                         <div key={file.fileNo} className="file-name">
-                                            {file.originName}
+                                            {file.name}
                                             <span
                                                 className="remove-file"
                                                 role="button"
                                                 onClick={() => deleteFileClick(file.fileNo)}
+                                                style={{ cursor: 'pointer', marginLeft: '10px' }}>
+                                                X
+                                            </span>
+                                        </div>
+                                    ))}
+                                    {newFiles.map((file, index) => (
+                                        <div key={index} className="file-name">
+                                            {file.name}
+                                            <span
+                                                className="remove-file"
+                                                role="button"
+                                                onClick={() => deleteNewFileClick(index)}
                                                 style={{ cursor: 'pointer', marginLeft: '10px' }}>
                                                 X
                                             </span>
