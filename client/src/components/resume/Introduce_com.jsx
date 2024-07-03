@@ -45,7 +45,7 @@ const Introduce_com = () => {
     fetchData();
   }, [userNo]); // Run effect when userNo changes
 
-  const handleChange = (e) => {
+/*   const handleChange = (e) => {
     const { name, value } = e.target; //속성 name을 쓰는 value 가지고오는 거 
     setCompany((prevState) => ({ 
       ...prevState,
@@ -55,21 +55,39 @@ const Introduce_com = () => {
       ...prevState,
       [name]: value
     }));
+  }; */
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name in company) {
+      setCompany((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    } else if (name in comDetail) {
+      setComDetail((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
       comName: company.comName,
+      comCategory: company.comCategory,
+      comAddress: company.comAddress,
       comBirth: comDetail.comBirth,
       comSize: comDetail.comSize,
       comEmpCount: comDetail.comEmpCount,
       comSales: comDetail.comSales,
       comRepresent: comDetail.comRepresent,
-      comCategory: company.comCategory,
-      comAddress: company.comAddress,
-      comContent: comDetail.comContent
+      comContent: comDetail.comContent,
     };
+    
+
     try {
       if (isEditMode) {
         // 수정
