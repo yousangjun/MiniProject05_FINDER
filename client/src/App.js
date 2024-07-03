@@ -38,6 +38,7 @@ import Post_jobsRead_com from "./pages/resume/Post_jobsRead_com";
 import Update_user from "./pages/resume/Update_user";
 import Find_com from "./pages/resume/Find_com";
 import Find_user from "./pages/resume/Find_user";
+import Process from "./components/company/Process";
 
 
 
@@ -54,8 +55,11 @@ function App() {
           <Route path="/company/credit_com" element={<Credit_com/>}></Route>
           <Route path="/company/credit_detail_com/:productNo" element={<Credit_detail_com/>}></Route>
           <Route path="/company/checkout/:productNo/:orderNo" element={<Checkout/>}></Route>
-          <Route path="/company/success" element={<Success/>}></Route>
+          <Route path="/company/process/:productNo/:orderNo" element={<Process/>}></Route>
+          <Route path="/company/success/:productNo/:orderNo" element={<Success/>}></Route>
           <Route path="/company/fail" element={<Fail/>}></Route>
+
+
           <Route path="/company/credit_list_com" element={<Credit_list_com/>}></Route>
 
           <Route path="/company/introduce_com" element={<Introduce_com/>}></Route>          {/* 기업소개 등록/수정 */}

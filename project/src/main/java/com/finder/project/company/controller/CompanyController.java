@@ -26,6 +26,7 @@ import com.finder.project.company.dto.Company;
 import com.finder.project.company.dto.CompanyDetail;
 import com.finder.project.company.dto.Credit;
 import com.finder.project.company.dto.Order;
+import com.finder.project.company.dto.OrderCreditDTO;
 import com.finder.project.company.dto.PasswordConfirmRequest;
 import com.finder.project.company.dto.Product;
 import com.finder.project.company.service.CompanyService;
@@ -479,19 +480,17 @@ public class CompanyController {
 
 
 
-     // 결제 테이블 추가 [POST]
-    @ResponseBody
+     // 결제 테이블 추가 [POST] ⭕⭕⭕ 결제 2번 들어가는건 <StrictMode> 때문 
     @PostMapping("/credit/process")
-    public ResponseEntity<?> successPro(@RequestParam("paymentKey") String paymentKey
-                                                        ,@RequestParam("orderId") String orderId
-                                                        ,@RequestParam("price") int price
-                                                        ,@RequestParam("productNo") int productNo
-                                                        ,@RequestParam("orderNo") int orderNo
-                                                        ) throws Exception {
-        log.info("주문번호 : " + orderNo);
-        log.info("상품번호 : " + productNo);
-        log.info("가격 : " + price);
-        
+    public ResponseEntity<?> successPro(@RequestBody OrderCreditDTO orderCreditDTO ) throws Exception {
+
+        int orderNo = orderCreditDTO.getOrderNo();
+        int productNo = orderCreditDTO.getProductNo();
+        String orderId = orderCreditDTO.getOrderId();
+
+        log.info(":::::::::::::::::::::::주문번호 : " + orderNo);
+        log.info(":::::::::::::::::::::::상품번호 : " + productNo);
+
 
         Order order = companyService.selectOrder(orderNo);
         Product product = companyService.selectProduct(productNo);
@@ -547,11 +546,14 @@ public class CompanyController {
 
     // 토스 페이먼츠 success [GET] ⭕⭕⭕
     @GetMapping("/credit/success")
-    public ResponseEntity<?> success(@RequestParam("productNo") int productNo, @RequestParam("orderNo") int orderNo) {
+    public ResponseEntity<?> success(@RequestParam("productNo") int productNo
+                                    ,@RequestParam("orderNo") int orderNo
+                                    ,@RequestParam("userNo") int userNo) {
         try {
             Product product = companyService.selectProduct(productNo);
             Order order = companyService.selectOrder(orderNo);
             Credit credit = companyService.selectCredit(orderNo);
+            Users user = userService.selectByUserNo(userNo);
 
             if (product == null || order == null || credit == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -561,6 +563,7 @@ public class CompanyController {
             response.put("product", product);
             response.put("order", order);
             response.put("credit", credit);
+            response.put("user", user);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
@@ -569,7 +572,7 @@ public class CompanyController {
     }
 
 
-    // 토스 페이먼츠 fail [GET]
+    // 토스 페이먼츠 fail [GET] ⭕⭕⭕
     @GetMapping("/credit/fail")
     public String fail() {
         return "/company/credit/fail";
