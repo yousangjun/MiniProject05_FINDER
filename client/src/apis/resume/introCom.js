@@ -4,9 +4,9 @@ import api from "../user/api";
 export const GetIntroCom = (userNo) => api.get(`/company/introduce_com?userNo=${userNo}` );
 
 //기업 정보 등록하기
-// export const InsertIntroCom = ({userNo}) => api.post(`/company/introduce_com`, {userNo})
-export const InsertIntroCom = ({ userNo, formData }) => api.post(`/company/introduce_com`, { userNo, formData });
+export const InsertIntroCom = ({ userNo, formData }) => api.post(`/company/introduceInsert_com`, formData, { params: {userNo}});
 
+  
 //기업 정보 수정하기
 // export const UpdateIntroCom =  ({ userNo, formData }) => api.put(`/company/introduce_com`, { userNo, formData})
 export const UpdateIntroCom = ({ userNo, formData }) => api.put(`/company/update_detail`, formData, { params: { userNo } });

@@ -94,41 +94,57 @@ public class CompanyController {
 
 
     // 기업 상세 정보 등록 (기업소개)
-    // @PostMapping("/insert_detail")
-    // // public String introduceComInsertPro(HttpSession session, CompanyDetail companyDetail) throws Exception {
-    // public ResponseEntity<?> introduceComInsertPro(@RequestParam("userNo") int userNo) throws Exception {
-        
-    //     try {
-    //         // 세션에서 사용자 정보 가져오기
+    @PostMapping("/introduceInsert_com")
+    public ResponseEntity<?> introduceComInsertPro(
+            @RequestParam("userNo") int userNo,
+            @RequestBody IntroCom introCom) {
+        try {
+            log.info("introduceInsert  : : : : : : : :  : :: : : user" + userNo);
             
+            // IntroCom 객체를 Company, CompanyDetail 객체로 변환
+            Company company = new Company();
+            CompanyDetail comDetail = new CompanyDetail();
             
-    //         if (user == null) {
-    //             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    //         }
-    
-    //         Company company = companyService.selectByUserNo(user.getUserNo());
+            company.setComName(introCom.getComName());
+            company.setComCategory(introCom.getComCategory());
+            company.setComAddress(introCom.getComAddress());
             
-    //         // CompanyDetail 객체에 사용자 정보 설정
-    //         companyDetail.setComNo(company.getComNo());
-    
-    //         // 데이터 삽입 요청
-    //         int result = companyService.insertCompanyDetail(companyDetail);
-    
-    //         // 데이터 처리 성공
-    //         if (result > 0) {
-    //             user.setCompanyDetail(companyDetail);
-    //            /*  session.setAttribute("user", user); */
-    //             // session.setAttribute("companyDetail", companyDetail);
-    //             return new ResponseEntity<>(HttpStatus.OK);
-    //         }
+            comDetail.setComBirth(introCom.getComBirth());
+            comDetail.setComEmpCount(introCom.getComEmpCount());
+            comDetail.setComSales(introCom.getComSales());
+            comDetail.setComSize(introCom.getComSize());
+            comDetail.setComRepresent(introCom.getComRepresent());
+            comDetail.setComContent(introCom.getComContent());
+            comDetail.setComNo(company.getComNo());
             
-    //     } catch (Exception e) {
-            
-    //     }
+            log.info("-------------------------------------------------------" + introCom);
 
-    //     // 데이터 처리 실패
-    //     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    // }
+            // 데이터 삽입 요청
+            int result = companyService.insertCompany(company);
+            int result2 = companyService.insertCompanyDetail(comDetail);
+            
+            log.info("여기까지 오나 확인" + userNo );
+
+            if (result > 0 && result2 > 0) {
+                // 성공적으로 데이터 삽입됨
+                Map<String, Object> response = new HashMap<>();
+                response.put("company", company);
+                response.put("comDetail", comDetail);
+
+                log.info("정보 들어갔다 ~~~~~~~~~~~~~~~~~~~~~~~~~~" + introCom);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 삽입 실패
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+    
+        } catch (Exception e) {
+            // 예외 발생 시
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+
 
 
     
