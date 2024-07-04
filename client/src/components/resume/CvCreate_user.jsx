@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import './css/CvCreate_user.css'
 import axios from 'axios';
 import { LoginContext } from '../../contexts/LoginContextProvider';
+import BtnLong from '../main/BtnLong';
 
 
 const CvCreate_user = () => {
@@ -30,6 +31,8 @@ const CvCreate_user = () => {
     const [thumbnail, setThumbnail] = useState(null); // 이력서 썸네일 이미지
     const [uploadedFiles, setUploadedFiles] = useState([]); // 업로드된 파일 목록
 
+
+    // 유저 정보를 불러올때 사용
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -42,7 +45,8 @@ const CvCreate_user = () => {
                     const userData = response.data;
                     console.log(userData, "???//Asdf'dskljsaflksafjdk;afsjdk;lfjlkaasfdjok");
 
-                    const formattedDate = `${userData.userBirth.slice(0, 4)}-${userData.userBirth.slice(4, 6)}-${userData.userBirth.slice(6, 8)}`;
+                    // const formattedDate = `${userData.userBirth.slice(0, 4)}-${userData.userBirth.slice(4, 6)}-${userData.userBirth.slice(6, 8)}`;
+                    const formattedDate = userData.userBirth.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, '$1-$2-$3');
 
                     setFormData({
                         name: userData.userName,
@@ -57,16 +61,6 @@ const CvCreate_user = () => {
         };
         fetchUserData();
     }, [userInfo]);
-
-    // 유저 정보 가져오기
-    const handleGetUser = async () => {
-        try {
-            const response = await axios.get(`/resume/cv_Edlist_user?userNo=${userNo}`);
-            setEducationList(response.data);
-        } catch (error) {
-            console.error('학력 목록 가져오기 오류', error);
-        }
-    };
 
     // 경력 이력 목록 가져오기
     const fetchEmploymentHistoryList = async () => {
@@ -137,12 +131,10 @@ const CvCreate_user = () => {
         formData.append('thumbnail', event.target.files[0]);
         try {
             const response = await axios.post('/resume/cv_FileCreate_user', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+
             });
             setThumbnail(response.data);
-        } catch (error) {
+        } catch (error) {   
             console.error('썸네일 업로드 오류', error);
             alert('이미지 업로드에 실패했습니다.');
         }
@@ -190,16 +182,19 @@ const CvCreate_user = () => {
                         <div className="form-group col-6" style={{ width: 'calc(100% - 250px)' }}>
                             <div className="row">
                                 <div className="form-group col-12">
-                                    <p typeof='text' className=" userName" id='name' placeholder='이름'>이름</p>
+                                    <span className="userName">{formData.name}</span>
                                 </div>
                                 <div className="form-group col-12">
-                                    <p typeof='text' className="userAge" id='age' placeholder='나이'>생년월일</p>
+                                    <label htmlFor="age" className="form-label"></label>
+                                    <span className="userAge">{formData.userBirth}</span>
                                 </div>
                                 <div className="form-group col-12">
-                                    <p typeof='text' className=" userEmail" id='email' placeholder='이메일'>이메일</p>
+                                    <label htmlFor="email" className="form-label"></label>
+                                    <span className="userEmail">{formData.userEmail}</span>
                                 </div>
                                 <div className="form-group col-12">
-                                    <p typeof='text' className=" userPhone" id='phone' placeholder='전화'>폰</p>
+                                    <label htmlFor="phone" className="form-label"></label>
+                                    <span className="userPhone">{formData.userPhone}</span>
                                 </div>
                             </div>
                         </div>
@@ -320,10 +315,12 @@ const CvCreate_user = () => {
 
                                 </div>
                             </div>
+                            <div className="btn-click123" style={{ display: 'flex' }}>
+                            <BtnLong btnLongText={"이력서 등록"} btnType="submit" />
+                                <button type='button' className='btn-long' style={{ float: 'right' }}>이전 페이지</button>
+                            </div>
                         </div>
-                        <div className="btn-click123">
-                            <button type='button' className='btn-long' style={{ float: 'right' }}>이전 페이지</button>
-                        </div>
+
 
                     </div>
                 </div>

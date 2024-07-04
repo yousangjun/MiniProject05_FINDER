@@ -8,9 +8,6 @@ const CvCreateContainer_user = () => {
   return (
     <div className='container main-content'>
         <CvCreate_user/>
-        <div className='cvCreate-btn'>
-          <BtnLong btnLongText={"이력서 등록"}/>
-        </div>
     </div>
   )
 }
