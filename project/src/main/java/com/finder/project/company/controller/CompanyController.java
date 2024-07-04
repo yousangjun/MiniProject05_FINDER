@@ -640,8 +640,8 @@ public class CompanyController {
 
     // 결제 목록 내역 화면 [GET]
     @GetMapping("/credit/credit_list_com")
-    public ResponseEntity<Map<String, Object>> creditListCom(@RequestParam("userNo") int userNo,
-                                                            Page page) {
+    public ResponseEntity<Map<String, Object>> creditListCom(@RequestParam("userNo") int userNo
+                                                            ,Page page) {
         try {
             log.info("userNo" + userNo);
     
@@ -651,7 +651,10 @@ public class CompanyController {
             Map<String, Object> response = new HashMap<>();
             response.put("orderCreditList", orderCreditList);
             response.put("user", user);
+            response.put("page", page);
             log.info("orderCreditList" + orderCreditList);
+            log.info("::::::::::::::::::::: page :::::::::::::::::::::");
+            log.info("page --- "  + page);
     
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {

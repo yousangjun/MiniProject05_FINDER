@@ -17,4 +17,4 @@ export const insertCredit = (orderCreditDTO) => api.post('/company/credit/proces
 export const getSuccess = ({ productNo, orderNo, userNo }) => api.get(`/company/credit/success?productNo=${productNo}&orderNo=${orderNo}&userNo=${userNo}`);
 
 // 결제 내역 화면 가져오기
-export const getCreditList = ( userNo ) => api.get(`/company/credit/credit_list_com?userNo=${userNo}`);
+export const getCreditList = (userNo) => api.get(`/company/credit/credit_list_com?userNo=${userNo}`);
