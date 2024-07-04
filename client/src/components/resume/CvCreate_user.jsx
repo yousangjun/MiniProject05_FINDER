@@ -3,6 +3,7 @@ import './css/CvCreate_user.css'
 import axios from 'axios';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { useParams } from 'react-router-dom';
+import BtnLong from '../main/BtnLong';
 
 
 const CvCreate_user = () => {

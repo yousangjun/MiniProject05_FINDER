@@ -144,18 +144,19 @@ public class ResumeController {
      * @throws Exception
      */
     @GetMapping("/cv_create_user")
-    public ResponseEntity<?> CvCreate(Users user) throws Exception {
+    public ResponseEntity<?> CvCreate(@RequestParam("userNo") Integer userNo) throws Exception {
 
         try {
             // insert 한 서비스로 insert수행
-            int userNo = user.getUserNo();
             int resumeCreate = resumeService.create(userNo);
             // 새 이력서 등록하고 이력서 번호 가져와야함
             int cvNo = resumeService.maxPk();
             log.info("cvNo : " + cvNo);
             if (resumeCreate > 0) {
                 log.info("이력서 만드는 걸 성공했어요");
-                return new ResponseEntity<>(resumeCreate, HttpStatus.OK);
+                log.info("CVNo 몇이냐 씨발아 : " + cvNo);
+
+                return new ResponseEntity<>(cvNo, HttpStatus.OK);
             } else {
                 log.info("이력서 만들기 실패");
             }
