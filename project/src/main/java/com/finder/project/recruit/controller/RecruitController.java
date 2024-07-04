@@ -377,34 +377,21 @@ public class RecruitController {
         return ResponseEntity.ok(checkValue);
     }
 
-    // 등록된 채용공고 화면
+    // 제출된 이력서 화면
     @GetMapping("/recruit_list_com")
 
-    public String recruit_list_com(Model model, HttpSession session, Page page) throws Exception {
-
-        Users user = (Users) session.getAttribute("user");
-
-        if (user == null) {
-            // 사용자 정보가 없으면 로그인 페이지로 리다이렉트
-            return "redirect:/login";
-        }
-        int userNo = user.getUserNo();
-
-        Company company = recruitService.userNoToCom(userNo); // 1
-
-        int comNo = company.getComNo(); // 31
-        // log.info(comNo + "comNO???????@@!@#!@#@!#?!@#?!@?#?!#");
+    public ResponseEntity<?> recruit_list_com(@RequestParam("comNo") Integer comNo, Page page) throws Exception {
+        Map<String, Object> response = new HashMap<>();
 
         List<Resume> applyCvList = recruitService.applyCom(comNo, page);
 
         // for (Resume resume : applyCvList) {
 
         // }
+        response.put("applyCvList", applyCvList);
+        response.put("page", page);
 
-        model.addAttribute("resumeList", applyCvList);
-        model.addAttribute("page", page);
-
-        return "/recruit/recruit_list_com";
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

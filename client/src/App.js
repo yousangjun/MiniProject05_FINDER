@@ -40,6 +40,7 @@ import Post_jobsRead_com from "./pages/resume/Post_jobsRead_com";
 import Update_user from "./pages/resume/Update_user";
 import Join_com from './pages/user/join_com';
 import Join_user from './pages/user/join_user';
+import Score from "./pages/company/score";
 
 
 
@@ -59,6 +60,7 @@ function App() {
           <Route path="/company/process/:productNo/:orderNo" element={<Process/>}></Route>
           <Route path="/company/success/:productNo/:orderNo" element={<Success/>}></Route>
           <Route path="/company/fail" element={<Fail/>}></Route>
+          <Route path="/company/score_com" element={<Score />}></Route>
 
 
           <Route path="/company/credit_list_com" element={<Credit_list_com/>}></Route>
@@ -72,8 +74,8 @@ function App() {
 
           <Route path="/recruit/post_jobs_com" element={<Post_jobs_com/>}></Route>        {/* 채용공고 등록 [기업] */}
           <Route path="/recruit/post_jobs_read_com/:recruitNo" element={<Post_jobsRead_com/>}></Route> {/* 채용공고 조회 [기업] */}
-          <Route path="/recruit/recruit_list_com" element={<Recruit_list_com/>}></Route>    {/* 등록한 채용공고 [기업] */}
-          <Route path="/recruit/posted_jobs_com" element={<Posted_jobs_com/>}></Route>    {/* 제출된 이력서 [기업] */}
+          <Route path="/recruit/posted_jobs_com" element={<Posted_jobs_com/>}></Route>    {/* 등록한 채용공고 [기업] */}
+          <Route path="/recruit/recruit_list_com" element={<Recruit_list_com/>}></Route>    {/* 제출된 이력서 [기업] */}
 
           <Route path="/recruit/applied_jobs_user" element={<Applied_jobs_user/>}></Route>  {/* 지원한 채용공고 [구직자] */}
           <Route path="/recruit/new_jobs_user" element={<New_jobs_user/>}></Route>          {/* 최근본 채용공고 [구직자] */}
