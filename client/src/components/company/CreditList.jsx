@@ -24,9 +24,7 @@ const CreditList = () => {
     // const [pageInfo, setPageInfo] = useState(null); // 초기값을 null로 설정
 
 
-    const itemsPerPage = 5;
-    const totalPages = Math.ceil(orderCreditList.length / itemsPerPage);
-    const currentItems = orderCreditList.slice((pageInfo.page - 1) * itemsPerPage, pageInfo.page * itemsPerPage);
+
 
     useEffect(() => {
         const fetchCreditList = async () => {
@@ -51,6 +49,10 @@ const CreditList = () => {
             fetchCreditList();
         }
     }, [userNo]); 
+
+    const itemsPerPage = 5; // 페이지당 항목 수
+    const totalPages = Math.ceil(orderCreditList.length / itemsPerPage);
+    const currentItems = orderCreditList.slice((pageInfo.page - 1) * itemsPerPage, pageInfo.page * itemsPerPage);
 
     const formatDate = (isoDate) => {
         if (!isoDate) return '';
@@ -125,7 +127,7 @@ const CreditList = () => {
                     </tbody>
                 </table>
             </div>
-            <Paging page={pageInfo} onPageChange={setPageInfo} />
+            <Paging page={pageInfo} onPageChange={setPageInfo} totalPages={totalPages} />
 
             {selectedOrder && (
                 <Modal show={true} onHide={handleClose} centered>

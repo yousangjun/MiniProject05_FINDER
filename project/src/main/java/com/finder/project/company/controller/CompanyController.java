@@ -32,6 +32,7 @@ import com.finder.project.company.dto.Order;
 import com.finder.project.company.dto.OrderCreditDTO;
 import com.finder.project.company.dto.PasswordConfirmRequest;
 import com.finder.project.company.dto.Product;
+import com.finder.project.company.mapper.CreditMapper;
 import com.finder.project.company.service.CompanyService;
 import com.finder.project.main.dto.Page;
 import com.finder.project.recruit.service.RecruitService;
@@ -50,6 +51,9 @@ public class CompanyController {
 
     @Autowired
     CompanyService companyService;
+
+    @Autowired
+    CreditMapper creditMapper;
 
     @Autowired
     UserService userService;
@@ -638,29 +642,35 @@ public class CompanyController {
     }
 
 
-    // 결제 목록 내역 화면 [GET]
+    // 결제 목록 내역 화면 [GET] ⭕⭕⭕ 페이징까지 구현 성공
     @GetMapping("/credit/credit_list_com")
-    public ResponseEntity<Map<String, Object>> creditListCom(@RequestParam("userNo") int userNo
-                                                            ,Page page) {
+    public ResponseEntity<Map<String, Object>> creditListCom(@RequestParam("userNo") int userNo) {
         try {
-            log.info("userNo" + userNo);
+            log.info("userNo: " + userNo);
     
             Users user = userService.selectByUserNo(userNo);
+    
+            // 페이지당 게시글 수를 전체 데이터 수로 설정
+            int totalDataCount = creditMapper.countOrderCredit(userNo);
+            Page page = new Page(1, totalDataCount); 
+    
             List<Order> orderCreditList = companyService.orderCreditList(userNo, page);
     
             Map<String, Object> response = new HashMap<>();
             response.put("orderCreditList", orderCreditList);
             response.put("user", user);
             response.put("page", page);
-            log.info("orderCreditList" + orderCreditList);
+            log.info("::::::::::::::::::::: orderCreditList :::::::::::::::::::::");
+            log.info("orderCreditList: " + orderCreditList);
             log.info("::::::::::::::::::::: page :::::::::::::::::::::");
-            log.info("page --- "  + page);
+            log.info("PAGE: "  + page);
     
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
     
 
 
