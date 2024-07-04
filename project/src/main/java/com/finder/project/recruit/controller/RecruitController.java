@@ -281,7 +281,7 @@ public class RecruitController {
     }
     
     @PutMapping("/post_jobs_read_com/update") //////////////////////////
-    public ResponseEntity<?> post_jobs_read_com_update(@RequestBody RecruitPost recruitPost) throws Exception {
+    public ResponseEntity<?> post_jobs_read_com_update(@ModelAttribute RecruitPost recruitPost) throws Exception {
         log.info("넘어 오나요 ?" + recruitPost);  
         int result = recruitService.recruitUpdate(recruitPost);
         

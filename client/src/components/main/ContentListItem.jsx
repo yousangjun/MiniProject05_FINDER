@@ -5,10 +5,14 @@ import KeywordItem from './KeywordItem';
 
 const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref }) => {
     // const [keyword, setKeyword] = useState([])
-    const keywordsArray = recruit.keywordString.split(", ");
+        
+        const keywordsArray = recruit?.keywordString?.split(", ") ?? [];
+        
 
-    console.log(recruit);
-    
+
+
+    // console.log(recruit);
+
     return (
 
         <Link
@@ -46,7 +50,7 @@ const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref }) 
                 <div className="item d-flex justify-content-between">
 
                     <div className="keyword-span1">
-                        {recruit &&
+                        {recruit !== null &&
                             <KeywordItem keywords={keywordsArray} />
                         }
                     </div>
