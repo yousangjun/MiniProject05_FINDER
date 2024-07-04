@@ -37,14 +37,14 @@ const Post_jobs_read_com = () => {
     useEffect(() => {
 
         if (userNo && recruitNo) {
-
+            
             const handleGetCompany = async () => {
                 try {
                     companyNo.current = await getComToUserNo(userInfo.userNo);
 
                     // console.dir(companyNo.current.data.comNo);
                 } catch (error) {
-                    console.error('Error fetching company data:', error);
+                    console.error('Error fetching company data:', error); 
                 }
             };
 
@@ -55,9 +55,15 @@ const Post_jobs_read_com = () => {
                     // const data = response ? response.data : null 
                     setThumbnail(response.data.Thumbnail)
                     setFiles(response.data.fileList)
-                    setRecruit(response.data)
-                    console.log('공고조회 :', response.data.fileList);
-
+                    setRecruit(response.data.recruitPost)
+                    setRecruitContent(response.data.recruitPost.recruitContent)
+                    setRecruitPreferredQualifications(response.data.recruitPost.recruitPreferredQualifications)
+                    setRecruitQualifications(response.data.recruitPost.recruitQualifications)
+                    setRecruitRegDate(response.data.recruitPost.recruitRegDate)
+                    setRecruitResponsibilities(response.data.recruitPost.recruitResponsibilities)
+                    setRecruitTitle(response.data.recruitPost.recruitTitle)
+                    console.log('공고조회 :', response.data.recruitPost);
+                    
                     // console.log('공고조회1 :', response.data.Thumbnail.fileNo);
 
                 } catch (error) {
@@ -85,16 +91,18 @@ const Post_jobs_read_com = () => {
         }
 
         // 파일 첨부 검증
-        if (files.length === 0) {
+        if (thumbnail === null) {
+            console.log(thumbnail);
             Swal.fire({
                 icon: 'warning',
-                title: '파일 첨부 오류',
-                text: '파일을 첨부해주세요.',
+                title: '썸네일 첨부 오류',
+                text: '썸네일을 첨부해주세요.',
             });
             return;
         }
 
         const formData = new FormData();
+        formData.append('recruitNo', recruitNo);
         formData.append('recruitTitle', recruitTitle);
         formData.append('recruitResponsibilities', recruitResponsibilities);
         formData.append('recruitQualifications', recruitQualifications);
@@ -106,28 +114,29 @@ const Post_jobs_read_com = () => {
             formData.append(`keyword`, keyword);
         });
 
-
-
         // 썸네일 추가
         if (thumbnail instanceof File) {
             formData.append('thumbnail', thumbnail);
         }
 
         // 파일 첨부
-        newFiles.forEach((files, index) => {
-            formData.append('file', files); // files 배열을 순회하며 각각의 파일을 추가
+        newFiles.forEach((file, index) => {
+            formData.append('file', file); // files 배열을 순회하며 각각의 파일을 추가
         });
 
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
+        
+       
         try {
             const response = await updateRecruit(formData);
             console.log('Job posted successfully:', response.data);
             navigate(-1); // 성공적으로 등록된 후 네비게이트
         } catch (error) {
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
             console.error('Error posting job:', error);
         }
+        
     };
 
     const deleteRecruitClick = () => {
@@ -166,13 +175,15 @@ const Post_jobs_read_com = () => {
         fileInputRef.current.click();
     };
     const handleFileUploadClick2 = () => {
+        
         fileInputRef2.current.click();
     };
 
 
     const handleThumbnailChange = (event) => {
         const file = event.target.files[0];
-        console.log(file);
+        setThumbnail(file)
+        console.log(file,"썸네일");
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
@@ -189,7 +200,7 @@ const Post_jobs_read_com = () => {
 
     const handleFileChange = (event) => {
         setNewFiles((prevFiles) => [...prevFiles, ...event.target.files]);
-        console.log(files);
+        console.log(newFiles);
     };
 
     const deleteThumbnailClick = async () => {
@@ -396,7 +407,7 @@ const Post_jobs_read_com = () => {
                                 <div id='file-names' className="PostFileName mt-2">
                                     {files.map((file) => (
                                         <div key={file.fileNo} className="file-name">
-                                            {file.name}
+                                            {file.originName}
                                             <span
                                                 className="remove-file"
                                                 role="button"
