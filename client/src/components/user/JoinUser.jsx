@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './css/JoinUser.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +21,9 @@ const JoinUser = () => {
     const navi = useNavigate()
 
     const [isEmailVerified, setIsEmailVerified] = useState(false);
+
+    /* 버튼 등장 */
+    const [isJoinFinder, setJoinFinder] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;  // 속성 name 을 쓰는 value 를 가져온다. e.target.name, e.target.value 
@@ -147,6 +150,32 @@ const JoinUser = () => {
         }
     };
 
+    /* 이메일 등장 버튼 */
+    useEffect(() => {
+        const checkEmailVerification = async () => {
+            try {
+                const response = await axios.post('/user/email_code_check', { verificationCode: formData.emailCode });
+    
+                if (response.data === formData.emailCode) {
+                    alert('코드 인증에 성공하였습니다.');
+                    setJoinFinder(true); // 버튼을 나타나게 설정
+                } else {
+                    alert('코드 인증에 실패하였습니다.');
+                    setJoinFinder(false); // 버튼을 숨기도록 설정
+                }
+            } catch (error) {
+                alert('서버 에러가 발생했습니다.');
+                setJoinFinder(false); // 버튼을 숨기도록 설정
+            }
+        };
+
+        if (formData.emailCode) {
+            checkEmailVerification();
+        }
+    }, [formData.emailCode]); // formData.emailCode 값이 변경될 때마다 useEffect가 실행됩니다.
+    
+
+
     return (
         <div className="wrap d-flex flex-column container-fluid container">
             <div className="main-content">
@@ -246,10 +275,12 @@ const JoinUser = () => {
                                     </div>
                                 </div>
                             )}
-
-                            <div className="d-grid gap-2 join-user-btn" id="joinbutton">
-                                <button className="btn mt-4" type="submit" style={{ backgroundColor: 'var(--main-color)', color: '#fff' }}>회원가입</button>
-                            </div>
+                            { isJoinFinder && (
+                                <div className="d-grid gap-2 join-user-btn" id="joinbutton">
+                                    <button className="btn mt-4" type="submit"  style={{ backgroundColor: 'var(--main-color)', color: '#fff' }}>회원가입</button>
+                                </div>
+                                )
+                            }
                         </div>
                     </form>
                 </main>
