@@ -10,9 +10,14 @@ const Login = ({ sets }) => {
   useEffect(() => {
     // 세션 스토리지에서 아이디를 가져옴
     const savedUsername = sessionStorage.getItem('username');
+    const savedRememberId = sessionStorage.getItem('rememberId') === 'true'; // 'true' 문자열로 저장되어 있기 때문에 비교
+    const savedRememberMe = sessionStorage.getItem('rememberMe') === 'true';
+
     if (savedUsername) {
       sets.setUsername(savedUsername);
     }
+    sets.setRememberId(savedRememberId);
+    sets.setRememberMe(savedRememberMe);
   }, [sets]);
 
   const onLogin = (e) => {
@@ -27,9 +32,13 @@ const Login = ({ sets }) => {
     // 로그인 성공 시 세션 스토리지에 아이디 저장
     if (sets.rememberId) {
       sessionStorage.setItem('username', username);
+      sessionStorage.setItem('rememberId', 'true'); // 체크 상태 저장
+
     } else {
       sessionStorage.removeItem('username');
+      sessionStorage.setItem('rememberId', 'false'); // 체크 상태 저장
     }
+    sessionStorage.setItem('rememberMe', sets.rememberMe ? 'true' : 'false');
   };
 
   const switchUser = () => setIsCompany(false);
@@ -82,6 +91,7 @@ const Login = ({ sets }) => {
                 className='keep' checked={sets.rememberId} // 체크상태를 담당
                 onChange={(e) => { // 사용자가 체크하면 업데이트
                   sets.setRememberId(e.target.checked);
+                  sessionStorage.setItem('rememberId', e.target.checked ? 'true' : 'false'); // 체크박스 상태를 세션 스토리지에 저장
                 }} />
               <label htmlFor="remember-id" className="w-100">아이디 저장</label>
             </div>
@@ -91,6 +101,7 @@ const Login = ({ sets }) => {
                 className='keep' checked={sets.rememberMe}
                 onChange={(e) => {
                   sets.setRememberMe(e.target.checked);
+                  sessionStorage.setItem('rememberMe', e.target.checked ? 'true' : 'false'); // 체크박스 상태를 세션 스토리지에 저장
                 }}/>
               <label htmlFor="remember-me" className="w-100">자동 로그인</label>
             </div>
