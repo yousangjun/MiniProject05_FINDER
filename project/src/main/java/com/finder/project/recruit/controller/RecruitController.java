@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -336,24 +337,15 @@ public class RecruitController {
     //////////////////////////////////////////////////////////////// 유저 채용공고 p
 
     @GetMapping("/new_jobs_user")
-    public String getMethodName(HttpSession session, Model model) {
-        Users user = (Users) session.getAttribute("user");
-        Integer userNo = user.getUserNo();
+    public ResponseEntity<?> getMethodName(@RequestParam("recruitNos") List<Integer> recruitNos) {
 
-        // 세션에서 맵을 가져올 때 명시적으로 캐스팅
-        Map<Integer, Set<Integer>> userVisitedRecruitNos = (Map<Integer, Set<Integer>>) session
-                .getAttribute("userVisitedRecruitNos");
-        Set<Integer> visitedRecruitNos = new HashSet<>(); // 빈 집합으로 초기화
-        if (userVisitedRecruitNos != null) {
-            visitedRecruitNos = userVisitedRecruitNos.get(userNo); // userNo에 해당하는 Set 가져오기
-        }
+        
 
         // 방문한 채용공고 번호를 사용하여 데이터베이스에서 채용공고 리스트를 가져온다
-        List<Integer> recruitNosList = new ArrayList<>(visitedRecruitNos);
-        List<RecruitPost> recruits = recruitService.selectRecruitsByNos(recruitNosList);
-        model.addAttribute("recruits", recruits);
+        List<RecruitPost> recruits = recruitService.selectRecruitsByNos(recruitNos);
 
-        return "/recruit/new_jobs_user";
+
+        return new ResponseEntity<>(recruits, HttpStatus.OK);
     }
     
     // 지원한 채용공고

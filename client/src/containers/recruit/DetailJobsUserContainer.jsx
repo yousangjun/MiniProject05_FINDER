@@ -7,6 +7,8 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const DetailJobsUserContainer = () => {
   const { userInfo } = useContext(LoginContext);
+  const { setNewRecruitNo } = useContext(LoginContext);
+  // const { newRecruit } = useContext(LoginContext);
   const { recruitNo } = useParams('');
   const [textareaHeight, setTextareaHeight] = useState('auto');
   const textareaRef = useRef(null); // useRef 훅을 사용하여 ref 생성
@@ -14,32 +16,42 @@ const DetailJobsUserContainer = () => {
   // console.log(userInfo.userNo);
 
 
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'; // Reset height to recalculate
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set to scroll height
+    }
+  };
+
   useEffect(() => {
-    
-    recruitApi.jobDetails(recruitNo)
-      .then(response => {
-        // 성공적으로 데이터를 받아왔을 때 처리
+    const fetchJobDetails = async () => {
+      try {
+        const response = await recruitApi.jobDetails(recruitNo);
         setThumbnail(response.data.Thumbnail);
         setCompanyDetail(response.data.companyDetail);
         setRecruitPost(response.data.recruitPost);
         setFileList(response.data.fileList);
-        adjustTextareaHeight()
-      })
-      .catch(error => {
-        // 에러 발생 시 처리
+        // Recalculate the textarea height after data is fetched and state is updated
+        requestAnimationFrame(() => {
+          adjustTextareaHeight();
+        });
+      } catch (error) {
         console.error('Error fetching job details:', error);
-      });
+      }
+    };
 
-  },[]);
+    fetchJobDetails();
+  }, [recruitNo]);
 
   useLayoutEffect(() => {
-    adjustTextareaHeight();
+ 
     window.addEventListener('resize', adjustTextareaHeight);
-
     return () => {
       window.removeEventListener('resize', adjustTextareaHeight);
-    }
+    };
   }, []);
+
+
 
   const [aeCount, setAeCount] = useState(0);
   const [resumeList, setResumeList] = useState([
@@ -82,14 +94,6 @@ const DetailJobsUserContainer = () => {
   const [thumbnail, setThumbnail] = useState([]);
   const [fileList, setFileList] = useState([])
 
-
-  function adjustTextareaHeight() {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'; // 기본 높이로 초기화
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'; // 실제 내용의 높이로 설정
-      setTextareaHeight(`${textareaRef.current.scrollHeight}px`);
-    }
-  }
 
   // 이력서 제출
   const handleFormSubmit = async (event) => {

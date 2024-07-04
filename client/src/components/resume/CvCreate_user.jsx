@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import './css/CvCreate_user.css'
 import axios from 'axios';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import BtnLong from '../main/BtnLong';
+import { useParams } from 'react-router-dom';
 
 
 const CvCreate_user = () => {
     const { userInfo } = useContext(LoginContext);
     const userNo = userInfo ? userInfo.userNo : null;
+    const { cvNo } = useParams('');
 
     const [formData, setFormData] = useState({
         cvTitle: '',            // 이력서 제목

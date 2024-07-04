@@ -28,6 +28,9 @@ const LoginContextProvider = ({ children }) => {
   // 자동 로그인
   const [rememberMe, setRememberMe] = useState()
 
+  // 최근 본 채용공고
+  const [newRecruitNo, setNewRecruitNo] = useState([])
+
   // 페이지 이동
   const navigate = useNavigate()
   /* -------------------------------------------------------- */
@@ -220,9 +223,10 @@ const LoginContextProvider = ({ children }) => {
     // 3️⃣ 로그인 세팅을 한다. (📦 로그인여부, 사용자정보, 권한정보 등록)
   }, [])
 
+
   return (
     // 컨텍스트 값 지정 ➡ value={ ?, ? }
-    <LoginContext.Provider value={{ isLogin, userInfo, roles, login, loginCheck, logout }}>
+    <LoginContext.Provider value={{ isLogin, userInfo, roles, login, loginCheck, logout, setNewRecruitNo, newRecruitNo}}>
       {children}
     </LoginContext.Provider>
   )

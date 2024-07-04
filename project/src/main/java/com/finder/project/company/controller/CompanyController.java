@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -98,42 +99,43 @@ public class CompanyController {
     @PostMapping("/introduceInsert_com")
     public ResponseEntity<?> introduceComInsertPro(
             @RequestParam("userNo") int userNo,
-            @RequestBody IntroCom introCom) {
+            @ModelAttribute IntroCom introCom) {
         try {
             log.info("introduceInsert  : : : : : : : :  : :: : : user" + userNo);
+            log.info("introCom  : : : : : : : :  : :: : : introCom" + introCom);
             
             // IntroCom 객체를 Company, CompanyDetail 객체로 변환
-            Company company = new Company();
-            CompanyDetail comDetail = new CompanyDetail();
+            Company company = companyService.selectByUserNo(userNo);
+            CompanyDetail companyDetail = new CompanyDetail();
             
-            company.setComName(introCom.getComName());
-            company.setComCategory(introCom.getComCategory());
-            company.setComAddress(introCom.getComAddress());
+            log.info("company  : : : : : : : :  : :: : : company" + company); // 잘 불러옴
+            log.info("companyDetail  : : : : : : : :  : :: : : companyDetail" + companyDetail); // null 뜸
             
-            comDetail.setComBirth(introCom.getComBirth());
-            comDetail.setComEmpCount(introCom.getComEmpCount());
-            comDetail.setComSales(introCom.getComSales());
-            comDetail.setComSize(introCom.getComSize());
-            comDetail.setComRepresent(introCom.getComRepresent());
-            comDetail.setComContent(introCom.getComContent());
-            comDetail.setComNo(company.getComNo());
             
-            log.info("-------------------------------------------------------" + introCom);
+            companyDetail.setComBirth(introCom.getComBirth());
+            companyDetail.setComEmpCount(introCom.getComEmpCount());
+            companyDetail.setComSales(introCom.getComSales());
+            companyDetail.setComSize(introCom.getComSize());
+            companyDetail.setComRepresent(introCom.getComRepresent());
+            companyDetail.setComContent(introCom.getComContent());
+            companyDetail.setComNo(company.getComNo());
+            
+            log.info("----------------------------여기까지는 옴" + companyDetail);
 
             // 데이터 삽입 요청
-            int result = companyService.insertCompany(company);
-            int result2 = companyService.insertCompanyDetail(comDetail);
+            // int result = companyService.insertCompany(company);
+            int result2 = companyService.insertCompanyDetail(companyDetail);
             
-            log.info("여기까지 오나 확인" + userNo );
+            log.info("여기까지 오나 확인" + result2 );
 
-            if (result > 0 && result2 > 0) {
+            if (result2 > 0) {
                 // 성공적으로 데이터 삽입됨
-                Map<String, Object> response = new HashMap<>();
-                response.put("company", company);
-                response.put("comDetail", comDetail);
+                // Map<String, Object> response = new HashMap<>();
+                // response.put("company", company);
+                // response.put("comDetail", companyDetail);
 
-                log.info("정보 들어갔다 ~~~~~~~~~~~~~~~~~~~~~~~~~~" + introCom);
-                return new ResponseEntity<>(response, HttpStatus.OK);
+                log.info("정보 들어갔다 ~~~~~~~~~~~~~~~~~~~~~~~~~~" + result2);
+                return new ResponseEntity<>("success insert comDetail", HttpStatus.OK);
             } else {
                 // 삽입 실패
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -164,8 +166,6 @@ public class CompanyController {
 
             // IntroCom에서 데이터를 추출하여 객체에 설정
             company.setComName(introCom.getComName());
-            company.setComCategory(introCom.getComCategory());
-            company.setComAddress(introCom.getComAddress());
 
             comDetail.setComBirth(introCom.getComBirth());
             comDetail.setComEmpCount(introCom.getComEmpCount());

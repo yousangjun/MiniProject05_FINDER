@@ -186,7 +186,7 @@ const Sidebar = () => {
               </Link>
             </li>
             <li className="nav-item1">
-              <Link to={`/resume/cvCreate_user?userNo=${userNo}`} className="job-item-link1 nav-link1 fw-normal fs-6" onClick={handleCreateCv(userNo)}>
+              <Link to={`/resume/cvCreate_user?userNo=${userNo}`} className="job-item-link1 nav-link1 fw-normal fs-6" onClick={() => handleCreateCv(userNo)}>
                 <div style={{ backgroundColor: '#fff', borderRadius: '8px' }} className="d-flex gap-2 p-2 ps-2">
                   <div>
                     <img src="/img/Documents.png" alt="Documents" />

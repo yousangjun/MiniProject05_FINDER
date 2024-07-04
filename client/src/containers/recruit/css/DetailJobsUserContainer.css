@@ -116,7 +116,17 @@
     margin-bottom: 26px;
 }
 
-.job_notice_detail {}
+.job_notice_detail {
+    
+}
+
+@media (max-width: 768px) {
+    .job_notice_detail {
+        
+    }
+}
+
+
 
 .modal-list-detail {
     /* background-color: #fff; */
