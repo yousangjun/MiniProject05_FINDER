@@ -644,15 +644,17 @@ public class CompanyController {
 
     // 결제 목록 내역 화면 [GET] ⭕⭕⭕ 페이징까지 구현 성공
     @GetMapping("/credit/credit_list_com")
-    public ResponseEntity<Map<String, Object>> creditListCom(@RequestParam("userNo") int userNo) {
+    public ResponseEntity<Map<String, Object>> creditListCom(
+                                                    @RequestParam("userNo") int userNo
+                                                    ,Page page) {
         try {
             log.info("userNo: " + userNo);
     
             Users user = userService.selectByUserNo(userNo);
     
             // 페이지당 게시글 수를 전체 데이터 수로 설정
-            int totalDataCount = creditMapper.countOrderCredit(userNo);
-            Page page = new Page(1, totalDataCount); 
+            // int totalDataCount = creditMapper.countOrderCredit(userNo);
+            // Page page = new Page(1, totalDataCount); 
     
             List<Order> orderCreditList = companyService.orderCreditList(userNo, page);
     

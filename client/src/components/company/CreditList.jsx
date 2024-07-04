@@ -21,33 +21,41 @@ const CreditList = () => {
         next: 1,
         last: 1
     });
+    const [page, setPage] = useState(1)
     // const [pageInfo, setPageInfo] = useState(null); // 초기값을 null로 설정
 
+    const fetchCreditList = async (newPage=1) => {
+        try {
+            const response = await credit.getCreditList(userNo, newPage);
+            const data = await response.data
+            console.dir(data)
+            console.log('결제 목록 데이터:', data.orderCreditList); // 데이터를 확인하는 로그 추가
+            console.log('유저 데이터:', data.user); // 데이터를 확인하는 로그 추가
+            console.log('페이징 데이터:', data.page); // 데이터를 확인하는 로그 추가
 
+            setOrderCreditList(data.orderCreditList);
+            setUser(data.user);
+            setPageInfo(data.page);
+
+        } catch (error) {
+            console.error('결제 목록을 가져오는 중 오류 발생:', error);
+        }
+    };
+
+    const onPageChange = (newPage) => {
+        // setPage(newPage)
+        if (userNo) {
+            fetchCreditList(newPage);
+        }
+    }
 
 
     useEffect(() => {
-        const fetchCreditList = async () => {
-            try {
-                const response = await credit.getCreditList(userNo);
-                const data = await response.data
-                console.dir(data)
-                console.log('결제 목록 데이터:', data.orderCreditList); // 데이터를 확인하는 로그 추가
-                console.log('유저 데이터:', data.user); // 데이터를 확인하는 로그 추가
-                console.log('페이징 데이터:', data.page); // 데이터를 확인하는 로그 추가
-
-                setOrderCreditList(data.orderCreditList);
-                setUser(data.user);
-                setPageInfo(data.page);
-
-            } catch (error) {
-                console.error('결제 목록을 가져오는 중 오류 발생:', error);
-            }
-        };
-
+        
         if (userNo) {
             fetchCreditList();
         }
+
     }, [userNo]); 
 
     const itemsPerPage = 5; // 페이지당 항목 수
@@ -98,7 +106,7 @@ const CreditList = () => {
                                 </td>
                             </tr>
                         ) : (
-                            currentItems.map((order, index) => (
+                            orderCreditList.map((order, index) => (
                                 <tr key={index} className="creditList-item">
                                     <td>{order.orderNo}</td>
                                     <td>{order.credits[0].creditMethod ? order.credits[0].creditMethod : '-'}</td>
@@ -127,7 +135,8 @@ const CreditList = () => {
                     </tbody>
                 </table>
             </div>
-            <Paging page={pageInfo} onPageChange={setPageInfo} totalPages={totalPages} />
+            {/* <Paging page={pageInfo} onPageChange={setPageInfo} totalPages={totalPages} /> */}
+            <Paging page={pageInfo} onPageChange={onPageChange} />
 
             {selectedOrder && (
                 <Modal show={true} onHide={handleClose} centered>
