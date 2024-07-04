@@ -10,15 +10,19 @@ const NewJobsUserContainer = () => {
     const { userInfo, newRecruitNo } = useContext(LoginContext);
     const [newRecruitList, setNewRecruitList] = useState([]);
     const userNo = userInfo ? userInfo.userNo : null;
+        console.log(newRecruitList, " ??????? "); 
     useEffect(() => {
         if (userNo) {
-            const newRecruitItem = () => {
-                listNewRecruit(newRecruitNo)
+            const newRecruitItem =  async () => {
+                await listNewRecruit(newRecruitNo)
                     .then(response => {
-                        if (response.status === 200 && response.data.length > 0) {
+                        console.log(response.data, "1");
+                        if (response.status === 200) {
                             console.log(response.data);
-    
+                            
                             setNewRecruitList(response.data);
+                        }else {
+                            return;
                         }
                     })
                     .catch(error => {
