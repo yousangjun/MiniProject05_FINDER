@@ -3,11 +3,11 @@ import RecruitListBtn from '../recruit/RecruitListBtn';
 import { Link } from 'react-router-dom';
 import KeywordItem from './KeywordItem';
 
-const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref }) => {
+const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref, cv }) => {
     const [keyword, setKeyword] = useState([])
-        
-        const keywordsArray = recruit?.keywordString?.split(", ") ?? [];
-        
+
+    const keywordsArray = recruit?.keywordString?.split(", ") ?? [];
+
 
 
 
@@ -38,12 +38,18 @@ const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref }) 
                         {recruit &&
                             recruit.recruitRegDate
                         }
+                        {cv &&
+                            cv.recruitPost[0].recruitTitle
+                        }
                     </span>
                 </div>
 
                 <div style={{ fontSize: '17px', marginBottom: '15px', fontWeight: 'bold' }}>
                     {recruit &&
                         recruit.recruitTitle
+                    }
+                    {cv &&
+                        cv.cvTitle
                     }
                 </div>
 
@@ -52,6 +58,15 @@ const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref }) 
                     <div className="keyword-span1">
                         {recruit !== null &&
                             <KeywordItem keywords={keywordsArray} />
+                        }
+                        {cv &&
+
+                            <div className="span-wrapper">
+                                <span>{cv.user.userName}</span>
+                                <span>{cv.user.userGender}</span>
+                                <span>{cv.user.userEmail}</span>
+                            </div>
+
                         }
                     </div>
 
