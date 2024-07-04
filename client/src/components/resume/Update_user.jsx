@@ -170,14 +170,21 @@ const UpdateUser = () => {
                 </div>
             </form>
 
+
             <form id='InfoForm' onSubmit={handleInfoFormSubmit} className="myFormUpdate register-form-update mt-4">
-                <div className='gender-update px-4'>
-                    <input type="text" name="name" id="name" className="input-name" required placeholder='이름' readOnly value={formData.name} onChange={handleInputChange} />
+                <div className='gender-update px-4 d-flex flex-column'>
+            
+                    <div className='userbirth-update' style={{ width: '84px', textAlign: 'center' }}>이름</div>
+                    <div className='d-flex'>
+                    <div className=' w-100'>
+                        <input type="text" name="name" id="name" className="input-name m-0" required placeholder='이름' readOnly value={formData.name} onChange={handleInputChange} />
+                    </div>
+            
                     <div className="gender">
-                        <div className="gender-btn">
+                        <div className="gender-btn d-flex align-items-start ">
                             <button
                                 type="button"
-                                className={`btn-male-join ${formData.userGender === '남자' ? 'selected' : ''}`}
+                                className={`btn-male-join my-0 h-100 ${formData.userGender === '남자' ? 'selected' : ''}`}
                                 disabled={genderSet}
                                 onClick={() => setFormData({ ...formData, userGender: '남자' })}
                             >
@@ -185,7 +192,7 @@ const UpdateUser = () => {
                             </button>
                             <button
                                 type="button"
-                                className={`btn-female-join ${formData.userGender === '여자' ? 'selected' : ''}`}
+                                className={`btn-female-join my-0 h-100 ${formData.userGender === '여자' ? 'selected' : ''}`}
                                 disabled={genderSet}
                                 onClick={() => setFormData({ ...formData, userGender: '여자' })}
                             >
@@ -193,6 +200,8 @@ const UpdateUser = () => {
                             </button>
                         </div>
                     </div>
+                    </div>
+                    
                 </div>
 
                 <div className='px-4'>

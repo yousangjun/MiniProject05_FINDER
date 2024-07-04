@@ -130,6 +130,53 @@
 }
 
 
+.btn-male-update {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: var(#007BFF);
+    /* 기본 색상 설정 */
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.btn-female-update {
+    width: 70px;
+    height: 42px;
+    /* input의 height와 padding을 고려하여 맞춤 */
+    border-radius: 8px;
+    background-color: #EDEDED;
+    border: none;
+    color: black;
+    font-size: 16px;
+    /* input과 같은 폰트 크기 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    vertical-align: middle;
+}
+
+.btn-male-update,
+.btn-female-update {
+    padding: 10px 10px;
+    color: black;
+    background-color: #EDEDED;
+    cursor: pointer;
+}
+
+.btn-male-update.selected,
+.btn-female-update.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+
 .birthdate-update select {
     width: calc(31%);
     margin-right: 5px;
