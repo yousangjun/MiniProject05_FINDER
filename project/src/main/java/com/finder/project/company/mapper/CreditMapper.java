@@ -25,7 +25,7 @@ public interface CreditMapper {
     // 주문/결제 목록 조회 (조인)
     public List<Order> orderCreditList(@Param("userNo") int userNo, @Param("page") Page page
                                       ) throws Exception;
-    // 주문내역 페이지 당 개수
+    // 주문내역 페이지 total 개수
     public int countOrderCredit(int userNo) throws Exception;
                                     
 

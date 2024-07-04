@@ -214,12 +214,10 @@
   </select>
   <!-- 등록한 채용공고 페이징 [승헌] -->
   <select id="countpostsRecruitList" resultType="int">
-        SELECT COUNT(*) 
-        FROM company c
-        INNER JOIN recruit r ON c.com_no = r.com_no
-        LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
-        WHERE r.com_no = #{comNo}
-  </select> 
+      SELECT COUNT(*) 
+      FROM recruit r
+      WHERE r.com_no = #{comNo}
+  </select>
 
 
   <!-- 등록한 채용공고 조회 -->

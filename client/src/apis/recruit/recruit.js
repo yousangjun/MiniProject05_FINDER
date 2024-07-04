@@ -22,7 +22,7 @@ export const updateRecruit = (recruitPost) => api.put(`/recruit/post_jobs_read_c
 export const deleteRecruit = (recruitNo) => api.delete(`/recruit/post_jobs_read_com/${recruitNo}`)
 
 // ListRecruit
-export const listRecruit = (comNo) => api.get(`/recruit/posted_jobs_com?comNo=${comNo}&page=1` )
+export const listRecruit = (comNo, page) => api.get(`/recruit/posted_jobs_com?comNo=${comNo}&page=${page}` )
 
 
 // applied
