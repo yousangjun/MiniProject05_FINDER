@@ -21,6 +21,9 @@ export const deleteFile = (fileNo) => api.delete(`/file/${fileNo}`)
 export const updateRecruit = (recruitPost) => api.put(`/recruit/post_jobs_read_com/update`,recruitPost)
 export const deleteRecruit = (recruitNo) => api.delete(`/recruit/post_jobs_read_com/${recruitNo}`)
 
-
 // ListRecruit
 export const listRecruit = (comNo) => api.get(`/recruit/posted_jobs_com?comNo=${comNo}&page=1` )
+
+
+// applied
+export const appliedRecruits = (userNo) => api.get(`/recruit/applied_jobs_user?userNo=${userNo}` )

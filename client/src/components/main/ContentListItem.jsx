@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import KeywordItem from './KeywordItem';
 
 const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref }) => {
-    // const [keyword, setKeyword] = useState([])
+    const [keyword, setKeyword] = useState([])
         
         const keywordsArray = recruit?.keywordString?.split(", ") ?? [];
         

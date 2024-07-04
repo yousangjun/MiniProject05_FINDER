@@ -343,6 +343,7 @@ public class RecruitController {
 
         // 방문한 채용공고 번호를 사용하여 데이터베이스에서 채용공고 리스트를 가져온다
         List<RecruitPost> recruits = recruitService.selectRecruitsByNos(recruitNos);
+        log.info(recruits + "뭐나옴 ??");
 
 
         return new ResponseEntity<>(recruits, HttpStatus.OK);
@@ -350,17 +351,17 @@ public class RecruitController {
     
     // 지원한 채용공고
     @GetMapping("/applied_jobs_user")
-    public String applied(Model model, HttpSession session) throws Exception {
-        Users user = (Users) session.getAttribute("user");
-
-        int userNo = user.getUserNo();
+    public ResponseEntity<?> applied(@RequestParam("userNo") Integer userNo) throws Exception {
+        
+        Map<String, Object> response = new HashMap<>();
 
         List<RecruitPost> recruitPosts = recruitService.applyCvList(userNo);
         // log.info(recruitPosts +
-        // "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ re");
-
-        model.addAttribute("recruitPosts", recruitPosts);
-        return "/recruit/applied_jobs_user";
+        // "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ re")
+        // model.addAttribute("recruitPosts", recruitPosts);
+        
+        response.put("recruitPosts", recruitPosts);
+        return new ResponseEntity<>(recruitPosts, HttpStatus.OK);
     }
 
     @ResponseBody
