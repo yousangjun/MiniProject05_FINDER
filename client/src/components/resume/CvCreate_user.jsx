@@ -1,15 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import './css/CvCreate_user.css'
 import axios from 'axios';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { useParams } from 'react-router-dom';
 import BtnLong from '../main/BtnLong';
+import { deleteFile } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
 
 
 const CvCreate_user = () => {
     const { userInfo } = useContext(LoginContext);
     const userNo = userInfo ? userInfo.userNo : null;
     const { cvNo } = useParams('');
+    const fileInputRef = useRef(null);
+    const fileInputRef2 = useRef(null);
+    const [newFiles, setNewFiles] = useState([]);
+    const thumbnailImg = useRef(null);
+    const [files, setFiles] = useState([]);
 
     const [formData, setFormData] = useState({
         cvTitle: '',            // 이력서 제목
@@ -33,6 +39,44 @@ const CvCreate_user = () => {
     const [thumbnail, setThumbnail] = useState(null); // 이력서 썸네일 이미지
     const [uploadedFiles, setUploadedFiles] = useState([]); // 업로드된 파일 목록
 
+    const handleFileUploadClick = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleFileChange = (event) => {
+        setNewFiles((prevFiles) => [...prevFiles, ...event.target.files]);
+        console.log(newFiles);
+    };
+    const deleteNewFileClick = (index) => {
+        // alert('??')
+        setNewFiles(newFiles.filter((_, i) => i !== index));
+    };
+
+
+
+    const handleFileUploadClick2 = () => {
+        
+        fileInputRef2.current.click();
+    };
+
+    
+    const handleThumbnailChange = (event) => {
+        const file = event.target.files[0];
+        setThumbnail(file)
+        console.log(file,"썸네일");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                // setThumbnail(file); // 상태를 업데이트하여 React 내에서 관리
+                if (thumbnailImg.current) {
+                    thumbnailImg.current.src = reader.result; // 이미지 태그의 src 속성 업데이트
+                }
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setThumbnail('/img/no-image.png');
+        }
+    };
 
     // 유저 정보를 불러올때 사용
     useEffect(() => {
@@ -72,6 +116,23 @@ const CvCreate_user = () => {
         } catch (error) {
             console.error('경력 목록 가져오기 오류', error);
         }
+    };
+
+    const deleteFileClick = (fileNo, index) => {
+        const encodedFileNo = encodeURIComponent(fileNo);
+
+        deleteFile(encodedFileNo)
+            .then(response => {
+                if (response.status === 200 && response.data === 'SUCCESS') {
+                    // 삭제 성공 후, 파일 목록에서 해당 파일 제거
+                    setFiles(prevFiles => prevFiles.filter(file => file.fileNo !== fileNo));
+                    console.log(files);
+                    console.log('파일이 성공적으로 삭제되었습니다.');
+                }
+            })
+            .catch(error => {
+                alert(`삭제 실패: ${error.response.status} ${error.response.statusText}`);
+            });
     };
 
     // 핸들 입력 변경
@@ -203,12 +264,19 @@ const CvCreate_user = () => {
 
                         <div className="profile-pic userImgTitle">
                             <div id='preview' className='preview'>
-                                <img src="" alt="썸네일에 따라 다르게 올라가야함" className='img-thumbnail' />
+                                {/* <img src="" alt="썸네일에 따라 다르게 올라가야함" className='img-thumbnail' /> */}
+                                {
+                                thumbnail != null ? (
+                                    <img ref={thumbnailImg} src={`/file/img/${thumbnail.fileNo}`} id='thumbnail-preview' className='img-thumbnail' alt="이미지 없다" style={{ height: '100%', width: '100%' }} />
+                                ) : (
+                                    <img ref={thumbnailImg} src="/img/no-image.png" id='thumbnail-preview' className='img-thumbnail' alt="이미지 없다" style={{ height: '100%', width: '100%' }} />
+                                )
+                            }
                             </div>
 
                             <div className='ImgFile'>
-                                <input type="file" name="imgUploadFile" id="thumbnail" accept='image/png, imgage/jpeg' style={{ display: 'none' }} />
-                                <button className='btn-long imgFile-input' type='button' id='imgUploadBtn'>사진 선택</button>
+                            <input ref={fileInputRef} type="file" name="thumbnail" id="thumbnail" className='file-input thumbnail-preview-recruit' accept='image/*' onChange={handleThumbnailChange} />
+                                <button className='btn-long imgFile-input' type='button' id='imgUploadBtn' onClick={handleFileUploadClick}>사진 선택</button>
                             </div>
                         </div>
                     </div>
@@ -309,13 +377,32 @@ const CvCreate_user = () => {
 
                         <div className="file-upload upload-btn d-flex justify-content-between">
                             <div>
-                                <input type="file" name="uploadFile" id="uploadFile" multiple style={{ display: 'none' }} />
-                                <button className="btn-long InsertFile" type='button' id='uploadBtn' name='uploadBtn'>파일 선택</button>
-                                <button className="btn-long deleteFile" type='button' id='deleteBtn' name='deleteBtn'>파일 삭제</button>
-                                <span id='fileName'>파일을 추가해주세요.</span>
-                                <div id='fileAddList'>
-
-                                </div>
+                                <input ref={fileInputRef2} onChange={handleFileChange} type="file" name="file" id="file-input" className="file-input hidden-file-input" multiple />
+                                <button className="btn-long InsertFile" type='button' id='uploadBtn' name='uploadBtn' onClick={handleFileUploadClick2}>파일 선택</button>
+                                {files.map((file) => (
+                                        <div key={file.fileNo} className="file-name">
+                                            {file.originName}
+                                            <span
+                                                className="remove-file"
+                                                role="button"
+                                                onClick={() => deleteFileClick(file.fileNo)}
+                                                style={{ cursor: 'pointer', marginLeft: '10px' }}>
+                                                X
+                                            </span>
+                                        </div>
+                                    ))}
+                                    {newFiles.map((file, index) => (
+                                        <div key={index} className="file-name">
+                                            {file.name}
+                                            <span
+                                                className="remove-file"
+                                                role="button"
+                                                onClick={() => deleteNewFileClick(index)}
+                                                style={{ cursor: 'pointer', marginLeft: '10px' }}>
+                                                X
+                                            </span>
+                                        </div>
+                                    ))}
                             </div>
                             <div className="btn-click123" style={{ display: 'flex' }}>
                             <BtnLong btnLongText={"이력서 등록"} btnType="submit" />
