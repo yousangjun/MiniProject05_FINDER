@@ -1,7 +1,13 @@
 import api from '../user/api'
 
-// 최근 채용공고 조회 안함
 export const jobDetails = (recruitNo) => api.get(`/recruit/detail_jobs_user?recruitNo=${recruitNo}`)
+
+// 최근 채용공고
+export const listNewRecruit = (newRecruitNos) => {
+    const params = newRecruitNos.map(no => `recruitNos=${encodeURIComponent(no)}`).join('&');
+    console.log(params);
+    return api.get(`/recruit/new_jobs_user?${params}`);
+  }
 
 // post 끝
 export const postRecruit = (recruitPost) => api.post(`/recruit/post_jobs_com`, recruitPost)
