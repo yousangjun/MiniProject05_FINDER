@@ -31,7 +31,7 @@
         LEFT JOIN `user` u ON o.user_no = u.user_no
         WHERE o.user_no = #{userNo}
         ORDER BY c.credit_date DESC
-        <!-- LIMIT #{page.index}, #{page.rows} -->
+        LIMIT #{page.index}, #{page.rows}
     </select>
 
     <resultMap id="OrderCreditMap" type="Order">
