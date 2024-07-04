@@ -43,6 +43,11 @@ const CvCreate_user = () => {
         fileInputRef.current.click();
     };
 
+    const handleFileUploadClick2 = () => {
+        
+        fileInputRef2.current.click();
+    };
+
     const handleFileChange = (event) => {
         setNewFiles((prevFiles) => [...prevFiles, ...event.target.files]);
         console.log(newFiles);
@@ -50,13 +55,6 @@ const CvCreate_user = () => {
     const deleteNewFileClick = (index) => {
         // alert('??')
         setNewFiles(newFiles.filter((_, i) => i !== index));
-    };
-
-
-
-    const handleFileUploadClick2 = () => {
-        
-        fileInputRef2.current.click();
     };
 
     
@@ -226,12 +224,58 @@ const CvCreate_user = () => {
     // 제출 처리 함수
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // 여기에 폼 제출 로직을 처리할 수 있습니다. 예: 자기소개서와 관련된 데이터 전송 등
+
+        
+        const formData = new FormData();
+        formData.append('cvTitle', cvTitle);
+        formData.append('coverLetter', coverLetter);
+        formData.append('cvNo', cvNo);
+
+    
+        // 썸네일 추가
+        if (thumbnail instanceof File) {
+            formData.append('thumbnail', thumbnail);
+        }
+    
+        try {
+            const response = await axios.post('/resume/cv_FileCreate_user', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            // Handle the response if needed
+            console.log('Response:', response);
+        } catch (error) {
+            console.error('Error posting job:', error);
+        }
+        
+        
+        // 파일 첨부
+        files.forEach((file, index) => {
+            formData.append('file', file); // files 배열을 순회하며 각각의 파일을 추가
+            try {
+                
+            }
+            catch (error) {
+                console.error('Error posting job:', error);
+            }
+        });
+        
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+        try {
+            const response = await postRecruit(formData);
+            console.log('Job posted successfully:', response.data);
+            navigate('/'); // 성공적으로 등록된 후 네비게이트
+        } catch (error) {
+            console.error('Error posting job:', error);
+        }
     };
 
     return (
         <>
-            <form action="/resume/cvUpdate_user" method='POST' encType='multipart/form-data' style={{ marginTop: '20px' }}>
+            <form  method='POST' encType='multipart/form-data' style={{ marginTop: '20px' }} onSubmit={handleSubmit}>
                 <div className="container-fluid container resume-form">
                     <div className="form-group col-12 Title">
                         <span className='Title2'>
