@@ -3,8 +3,26 @@ import { LoginContext } from '../../contexts/LoginContextProvider'
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
-
+  const { userInfo } = useContext(LoginContext);
   const { roles } = useContext(LoginContext);
+  const userNo = userInfo ? userInfo.userNo : null;
+
+
+  const handleCreateCv = async (no) => {
+    
+      try {
+        const response = await fetch(`/resume/cv_create_user?userNo=${no}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        } 
+        if (response.ok) {
+          console.log("이력서 생성 성공");
+        }
+
+      } catch (error) {
+        console.log(error,"error");
+      }
+  }
 
   return (
     <nav className="col-12 col-sm-12 col-lg-3 sidebar1" style={{ boxShadow: '-4px 8px 20px rgba(0, 0, 0, 0.1)' }}>
@@ -168,7 +186,7 @@ const Sidebar = () => {
               </Link>
             </li>
             <li className="nav-item1">
-              <Link to="/resume/cvCreate_user" className="job-item-link1 nav-link1 fw-normal fs-6">
+              <Link to={`/resume/cvCreate_user?userNo=${userNo}`} className="job-item-link1 nav-link1 fw-normal fs-6" onClick={handleCreateCv(userNo)}>
                 <div style={{ backgroundColor: '#fff', borderRadius: '8px' }} className="d-flex gap-2 p-2 ps-2">
                   <div>
                     <img src="/img/Documents.png" alt="Documents" />

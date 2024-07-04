@@ -65,7 +65,10 @@
 
         <collection property="credits" ofType="Credit">
             <id property="creditNo" column="credit_no" />    
+            <result property="orderNo" column="order_no" />
             <result property="creditMethod" column="credit_method" />
+            <result property="creditStatus" column="credit_status" />
+            <result property="creditCode" column="credit_code" />
             <result property="creditDate" column="credit_date" />
         </collection>
 

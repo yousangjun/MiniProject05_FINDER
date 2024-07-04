@@ -141,7 +141,7 @@ const Success = () => {
                                 <p>결제 수단 : <span>신용카드</span></p>
                             </div>
                             <div className="align-self-end credit-list-btn">
-                                <Link to={`/company/credit_list_com/${productNo}/${orderNo}`}><BtnLong btnLongText={"결제내역"}/></Link>
+                                <Link to={`/company/credit_list_com`}><BtnLong btnLongText={"결제내역"}/></Link>
                             </div>
                         </div>
                     </form>
