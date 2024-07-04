@@ -4,7 +4,7 @@ import api from "../user/api";
 export const GetIntroCom = (userNo) => api.get(`/company/introduce_com?userNo=${userNo}` );
 
 //기업 정보 등록하기
-export const InsertIntroCom = ({ userNo, formData }) => api.post(`/company/introduceInsert_com`, formData, { params: {userNo}});
+export const InsertIntroCom = ({ userNo, formData }) => api.post(`/company/introduceInsert_com?userNo=${userNo}`, formData );
 
   
 //기업 정보 수정하기
