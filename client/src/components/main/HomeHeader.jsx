@@ -84,10 +84,6 @@ const HomeHeader = forwardRef((props, ref) => {
                 </form>
             </div>
 
-            <div>
-                <h2>여기에 배너 넣는다는 뜻 같음</h2>
-            </div>
-            
             <div style={{ margin: '15px 0' }}>
                 <strong>총 <span style={{ color: 'blue' }}>{count}</span>개의 정보를 탐색 하였습니다.</strong>
             </div>

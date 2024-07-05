@@ -7,6 +7,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider'
 import { listNewRecruit } from '../../apis/recruit/recruit.js'
 
 import Paging from '../../components/company/Paging.jsx'
+import './css/RecruitListCom.css';
 
 
 const NewJobsUserContainer = () => {
@@ -80,8 +81,10 @@ const NewJobsUserContainer = () => {
                         {isLoading ? null : (
                             <>
                                 {!newRecruitList || newRecruitList.length === 0 ? (
-                                    <div className='d-flex flex-column justify-content-center mt-5 me-auto'>
-                                        <h1>최근 본 채용공고가 없습니다.</h1>
+                                    <div className='MissingBox d-flex flex-column justify-content-center mt-5 me-auto'>
+                                        <img className='MissingImg' src="/img/ImSorry.png" alt="이력서가 없어요ㅜㅜ" />
+                                        <h3 className='MissingText'> 최근 본 채용공고가 없습니다.</h3>
+                                        <p className='MissingText'>지원하고 싶은 회사 공고글을 확인해주세요</p>
                                     </div>
                                 ) : (
                                     newRecruitList.map((recruit, index) => (
