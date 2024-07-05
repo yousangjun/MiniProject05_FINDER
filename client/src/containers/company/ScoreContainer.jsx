@@ -13,14 +13,13 @@ function ScoreContainer() {
             id: 1,
             userName: 'John Doe',
             coverLetter: '샘플 자기소개서',
-            cvNo: 'cv123',
+        cvNo: 'cv123',
             recruitPost: [
                 { id: 1, recruitTitle: '프론트엔드 개발자' },
                 { id: 2, recruitTitle: '백엔드 개발자' },
             ],
         },
     ]);
-    const [msg, setMsg] = useState('');
     const [results, setResults] = useState({});
 
     const handleKeywordKeyDown = (event) => {
@@ -72,7 +71,8 @@ function ScoreContainer() {
                         'Authorization': `Bearer ${API_KEY}`
                     }
                 });
-
+                console.log(response.data.choices[0].message.content);
+                let score = response.data.choices[0].message.content;
                 let timerInterval;
                 Swal.fire({
                     width: 800,
@@ -107,7 +107,7 @@ function ScoreContainer() {
                                 <img src='http://localhost:3000/file/img/cv/${cvNo}' width='200' style='margin: 0 auto 30px;' />
                                 <h1 style='font-size: 28px; font-weight: bold;'>👨‍💼 ${userName}님의 AI 이력서 점수 ✨</h1>
                                 <h1 style='font-size: 40px'>
-                                    <span style="font-size: 60px; color: ${response.data.color};" class="counter" data-count="${response.data.contentValue}">0</span>
+                                    <span style="font-size: 60px;" class="counter" data-count="${score}">0</span>
                                     점
                                 </h1>
                             `,
@@ -246,6 +246,7 @@ function ScoreContainer() {
                         </div>
                     </div>
                 </main>
+                <div class="counter" data-count="60">0</div>
             </div>
         </>
     );
