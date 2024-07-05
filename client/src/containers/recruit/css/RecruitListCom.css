@@ -6,4 +6,11 @@
     height: 150px;
     width: 150px;
     margin: auto;
+    transform: scale(1.0); /* 이미지 확대 */
+    transition: transform .5s; /* 시간 설정 */
+}
+
+.MissingImg:hover {
+    transform: scale(1.5);   /* 이미지 확대 */
+    transition: transform .5s;  /* 시간 설정 */
 }
