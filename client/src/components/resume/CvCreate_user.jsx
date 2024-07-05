@@ -5,11 +5,11 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import BtnLong from '../main/BtnLong';
 import { deleteFile } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
-import EducationList from '../resume/education/list.jsx';
+import EducationListItem from './education/EducationListItem.jsx';
 
 
 
-const CvCreate_user = ( {onAddEducation} ) => {
+const CvCreate_user = () => {
     const { userInfo } = useContext(LoginContext);
     const userNo = userInfo ? userInfo.userNo : null;
     const { cvNo } = useParams('');
@@ -220,20 +220,23 @@ const CvCreate_user = ( {onAddEducation} ) => {
                 university: formData.university,
                 major: formData.major,
                 universityStatus: formData.universityStatus,
-                cvNo:cvNo,
+                cvNo: cvNo,
             });
-            setFormData({
-                ...formData,
-                university: '',
-                major: '',
-                universityStatus: ''
-            });
+            const newEd = {
+
+                university: formData.university,
+                major: formData.major,
+                universityStatus: formData.universityStatus,
+            };
+
+            setEducationList([...educationList,newEd])
+
             // fetchEducationList();
         } catch (error) {
             console.error('학력 추가 오류', error);
             alert('에러 발생');
         }
-  };
+    };
 
     // 경력 추가 처리
     const handleAddEmploymentHistory = async () => {
@@ -387,6 +390,7 @@ const CvCreate_user = ( {onAddEducation} ) => {
                                 <div className="col-12 p-2">
                                     {/* 학력 리스트 */}
                                     <div id="education-list">
+                                        <EducationListItem educationList={educationList} />
                                         {/* 리스트 아이템들을 여기에 추가 */}
                                     </div>
                                 </div>
