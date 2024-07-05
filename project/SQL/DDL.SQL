@@ -1,6 +1,4 @@
-
--- Active: 1719384389661@@127.0.0.1@3306@finder
-
+-- Active: 1711633953173@@127.0.0.1@3306@finder
 
 -- 테이블 삭제 ( 총 15개 )
 
@@ -195,6 +193,7 @@ CREATE TABLE `apply_employee` (
     -- `apply_title` varchar(100) NOT NULL,
     -- `apply_date` timestamp NOT NULL DEFAULT now(),
     `check` int,
+    `score` varchar(30),
     `cv_no` int,
     `recruit_no` int,
     PRIMARY KEY (`apply_no`),
@@ -302,8 +301,7 @@ INSERT INTO
         user_email,
         user_gender
     )
-VALUES 
-    (
+VALUES (
         1,
         '홍준범',
         'user2',
@@ -377,15 +375,16 @@ INSERT INTO
         cv_reg_date,
         cv_upd_date
     )
-VALUES 
-    (
+VALUES (
         1,
         1,
-        '저는 Java를 주 언어로 사용하며, Spring 프레임워크를 활용한 웹 애플리케이션 개발에 능숙합니다. Spring Boot를 이용해 RESTful API를 설계하고 구현한 경험이 있으며, 프로젝트의 효율성을 높이기 위해 Spring Security를 통한 인증 및 권한 부여 기능을 구현하였습니다.
+        '저는 어릴 적부터 컴퓨터와 소프트웨어에 큰 관심을 가지고 있었습니다. 대학에서는 컴퓨터 공학을 전공하였고, 학업 성취도는 항상 상위 10%에 들었습니다. 특히, 데이터 구조와 알고리즘 과목에서 우수한 성적을 거두어 학과 대표로 프로그래밍 대회에 출전하기도 했습니다.
 
-React를 이용한 프론트엔드 개발에도 능숙하여, 사용자 친화적인 UI/UX를 구현할 수 있습니다. React Hooks와 Context API를 활용하여 상태 관리를 효율적으로 처리하며, 다양한 컴포넌트를 재사용 가능한 형태로 설계하여 코드의 유지보수성을 높였습니다.
+외부 활동으로는 여러 해커톤 대회에 참가하여 다수의 상을 수상한 경험이 있습니다. 이러한 경험을 통해 팀워크와 문제 해결 능력을 키울 수 있었습니다. 또한, 다양한 오픈 소스 프로젝트에 기여하면서 실무 역량을 쌓아왔습니다.
 
-데이터베이스는 MySQL을 주로 사용하며, 효율적인 데이터 모델링과 복잡한 쿼리 작성에 자신이 있습니다. 인덱스 최적화와 쿼리 튜닝을 통해 성능을 향상시키고, 데이터 무결성을 유지하는 데 주력하고 있습니다.',
+제가 개발자가 되기로 결심한 이유는 소프트웨어 개발을 통해 사람들의 삶을 더 편리하게 만들고 싶다는 꿈이 있었기 때문입니다. 특히, 인공지능과 머신러닝 분야에 큰 관심이 있어 관련 프로젝트를 진행하면서 지식을 쌓아왔습니다.
+
+지원 동기는 귀사의 혁신적인 프로젝트와 비전이 저와 잘 맞아떨어진다고 느꼈기 때문입니다. 저의 열정과 경험을 바탕으로 귀사에서 개발자로서 성장하고 기여하고 싶습니다. 꼭 이 기회를 통해 개발자로서의 꿈을 실현하고자 합니다.',
         'Java 애플리케이션 개발 전문가 - 홍준범',
         '2024-06-20 01:05:28',
         '2024-06-20 01:09:14'
@@ -423,8 +422,6 @@ React를 이용한 프론트엔드 개발에도 능숙하여, 사용자 친화�
         '2024-06-20 01:09:14'
     );
 
-
-
 INSERT INTO
     file (
         file_no,
@@ -459,8 +456,7 @@ INSERT INTO
         `end_date`,
         `duties`
     )
-VALUES
-    (
+VALUES (
         4,
         'LG전자',
         '2016-06-10',
@@ -475,8 +471,7 @@ INSERT INTO
         `major`,
         `university_status`
     )
-VALUES 
-    (4, '안조은대학교', '컴퓨터공학과', '학사');
+VALUES (4, '안조은대학교', '컴퓨터공학과', '학사');
 
 INSERT INTO
     user (
@@ -622,7 +617,6 @@ INSERT INTO user_auth (user_no, auth) VALUES (10, 'ROLE_COMPANY');
 -- 기업권한
 INSERT INTO user_auth (user_no, auth) VALUES (10, 'ROLE_USER');
 
-
 -- 테슬라
 INSERT INTO
     user (
@@ -647,8 +641,10 @@ VALUES (
         '남자',
         2
     );
-    
-INSERT INTO user_auth (user_no, auth) VALUES (11, 'ROLE_COMPANY');
+
+INSERT INTO
+    user_auth (user_no, auth)
+VALUES (11, 'ROLE_COMPANY');
 -- 기업권한
 INSERT INTO user_auth (user_no, auth) VALUES (11, 'ROLE_USER');
 
@@ -677,8 +673,9 @@ VALUES (
         2
     );
 
-    
-INSERT INTO user_auth (user_no, auth) VALUES (12, 'ROLE_COMPANY');
+INSERT INTO
+    user_auth (user_no, auth)
+VALUES (12, 'ROLE_COMPANY');
 -- 기업권한
 INSERT INTO user_auth (user_no, auth) VALUES (12, 'ROLE_USER');
 
@@ -707,16 +704,11 @@ VALUES (
         2
     );
 
-    
-INSERT INTO user_auth (user_no, auth) VALUES (13, 'ROLE_COMPANY');
+INSERT INTO
+    user_auth (user_no, auth)
+VALUES (13, 'ROLE_COMPANY');
 -- 기업권한
 INSERT INTO user_auth (user_no, auth) VALUES (13, 'ROLE_USER');
-
-
-
-
-
-
 
 -- 기업권한
 -- 기업
@@ -868,8 +860,6 @@ VALUES (
         '소셜 미디어 플랫폼 및 가상 현실',
         13
     );
-
-
 
 INSERT INTO
     company_detail (
@@ -1058,7 +1048,7 @@ VALUES (
         120000
     );
 
-    INSERT INTO
+INSERT INTO
     company_detail (
         com_info_no,
         com_no,
@@ -1173,7 +1163,6 @@ VALUES (
     메타는 직원의 워라밸을 중시하며, 유연 근무제도와 재택 근무를 통해 직원들의 만족도를 높이고 있습니다.',
         170000
     );
-
 
 INSERT INTO
     `recruit` (
@@ -1501,12 +1490,56 @@ INSERT INTO
         recruit_preferred_qualifications,
         recruit_reg_date
     )
-VALUES 
-    (6, 11, '전기차 엔지니어 모집', 'Tesla Korea는 Tesla Inc.의 자회사로서 전기차 개발을 선도하고 있습니다. 혁신적인 전기차 엔지니어를 찾고 있습니다.', '전기차 설계 및 개발', '전기 공학 또는 관련 분야 학사 학위', '전기차 개발 경험 우대', '2024-04-08'),
-    (14, 11, '자율주행 소프트웨어 개발자 모집', 'Tesla Korea는 자율주행 소프트웨어 개발에 중점을 두고 있습니다. 우리는 안전하고 효율적인 자율주행 기술을 개발합니다.', '자율주행 소프트웨어 개발', '컴퓨터 과학 또는 관련 분야 학사 학위', '자율주행 소프트웨어 개발 경험 우대', '2024-06-20'),
-    (22, 11, '배터리 기술자 모집', 'Tesla Korea는 배터리 기술 개발에 집중하고 있습니다. 우리는 고효율 배터리 솔루션을 제공합니다.', '배터리 설계 및 개발', '화학 공학 또는 관련 분야 학사 학위', '배터리 개발 경험 우대', '2024-04-30'),
-    (30, 11, '생산 엔지니어 모집', 'Tesla Korea는 생산 공정 개선을 목표로 하고 있습니다. 우리는 효율적인 생산 솔루션을 제공합니다.', '생산 공정 설계 및 개선', '산업 공학 또는 관련 분야 학사 학위', '생산 공정 개선 경험 우대', '2024-05-28'),
-    (38, 11, '에너지 시스템 엔지니어 모집', 'Tesla Korea는 에너지 시스템 개발에 중점을 두고 있습니다. 우리는 혁신적인 에너지 솔루션을 제공합니다.', '에너지 시스템 설계 및 개발', '전기 공학 또는 관련 분야 학사 학위', '에너지 시스템 개발 경험 우대', '2024-05-01');
+VALUES (
+        6,
+        11,
+        '전기차 엔지니어 모집',
+        'Tesla Korea는 Tesla Inc.의 자회사로서 전기차 개발을 선도하고 있습니다. 혁신적인 전기차 엔지니어를 찾고 있습니다.',
+        '전기차 설계 및 개발',
+        '전기 공학 또는 관련 분야 학사 학위',
+        '전기차 개발 경험 우대',
+        '2024-04-08'
+    ),
+    (
+        14,
+        11,
+        '자율주행 소프트웨어 개발자 모집',
+        'Tesla Korea는 자율주행 소프트웨어 개발에 중점을 두고 있습니다. 우리는 안전하고 효율적인 자율주행 기술을 개발합니다.',
+        '자율주행 소프트웨어 개발',
+        '컴퓨터 과학 또는 관련 분야 학사 학위',
+        '자율주행 소프트웨어 개발 경험 우대',
+        '2024-06-20'
+    ),
+    (
+        22,
+        11,
+        '배터리 기술자 모집',
+        'Tesla Korea는 배터리 기술 개발에 집중하고 있습니다. 우리는 고효율 배터리 솔루션을 제공합니다.',
+        '배터리 설계 및 개발',
+        '화학 공학 또는 관련 분야 학사 학위',
+        '배터리 개발 경험 우대',
+        '2024-04-30'
+    ),
+    (
+        30,
+        11,
+        '생산 엔지니어 모집',
+        'Tesla Korea는 생산 공정 개선을 목표로 하고 있습니다. 우리는 효율적인 생산 솔루션을 제공합니다.',
+        '생산 공정 설계 및 개선',
+        '산업 공학 또는 관련 분야 학사 학위',
+        '생산 공정 개선 경험 우대',
+        '2024-05-28'
+    ),
+    (
+        38,
+        11,
+        '에너지 시스템 엔지니어 모집',
+        'Tesla Korea는 에너지 시스템 개발에 중점을 두고 있습니다. 우리는 혁신적인 에너지 솔루션을 제공합니다.',
+        '에너지 시스템 설계 및 개발',
+        '전기 공학 또는 관련 분야 학사 학위',
+        '에너지 시스템 개발 경험 우대',
+        '2024-05-01'
+    );
 
 -- Google Korea 데이터 삽입
 INSERT INTO
@@ -1520,12 +1553,56 @@ INSERT INTO
         recruit_preferred_qualifications,
         recruit_reg_date
     )
-VALUES 
-    (7, 12, '웹 개발자 모집', 'Google Korea는 Google Inc.의 자회사로서 웹 개발을 선도하고 있습니다. 혁신적인 웹 개발자를 찾고 있습니다.', '웹 애플리케이션 개발', '컴퓨터 과학 또는 관련 분야 학사 학위', '웹 개발 경험 우대', '2024-06-11'),
-    (15, 12, '클라우드 엔지니어 모집', 'Google Korea는 클라우드 솔루션 개발에 중점을 두고 있습니다. 우리는 고성능 클라우드 솔루션을 제공합니다.', '클라우드 시스템 설계 및 개발', '컴퓨터 과학 또는 관련 분야 학사 학위', '클라우드 경험 우대', '2024-04-15'),
-    (23, 12, 'AI 연구원 모집', 'Google Korea는 인공지능 연구에 집중하고 있습니다. 우리는 혁신적인 AI 솔루션을 제공합니다.', 'AI 모델 개발 및 연구', '컴퓨터 과학 또는 관련 분야 학사 학위', 'AI 연구 경험 우대', '2024-06-28'),
-    (31, 12, '데이터베이스 관리자 모집', 'Google Korea는 데이터베이스 관리에 중점을 두고 있습니다. 우리는 안전하고 효율적인 데이터베이스 솔루션을 제공합니다.', '데이터베이스 설계 및 관리', '컴퓨터 과학 또는 관련 분야 학사 학위', '데이터베이스 관리 경험 우대', '2024-05-05'),
-    (39, 12, '보안 엔지니어 모집', 'Google Korea는 보안 솔루션 개발에 중점을 두고 있습니다. 우리는 안전한 IT 환경을 제공합니다.', '보안 시스템 설계 및 개발', '컴퓨터 과학 또는 관련 분야 학사 학위', '보안 경험 우대', '2024-07-01');
+VALUES (
+        7,
+        12,
+        '웹 개발자 모집',
+        'Google Korea는 Google Inc.의 자회사로서 웹 개발을 선도하고 있습니다. 혁신적인 웹 개발자를 찾고 있습니다.',
+        '웹 애플리케이션 개발',
+        '컴퓨터 과학 또는 관련 분야 학사 학위',
+        '웹 개발 경험 우대',
+        '2024-06-11'
+    ),
+    (
+        15,
+        12,
+        '클라우드 엔지니어 모집',
+        'Google Korea는 클라우드 솔루션 개발에 중점을 두고 있습니다. 우리는 고성능 클라우드 솔루션을 제공합니다.',
+        '클라우드 시스템 설계 및 개발',
+        '컴퓨터 과학 또는 관련 분야 학사 학위',
+        '클라우드 경험 우대',
+        '2024-04-15'
+    ),
+    (
+        23,
+        12,
+        'AI 연구원 모집',
+        'Google Korea는 인공지능 연구에 집중하고 있습니다. 우리는 혁신적인 AI 솔루션을 제공합니다.',
+        'AI 모델 개발 및 연구',
+        '컴퓨터 과학 또는 관련 분야 학사 학위',
+        'AI 연구 경험 우대',
+        '2024-06-28'
+    ),
+    (
+        31,
+        12,
+        '데이터베이스 관리자 모집',
+        'Google Korea는 데이터베이스 관리에 중점을 두고 있습니다. 우리는 안전하고 효율적인 데이터베이스 솔루션을 제공합니다.',
+        '데이터베이스 설계 및 관리',
+        '컴퓨터 과학 또는 관련 분야 학사 학위',
+        '데이터베이스 관리 경험 우대',
+        '2024-05-05'
+    ),
+    (
+        39,
+        12,
+        '보안 엔지니어 모집',
+        'Google Korea는 보안 솔루션 개발에 중점을 두고 있습니다. 우리는 안전한 IT 환경을 제공합니다.',
+        '보안 시스템 설계 및 개발',
+        '컴퓨터 과학 또는 관련 분야 학사 학위',
+        '보안 경험 우대',
+        '2024-07-01'
+    );
 
 -- Meta Korea 데이터 삽입
 INSERT INTO
@@ -1539,13 +1616,56 @@ INSERT INTO
         recruit_preferred_qualifications,
         recruit_reg_date
     )
-VALUES 
-    (8, 13, 'VR 개발자 모집', 'Meta Korea는 Meta Inc.의 자회사로서 VR 개발을 선도하고 있습니다. 혁신적인 VR 개발자를 찾고 있습니다.', 'VR 애플리케이션 개발', '컴퓨터 과학 또는 관련 분야 학사 학위', 'VR 개발 경험 우대', '2024-04-16'),
-    (16, 13, '소셜 미디어 마케팅 매니저 모집', 'Meta Korea는 소셜 미디어 마케팅에 집중하고 있습니다. 우리는 효과적인 마케팅 솔루션을 제공합니다.', '소셜 미디어 마케팅 전략 수립 및 실행', '마케팅 또는 관련 분야 학사 학위', '소셜 미디어 마케팅 경험 우대', '2024-05-21'),
-    (24, 13, '데이터 과학자 모집', 'Meta Korea는 데이터 분석 및 과학에 중점을 두고 있습니다. 우리는 데이터 기반 인사이트를 제공합니다.', '데이터 분석 및 모델 개발', '컴퓨터 과학 또는 관련 분야 학사 학위', '데이터 과학 경험 우대', '2024-05-08'),
-    (32, 13, '제품 관리자 모집', 'Meta Korea는 혁신적인 제품 개발에 집중하고 있습니다. 우리는 사용자 중심의 제품을 제공합니다.', '제품 개발 및 관리', '경영학 또는 관련 분야 학사 학위', '제품 관리 경험 우대', '2024-06-24'),
-    (40, 13, '백엔드 엔지니어 모집', 'Meta Korea는 백엔드 시스템 개발에 중점을 두고 있습니다. 우리는 안정적이고 확장 가능한 백엔드 솔루션을 제공합니다.', '백엔드 시스템 설계 및 개발', '컴퓨터 과학 또는 관련 분야 학사 학위', '백엔드 개발 경험 우대', '2024-07-02');
-
+VALUES (
+        8,
+        13,
+        'VR 개발자 모집',
+        'Meta Korea는 Meta Inc.의 자회사로서 VR 개발을 선도하고 있습니다. 혁신적인 VR 개발자를 찾고 있습니다.',
+        'VR 애플리케이션 개발',
+        '컴퓨터 과학 또는 관련 분야 학사 학위',
+        'VR 개발 경험 우대',
+        '2024-04-16'
+    ),
+    (
+        16,
+        13,
+        '소셜 미디어 마케팅 매니저 모집',
+        'Meta Korea는 소셜 미디어 마케팅에 집중하고 있습니다. 우리는 효과적인 마케팅 솔루션을 제공합니다.',
+        '소셜 미디어 마케팅 전략 수립 및 실행',
+        '마케팅 또는 관련 분야 학사 학위',
+        '소셜 미디어 마케팅 경험 우대',
+        '2024-05-21'
+    ),
+    (
+        24,
+        13,
+        '데이터 과학자 모집',
+        'Meta Korea는 데이터 분석 및 과학에 중점을 두고 있습니다. 우리는 데이터 기반 인사이트를 제공합니다.',
+        '데이터 분석 및 모델 개발',
+        '컴퓨터 과학 또는 관련 분야 학사 학위',
+        '데이터 과학 경험 우대',
+        '2024-05-08'
+    ),
+    (
+        32,
+        13,
+        '제품 관리자 모집',
+        'Meta Korea는 혁신적인 제품 개발에 집중하고 있습니다. 우리는 사용자 중심의 제품을 제공합니다.',
+        '제품 개발 및 관리',
+        '경영학 또는 관련 분야 학사 학위',
+        '제품 관리 경험 우대',
+        '2024-06-24'
+    ),
+    (
+        40,
+        13,
+        '백엔드 엔지니어 모집',
+        'Meta Korea는 백엔드 시스템 개발에 중점을 두고 있습니다. 우리는 안정적이고 확장 가능한 백엔드 솔루션을 제공합니다.',
+        '백엔드 시스템 설계 및 개발',
+        '컴퓨터 과학 또는 관련 분야 학사 학위',
+        '백엔드 개발 경험 우대',
+        '2024-07-02'
+    );
 
 -- HJB Company 키워드 삽입
 INSERT INTO
@@ -1627,8 +1747,7 @@ VALUES ('#iOS', 5),
 -- Tesla Korea 키워드 삽입
 INSERT INTO
     recruit_keyword (recruit_keyword, recruit_no)
-VALUES 
-    ('#전기차소프트웨어', 6),
+VALUES ('#전기차소프트웨어', 6),
     ('#자동차개발', 6),
     ('#소프트웨어설계', 6),
     ('#배터리연구', 14),
@@ -1647,8 +1766,7 @@ VALUES
 -- Google Korea 키워드 삽입
 INSERT INTO
     recruit_keyword (recruit_keyword, recruit_no)
-VALUES 
-    ('#모바일앱', 7),
+VALUES ('#모바일앱', 7),
     ('#앱개발', 7),
     ('#모바일기술', 7),
     ('#머신러닝', 15),
@@ -1667,8 +1785,7 @@ VALUES
 -- Meta Korea 키워드 삽입
 INSERT INTO
     recruit_keyword (recruit_keyword, recruit_no)
-VALUES 
-    ('#가상현실', 8),
+VALUES ('#가상현실', 8),
     ('#VR개발', 8),
     ('#첨단기술', 8),
     ('#소셜미디어', 16),
@@ -1684,82 +1801,602 @@ VALUES
     ('#서버개발', 40),
     ('#시스템설계', 40);
 
-
-
-
-INSERT INTO `product` (`product_name`, `product_count`, `product_price`, `product_duration`)
-VALUES 
-('10만원', 30, 100000, 2),
-('30만원', 80, 300000, 3),
-('50만원', 150, 500000, 5);
-
+INSERT INTO
+    `product` (
+        `product_name`,
+        `product_count`,
+        `product_price`,
+        `product_duration`
+    )
+VALUES ('10만원', 30, 100000, 2),
+    ('30만원', 80, 300000, 3),
+    ('50만원', 150, 500000, 5);
 
 -- 채용공고 썸네일 파일
-INSERT INTO `file` (`file_no`,`parent_table`,`parent_no`,`file_name`,`origin_name`,`file_path`,`file_size`,`reg_date`,`upd_date`,`file_code`)
-VALUES (3,'recruit',1,NULL,'HJB-logo.png','C:/upload/cdeb601f-a295-49c2-a8b3-e79fabcaae32_HJB-logo.png',9279,'2024-06-20 02:16:07','2024-06-20 02:16:07',1),
-       (4,'recruit',9,NULL,'HJB-logo.png','C:/upload/af6debc8-2e8b-4e92-84d7-d8f034dfd036_HJB-logo.png',9279,'2024-06-20 02:16:14','2024-06-20 02:16:14',1),
-       (5,'recruit',17,NULL,'HJB-logo.png','C:/upload/21367aca-807a-42c9-99e4-d898eba22a83_HJB-logo.png',9279,'2024-06-20 02:16:20','2024-06-20 02:16:20',1),
-       (6,'recruit',25,NULL,'HJB-logo.png','C:/upload/91401f26-00d0-4b14-9f01-ea3246be2cf6_HJB-logo.png',9279,'2024-06-20 02:16:31','2024-06-20 02:16:31',1),
-       (7,'recruit',33,NULL,'HJB-logo.png','C:/upload/72605c52-683d-4a6f-a5e4-021ccba47ec7_HJB-logo.png',9279,'2024-06-20 02:16:42','2024-06-20 02:16:42',1),
-       (8,'recruit',2,NULL,'samsung-logo.png','C:/upload/23ab4599-3687-483f-94f6-fbc8c7f55eeb_samsung-logo.png',19466,'2024-06-20 02:17:18','2024-06-20 02:17:18',1),
-       (9,'recruit',10,NULL,'samsung-logo.png','C:/upload/03b5c843-2b72-4b39-aab5-6d36da8ee052_samsung-logo.png',19466,'2024-06-20 02:17:24','2024-06-20 02:17:24',1),
-       (10,'recruit',18,NULL,'samsung-logo.png','C:/upload/cf304b62-c630-491c-b648-24311bc4eff3_samsung-logo.png',19466,'2024-06-20 02:17:32','2024-06-20 02:17:32',1),
-       (11,'recruit',26,NULL,'samsung-logo.png','C:/upload/5491a6e2-0563-4a57-bd28-1e2beddf0e64_samsung-logo.png',19466,'2024-06-20 02:17:38','2024-06-20 02:17:38',1),
-       (12,'recruit',34,NULL,'samsung-logo.png','C:/upload/5ecf8ea0-ae5b-4980-b2dd-2067d90c62d5_samsung-logo.png',19466,'2024-06-20 02:17:44','2024-06-20 02:17:44',1),
-       (13,'recruit',3,NULL,'hyundai-logo.png','C:/upload/8a9cde39-1fb7-4be6-ab93-89ace572e0d9_hyundai-logo.png',47444,'2024-06-20 02:18:12','2024-06-20 02:18:12',1),
-       (14,'recruit',11,NULL,'hyundai-logo.png','C:/upload/b45c7ca5-50e6-4c58-aae6-90d8ae2ad6eb_hyundai-logo.png',47444,'2024-06-20 02:18:18','2024-06-20 02:18:18',1),
-       (15,'recruit',19,NULL,'hyundai-logo.png','C:/upload/29d94947-3d1d-4919-b278-171d79167284_hyundai-logo.png',47444,'2024-06-20 02:18:25','2024-06-20 02:18:25',1),
-       (16,'recruit',27,NULL,'hyundai-logo.png','C:/upload/b62a74c7-a98d-4acd-b30f-2bf64e90efeb_hyundai-logo.png',47444,'2024-06-20 02:18:32','2024-06-20 02:18:32',1),
-       (17,'recruit',35,NULL,'hyundai-logo.png','C:/upload/3323e907-d948-4211-8585-cbd259e4e74a_hyundai-logo.png',47444,'2024-06-20 02:18:39','2024-06-20 02:18:39',1),
-       (18,'recruit',4,NULL,'lg-logo.png','C:/upload/26befd28-d191-4db1-a11c-0ca24280ce55_lg-logo.png',5611,'2024-06-20 02:19:09','2024-06-20 02:19:09',1),
-       (19,'recruit',12,NULL,'lg-logo.png','C:/upload/8fc5aefb-57bc-4be5-a3c3-3c5ddda21fe6_lg-logo.png',5611,'2024-06-20 02:19:15','2024-06-20 02:19:15',1),
-       (20,'recruit',20,NULL,'lg-logo.png','C:/upload/212fc5ca-fb82-488a-9cc8-dd8431726148_lg-logo.png',5611,'2024-06-20 02:19:21','2024-06-20 02:19:21',1),
-       (21,'recruit',28,NULL,'lg-logo.png','C:/upload/bf024ebd-4203-48bf-b941-d436a7fbeea1_lg-logo.png',5611,'2024-06-20 02:19:28','2024-06-20 02:19:28',1),
-       (22,'recruit',36,NULL,'lg-logo.png','C:/upload/4dc50110-3981-400c-bedb-0a626ff129cc_lg-logo.png',5611,'2024-06-20 02:19:36','2024-06-20 02:19:36',1),
-       (23,'recruit',5,NULL,'apple-logo.png','C:/upload/f1ca50f4-7dc6-4511-aed1-662afab73d0b_apple-logo.png',12354,'2024-06-20 02:21:01','2024-06-20 02:21:01',1),
-       (24,'recruit',13,NULL,'apple-logo.png','C:/upload/9109f101-d668-4a4f-9ded-c607de8c19d6_apple-logo.png',12354,'2024-06-20 02:21:09','2024-06-20 02:21:09',1),
-       (25,'recruit',21,NULL,'apple-logo.png','C:/upload/328b9bc0-cd13-48aa-bc25-3f03b70d3d2c_apple-logo.png',12354,'2024-06-20 02:21:27','2024-06-20 02:21:27',1),
-       (26,'recruit',29,NULL,'apple-logo.png','C:/upload/4c24dd2d-24b1-4821-8946-49d6786695d4_apple-logo.png',12354,'2024-06-20 02:21:37','2024-06-20 02:21:37',1),
-       (27,'recruit',37,NULL,'apple-logo.png','C:/upload/fae91d7f-0572-4797-85d0-af5c556bdf9c_apple-logo.png',12354,'2024-06-20 02:21:52','2024-06-20 02:21:52',1),
-       (28,'recruit',6,NULL,'tesla-logo.png','C:/upload/8dda9693-8230-4192-8cd7-cfb29cc978db_tesla-logo.png',6915,'2024-06-20 12:42:26','2024-06-20 12:42:26',1),
-       (29,'recruit',14,NULL,'tesla-logo.png','C:/upload/ed94c8c1-9c31-45f7-adf7-c6bf595ae326_tesla-logo.png',6915,'2024-06-20 12:49:31','2024-06-20 12:49:31',1),
-       (30,'recruit',22,NULL,'tesla-logo.png','C:/upload/e8cc657c-fe9a-4766-8a14-05993439deab_tesla-logo.png',6915,'2024-06-20 12:49:37','2024-06-20 12:49:37',1),
-       (31,'recruit',30,NULL,'tesla-logo.png','C:/upload/2c972925-5d4d-42fd-931e-1a18ca988cda_tesla-logo.png',6915,'2024-06-20 12:49:46','2024-06-20 12:49:46',1),
-       (32,'recruit',38,NULL,'tesla-logo.png','C:/upload/d04b82fd-f081-4f5f-a6a1-e1b3123237b7_tesla-logo.png',6915,'2024-06-20 12:49:52','2024-06-20 12:49:52',1),
-       (33,'recruit',7,NULL,'google-logo.png','C:/upload/e5fb4375-b0ef-47fc-b370-6575f2461513_google-logo.png',87897,'2024-06-20 12:43:09','2024-06-20 12:43:09',1),
-       (34,'recruit',15,NULL,'google-logo.png','C:/upload/a4ebb9ad-a3f1-4c56-a33f-4d2ceec9da24_google-logo.png',87897,'2024-06-20 12:50:17','2024-06-20 12:50:17',1),
-       (35,'recruit',23,NULL,'google-logo.png','C:/upload/7e9e7173-4504-4ea4-93dd-b8d81ce0105f_google-logo.png',87897,'2024-06-20 12:50:21','2024-06-20 12:50:21',1),
-       (36,'recruit',31,NULL,'google-logo.png','C:/upload/caa5748e-fc3e-4865-bef2-1b7bc7b1531a_google-logo.png',87897,'2024-06-20 12:50:27','2024-06-20 12:50:27',1),
-       (37,'recruit',39,NULL,'google-logo.png','C:/upload/fbdc36ee-aefd-46b5-908b-ebab8161a12c_google-logo.png',87897,'2024-06-20 12:50:32','2024-06-20 12:50:32',1),
-       (38,'recruit',8,NULL,'meta-logo.png','C:/upload/4f18b283-6dde-46ac-9df3-1de73f7fdbc7_meta-logo.png',135790,'2024-06-20 12:43:27','2024-06-20 12:43:27',1),
-       (39,'recruit',16,NULL,'meta-logo.png','C:/upload/90f5737c-4f23-4696-9f90-2379b614f9cf_meta-logo.png',135790,'2024-06-20 12:50:58','2024-06-20 12:50:58',1),
-       (40,'recruit',24,NULL,'meta-logo.png','C:/upload/efc83ad3-0294-4214-96c5-6cf3e128198d_meta-logo.png',135790,'2024-06-20 12:51:04','2024-06-20 12:51:04',1),
-       (41,'recruit',32,NULL,'meta-logo.png','C:/upload/6f6a9906-da06-4e0e-b73a-2c01533f2bc1_meta-logo.png',135790,'2024-06-20 12:51:09','2024-06-20 12:51:09',1),
-       (42,'recruit',40,NULL,'meta-logo.png','C:/upload/550987e1-40ca-4990-b27f-cac0c9f804eb_meta-logo.png',135790,'2024-06-20 12:51:15','2024-06-20 12:51:15',1);
-
-
+INSERT INTO
+    `file` (
+        `file_no`,
+        `parent_table`,
+        `parent_no`,
+        `file_name`,
+        `origin_name`,
+        `file_path`,
+        `file_size`,
+        `reg_date`,
+        `upd_date`,
+        `file_code`
+    )
+VALUES (
+        3,
+        'recruit',
+        1,
+        NULL,
+        'HJB-logo.png',
+        'C:/upload/cdeb601f-a295-49c2-a8b3-e79fabcaae32_HJB-logo.png',
+        9279,
+        '2024-06-20 02:16:07',
+        '2024-06-20 02:16:07',
+        1
+    ),
+    (
+        4,
+        'recruit',
+        9,
+        NULL,
+        'HJB-logo.png',
+        'C:/upload/af6debc8-2e8b-4e92-84d7-d8f034dfd036_HJB-logo.png',
+        9279,
+        '2024-06-20 02:16:14',
+        '2024-06-20 02:16:14',
+        1
+    ),
+    (
+        5,
+        'recruit',
+        17,
+        NULL,
+        'HJB-logo.png',
+        'C:/upload/21367aca-807a-42c9-99e4-d898eba22a83_HJB-logo.png',
+        9279,
+        '2024-06-20 02:16:20',
+        '2024-06-20 02:16:20',
+        1
+    ),
+    (
+        6,
+        'recruit',
+        25,
+        NULL,
+        'HJB-logo.png',
+        'C:/upload/91401f26-00d0-4b14-9f01-ea3246be2cf6_HJB-logo.png',
+        9279,
+        '2024-06-20 02:16:31',
+        '2024-06-20 02:16:31',
+        1
+    ),
+    (
+        7,
+        'recruit',
+        33,
+        NULL,
+        'HJB-logo.png',
+        'C:/upload/72605c52-683d-4a6f-a5e4-021ccba47ec7_HJB-logo.png',
+        9279,
+        '2024-06-20 02:16:42',
+        '2024-06-20 02:16:42',
+        1
+    ),
+    (
+        8,
+        'recruit',
+        2,
+        NULL,
+        'samsung-logo.png',
+        'C:/upload/23ab4599-3687-483f-94f6-fbc8c7f55eeb_samsung-logo.png',
+        19466,
+        '2024-06-20 02:17:18',
+        '2024-06-20 02:17:18',
+        1
+    ),
+    (
+        9,
+        'recruit',
+        10,
+        NULL,
+        'samsung-logo.png',
+        'C:/upload/03b5c843-2b72-4b39-aab5-6d36da8ee052_samsung-logo.png',
+        19466,
+        '2024-06-20 02:17:24',
+        '2024-06-20 02:17:24',
+        1
+    ),
+    (
+        10,
+        'recruit',
+        18,
+        NULL,
+        'samsung-logo.png',
+        'C:/upload/cf304b62-c630-491c-b648-24311bc4eff3_samsung-logo.png',
+        19466,
+        '2024-06-20 02:17:32',
+        '2024-06-20 02:17:32',
+        1
+    ),
+    (
+        11,
+        'recruit',
+        26,
+        NULL,
+        'samsung-logo.png',
+        'C:/upload/5491a6e2-0563-4a57-bd28-1e2beddf0e64_samsung-logo.png',
+        19466,
+        '2024-06-20 02:17:38',
+        '2024-06-20 02:17:38',
+        1
+    ),
+    (
+        12,
+        'recruit',
+        34,
+        NULL,
+        'samsung-logo.png',
+        'C:/upload/5ecf8ea0-ae5b-4980-b2dd-2067d90c62d5_samsung-logo.png',
+        19466,
+        '2024-06-20 02:17:44',
+        '2024-06-20 02:17:44',
+        1
+    ),
+    (
+        13,
+        'recruit',
+        3,
+        NULL,
+        'hyundai-logo.png',
+        'C:/upload/8a9cde39-1fb7-4be6-ab93-89ace572e0d9_hyundai-logo.png',
+        47444,
+        '2024-06-20 02:18:12',
+        '2024-06-20 02:18:12',
+        1
+    ),
+    (
+        14,
+        'recruit',
+        11,
+        NULL,
+        'hyundai-logo.png',
+        'C:/upload/b45c7ca5-50e6-4c58-aae6-90d8ae2ad6eb_hyundai-logo.png',
+        47444,
+        '2024-06-20 02:18:18',
+        '2024-06-20 02:18:18',
+        1
+    ),
+    (
+        15,
+        'recruit',
+        19,
+        NULL,
+        'hyundai-logo.png',
+        'C:/upload/29d94947-3d1d-4919-b278-171d79167284_hyundai-logo.png',
+        47444,
+        '2024-06-20 02:18:25',
+        '2024-06-20 02:18:25',
+        1
+    ),
+    (
+        16,
+        'recruit',
+        27,
+        NULL,
+        'hyundai-logo.png',
+        'C:/upload/b62a74c7-a98d-4acd-b30f-2bf64e90efeb_hyundai-logo.png',
+        47444,
+        '2024-06-20 02:18:32',
+        '2024-06-20 02:18:32',
+        1
+    ),
+    (
+        17,
+        'recruit',
+        35,
+        NULL,
+        'hyundai-logo.png',
+        'C:/upload/3323e907-d948-4211-8585-cbd259e4e74a_hyundai-logo.png',
+        47444,
+        '2024-06-20 02:18:39',
+        '2024-06-20 02:18:39',
+        1
+    ),
+    (
+        18,
+        'recruit',
+        4,
+        NULL,
+        'lg-logo.png',
+        'C:/upload/26befd28-d191-4db1-a11c-0ca24280ce55_lg-logo.png',
+        5611,
+        '2024-06-20 02:19:09',
+        '2024-06-20 02:19:09',
+        1
+    ),
+    (
+        19,
+        'recruit',
+        12,
+        NULL,
+        'lg-logo.png',
+        'C:/upload/8fc5aefb-57bc-4be5-a3c3-3c5ddda21fe6_lg-logo.png',
+        5611,
+        '2024-06-20 02:19:15',
+        '2024-06-20 02:19:15',
+        1
+    ),
+    (
+        20,
+        'recruit',
+        20,
+        NULL,
+        'lg-logo.png',
+        'C:/upload/212fc5ca-fb82-488a-9cc8-dd8431726148_lg-logo.png',
+        5611,
+        '2024-06-20 02:19:21',
+        '2024-06-20 02:19:21',
+        1
+    ),
+    (
+        21,
+        'recruit',
+        28,
+        NULL,
+        'lg-logo.png',
+        'C:/upload/bf024ebd-4203-48bf-b941-d436a7fbeea1_lg-logo.png',
+        5611,
+        '2024-06-20 02:19:28',
+        '2024-06-20 02:19:28',
+        1
+    ),
+    (
+        22,
+        'recruit',
+        36,
+        NULL,
+        'lg-logo.png',
+        'C:/upload/4dc50110-3981-400c-bedb-0a626ff129cc_lg-logo.png',
+        5611,
+        '2024-06-20 02:19:36',
+        '2024-06-20 02:19:36',
+        1
+    ),
+    (
+        23,
+        'recruit',
+        5,
+        NULL,
+        'apple-logo.png',
+        'C:/upload/f1ca50f4-7dc6-4511-aed1-662afab73d0b_apple-logo.png',
+        12354,
+        '2024-06-20 02:21:01',
+        '2024-06-20 02:21:01',
+        1
+    ),
+    (
+        24,
+        'recruit',
+        13,
+        NULL,
+        'apple-logo.png',
+        'C:/upload/9109f101-d668-4a4f-9ded-c607de8c19d6_apple-logo.png',
+        12354,
+        '2024-06-20 02:21:09',
+        '2024-06-20 02:21:09',
+        1
+    ),
+    (
+        25,
+        'recruit',
+        21,
+        NULL,
+        'apple-logo.png',
+        'C:/upload/328b9bc0-cd13-48aa-bc25-3f03b70d3d2c_apple-logo.png',
+        12354,
+        '2024-06-20 02:21:27',
+        '2024-06-20 02:21:27',
+        1
+    ),
+    (
+        26,
+        'recruit',
+        29,
+        NULL,
+        'apple-logo.png',
+        'C:/upload/4c24dd2d-24b1-4821-8946-49d6786695d4_apple-logo.png',
+        12354,
+        '2024-06-20 02:21:37',
+        '2024-06-20 02:21:37',
+        1
+    ),
+    (
+        27,
+        'recruit',
+        37,
+        NULL,
+        'apple-logo.png',
+        'C:/upload/fae91d7f-0572-4797-85d0-af5c556bdf9c_apple-logo.png',
+        12354,
+        '2024-06-20 02:21:52',
+        '2024-06-20 02:21:52',
+        1
+    ),
+    (
+        28,
+        'recruit',
+        6,
+        NULL,
+        'tesla-logo.png',
+        'C:/upload/8dda9693-8230-4192-8cd7-cfb29cc978db_tesla-logo.png',
+        6915,
+        '2024-06-20 12:42:26',
+        '2024-06-20 12:42:26',
+        1
+    ),
+    (
+        29,
+        'recruit',
+        14,
+        NULL,
+        'tesla-logo.png',
+        'C:/upload/ed94c8c1-9c31-45f7-adf7-c6bf595ae326_tesla-logo.png',
+        6915,
+        '2024-06-20 12:49:31',
+        '2024-06-20 12:49:31',
+        1
+    ),
+    (
+        30,
+        'recruit',
+        22,
+        NULL,
+        'tesla-logo.png',
+        'C:/upload/e8cc657c-fe9a-4766-8a14-05993439deab_tesla-logo.png',
+        6915,
+        '2024-06-20 12:49:37',
+        '2024-06-20 12:49:37',
+        1
+    ),
+    (
+        31,
+        'recruit',
+        30,
+        NULL,
+        'tesla-logo.png',
+        'C:/upload/2c972925-5d4d-42fd-931e-1a18ca988cda_tesla-logo.png',
+        6915,
+        '2024-06-20 12:49:46',
+        '2024-06-20 12:49:46',
+        1
+    ),
+    (
+        32,
+        'recruit',
+        38,
+        NULL,
+        'tesla-logo.png',
+        'C:/upload/d04b82fd-f081-4f5f-a6a1-e1b3123237b7_tesla-logo.png',
+        6915,
+        '2024-06-20 12:49:52',
+        '2024-06-20 12:49:52',
+        1
+    ),
+    (
+        33,
+        'recruit',
+        7,
+        NULL,
+        'google-logo.png',
+        'C:/upload/e5fb4375-b0ef-47fc-b370-6575f2461513_google-logo.png',
+        87897,
+        '2024-06-20 12:43:09',
+        '2024-06-20 12:43:09',
+        1
+    ),
+    (
+        34,
+        'recruit',
+        15,
+        NULL,
+        'google-logo.png',
+        'C:/upload/a4ebb9ad-a3f1-4c56-a33f-4d2ceec9da24_google-logo.png',
+        87897,
+        '2024-06-20 12:50:17',
+        '2024-06-20 12:50:17',
+        1
+    ),
+    (
+        35,
+        'recruit',
+        23,
+        NULL,
+        'google-logo.png',
+        'C:/upload/7e9e7173-4504-4ea4-93dd-b8d81ce0105f_google-logo.png',
+        87897,
+        '2024-06-20 12:50:21',
+        '2024-06-20 12:50:21',
+        1
+    ),
+    (
+        36,
+        'recruit',
+        31,
+        NULL,
+        'google-logo.png',
+        'C:/upload/caa5748e-fc3e-4865-bef2-1b7bc7b1531a_google-logo.png',
+        87897,
+        '2024-06-20 12:50:27',
+        '2024-06-20 12:50:27',
+        1
+    ),
+    (
+        37,
+        'recruit',
+        39,
+        NULL,
+        'google-logo.png',
+        'C:/upload/fbdc36ee-aefd-46b5-908b-ebab8161a12c_google-logo.png',
+        87897,
+        '2024-06-20 12:50:32',
+        '2024-06-20 12:50:32',
+        1
+    ),
+    (
+        38,
+        'recruit',
+        8,
+        NULL,
+        'meta-logo.png',
+        'C:/upload/4f18b283-6dde-46ac-9df3-1de73f7fdbc7_meta-logo.png',
+        135790,
+        '2024-06-20 12:43:27',
+        '2024-06-20 12:43:27',
+        1
+    ),
+    (
+        39,
+        'recruit',
+        16,
+        NULL,
+        'meta-logo.png',
+        'C:/upload/90f5737c-4f23-4696-9f90-2379b614f9cf_meta-logo.png',
+        135790,
+        '2024-06-20 12:50:58',
+        '2024-06-20 12:50:58',
+        1
+    ),
+    (
+        40,
+        'recruit',
+        24,
+        NULL,
+        'meta-logo.png',
+        'C:/upload/efc83ad3-0294-4214-96c5-6cf3e128198d_meta-logo.png',
+        135790,
+        '2024-06-20 12:51:04',
+        '2024-06-20 12:51:04',
+        1
+    ),
+    (
+        41,
+        'recruit',
+        32,
+        NULL,
+        'meta-logo.png',
+        'C:/upload/6f6a9906-da06-4e0e-b73a-2c01533f2bc1_meta-logo.png',
+        135790,
+        '2024-06-20 12:51:09',
+        '2024-06-20 12:51:09',
+        1
+    ),
+    (
+        42,
+        'recruit',
+        40,
+        NULL,
+        'meta-logo.png',
+        'C:/upload/550987e1-40ca-4990-b27f-cac0c9f804eb_meta-logo.png',
+        135790,
+        '2024-06-20 12:51:15',
+        '2024-06-20 12:51:15',
+        1
+    );
 
 -- 채용공고 파일
-INSERT INTO `file` (`file_no`,`parent_table`,`parent_no`,`file_name`,`origin_name`,`file_path`,`file_size`,`reg_date`,`upd_date`,`file_code`) 
-VALUES (43,'recruit',1,NULL,'HJB-poster.png','C:/upload/b3ed9fba-6bfc-458b-af87-7147ae45c981_HJB-poster.png',252482,'2024-06-20 05:15:41','2024-06-20 05:15:41',0),
-       (44,'recruit',2,NULL,'samsung-poster.jpg','C:/upload/c726faea-5664-43df-88d8-48f90862a3df_samsung-poster.jpg',594042,'2024-06-20 05:16:15','2024-06-20 05:16:15',0),
-       (45,'recruit',3,NULL,'hyundai-poster.jpg','C:/upload/3ff0c4b7-1ea3-49c5-b034-690a5c57acfb_hyundai-poster.jpg',338876,'2024-06-20 05:16:44','2024-06-20 05:16:44',0),
-       (46,'recruit',4,NULL,'lg-poster.png','C:/upload/94e21a7f-b76d-4f0b-9772-d22559cf9754_lg-poster.png',180645,'2024-06-20 05:17:28','2024-06-20 05:17:28',0),
-       (47,'recruit',5,NULL,'apple-poster.png','C:/upload/88ac41d1-6648-4b6d-9eee-7e9174199dda_apple-poster.png',167945,'2024-06-20 05:17:54','2024-06-20 05:17:54',0);
-
+INSERT INTO
+    `file` (
+        `file_no`,
+        `parent_table`,
+        `parent_no`,
+        `file_name`,
+        `origin_name`,
+        `file_path`,
+        `file_size`,
+        `reg_date`,
+        `upd_date`,
+        `file_code`
+    )
+VALUES (
+        43,
+        'recruit',
+        1,
+        NULL,
+        'HJB-poster.png',
+        'C:/upload/b3ed9fba-6bfc-458b-af87-7147ae45c981_HJB-poster.png',
+        252482,
+        '2024-06-20 05:15:41',
+        '2024-06-20 05:15:41',
+        0
+    ),
+    (
+        44,
+        'recruit',
+        2,
+        NULL,
+        'samsung-poster.jpg',
+        'C:/upload/c726faea-5664-43df-88d8-48f90862a3df_samsung-poster.jpg',
+        594042,
+        '2024-06-20 05:16:15',
+        '2024-06-20 05:16:15',
+        0
+    ),
+    (
+        45,
+        'recruit',
+        3,
+        NULL,
+        'hyundai-poster.jpg',
+        'C:/upload/3ff0c4b7-1ea3-49c5-b034-690a5c57acfb_hyundai-poster.jpg',
+        338876,
+        '2024-06-20 05:16:44',
+        '2024-06-20 05:16:44',
+        0
+    ),
+    (
+        46,
+        'recruit',
+        4,
+        NULL,
+        'lg-poster.png',
+        'C:/upload/94e21a7f-b76d-4f0b-9772-d22559cf9754_lg-poster.png',
+        180645,
+        '2024-06-20 05:17:28',
+        '2024-06-20 05:17:28',
+        0
+    ),
+    (
+        47,
+        'recruit',
+        5,
+        NULL,
+        'apple-poster.png',
+        'C:/upload/88ac41d1-6648-4b6d-9eee-7e9174199dda_apple-poster.png',
+        167945,
+        '2024-06-20 05:17:54',
+        '2024-06-20 05:17:54',
+        0
+    );
 
 -- 도희아 이거야!!!!!!!!!
 -- 이력서 지원 후 기업 지원한 이력서에서 1개 밖에 없어서 여기서 추가해줄거임
-INSERT INTO `apply_employee` (`check`, `cv_no`, `recruit_no`) 
-VALUE 
-(-1, 1, 1),
-(-1, 2, 1),
-(-1, 3, 1),
-(-1, 4, 1);
+INSERT INTO
+    `apply_employee` (
+        `check`,
+        `cv_no`,
+        `recruit_no`
+    ) VALUE (-1, 1, 1),
+    (-1, 2, 1),
+    (-1, 3, 1),
+    (-1, 4, 1);
 
--- 지원한 채용공고 테스트 데이터 
--- INSERT INTO `apply_employee` (`check`, `cv_no`, `recruit_no`) 
--- VALUE 
+-- 지원한 채용공고 테스트 데이터
+-- INSERT INTO `apply_employee` (`check`, `cv_no`, `recruit_no`)
+-- VALUE
 -- (-1, 5, 2),
 -- (-1, 5, 3),
 -- (-1, 5, 4),
@@ -1769,7 +2406,7 @@ VALUE
 -- (-1, 5, 8),
 -- (-1, 5, 9);
 
--- 제출된 이력서 페이징 테스트용 
+-- 제출된 이력서 페이징 테스트용
 -- INSERT INTO
 --     cv (
 --         cv_no,
@@ -1779,7 +2416,7 @@ VALUE
 --         cv_reg_date,
 --         cv_upd_date
 --     )
--- VALUES 
+-- VALUES
 --     (
 --         5,
 --         1,
@@ -1826,24 +2463,33 @@ VALUE
 --     );
 
 -- 제출된 이력서 페이징 테스트용
--- INSERT INTO `apply_employee` (`check`, `cv_no`, `recruit_no`) 
--- VALUE 
+-- INSERT INTO `apply_employee` (`check`, `cv_no`, `recruit_no`)
+-- VALUE
 -- (-1, 5, 1),
 -- (-1, 6, 1),
 -- (-1, 7, 1),
 -- (-1, 8, 1);
 
-
-
--- 채용공고 직접 작성 ( HJB ) 
-INSERT INTO `recruit` (recruit_no, com_no, recruit_title, recruit_content, recruit_responsibilities, recruit_qualifications, recruit_preferred_qualifications, recruit_reg_date)
-VALUES 
-    (41, 6, '풀스택 개발자 채용', 
-    '우리 회사는 다양한 웹 기반 애플리케이션 및 서비스를 개발하는 IT 기업입니다. 저희 팀은 현재 풀스택 개발자를 모집하고 있습니다. 풀스택 개발자는 프론트엔드와 백엔드 모두에서 활동하며, 최신 기술과 도구를 활용하여 사용자 경험을 향상시키는 솔루션을 제공합니다.', 
-    '프론트엔드와 백엔드 개발 및 유지보수',
-    '컴퓨터 공학 또는 관련 전공 학사 학위',
-    'React 또는 Angular와 같은 프론트엔드 프레임워크 경험',
-    'Node.js 또는 Spring Boot와 같은 백엔드 프레임워크 경험 우대',
-    '2024-06-20');
-
-
+-- 채용공고 직접 작성 ( HJB )
+INSERT INTO
+    `recruit` (
+        recruit_no,
+        com_no,
+        recruit_title,
+        recruit_content,
+        recruit_responsibilities,
+        recruit_qualifications,
+        recruit_preferred_qualifications,
+        recruit_reg_date
+    )
+VALUES (
+        41,
+        6,
+        '풀스택 개발자 채용',
+        '우리 회사는 다양한 웹 기반 애플리케이션 및 서비스를 개발하는 IT 기업입니다. 저희 팀은 현재 풀스택 개발자를 모집하고 있습니다. 풀스택 개발자는 프론트엔드와 백엔드 모두에서 활동하며, 최신 기술과 도구를 활용하여 사용자 경험을 향상시키는 솔루션을 제공합니다.',
+        '프론트엔드와 백엔드 개발 및 유지보수',
+        '컴퓨터 공학 또는 관련 전공 학사 학위',
+        'React 또는 Angular와 같은 프론트엔드 프레임워크 경험',
+        'Node.js 또는 Spring Boot와 같은 백엔드 프레임워크 경험 우대',
+        '2024-06-20'
+    );

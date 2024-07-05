@@ -48,6 +48,7 @@
     <result property="cvRegDate" column="cvRegDate"/>
     <result property="cvUpdDate" column="cvUpdDate"/>
     <result property="applyNo" column="applyNo"/> <!-- applyNo 추가 -->
+    <result property="score" column="score"/> <!-- score 추가 -->
     
     <association property="user" javaType="com.finder.project.user.dto.Users">
         <id property="userNo" column="user_userNo"/>
@@ -362,6 +363,7 @@
            u.user_gender AS user_userGender,
            u.ENABLED AS user_enabled,
            ae.apply_no AS applyNo, 
+           ae.score AS score, 
            r.recruit_title AS recruit_title,
            r.recruit_reg_date AS recruit_reg_date
     FROM cv c
@@ -372,6 +374,15 @@
     ORDER BY c.cv_reg_date DESC
     LIMIT #{page.index}, #{page.rows};
 </select>
+
+<!--  이거 설명하면 될듯 -->
+<insert id="cvToScore" parameterType="map">
+    INSERT INTO apply_employee (apply_no, cv_no, score)
+    VALUES (#{applyNo}, #{cvNo}, #{score})
+    ON DUPLICATE KEY UPDATE
+        score = IF(#{cvNo} = cv_no, VALUES(score), score)
+</insert>
+
 
   <!-- 제출된 이력서 페이징 -->
   <!-- <select id="countResumes" resultType="int">

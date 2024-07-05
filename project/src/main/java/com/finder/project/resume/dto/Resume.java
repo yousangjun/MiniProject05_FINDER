@@ -25,15 +25,25 @@ public class Resume {
     private List<Education> educationList = new ArrayList<>();
     private List<EmploymentHistory> employmentHistoryList = new ArrayList<>();
     private Users user;
-
+    
+    
     //파일
     MultipartFile thumbnail;
     List<MultipartFile> file;
     private int fileNo;
     private Option option;
-
-
+    
+    
     private int applyNo;
+    private String score ;
+
+
+
+    private List<Integer> applyNoList;
+    private List<String> scoreList;
+    private List<Integer> cvNoList;                   
+
+
     private List<RecruitPost> recruitPost;
 
     

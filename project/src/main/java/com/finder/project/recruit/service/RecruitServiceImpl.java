@@ -1,7 +1,9 @@
 package com.finder.project.recruit.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -267,6 +269,7 @@ public class RecruitServiceImpl implements RecruitService {
         return recruitMapper.applyCvList(userNo, page);
     }
 
+    // 컴으로 제출된 이력서
     @Override
     public List<Resume> applyCom(int comNo, Page page) throws Exception {
 
@@ -274,6 +277,17 @@ public class RecruitServiceImpl implements RecruitService {
         page.setTotal(total);
 
         return recruitMapper.applyCom(comNo, page);
+    }
+    // cv로 이력서 점수 넣기
+    @Override
+    public int cvToScore(int applyNo, String score, int cvNo) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("applyNo", applyNo);
+        params.put("score", score);
+        params.put("cvNo", cvNo);
+        
+        
+        return recruitMapper.cvToScore(params);
     }
 
     @Override
@@ -330,5 +344,7 @@ public class RecruitServiceImpl implements RecruitService {
 
         return recruitMapper.getCheckByRecruitNo(recruitNo, userNo);
     }
+
+
 
 }

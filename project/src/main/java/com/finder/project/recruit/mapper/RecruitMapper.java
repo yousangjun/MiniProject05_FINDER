@@ -1,6 +1,7 @@
 package com.finder.project.recruit.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,7 +20,8 @@ import com.finder.project.resume.dto.Resume;
 public interface RecruitMapper {
 
     // 채용공고 목록
-    public List<RecruitPost> recruitList(@Param("page") RecruitPage page, @Param("option") Option option) throws Exception;
+    public List<RecruitPost> recruitList(@Param("page") RecruitPage page, @Param("option") Option option)
+            throws Exception;
 
     // 채용공고 등록
     public int recruitPost(RecruitPost recruitPost) throws Exception;
@@ -28,20 +30,26 @@ public interface RecruitMapper {
 
     // keyword
     public int max() throws Exception;
-    // public int recruitKeyword(@Param("recruitNo") int recruitNo, @Param("recruitKeyword") String keyword);
+
+    // public int recruitKeyword(@Param("recruitNo") int recruitNo,
+    // @Param("recruitKeyword") String keyword);
     public int recruitKeyword(Keyword keyword) throws Exception;
     // keyword 끝
 
     // 채용공고 상세조회
     public RecruitPost recruitRead(int recruitNo) throws Exception;
+
     // public List<Keyword> recruitReadKeyword(int recruitNo) throws Exception;
     // 채용공고 회사정보
     public CompanyDetail selectCompanyDetailsWithRecruit(int comNo) throws Exception;
 
     // 등록 한 채용공고 목록
     public List<RecruitPost> postsRecruitList(int comNo) throws Exception;
+
     // 등록 한 채용공고 목록 페이징용 [승헌]
-    public List<RecruitPost> pagedPostsRecruitList(@Param("comNo") int comNo, @Param("page") Page page) throws Exception;
+    public List<RecruitPost> pagedPostsRecruitList(@Param("comNo") int comNo, @Param("page") Page page)
+            throws Exception;
+
     // 등록 한 채용공고 목록 페이지당 개수 [승헌]
     public int countpostsRecruitList(int comNo) throws Exception;
 
@@ -56,13 +64,12 @@ public interface RecruitMapper {
 
     // 키워드 삭제
     public int deleteKeyword(int recruitNo) throws Exception;
-    
+
     // 키워드 삭제 후 등록 할 때
     public int recruitKeyword(int recruitNo, String recruitKeyword);
 
-    
-    public List<RecruitPost> selectRecruitsByNos(@Param("list") List<Integer> recruitNos, @Param("page") Page page );
-    
+    public List<RecruitPost> selectRecruitsByNos(@Param("list") List<Integer> recruitNos, @Param("page") Page page);
+
     // 연관검색
     public List<String> selectCompanyNameList();
 
@@ -72,15 +79,15 @@ public interface RecruitMapper {
     // 지원
     public int apply(@Param("recruitNo") int recruitNo, @Param("cvNo") int cvNo) throws Exception;
 
-    public List<RecruitPost> applyCvList(@Param("userNo") int userNo, @Param("page") Page page ) throws Exception;
-    public int countApplyCvList(@Param("userNo") int userNo) throws Exception;
+    public List<RecruitPost> applyCvList(@Param("userNo") int userNo, @Param("page") Page page) throws Exception;
 
+    public int countApplyCvList(@Param("userNo") int userNo) throws Exception;
 
     // 제출된 이력서 내역
     public List<Resume> applyCom(@Param("comNo") int comNo, @Param("page") Page page) throws Exception;
+
     // 제출된 이력서 페이징 게시물 개수
     public int countResumes(@Param("comNo") int comNo) throws Exception;
-
 
     public Company userNoToCom(int userNo) throws Exception;
 
@@ -96,9 +103,13 @@ public interface RecruitMapper {
 
     // 채용공고 등록 후 퀀티티 1감소
     public int updateRemainQuantityByOrderNo(Order order);
+
     // 채용공고 등록 후 퀀티티 0 일때 엑세스 0으로 감소
     public int updateRemainQuantityAndAccessOrderByOrderNo(Order order);
 
-    public int getCheckByRecruitNo(@Param("recruitNo") int recruitNo,@Param("userNo") int userNo);
+    public int getCheckByRecruitNo(@Param("recruitNo") int recruitNo, @Param("userNo") int userNo);
+
+    // 지원한 이력서 점수
+    public int cvToScore(Map<String, Object> params) throws Exception;
 
 }
