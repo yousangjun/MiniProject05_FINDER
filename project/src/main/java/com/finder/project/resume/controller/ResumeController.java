@@ -144,18 +144,19 @@ public class ResumeController {
      * @throws Exception
      */
     @GetMapping("/cv_create_user")
-    public ResponseEntity<?> CvCreate(Users user) throws Exception {
+    public ResponseEntity<?> CvCreate(@RequestParam("userNo") Integer userNo) throws Exception {
 
         try {
             // insert 한 서비스로 insert수행
-            int userNo = user.getUserNo();
             int resumeCreate = resumeService.create(userNo);
             // 새 이력서 등록하고 이력서 번호 가져와야함
             int cvNo = resumeService.maxPk();
             log.info("cvNo : " + cvNo);
             if (resumeCreate > 0) {
                 log.info("이력서 만드는 걸 성공했어요");
-                return new ResponseEntity<>(resumeCreate, HttpStatus.OK);
+                log.info("CVNo 몇이냐 씨발아 : " + cvNo);
+
+                return new ResponseEntity<>(cvNo, HttpStatus.OK);
             } else {
                 log.info("이력서 만들기 실패");
             }
@@ -258,7 +259,9 @@ public class ResumeController {
      * @throws Exception
      */
     @PostMapping("/cv_update_user")
-    public String updateUserPro(HttpSession session, Resume resume) throws Exception {
+    public ResponseEntity<?> updateUserPro(Resume resume) throws Exception {       
+        
+        log.info("자소서,제목받아오는지 체크 : " + resume);
 
         resume.setCvNo(resumeService.maxPk());
 
@@ -273,11 +276,11 @@ public class ResumeController {
         // 데이터 처리 성공 시
         if (result > 0) {
             log.info(cvNo + "번의 정보가 처음 입력되었어요.");
-            return "redirect:/resume/cv_list_user"; // 성공 시 이력서를 다시 읽는 페이지로 리다이렉트
+            return new ResponseEntity<>(resume, HttpStatus.OK);
         }
 
         // 데이터 처리 실패 시
-        return "redirect:/resume/cv_create_user?cvNo=" + cvNo + "&error"; // 실패 시 오류 메시지와 함께 이력서 읽는 페이지로 리다이렉트
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -499,11 +502,10 @@ public class ResumeController {
                 fileNameList.add(multipartFile.getOriginalFilename());
                 fileService.upload(file);
             }
-
+            return new ResponseEntity<>(fileNameList, HttpStatus.OK);
         }
-
         // fileService.upload(file);
-        return new ResponseEntity<>(fileNameList, HttpStatus.OK);
+        return new ResponseEntity<>(fileNameList, HttpStatus.BAD_REQUEST);
     }
 
     // 이력서 수정
