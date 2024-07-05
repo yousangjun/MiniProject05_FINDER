@@ -744,16 +744,8 @@ public class CompanyController {
 
     // AI 평가 화면 ///--------------------------------------------------------------------------------------------------------------
     @GetMapping("/score_com")
-    public String score_com(Model model, HttpSession session, Page page) throws Exception {
-        Users user = (Users) session.getAttribute("user");
-
-        if (user == null) {
-            // 사용자 정보가 없으면 로그인 페이지로 리다이렉트
-            return "redirect:/login";
-        }
-        int comNo = user.getCompany().getComNo();
-        // log.info(comNo + "comNO???????@@!@#!@#@!#?!@#?!@?#?!#"); 찍힘 
-
+    public ResponseEntity<?> score_com(@RequestParam("comNo") Integer comNo, Page page) throws Exception {
+        Map<String, Object> response = new HashMap<>();
         List<Resume> applyCvList = recruitService.applyCom(comNo, page);
 
         for (Resume resume : applyCvList) {
@@ -761,12 +753,14 @@ public class CompanyController {
             // log.info("??????!@#!@#!@#@!" + resume);
         }
 
-        model.addAttribute("resumeList", applyCvList);
-        model.addAttribute("page", page);
 
+        response.put("applyCvList", applyCvList);
+        response.put("page", page);
 
+        // model.addAttribute("resumeList", applyCvList);
+        // model.addAttribute("page", page);
 
-        return "/company/score_com";
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
     
 
