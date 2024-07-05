@@ -16,6 +16,12 @@
         SELECT * FROM `order`
         WHERE order_no = #{orderNo}
     </select>
+    <!-- 주문 조회 -->
+    <select id="selectOrderByUserNo" resultType="Order">
+        SELECT * FROM `order`
+        WHERE user_no = #{userNo}
+    </select>
+
 
     <!-- 결제 조회 -->
     <select id="selectCredit" resultType="Credit">

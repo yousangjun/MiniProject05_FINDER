@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.finder.project.company.dto.Order;
+import com.finder.project.company.service.CompanyService;
 import com.finder.project.main.dto.Files;
 import com.finder.project.main.dto.Option;
 import com.finder.project.main.service.FileService;
@@ -28,6 +30,9 @@ public class MainController {
 
     @Autowired
     RecruitService recruitService;
+
+    @Autowired
+    CompanyService companyService;
 
     @Autowired
     RecruitMapper recruitMapper;
@@ -170,5 +175,16 @@ public class MainController {
     //         return ResponseEntity.status(401).body("로그인 실패: 유효하지 않은 사용자입니다.");
     //     }
     // }
+
+
+    @GetMapping("/sidebar")
+    public ResponseEntity<?> getOrder(@RequestParam("userNo") Integer userNo) throws Exception {       
+        Order order = companyService.selectOrderByUserNo(userNo);
+        Map<String, Object> response = new HashMap<>();
+        response.put("order", order);
+        log.info(":::::::::::::::::::Order: " + order + "::::::::::::::::::::");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
 
 }

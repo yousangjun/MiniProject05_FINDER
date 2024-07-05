@@ -94,7 +94,7 @@ const Post_jobs_com = () => {
             console.log(key, value);
         }
         try {
-            const response = await postRecruit(formData);
+            const response = await postRecruit(userNo, formData);
             console.log('Job posted successfully:', response.data);
             navigate('/'); // 성공적으로 등록된 후 네비게이트
         } catch (error) {

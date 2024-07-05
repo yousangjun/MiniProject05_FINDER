@@ -1,15 +1,11 @@
 package com.finder.project.recruit.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.finder.project.company.dto.Company;
 import com.finder.project.company.dto.CompanyDetail;
+import com.finder.project.company.dto.Order;
 import com.finder.project.company.service.CompanyService;
 import com.finder.project.main.dto.Files;
 import com.finder.project.main.dto.Page;
@@ -184,11 +180,17 @@ public class RecruitController {
     }
 
     @PostMapping("/post_jobs_com")
-    public ResponseEntity<?> postPost_jobs_com(@ModelAttribute RecruitPost recruitPost) throws Exception {
+    public ResponseEntity<?> postPost_jobs_com(@ModelAttribute RecruitPost recruitPost, @RequestParam("userNo") Integer userNo) throws Exception {
         log.info(recruitPost + " 잘담기고있니 ? recruitPost");
         int result = recruitService.recruitPost(recruitPost);
 
         if (result > 0) {
+
+            Order order = companyService.selectOrderByUserNo(userNo);
+            order.setRemainQuantity(order.getRemainQuantity() - 1);
+
+            companyService.updateOrder(order);
+
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

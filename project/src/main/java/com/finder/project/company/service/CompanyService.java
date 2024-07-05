@@ -47,6 +47,8 @@ public interface CompanyService {
     public Product selectProduct(int productNo) throws Exception;
     // 주문 조회
     public Order selectOrder(int orderNo) throws Exception;
+    // userNo 으로 주문 조회
+    public Order selectOrderByUserNo(int userNo) throws Exception;
     // 결제 조회
     public Credit selectCredit(int orderNo) throws Exception;
 
