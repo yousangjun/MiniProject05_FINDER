@@ -124,6 +124,13 @@ public class CompanyServiceImpl implements CompanyService {
         Order order = creditMapper.selectOrder(orderNo);
         return order;
     }
+    // UserNo 으로 주문 조회 
+    @Override
+    public Order selectOrderByUserNo(int userNo) throws Exception {
+        Order order = creditMapper.selectOrderByUserNo(userNo);
+        return order;
+    }
+
 
     // 주문/결제 목록 조회(조인)
     @Override

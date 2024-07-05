@@ -1,7 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { LoginContext } from '../../contexts/LoginContextProvider'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import * as sidebar from '../../apis/main/sidebar';
+
 
 const Sidebar = () => {
   const { userInfo } = useContext(LoginContext);
@@ -9,9 +11,35 @@ const Sidebar = () => {
   const userNo = userInfo ? userInfo.userNo : null;
   const navigate = useNavigate();
 
+  // 사이드메뉴 공고 작성 획수
+  const [remainQuantity, setRemainQuantity] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
 
+  useEffect(() => {
+    const fetchOrderData = async () => {
+      if (userNo) {
+        setIsLoading(true);
 
+        try {
+          const response = await sidebar.getOrder(userNo);
+          const data = response.data;
+          if (data.order) {
+            setRemainQuantity(data.order.remainQuantity);
+          }
+        } catch (error) {
+          console.error('Error fetching order data:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+  
+    fetchOrderData();
+  }, [userNo]); // remainQuantity를 의존성 배열에서 제거
+
+
+  // 이력서 작성 만들기
   const handleCreateCv = async (no) => {
 
     try {
@@ -86,7 +114,9 @@ const Sidebar = () => {
                       <img src="/img/CreditScore.png" alt="Credit Score" style={{ width: '24px' }} />
                     </div>
                     <div>
-                      {/* Replace server-side rendering logic with client-side logic if necessary */}
+                      {!isLoading && remainQuantity !== null && (
+                        <span>{remainQuantity}</span>
+                      )}
                     </div>
                   </div>
                 </div>

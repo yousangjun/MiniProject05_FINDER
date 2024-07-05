@@ -10,7 +10,7 @@ export const listNewRecruit = (newRecruitNos, page) => {
   }
 
 // post 끝
-export const postRecruit = (recruitPost) => api.post(`/recruit/post_jobs_com`, recruitPost)
+export const postRecruit = (userNo, recruitPost) => api.post(`/recruit/post_jobs_com?userNo=${userNo}`, recruitPost)
 
 export const getComToUserNo = (userNo) => api.get(`/recruit/post_jobs_com?userNo=${userNo}`)
 // post 끝
