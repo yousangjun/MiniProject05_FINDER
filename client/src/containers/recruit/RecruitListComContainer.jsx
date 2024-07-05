@@ -83,9 +83,10 @@ const RecruitListComContainer = () => {
                         {isLoading ? null : (
                             <>
                                 {!cvs || cvs.length === 0 ? (
-                                    <div className='d-flex flex-column justify-content-center mt-5 me-auto'>
-                                        <h2 className='MissingText'>제출된 이력서가 없습니다.</h2>
+                                    <div className='MissingBox d-flex flex-column justify-content-center mt-5 me-auto'>
                                         <img className='MissingImg' src="/img/ImSorry.png" alt="이력서가 없어요ㅜㅜ" />
+                                        <h3 className='MissingText'>지원받은 이력서가 없습니다.</h3>
+                                        <p className='MissingText'>이력서가 들어올 때까지 기다려주세요.</p>
                                     </div>
                                 ) : (
                                     cvs.map((cv, index) => (
