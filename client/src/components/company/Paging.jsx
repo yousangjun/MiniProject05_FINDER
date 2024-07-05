@@ -34,9 +34,11 @@ const Paging = ({ page, onPageChange, totalPages }) => {
                 </Link>
 
                 {/* 앞화살표 */}
+                { page.page != 1 &&
                 <Link className="page-item" to="#" onClick={() => page.page == 1 ? handlePageChange(1) : handlePageChange(page.page - 1)}>
                     <FontAwesomeIcon icon={faAngleLeft} />
                 </Link>
+                }
 
                 {/* 페이지네이션 */}
                 <Pages page={page} handlePageChange={handlePageChange} />
@@ -52,9 +54,11 @@ const Paging = ({ page, onPageChange, totalPages }) => {
                 })} */}
 
                 {/* 뒤화살표 */}
+                { page.page != page.end &&
                 <Link className="page-item" to="#" onClick={() => page.page == page.end ? handlePageChange(page.page) :  handlePageChange(page.page + 1)}>
                     <FontAwesomeIcon icon={faAngleRight} />
                 </Link>
+                }
 
                 {/* 맨뒤화살표 */}
                 <Link className="page-item page-end" to="#" onClick={() => handlePageChange(page.end)}>
