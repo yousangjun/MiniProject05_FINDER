@@ -1,39 +1,37 @@
-import React from 'react'
-import { useParams } from 'react-router-dom';
+import React from 'react';
 
-const EducationListItem = ({ educationList }) => {
-    const { cvNo } = useParams('');
+const EducationListItem = ({ educationList, handleDelete }) => {
 
-
-
-    console.log(`dldddjd`, educationList)
+    console.log(`dasdasdjaasd : ` , educationList[0] )
     return (
-        <>
-            {
-                educationList.map((education, index) => (
-                    <div className="d-flex flex-column w-100 h-auto" key={index}>
-                        <div className="education-card d-flex justify-content-between">
-                            <div className="flex-column col-3">
-                                <p>{education.university}</p>
-                            </div>
-                            <div className="flex-column col-3">
-                                <p>{education.major}</p>
-                            </div>
-                            <div className="flex-column col-3">
-                                <p>{education.universityStatus}</p>
-                            </div>
-                            <div className="flex-column col-3">
-                                <button type='button' className='btn del_btn'>
-                                    {/* 클릭 핸들러 추가 가능 */}
-                                </button>
-                            </div>
+        <div>
+            {educationList.map((education, index) => (
+                <div className="d-flex flex-column w-100 h-auto" key={index}>
+                    <div className="education-card d-flex justify-content-between">
+                        <div className="flex-column col-3">
+                            
+                            <p>{education.university}</p>
+                        </div>
+                        <div className="flex-column col-3">
+                            <p>{education.major}</p>
+                        </div>
+                        <div className="flex-column col-3">
+                            <p>{education.universityStatus}</p>
+                        </div>
+                        <div className="flex-column col-3">
+                            <button 
+                                type="button" 
+                                className="btn del_btn"
+                                onClick={() => handleDelete(education.educationNo)}
+                            >
+                                <span className="material-symbols-outlined">delete</span>
+                            </button>
                         </div>
                     </div>
-                ))
-            }
-        </>
+                </div>
+            ))}
+        </div>
+    );
+};
 
-    )
-}
-
-export default EducationListItem
+export default EducationListItem;

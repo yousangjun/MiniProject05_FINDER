@@ -33,7 +33,8 @@ const CvCreate_user = () => {
         name: '',               // 사용자 이름을 
         userBirth: '',          // 사용자 생년월일
         userPhone: '',          // 사용자 전화번호
-        userEmail: ''           // 사용자 이메일
+        userEmail: '',          // 사용자 이메일
+        educationNo: '',        // 학력 리스트 번호 
     });
 
     const [educationList, setEducationList] = useState([]); // 학력 이력 목록
@@ -223,12 +224,14 @@ const CvCreate_user = () => {
                 cvNo: cvNo,
             });
             const newEd = {
-
+                
                 university: formData.university,
                 major: formData.major,
                 universityStatus: formData.universityStatus,
+                educationNo: response.data.educationNo,
             };
-
+            console.log(`educationNo: `, newEd.educationNo)
+            
             setEducationList([...educationList,newEd])
 
             // fetchEducationList();
@@ -297,6 +300,19 @@ const CvCreate_user = () => {
         } catch (error) {
             console.error('파일 업로드 오류', error);
             alert('문서 업로드에 실패했습니다.');
+        }
+    };
+
+    const handleDeleteEducation = async (educationNo) => {
+
+        console.log(`educationNo 핸들에서 ::::: ` , educationNo);
+        try {
+            await axios.delete(`/resume/cv_Eddelete_user?educationNo=${educationNo}`);
+            // export const login = (username, password) => api.post(`/login?username=${username}&password=${password}`)
+            setEducationList(educationList.filter(education => education.educationNo !== educationNo));
+        } catch (error) {
+            console.error('학력 삭제 오류', error);
+            alert('에러 발생');
         }
     };
 
@@ -390,7 +406,10 @@ const CvCreate_user = () => {
                                 <div className="col-12 p-2">
                                     {/* 학력 리스트 */}
                                     <div id="education-list">
-                                        <EducationListItem educationList={educationList} />
+                                        <EducationListItem 
+                                        educationList={educationList}
+                                        handleDelete={handleDeleteEducation} 
+                                         />
                                         {/* 리스트 아이템들을 여기에 추가 */}
                                     </div>
                                 </div>
