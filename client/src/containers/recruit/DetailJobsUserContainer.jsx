@@ -163,7 +163,7 @@ const DetailJobsUserContainer = () => {
               <div className="detail-header ">
                 <div className="detail-logo justify-content-start flex-column">
                   <div>
-                    <img src={thumbnail ? `/file/img/${thumbnail.fileNo}` : '/img/no-image.png'} alt="썸네일" width="100px" height="100px" />
+                    <img src={thumbnail ? `/file/img/${thumbnail.fileNo}` : '/img/no-image.png'} alt="썸네일" style={{width:"100px", height:"100px"}} />
                   </div>
                   <div>
                     <span style={{ fontSize: '14px' }}>{recruitPost.company?.comName}</span>

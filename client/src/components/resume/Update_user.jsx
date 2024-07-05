@@ -164,6 +164,7 @@ const UpdateUser = () => {
                 </div>
 
                 <div id='passwordChange' className={`UpdatePassword d-flex flex-column p-4 ${passwordChangeVisible ? '' : 'd-none'}`}>
+                    <hr/>
                     <input type="password" name="userPw" id="userPw" placeholder='8~16자리의 영문/대소문자/숫자/특수문자 조합' required autoComplete='off' value={formData.userPw} onChange={handleInputChange} />
                     <input type="password" name="confirmPassword" id="confirm-password" required placeholder='비밀번호 확인' autoComplete='off' value={formData.confirmPassword} onChange={handleInputChange} />
                     <button id='UpdatePw' type='submit' className="pw-update-btn btn-in-short align-self-end">변경</button>

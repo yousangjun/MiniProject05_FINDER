@@ -7,6 +7,9 @@ import { LoginContext } from '../../contexts/LoginContextProvider'
 import { postedRecruit, getComToUserNo } from '../../apis/recruit/recruit.js' // postRecruit 함수 import
 import Paging from '../../components/company/Paging.jsx'
 
+import './css/RecruitListCom.css';
+
+
 const PostedJobsComContainer = () => {
     const { userInfo } = useContext(LoginContext);
     const userNo = userInfo ? userInfo.userNo : null;
@@ -74,8 +77,10 @@ const PostedJobsComContainer = () => {
                         {isLoading ? null : (
                             <>
                                 {!recruits || recruits.length === 0 ? (
-                                    <div className='d-flex flex-column justify-content-center mt-5 me-auto'>
-                                        <h1>등록한 채용공고가 없습니다.</h1>
+                                    <div className='MissingBox d-flex flex-column justify-content-center mt-5 me-auto'>
+                                        <img className='MissingImg' src="/img/writeRecruit.png" alt="작성된 공고글이 없습니다." />
+                                        <h3 className='MissingText'>작성된 공고글이 없습니다.</h3>
+                                        <p className='MissingText'>글을 작성해주세요</p>
                                     </div>
                                 ) : (
                                     recruits.map((recruit, index) => (

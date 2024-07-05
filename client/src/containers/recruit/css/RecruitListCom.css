@@ -3,14 +3,24 @@
 }
 
 .MissingImg{
-    height: 150px;
-    width: 150px;
+    height: 100px;
+    width: 100px;
     margin: auto;
     transform: scale(1.0); /* 이미지 확대 */
     transition: transform .5s; /* 시간 설정 */
 }
 
 .MissingImg:hover {
-    transform: scale(1.5);   /* 이미지 확대 */
+    transform: scale(1.3);   /* 이미지 확대 */
     transition: transform .5s;  /* 시간 설정 */
+}
+
+.MissingBox{
+    height: 250px;
+    border: inset lightskyblue;
+    border-radius: 10px;
+}
+
+.MissingBox:hover{
+    border: outset lightblue;
 }

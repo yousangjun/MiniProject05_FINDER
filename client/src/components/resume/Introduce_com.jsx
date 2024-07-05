@@ -216,7 +216,7 @@ const Introduce_com = () => {
               <h4 className='introduceCom'>매출액</h4>
             </div>
           </div>
-          <div className="ComName d-flex justify-content-between introduce-col2 mb-3">
+          <div className="ComName mt-3 d-flex justify-content-between introduce-col2 mb-3">
             <div className="w-100">
               <label htmlFor="com_represent">대표명</label>
               <input
