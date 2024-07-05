@@ -1,4 +1,4 @@
--- Active: 1711633953173@@127.0.0.1@3306@joeun
+-- Active: 1719452187084@@127.0.0.1@3306@finder
 SELECT c.*, r.*, rk.*
 FROM
     company c
@@ -922,3 +922,15 @@ SELECT COALESCE(`check`, -1) AS `check`
       FROM apply_employee
       WHERE recruit_no = 26;
 --   </select>
+
+SELECT c.*, r.*, rk.*
+    FROM company c
+    INNER JOIN recruit r ON c.com_no = r.com_no
+     LEFT JOIN (
+        SELECT rk.recruit_no, GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ') 
+        FROM recruit_keyword rk
+        GROUP BY rk.recruit_no
+    ) rk ON r.recruit_no = rk.recruit_no
+    JOIN apply_employee a ON r.recruit_no = a.recruit_no
+    JOIN cv ON a.cv_no = cv.cv_no
+    WHERE cv.user_no = 1;

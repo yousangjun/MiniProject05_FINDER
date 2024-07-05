@@ -93,7 +93,7 @@ const Sidebar = () => {
               </Link>
             </li>
             <li className="nav-item1">
-              <Link to="/recruit/recruit_list_com" className="job-item-link1 nav-link1 fw-normal fs-6">
+              <Link to="/recruit/posted_jobs_com" className="job-item-link1 nav-link1 fw-normal fs-6">
                 <div style={{ backgroundColor: '#fff', borderRadius: '8px' }} className="d-flex gap-2 p-2 ps-2">
                   <div>
                     <img src="/img/list.png" alt="List" />
@@ -108,7 +108,7 @@ const Sidebar = () => {
               <strong className="fs-5">이력서 관리</strong>
             </li>
             <li className="nav-item1">
-              <Link to="/recruit/posted_jobs_com" className="job-item-link1 nav-link1 fw-normal fs-6">
+              <Link to="/recruit/recruit_list_com" className="job-item-link1 nav-link1 fw-normal fs-6">
                 <div style={{ backgroundColor: '#fff', borderRadius: '8px' }} className="d-flex gap-2 p-2 ps-2">
                   <div>
                     <img src="/img/Documents.png" alt="Documents" />

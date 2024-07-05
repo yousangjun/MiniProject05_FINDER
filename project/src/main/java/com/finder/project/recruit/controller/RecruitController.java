@@ -305,7 +305,10 @@ public class RecruitController {
         List<RecruitPost> recruitPosts = recruitService.pagedPostsRecruitList(comNo, page);
 
         response.put("recruitPosts", recruitPosts);
+        response.put("page", page);
 
+        log.info("::::::::::::::::::::: page :::::::::::::::::::::");
+        log.info("PAGE: "  + page);
         // model.addAttribute("recruitPosts", recruitPosts);
         // model.addAttribute("page", page);
 
@@ -343,6 +346,7 @@ public class RecruitController {
 
         // 방문한 채용공고 번호를 사용하여 데이터베이스에서 채용공고 리스트를 가져온다
         List<RecruitPost> recruits = recruitService.selectRecruitsByNos(recruitNos);
+        log.info(recruits + "뭐나옴 ??");
 
 
         return new ResponseEntity<>(recruits, HttpStatus.OK);
@@ -350,17 +354,17 @@ public class RecruitController {
     
     // 지원한 채용공고
     @GetMapping("/applied_jobs_user")
-    public String applied(Model model, HttpSession session) throws Exception {
-        Users user = (Users) session.getAttribute("user");
-
-        int userNo = user.getUserNo();
+    public ResponseEntity<?> applied(@RequestParam("userNo") Integer userNo) throws Exception {
+        
+        Map<String, Object> response = new HashMap<>();
 
         List<RecruitPost> recruitPosts = recruitService.applyCvList(userNo);
         // log.info(recruitPosts +
-        // "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ re");
-
-        model.addAttribute("recruitPosts", recruitPosts);
-        return "/recruit/applied_jobs_user";
+        // "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ re")
+        // model.addAttribute("recruitPosts", recruitPosts);
+        
+        response.put("recruitPosts", recruitPosts);
+        return new ResponseEntity<>(recruitPosts, HttpStatus.OK);
     }
 
     @ResponseBody
@@ -376,34 +380,21 @@ public class RecruitController {
         return ResponseEntity.ok(checkValue);
     }
 
-    // 등록된 채용공고 화면
+    // 제출된 이력서 화면
     @GetMapping("/recruit_list_com")
 
-    public String recruit_list_com(Model model, HttpSession session, Page page) throws Exception {
-
-        Users user = (Users) session.getAttribute("user");
-
-        if (user == null) {
-            // 사용자 정보가 없으면 로그인 페이지로 리다이렉트
-            return "redirect:/login";
-        }
-        int userNo = user.getUserNo();
-
-        Company company = recruitService.userNoToCom(userNo); // 1
-
-        int comNo = company.getComNo(); // 31
-        // log.info(comNo + "comNO???????@@!@#!@#@!#?!@#?!@?#?!#");
+    public ResponseEntity<?> recruit_list_com(@RequestParam("comNo") Integer comNo, Page page) throws Exception {
+        Map<String, Object> response = new HashMap<>();
 
         List<Resume> applyCvList = recruitService.applyCom(comNo, page);
 
         // for (Resume resume : applyCvList) {
 
         // }
+        response.put("applyCvList", applyCvList);
+        response.put("page", page);
 
-        model.addAttribute("resumeList", applyCvList);
-        model.addAttribute("page", page);
-
-        return "/recruit/recruit_list_com";
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

@@ -158,7 +158,7 @@
   <!-- 상세조회 -->
   <select id="recruitRead" resultMap="RecruitPostResultMap">
     SELECT c.*, r.*, 
-       (SELECT GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ')
+       (SELECT GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ') AS recruit_keyword
         FROM recruit_keyword rk
         WHERE rk.recruit_no = r.recruit_no) AS recruit_keyword
     FROM company c
@@ -214,12 +214,10 @@
   </select>
   <!-- 등록한 채용공고 페이징 [승헌] -->
   <select id="countpostsRecruitList" resultType="int">
-        SELECT COUNT(*) 
-        FROM company c
-        INNER JOIN recruit r ON c.com_no = r.com_no
-        LEFT JOIN recruit_keyword rk ON r.recruit_no = rk.recruit_no
-        WHERE r.com_no = #{comNo}
-  </select> 
+      SELECT COUNT(*) 
+      FROM recruit r
+      WHERE r.com_no = #{comNo}
+  </select>
 
 
   <!-- 등록한 채용공고 조회 -->
@@ -318,7 +316,7 @@
     FROM company c
     INNER JOIN recruit r ON c.com_no = r.com_no
      LEFT JOIN (
-        SELECT rk.recruit_no, GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ')
+        SELECT rk.recruit_no, GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ') AS recruit_keyword
         FROM recruit_keyword rk
         GROUP BY rk.recruit_no
     ) rk ON r.recruit_no = rk.recruit_no

@@ -7,6 +7,7 @@ import BtnLong from '../main/BtnLong';
 import { deleteFile } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
 
 
+
 const CvCreate_user = () => {
     const { userInfo } = useContext(LoginContext);
     const userNo = userInfo ? userInfo.userNo : null;

@@ -1,40 +1,67 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import './css/Paging.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesLeft, faAngleLeft, faAngleRight, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
 
-const Paging = ({ page }) => {
+
+
+
+const Paging = ({ page, onPageChange, totalPages }) => {
+    if (!page) {
+        return null;
+    }
+
+    // 유효한 페이지 범위인지 검사
+    const handlePageChange = (newPage) => {
+        console.log(`newPage : ${newPage}`);
+
+        onPageChange(newPage)
+
+        // if (newPage >= 1 && newPage <= totalPages) {
+        //     onPageChange(prev => ({ ...prev, page: newPage }));
+        // }
+    };
+
+    
+
     return (
         <div className="pagination-container justify-content-center d-flex mt-4 m-auto">
             <div className="pagination d-flex">
-                <Link className="page-item page-first" to={`/company/credit/credit_list_com?page=${page.first}`}>
+                {/* 맨앞화살표 */}
+                <Link className="page-item page-first" to="#" onClick={() => handlePageChange(1)}>
                     <FontAwesomeIcon icon={faAnglesLeft} />
                 </Link>
 
-                {page.page !== page.first && (
-                    <Link className="page-item" to={`/company/credit/credit_list_com?page=${page.prev}`}>
-                        <FontAwesomeIcon icon={faAngleLeft} />
-                    </Link>
-                )}
+                {/* 앞화살표 */}
+                { page.page != 1 &&
+                <Link className="page-item" to="#" onClick={() => page.page == 1 ? handlePageChange(1) : handlePageChange(page.page - 1)}>
+                    <FontAwesomeIcon icon={faAngleLeft} />
+                </Link>
+                }
 
-                {[...Array(page.end - page.start + 1)].map((_, i) => {
+                {/* 페이지네이션 */}
+                <Pages page={page} handlePageChange={handlePageChange} />
+
+                {/* {[...Array(Math.min(5, totalPages)).keys()].map(i => {
                     const pageNum = page.start + i;
+                    if (pageNum > totalPages) return null;
                     return pageNum === page.page ? (
                         <b key={i}><span>{pageNum}</span></b>
                     ) : (
-                        <Link key={i} to={`/company/credit/credit_list_com?page=${pageNum}`}>{pageNum}</Link>
+                        <Link key={i} className="page-item" to="#" onClick={() => handlePageChange(pageNum)}>{pageNum}</Link>
                     );
-                })}
+                })} */}
 
-                {page.page !== page.last && (
-                    <Link className="page-item" to={`/company/credit/credit_list_com?page=${page.next}`}>
-                        <FontAwesomeIcon icon={faAngleRight} />
-                    </Link>
-                )}
+                {/* 뒤화살표 */}
+                { page.page != page.end &&
+                <Link className="page-item" to="#" onClick={() => page.page == page.end ? handlePageChange(page.page) :  handlePageChange(page.page + 1)}>
+                    <FontAwesomeIcon icon={faAngleRight} />
+                </Link>
+                }
 
-                <Link className="page-item page-end" to={`/company/credit/credit_list_com?page=${page.last}`}>
+                {/* 맨뒤화살표 */}
+                <Link className="page-item page-end" to="#" onClick={() => handlePageChange(page.end)}>
                     <FontAwesomeIcon icon={faAnglesRight} />
                 </Link>
             </div>
@@ -43,3 +70,27 @@ const Paging = ({ page }) => {
 };
 
 export default Paging;
+
+
+
+// 페이지 번호 리스트
+const Pages = ({ page, handlePageChange }) => {
+        
+    const pageList = []
+    const currentPage = page.page
+    for( let i = page.start ; i <= page.end ; i++ ) {
+        pageList.push(i)
+    }
+    return (
+        <>
+            {pageList.map(item => {
+                if (currentPage > page.total) return null;
+                return item === currentPage ? (
+                    <b key={item}><span>{item}</span></b>
+                ) : (
+                    <Link key={item} className="page-item" to="#" onClick={() => handlePageChange(item)}>{item}</Link>
+                );
+            })}
+        </>
+    )
+}
