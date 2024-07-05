@@ -12,7 +12,7 @@ const NewJobsUserContainer = () => {
     const userNo = userInfo ? userInfo.userNo : null;
         console.log(newRecruitList, " ??????? "); 
     useEffect(() => {
-        if (userNo) {
+        if (userNo && newRecruitNo) {
             const newRecruitItem =  async () => {
                 await listNewRecruit(newRecruitNo)
                     .then(response => {

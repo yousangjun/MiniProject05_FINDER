@@ -934,3 +934,19 @@ SELECT c.*, r.*, rk.*
     JOIN apply_employee a ON r.recruit_no = a.recruit_no
     JOIN cv ON a.cv_no = cv.cv_no
     WHERE cv.user_no = 1;
+
+    SELECT c.*, r.*, f.file_no AS file_no, f.file_name, f.file_path, f.file_code, rk.recruit_keyword
+    FROM company c
+    INNER JOIN recruit r ON c.com_no = r.com_no
+    LEFT JOIN (
+        SELECT rk.recruit_no, GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ') AS recruit_keyword
+        FROM recruit_keyword rk
+        GROUP BY rk.recruit_no
+    ) rk ON r.recruit_no = rk.recruit_no
+    LEFT JOIN (
+        SELECT *
+        FROM file
+        WHERE parent_table = 'recruit'
+          AND file_code = 1
+    ) f ON r.recruit_no = f.parent_no
+    ORDER BY r.com_reg_date DESC
