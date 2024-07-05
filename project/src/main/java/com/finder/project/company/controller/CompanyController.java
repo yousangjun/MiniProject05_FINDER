@@ -652,6 +652,7 @@ public class CompanyController {
     
             Users user = userService.selectByUserNo(userNo);
     
+            // 이미 서비스 임플에서 해주고 있는거임, 파라미터로 Page 객체 변수 만들기 때문에 할 필요없다.
             // 페이지당 게시글 수를 전체 데이터 수로 설정
             // int totalDataCount = creditMapper.countOrderCredit(userNo);
             // Page page = new Page(1, totalDataCount); 

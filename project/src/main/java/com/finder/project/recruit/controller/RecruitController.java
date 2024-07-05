@@ -305,7 +305,10 @@ public class RecruitController {
         List<RecruitPost> recruitPosts = recruitService.pagedPostsRecruitList(comNo, page);
 
         response.put("recruitPosts", recruitPosts);
+        response.put("page", page);
 
+        log.info("::::::::::::::::::::: page :::::::::::::::::::::");
+        log.info("PAGE: "  + page);
         // model.addAttribute("recruitPosts", recruitPosts);
         // model.addAttribute("page", page);
 

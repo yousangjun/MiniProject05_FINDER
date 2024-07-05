@@ -25,9 +25,10 @@ export const deleteRecruit = (recruitNo) => api.delete(`/recruit/post_jobs_read_
 export const postedRecruit = (comNo) => api.get(`/recruit/posted_jobs_com?comNo=${comNo}&page=1` )
 
 
+
 // applied
 export const appliedRecruits = (userNo) => api.get(`/recruit/applied_jobs_user?userNo=${userNo}` )
 
 
 // listRecruit
-export const listRecruit = (comNo) => api.get(`/recruit/recruit_list_com?comNo=${comNo}` )
+export const listRecruit = (comNo, page) => api.get(`/recruit/recruit_list_com?comNo=${comNo}&page=${page}` )
