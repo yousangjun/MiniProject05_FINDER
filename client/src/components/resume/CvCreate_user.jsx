@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import BtnLong from '../main/BtnLong';
 import { deleteFile } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
 import EducationListItem from './education/EducationListItem.jsx';
+import Employ from './employmenthistory/Employ.jsx';
 
 
 
@@ -243,6 +244,7 @@ const CvCreate_user = () => {
 
     // 경력 추가 처리
     const handleAddEmploymentHistory = async () => {
+        console.log(`경력추가 핸들안에 formData의 값 : ` , formData.organization)
         try {
             const response = await axios.post('/resume/cv_Emupdate_user', {
                 userNo,
@@ -252,15 +254,18 @@ const CvCreate_user = () => {
                 duties: formData.duties,
                 cvNo: cvNo,
             });
-            setFormData({
-                ...formData,
-                organization: '',
-                startDate: '',
-                endDate: '',
-                duties: ''
-            });
-            console.log(response.data + `dasdasdasd`)
-            fetchEmploymentHistoryList();
+            const newEh = {
+
+                organization: formData.organization,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                duties: formData.duties,
+                employmentHistoryNo:response.data.employmentHistoryNo,
+            };
+            console.log(`organization: `, newEh.organization)
+
+            setEmploymentHistoryList([...employmentHistoryList,newEh])
+
         } catch (error) {
             console.error('경력 추가 오류', error);
             alert('에러 발생');
@@ -308,10 +313,19 @@ const CvCreate_user = () => {
         console.log(`educationNo 핸들에서 ::::: ` , educationNo);
         try {
             await axios.delete(`/resume/cv_Eddelete_user?educationNo=${educationNo}`);
-            // export const login = (username, password) => api.post(`/login?username=${username}&password=${password}`)
             setEducationList(educationList.filter(education => education.educationNo !== educationNo));
         } catch (error) {
             console.error('학력 삭제 오류', error);
+            alert('에러 발생');
+        }
+    };
+
+    const employDelete = async (employmentHistoryNo) => {
+        try {
+            await axios.delete(`/resume/cv_Emdelete_user?employmentHistoryNo=${employmentHistoryNo}`);
+            setEmploymentHistoryList(employmentHistoryList.filter(employment => employment.employmentHistoryNo !== employmentHistoryNo));
+        } catch (error) {
+            console.error('경력 삭제 오류', error);
             alert('에러 발생');
         }
     };
@@ -436,31 +450,36 @@ const CvCreate_user = () => {
                                 <div className="col-12 d-flex" style={{ marginLeft: '1%' }}>
                                     <div className="form-group" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>기관</span>
-                                        <input type="text" className="form-control w-55" id="university" placeholder="기관명" style={{ width: 'calc(100% - 70px)' }} value={formData.organization}
-                                            onChange={handleInputChange} />
+                                        <input type="text" className="form-control w-55" id="organization" placeholder="기관명" style={{ width: 'calc(100% - 70px)' }} value={formData.organization}
+                                            onChange={handleInputChange} name="organization"/>
                                     </div>
 
                                     <div className="form-group" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>시작일</span>
-                                        <input type="date" className="form-control w-55" id="major" placeholder="출" style={{ width: 'calc(100% - 70px)' }} value={formData.startDate}
-                                            onChange={handleInputChange} />
+                                        <input type="date" className="form-control w-55" id="startDate" placeholder="출" style={{ width: 'calc(100% - 70px)' }} value={formData.startDate}
+                                            onChange={handleInputChange} name="startDate"/>
                                     </div>
 
                                     <div className="form-group" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>끝일</span>
-                                        <input type="date" className="form-control w-55" id="universityStatus" placeholder="퇴" style={{ width: 'calc(100% - 70px)' }} value={formData.endDate}
-                                            onChange={handleInputChange} />
+                                        <input type="date" className="form-control w-55" id="endDate" placeholder="퇴" style={{ width: 'calc(100% - 70px)' }} value={formData.endDate}
+                                            onChange={handleInputChange} name="endDate"/>
                                     </div>
                                     <div className="form-group" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>담당</span>
-                                        <input type="text" className="form-control w-55" id="universityStatus" placeholder="담당업무" style={{ width: 'calc(100% - 70px)' }} value={formData.duties}
-                                            onChange={handleInputChange} />
+                                        <input type="text" className="form-control w-55" id="duties" placeholder="담당업무" style={{ width: 'calc(100% - 70px)' }} value={formData.duties}
+                                            onChange={handleInputChange} name="duties"/>
                                     </div>
                                 </div>
 
                                 <div className="col-12 p-2">
                                     {/* 경력 리스트 */}
                                     <div id="employmenthistory-list">
+
+                                        <Employ 
+                                        employmentHistoryList={employmentHistoryList}
+                                        employDelete={employDelete}
+                                        />
                                         {/* 리스트 아이템들을 여기에 추가 
                             이거 그냥 추가되는건 아니면 import 시켜야 하는 건지 알아야 함*/}
                                     </div>

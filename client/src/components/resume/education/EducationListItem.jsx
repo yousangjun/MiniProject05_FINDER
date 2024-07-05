@@ -2,7 +2,7 @@ import React from 'react';
 
 const EducationListItem = ({ educationList, handleDelete }) => {
 
-    console.log(`dasdasdjaasd : ` , educationList[0] )
+    console.log(`education 컴포넌트 안에서  : ` , educationList[0] )
     return (
         <div>
             {educationList.map((education, index) => (
