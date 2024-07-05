@@ -13,7 +13,6 @@ import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -354,17 +353,17 @@ public class RecruitController {
     
     // 지원한 채용공고
     @GetMapping("/applied_jobs_user")
-    public ResponseEntity<?> applied(@RequestParam("userNo") Integer userNo) throws Exception {
+    public ResponseEntity<?> applied(@RequestParam("userNo") Integer userNo, Page page) throws Exception {
         
         Map<String, Object> response = new HashMap<>();
+        log.info("-------------------userNo---------------" + userNo);
+        List<RecruitPost> recruitPosts = recruitService.applyCvList(userNo, page);
 
-        List<RecruitPost> recruitPosts = recruitService.applyCvList(userNo);
-        // log.info(recruitPosts +
-        // "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ re")
-        // model.addAttribute("recruitPosts", recruitPosts);
-        
         response.put("recruitPosts", recruitPosts);
-        return new ResponseEntity<>(recruitPosts, HttpStatus.OK);
+        response.put("page", page);
+        log.info("::::::::::::::::" + recruitPosts + "::::::::::::::::::");
+        log.info("::::::::::::::::" + page + "::::::::::::::::::");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ResponseBody

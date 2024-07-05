@@ -253,8 +253,12 @@ public class RecruitServiceImpl implements RecruitService {
     }
 
     @Override
-    public List<RecruitPost> applyCvList(int userNo) throws Exception {
-        return recruitMapper.applyCvList(userNo);
+    public List<RecruitPost> applyCvList(int userNo, Page page) throws Exception {
+
+        int total = recruitMapper.countApplyCvList(userNo);
+        page.setTotal(total);
+
+        return recruitMapper.applyCvList(userNo, page);
     }
 
     @Override

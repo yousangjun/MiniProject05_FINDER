@@ -60,7 +60,7 @@ public interface RecruitService {
     public int apply(int recruitNo, int cvNo) throws Exception;
 
     // 지원한 이력서list
-    public List<RecruitPost> applyCvList(int userNo) throws Exception;
+    public List<RecruitPost> applyCvList(int userNo, Page page) throws Exception;
 
     // 제출된 이력서
     public List<Resume> applyCom(int comNo, Page page) throws Exception;

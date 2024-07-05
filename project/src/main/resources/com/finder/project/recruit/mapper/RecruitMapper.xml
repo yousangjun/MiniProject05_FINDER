@@ -315,7 +315,22 @@
     SELECT c.*, r.*, rk.*
     FROM company c
     INNER JOIN recruit r ON c.com_no = r.com_no
-     LEFT JOIN (
+    LEFT JOIN (
+        SELECT rk.recruit_no, GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ') AS recruit_keyword
+        FROM recruit_keyword rk
+        GROUP BY rk.recruit_no
+    ) rk ON r.recruit_no = rk.recruit_no
+    JOIN apply_employee a ON r.recruit_no = a.recruit_no
+    JOIN cv ON a.cv_no = cv.cv_no
+    WHERE cv.user_no = #{userNo}
+    LIMIT #{page.index}, #{page.rows}
+  </select>
+  <!-- 지원한 채용공고 페이징 [승헌] -->
+  <select id="countApplyCvList" resultType="int">
+    SELECT COUNT(*) 
+    FROM company c
+    INNER JOIN recruit r ON c.com_no = r.com_no
+    LEFT JOIN (
         SELECT rk.recruit_no, GROUP_CONCAT(rk.recruit_keyword SEPARATOR ', ') AS recruit_keyword
         FROM recruit_keyword rk
         GROUP BY rk.recruit_no
