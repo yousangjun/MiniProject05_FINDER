@@ -43,9 +43,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (header == null || header.length() == 0 || !header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             log.info("헤더가 없거나 형식이 올바르지 않습니다: " + header);
             filterChain.doFilter(request, response);
-            log.info("필터 체인 이후 request: " + request);
-            log.info("필터 체인 이후 response: " + response);
-            log.info("헤더 상태: " + header);
+            // log.info("필터 체인 이후 request: " + request);
+            // log.info("필터 체인 이후 response: " + response);
+            // log.info("헤더 상태: " + header);
             return;
         }
     

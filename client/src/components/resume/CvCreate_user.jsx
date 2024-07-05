@@ -5,6 +5,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import BtnLong from '../main/BtnLong';
 import { deleteFile } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
+import EducationListItem from './education/EducationListItem.jsx';
 
 
 
@@ -39,7 +40,7 @@ const CvCreate_user = () => {
     const [employmentHistoryList, setEmploymentHistoryList] = useState([]); // 경력 이력 목록
     const [thumbnail, setThumbnail] = useState(null); // 이력서 썸네일 이미지
     const [uploadedFiles, setUploadedFiles] = useState([]); // 업로드된 파일 목록
-    const navi= useNavigate();
+    const navi = useNavigate();
 
     const handleFileUploadClick = () => {
         fileInputRef.current.click();
@@ -54,7 +55,7 @@ const CvCreate_user = () => {
         const newFiles = [...event.target.files];
         setFiles(newFiles);
     };
-    
+
     const deleteNewFileClick = (index) => {
         // alert('??')
         setNewFiles(newFiles.filter((_, i) => i !== index));
@@ -78,7 +79,7 @@ const CvCreate_user = () => {
             setThumbnail('/img/no-image.png');
         }
     };
-    
+
     // 유저 정보를 불러올때 사용
     useEffect(() => {
         const fetchUserData = async () => {
@@ -91,10 +92,10 @@ const CvCreate_user = () => {
                     });
                     const userData = response.data;
                     console.log(userData, "???//Asdf'dskljsaflksafjdk;afsjdk;lfjlkaasfdjok");
-                    
+
                     // const formattedDate = `${userData.userBirth.slice(0, 4)}-${userData.userBirth.slice(4, 6)}-${userData.userBirth.slice(6, 8)}`;
                     const formattedDate = userData.userBirth.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, '$1-$2-$3');
-                    
+
                     setFormData({
                         name: userData.userName,
                         userBirth: formattedDate,
@@ -108,7 +109,7 @@ const CvCreate_user = () => {
         };
         fetchUserData();
     }, [userInfo]);
-    
+
     // 경력 이력 목록 가져오기
     const fetchEmploymentHistoryList = async () => {
         try {
@@ -118,20 +119,20 @@ const CvCreate_user = () => {
             console.error('경력 목록 가져오기 오류', error);
         }
     };
-    
+
     // 제출 처리 함수
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
+
         // 폼 필드에서 값 가져오기
         const cvTitle = event.target.elements.cvTitle.value;
         const coverLetter = event.target.elements.coverLetter.value;
-    
+
         const formData = new FormData();
         formData.append('cvTitle', cvTitle);
         formData.append('coverLetter', coverLetter);
         formData.append('cvNo', cvNo);
-        
+
 
         // 자기소개서 등록 ✅ 성공
         try {
@@ -144,7 +145,7 @@ const CvCreate_user = () => {
             alert('제목 자기소개서 등록 실패');
             return; // 실패 시 함수 종료
         }
-    
+
         // 썸네일 추가 ✅ 성공
         if (thumbnail instanceof File) {
             formData.append('thumbnail', thumbnail);
@@ -164,12 +165,12 @@ const CvCreate_user = () => {
             alert('썸네일 추가 실패');
             return; // 실패 시 함수 종료
         }
-    
+
         // 파일 첨부 ❌ 실패
         files.forEach((file) => {
             formData.append('file', file);
         });
-    
+
         try {
             const response = await axios.post('/resume/cv_FileUpdate2_user', formData, {
                 headers: {
@@ -184,15 +185,15 @@ const CvCreate_user = () => {
             alert('파일 첨부 실패');
             return; // 실패 시 함수 종료
         }
-    
+
         navi('/');
     };
-    
+
     const deleteFileClick = (fileNo, index) => {
         const encodedFileNo = encodeURIComponent(fileNo);
-        
+
         deleteFile(encodedFileNo)
-        .then(response => {
+            .then(response => {
                 if (response.status === 200 && response.data === 'SUCCESS') {
                     // 삭제 성공 후, 파일 목록에서 해당 파일 제거
                     setFiles(prevFiles => prevFiles.filter(file => file.fileNo !== fileNo));
@@ -219,13 +220,17 @@ const CvCreate_user = () => {
                 university: formData.university,
                 major: formData.major,
                 universityStatus: formData.universityStatus,
+                cvNo: cvNo,
             });
-            setFormData({
-                ...formData,
-                university: '',
-                major: '',
-                universityStatus: ''
-            });
+            const newEd = {
+
+                university: formData.university,
+                major: formData.major,
+                universityStatus: formData.universityStatus,
+            };
+
+            setEducationList([...educationList,newEd])
+
             // fetchEducationList();
         } catch (error) {
             console.error('학력 추가 오류', error);
@@ -242,6 +247,7 @@ const CvCreate_user = () => {
                 startDate: formData.startDate,
                 endDate: formData.endDate,
                 duties: formData.duties,
+                cvNo: cvNo,
             });
             setFormData({
                 ...formData,
@@ -250,6 +256,7 @@ const CvCreate_user = () => {
                 endDate: '',
                 duties: ''
             });
+            console.log(response.data + `dasdasdasd`)
             fetchEmploymentHistoryList();
         } catch (error) {
             console.error('경력 추가 오류', error);
@@ -293,8 +300,8 @@ const CvCreate_user = () => {
         }
     };
 
-    
-    
+
+
     return (
         <>
             <form method='POST' encType='multipart/form-data' style={{ marginTop: '20px' }} onSubmit={handleSubmit}>
@@ -351,7 +358,7 @@ const CvCreate_user = () => {
                             <div className="d-flex justify-content-between mt-3" style={{ marginTop: '30px !important' }}>
                                 <h5 style={{ fontWeight: 'bold', fontSize: '22px', marginLeft: '10px' }}>학력</h5>
                                 <button type="button" className="educationBtn btn-short" style={{ width: '80px', background: 'none', justifyContent: 'flex-end', marginBottom: '7px' }}>
-                                    <span className="fs-2 more_btn"></span>
+                                    <span className="fs-2 more_btn" onClick={handleAddEducation} ></span>
                                 </button>
                             </div>
 
@@ -363,23 +370,27 @@ const CvCreate_user = () => {
                                 <div className="col-12 d-flex" style={{ marginLeft: '1%' }}>
                                     <div className="form-group col-3" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>학교</span>
-                                        <input type="text" className="form-control w-75" id="university" placeholder="학교" style={{ width: 'calc(100% - 70px)' }} />
+                                        <input type="text" className="form-control w-75" id="university" placeholder="학교" style={{ width: 'calc(100% - 70px)' }} value={formData.university}
+                                            onChange={handleInputChange} name="university" />
                                     </div>
 
                                     <div className="form-group col-3" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>전공</span>
-                                        <input type="text" className="form-control w-75" id="major" placeholder="전공" style={{ width: 'calc(100% - 70px)' }} />
+                                        <input type="text" className="form-control w-75" id="major" placeholder="전공" style={{ width: 'calc(100% - 70px)' }} value={formData.major}
+                                            onChange={handleInputChange} name="major" />
                                     </div>
 
                                     <div className="form-group col-3" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>학적</span>
-                                        <input type="text" className="form-control w-75" id="universityStatus" placeholder="학력상태" style={{ width: 'calc(100% - 70px)' }} />
+                                        <input type="text" className="form-control w-75" id="universityStatus" placeholder="학력상태" style={{ width: 'calc(100% - 70px)' }} value={formData.universityStatus}
+                                            onChange={handleInputChange} name="universityStatus" />
                                     </div>
                                 </div>
 
                                 <div className="col-12 p-2">
                                     {/* 학력 리스트 */}
                                     <div id="education-list">
+                                        <EducationListItem educationList={educationList} />
                                         {/* 리스트 아이템들을 여기에 추가 */}
                                     </div>
                                 </div>
@@ -394,7 +405,7 @@ const CvCreate_user = () => {
                             <div className="d-flex justify-content-between mt-3" style={{ marginTop: '30px !important' }}>
                                 <h5 style={{ fontWeight: 'bold', fontSize: '22px', marginLeft: '10px' }}>경력</h5>
                                 <button type="button" className="educationBtn btn-short" style={{ width: '80px', background: 'none', justifyContent: 'flex-end', marginBottom: '7px' }}>
-                                    <span className="fs-2 more_btn"></span>
+                                    <span className="fs-2 more_btn" onClick={handleAddEmploymentHistory} ></span>
                                 </button>
                             </div>
 
@@ -406,21 +417,25 @@ const CvCreate_user = () => {
                                 <div className="col-12 d-flex" style={{ marginLeft: '1%' }}>
                                     <div className="form-group" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>기관</span>
-                                        <input type="text" className="form-control w-55" id="university" placeholder="기관명" style={{ width: 'calc(100% - 70px)' }} />
+                                        <input type="text" className="form-control w-55" id="university" placeholder="기관명" style={{ width: 'calc(100% - 70px)' }} value={formData.organization}
+                                            onChange={handleInputChange} />
                                     </div>
 
                                     <div className="form-group" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>시작일</span>
-                                        <input type="date" className="form-control w-55" id="major" placeholder="출" style={{ width: 'calc(100% - 70px)' }} />
+                                        <input type="date" className="form-control w-55" id="major" placeholder="출" style={{ width: 'calc(100% - 70px)' }} value={formData.startDate}
+                                            onChange={handleInputChange} />
                                     </div>
 
                                     <div className="form-group" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>끝일</span>
-                                        <input type="date" className="form-control w-55" id="universityStatus" placeholder="퇴" style={{ width: 'calc(100% - 70px)' }} />
+                                        <input type="date" className="form-control w-55" id="universityStatus" placeholder="퇴" style={{ width: 'calc(100% - 70px)' }} value={formData.endDate}
+                                            onChange={handleInputChange} />
                                     </div>
                                     <div className="form-group" style={{ width: '33%' }}>
                                         <span style={{ fontSize: '17px', fontWeight: 'bold', color: '#0d6efd', width: '50px', float: 'left', display: 'inline-block', lineHeight: '32px' }}>담당</span>
-                                        <input type="text" className="form-control w-55" id="universityStatus" placeholder="담당업무" style={{ width: 'calc(100% - 70px)' }} />
+                                        <input type="text" className="form-control w-55" id="universityStatus" placeholder="담당업무" style={{ width: 'calc(100% - 70px)' }} value={formData.duties}
+                                            onChange={handleInputChange} />
                                     </div>
                                 </div>
 
