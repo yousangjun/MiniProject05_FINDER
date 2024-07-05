@@ -231,8 +231,14 @@ public class RecruitServiceImpl implements RecruitService {
     }
 
     @Override
-    public List<RecruitPost> selectRecruitsByNos(List<Integer> recruitNos) {
-        return recruitMapper.selectRecruitsByNos(new ArrayList<>(recruitNos));
+    public List<RecruitPost> selectRecruitsByNos(List<Integer> recruitNos, Page page) {
+
+        int total = recruitMapper.selectRecruitsByNos(recruitNos, page).size();
+        log.info(total + "total?????");
+        page.setTotal(total);
+        log.info(page + ": page????"); 
+
+        return recruitMapper.selectRecruitsByNos(new ArrayList<>(recruitNos), page);
     }
 
     // 연관검색

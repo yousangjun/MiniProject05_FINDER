@@ -339,16 +339,23 @@ public class RecruitController {
     //////////////////////////////////////////////////////////////// 유저 채용공고 p
 
     @GetMapping("/new_jobs_user")
-    public ResponseEntity<?> getMethodName(@RequestParam("recruitNos") List<Integer> recruitNos) {
+    public ResponseEntity<?> getMethodName(@RequestParam("recruitNos") List<Integer> recruitNos, Page page) {
 
+        Map<String, Object> response = new HashMap<>();
         
-
+        log.info(page + "뭐나옴 ????????page");
         // 방문한 채용공고 번호를 사용하여 데이터베이스에서 채용공고 리스트를 가져온다
-        List<RecruitPost> recruits = recruitService.selectRecruitsByNos(recruitNos);
+        List<RecruitPost> recruits = recruitService.selectRecruitsByNos(recruitNos, page);
         log.info(recruits + "뭐나옴 ??");
 
+        response.put("recruits", recruits); // 방문한 채용공고
+        response.put("page", page);
 
-        return new ResponseEntity<>(recruits, HttpStatus.OK);
+        log.info("::::::::::::::::" + recruits + "::::::::::::::::::");
+        log.info("::::::::::::::::" + page + "::::::::::::::::::");
+
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
     // 지원한 채용공고

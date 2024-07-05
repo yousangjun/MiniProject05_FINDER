@@ -61,7 +61,7 @@ public interface RecruitMapper {
     public int recruitKeyword(int recruitNo, String recruitKeyword);
 
     
-    public List<RecruitPost> selectRecruitsByNos(List<Integer> recruitNos);
+    public List<RecruitPost> selectRecruitsByNos(@Param("list") List<Integer> recruitNos, @Param("page") Page page );
     
     // 연관검색
     public List<String> selectCompanyNameList();
