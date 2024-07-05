@@ -3,10 +3,10 @@ import api from '../user/api'
 export const jobDetails = (recruitNo) => api.get(`/recruit/detail_jobs_user?recruitNo=${recruitNo}`)
 
 // 최근 채용공고
-export const listNewRecruit = (newRecruitNos) => {
+export const listNewRecruit = (newRecruitNos, page) => {
     const params = newRecruitNos.map(no => `recruitNos=${encodeURIComponent(no)}`).join('&');
-    console.log(params);
-    return api.get(`/recruit/new_jobs_user?${params}`);
+    console.log(page,"???");
+    return api.get(`/recruit/new_jobs_user?${params}&page=${page}`);
   }
 
 // post 끝

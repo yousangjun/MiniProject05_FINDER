@@ -272,6 +272,7 @@
         WHERE 1=0
       </otherwise>
     </choose>
+    LIMIT #{page.index}, #{page.rows}
   </select>
   <!-- 세션에 등록한 set recuitNo 가져오기  끝-->
 
