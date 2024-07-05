@@ -72,7 +72,8 @@ public interface RecruitMapper {
     // 지원
     public int apply(@Param("recruitNo") int recruitNo, @Param("cvNo") int cvNo) throws Exception;
 
-    public List<RecruitPost> applyCvList(int userNo) throws Exception;
+    public List<RecruitPost> applyCvList(@Param("userNo") int userNo, @Param("page") Page page ) throws Exception;
+    public int countApplyCvList(@Param("userNo") int userNo) throws Exception;
 
 
     // 제출된 이력서 내역

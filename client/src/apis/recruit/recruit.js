@@ -27,7 +27,7 @@ export const postedRecruit = (comNo, page) => api.get(`/recruit/posted_jobs_com?
 
 
 // applied
-export const appliedRecruits = (userNo) => api.get(`/recruit/applied_jobs_user?userNo=${userNo}` )
+export const appliedRecruits = (userNo, page) => api.get(`/recruit/applied_jobs_user?userNo=${userNo}&page=${page}` )
 
 
 // listRecruit

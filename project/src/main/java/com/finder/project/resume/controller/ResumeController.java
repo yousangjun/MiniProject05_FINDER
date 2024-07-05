@@ -3,6 +3,8 @@ package com.finder.project.resume.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+
 
 import javax.servlet.http.HttpSession;
 
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -99,21 +100,25 @@ public class ResumeController {
      * @throws Exception
      */
     @GetMapping("/cv_list_user")
-    public ResponseEntity<?> CvList(Page page, Users user) throws Exception {
+    public ResponseEntity<?> CvList(@RequestParam("userNo") Integer userNo, Page page) throws Exception {
 
-        try {
-            int userNo = user.getUserNo();
+            Map<String, Object> response = new HashMap<>();
+
             log.info(" 유저번호는 : " + userNo);
-            List<Resume> resumeList = resumeService.resumelistPaging(userNo, page);
+            List<Resume> cvList = resumeService.resumelistPaging(userNo, page);
     
-            if (resumeList != null) {
-                log.info("이력서 목록이 있구나 : " + resumeList.size() + "건");
+            if (cvList != null) {
+                log.info("이력서 목록이 있구나 : " + cvList.size() + "건");
             }
-            return new ResponseEntity<>(resumeList, HttpStatus.OK);
-            
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            log.info(":::::::::::::::::" + cvList + ":::::::::::::::::");
+            log.info(":::::::::::::::::" + page + ":::::::::::::::::");
+
+            response.put("cvList", cvList);
+            response.put("page", page);
+
+
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 /*  구버전 등록 화면 

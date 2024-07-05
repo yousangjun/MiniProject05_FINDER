@@ -3,7 +3,7 @@ import RecruitListBtn from '../recruit/RecruitListBtn';
 import { Link } from 'react-router-dom';
 import KeywordItem from './KeywordItem';
 
-const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref, cv }) => {
+const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref, cv, myCv }) => {
     const [keyword, setKeyword] = useState([])
 
     const keywordsArray = recruit?.keywordString?.split(", ") ?? [];
@@ -51,6 +51,9 @@ const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref, cv
                     {cv &&
                         cv.cvTitle
                     }
+                    {myCv &&
+                        myCv.cvTitle
+                    }
                 </div>
 
                 <div className="item d-flex justify-content-between">
@@ -66,7 +69,13 @@ const ContentListItem = ({ recruit, ContentListItemText, ShowBtn, LinkToHref, cv
                                 <span>{cv.user.userGender}</span>
                                 <span>{cv.user.userEmail}</span>
                             </div>
-
+                        }
+                        {myCv &&
+                            <div className="span-wrapper">
+                                <span>{myCv.user.userName}</span>
+                                <span>{myCv.user.userGender}</span>
+                                <span>{myCv.user.userEmail}</span>
+                            </div>
                         }
                     </div>
 

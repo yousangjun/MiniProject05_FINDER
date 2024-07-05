@@ -79,7 +79,7 @@ function App() {
 
           <Route path="/recruit/applied_jobs_user" element={<Applied_jobs_user/>}></Route>  {/* 지원한 채용공고 [구직자] */}
           <Route path="/recruit/new_jobs_user" element={<New_jobs_user/>}></Route>          {/* 최근본 채용공고 [구직자] */}
-          <Route path="/recruit/cv_list_user" element={<Cv_list_user/>}></Route>            {/* 나의 이력서 [구직자] */}
+          <Route path="/recruit/cv_list_user" element={<Cv_list_user/>}></Route>            {/* 나의 이력서 목록 [구직자] */}
 
 
           {/* 이력서 페이지 */}
