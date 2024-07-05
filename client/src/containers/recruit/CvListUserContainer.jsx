@@ -7,6 +7,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider'
 import { myCvList } from '../../apis/resume/bshResume.js'
 import Paging from '../../components/company/Paging.jsx'
 
+import './css/RecruitListCom.css';
 
 const CvListUserContainer = () => {
 
@@ -70,8 +71,10 @@ const CvListUserContainer = () => {
                         {isLoading ? null : (
                             <>
                                 {!cvList || cvList.length === 0 ? (
-                                    <div className='d-flex flex-column justify-content-center mt-5 me-auto'>
-                                        <h1>등록한 이력서가 없습니다.</h1>
+                                    <div className='MissingBox d-flex flex-column justify-content-center mt-5 me-auto'>
+                                        <img className='MissingImg' src="/img/Apply.png" alt="이력서가 없어요ㅜㅜ" />
+                                        <h3 className='MissingText'>등록된 이력서가 없습니다.</h3>
+                                        <p className='MissingText'>구인구직을 위한 이력서를 작성해주세요.</p>
                                     </div>
                                 ) : (
                                     cvList.map((myCv, index) => (
