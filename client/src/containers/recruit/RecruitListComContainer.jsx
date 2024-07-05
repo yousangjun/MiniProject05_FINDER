@@ -7,6 +7,8 @@ import { LoginContext } from '../../contexts/LoginContextProvider'
 import { listRecruit, getComToUserNo } from '../../apis/recruit/recruit.js' // postRecruit 함수 import
 import Paging from '../../components/company/Paging.jsx'
 
+import './css/RecruitListCom.css';
+
 const RecruitListComContainer = () => {
     const { userInfo } = useContext(LoginContext);
     const userNo = userInfo ? userInfo.userNo : null;
@@ -82,11 +84,12 @@ const RecruitListComContainer = () => {
                             <>
                                 {!cvs || cvs.length === 0 ? (
                                     <div className='d-flex flex-column justify-content-center mt-5 me-auto'>
-                                        <h1>제출된 이력서가 없습니다.</h1>
+                                        <h2 className='MissingText'>제출된 이력서가 없습니다.</h2>
+                                        <img className='MissingImg' src="/img/ImSorry.png" alt="이력서가 없어요ㅜㅜ" />
                                     </div>
                                 ) : (
                                     cvs.map((cv, index) => (
-                                        <ContentListItem key={index} LinkToHref={`/resume/cvRead_user/${cv.cvNo}`} 
+                                        <ContentListItem key={index} LinkToHref={`/resume/cvRead_user?${cv.cvNo}`} 
                                         cv={cv} ContentListItemText={"삭제"} ShowBtn={true} />
                                     ))
                                 )}
