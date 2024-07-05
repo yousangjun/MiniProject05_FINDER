@@ -21,7 +21,7 @@ const HomeHeader = forwardRef((props, ref) => {
                 <form action="" method="get" className="w-75 d-flex align-items-center justify-content-end">
                     <div className="d-flex align-items-center w-75 mb-3 mt-3 position-relative flex-column">
                         <div className="d-flex align-items-center w-75 mb-3 mt-3 box">
-                            <div className="custom-form-floating">
+                            <div className="custom-form-floating" style={{borderRadius:'8px', marginRight:'3px'}}>
                                 <input
                                     ref={refs.inputRef}
                                     type="text"
@@ -33,6 +33,7 @@ const HomeHeader = forwardRef((props, ref) => {
                                     onChange={handleKeywordChange}
                                     onClick={handleKeywordChange}/* 👩‍🏫 onClick 이벤트 추가 */
                                     autoComplete="off"
+                                    style={{borderRadius:'8px', marginRight:'3px'}}
                                 />
                             </div>
 
@@ -81,6 +82,10 @@ const HomeHeader = forwardRef((props, ref) => {
                         </div>
                     </div>
                 </form>
+            </div>
+
+            <div>
+                <h2>여기에 배너 넣는다는 뜻 같음</h2>
             </div>
             
             <div style={{ margin: '15px 0' }}>
