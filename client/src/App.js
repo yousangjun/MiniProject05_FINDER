@@ -53,7 +53,7 @@ function App() {
           <Route path="/" element={<Home/>}></Route>
           {/* 기업 페이지 */}
           <Route path="/company" element={<Company/>}></Route>
-          <Route path="/company/com_detail_user" element={<Com_detail_user/>}></Route>
+          <Route path="/company/com_detail_user/:comNo" element={<Com_detail_user/>}></Route>
           <Route path="/company/credit_com" element={<Credit_com/>}></Route>
           <Route path="/company/credit_detail_com/:productNo" element={<Credit_detail_com/>}></Route>
           <Route path="/company/checkout/:productNo/:orderNo" element={<Checkout/>}></Route>
