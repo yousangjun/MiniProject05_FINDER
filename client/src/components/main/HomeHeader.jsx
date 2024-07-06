@@ -65,7 +65,7 @@ const HomeHeader = forwardRef((props, ref) => {
                                             <ul className="item">
                                                 <li className="d-flex"  >
                                                     <div className={`custom-dropdown-item w-50 custom-dropdown-item-${company.comNo}`} data-id={company.comNo} onMouseOver={() => handleMouseOver(company.comNo)}>
-                                                        <a href={`/company/com_detail_user?comNo=${company.comNo}`} style={{ display: 'block' }}>{company.comName}</a>
+                                                        <a href={`/company/com_detail_user/${company.comNo}`} style={{ display: 'block' }}>{company.comName}</a>
                                                     </div>
                                                     <ul className="recruit-wrab w-50">
                                                         <div className={`item recruit-list-item custom-dropdown-item-${company.comNo}`} data-id={company.comNo} >
