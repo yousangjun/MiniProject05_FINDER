@@ -93,8 +93,9 @@ public class RecruitServiceImpl implements RecruitService {
         log.info(recruitPost.getFile() + "이건 겟파일");
         if (fileList != null && !fileList.isEmpty()) {
             for (MultipartFile file : fileList) {
-                if (file.isEmpty())  continue;
-                
+                if (file.isEmpty())
+                    continue;
+
                 log.info(file + " file!!!!!!!!");
 
                 // 파일 정보 등록
@@ -102,7 +103,7 @@ public class RecruitServiceImpl implements RecruitService {
                 uploadFile.setParentTable(parentTable);
                 uploadFile.setParentNo(parentNo);
                 uploadFile.setFile(file);
-                
+
                 fileService.upload(uploadFile);
 
             }
@@ -238,7 +239,7 @@ public class RecruitServiceImpl implements RecruitService {
         int total = recruitMapper.selectRecruitsByNos(recruitNos, page).size();
         log.info(total + "total?????");
         page.setTotal(total);
-        log.info(page + ": page????"); 
+        log.info(page + ": page????");
 
         return recruitMapper.selectRecruitsByNos(new ArrayList<>(recruitNos), page);
     }
@@ -271,23 +272,12 @@ public class RecruitServiceImpl implements RecruitService {
 
     // 컴으로 제출된 이력서
     @Override
-    public List<Resume> applyCom(int comNo, Page page) throws Exception {
+    public List<Resume> applyCom(Integer comNo, Page page) throws Exception {
 
         int total = recruitMapper.countResumes(comNo);
         page.setTotal(total);
 
         return recruitMapper.applyCom(comNo, page);
-    }
-    // cv로 이력서 점수 넣기
-    @Override
-    public int cvToScore(int applyNo, String score, int cvNo) throws Exception {
-        Map<String, Object> params = new HashMap<>();
-        params.put("applyNo", applyNo);
-        params.put("score", score);
-        params.put("cvNo", cvNo);
-        
-        
-        return recruitMapper.cvToScore(params);
     }
 
     @Override
@@ -345,6 +335,33 @@ public class RecruitServiceImpl implements RecruitService {
         return recruitMapper.getCheckByRecruitNo(recruitNo, userNo);
     }
 
+    // cv로 이력서 점수 넣기
+    @Override
+    public int cvToScore(int applyNo, String score, int cvNo) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("applyNo", applyNo);
+        params.put("score", score);
+        params.put("cvNo", cvNo);
 
+        return recruitMapper.cvToScore(params);
+    }
+
+    @Override
+    public int cvToScoreList(List<Integer> applyNoList, List<String> scoreList, List<Integer> cvNoList)
+            throws Exception {
+        try {
+            for (int i = 0; i < applyNoList.size(); i++) {
+                Map<String, Object> params = new HashMap<>();
+                params.put("applyNo", applyNoList.get(i));
+                params.put("cvNo", cvNoList.get(i));
+                params.put("score", scoreList.get(i));
+                recruitMapper.cvToScore(params);
+            }
+            return applyNoList.size();  // 업데이트된 레코드 수를 반환
+        } catch (Exception e) {
+            log.error("SQL Error: ", e);
+            throw e;  // 예외를 다시 던져서 상위 레벨에서도 예외를 처리할 수 있도록 합니다.
+        }
+    }
 
 }

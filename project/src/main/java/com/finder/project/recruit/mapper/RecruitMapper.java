@@ -84,7 +84,7 @@ public interface RecruitMapper {
     public int countApplyCvList(@Param("userNo") int userNo) throws Exception;
 
     // 제출된 이력서 내역
-    public List<Resume> applyCom(@Param("comNo") int comNo, @Param("page") Page page) throws Exception;
+    public List<Resume> applyCom(@Param("comNo") Integer comNo, @Param("page") Page page) throws Exception;
 
     // 제출된 이력서 페이징 게시물 개수
     public int countResumes(@Param("comNo") int comNo) throws Exception;
@@ -111,5 +111,7 @@ public interface RecruitMapper {
 
     // 지원한 이력서 점수
     public int cvToScore(Map<String, Object> params) throws Exception;
+    // 지원한 이력서 전체 점수
+    public int cvToScoreList(Map<String, Object> params) throws Exception;
 
 }
