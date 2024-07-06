@@ -5,7 +5,7 @@ import Sidebar from '../../components/main/Sidebar';
 import ContentHeader from '../../components/main/ContentHeader';
 import KeywordItem from '../../components/main/KeywordItem';
 import axios from 'axios';
-import { postRecruit, getComToUserNo } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
+import { getComToUserNo } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
 function ScoreContainer() {
@@ -16,38 +16,51 @@ function ScoreContainer() {
 
     const [resumes, setResumes] = useState([]);
     const [results, setResults] = useState({});
+    const [scores, setScores] = useState([]);
+    const [initialScores, setInitialScores] = useState([]);
 
-    const handleGetCompany = async () => {
-        try {
-            companyNo.current = await getComToUserNo(userInfo.userNo);
-            console.log(companyNo.current.data.comNo,"comNo");
-            // console.log(companyNo.current.data.comNo);
-            if (companyNo) {
 
-                const handleScoreList = async () => {
-                    const response = await axios.get(`/company/score_com?comNo=${companyNo.current.data.comNo}`);
-                    console.log(response.data.applyCvList);
-                    setResumes(response.data.applyCvList);
-
-                }
-
-                handleScoreList()
-            }
-            // console.dir(companyNo.current.data.comNo);
-        } catch (error) {
-            console.error('Error fetching company data:', error);
-        }
-    };
-
-    // 예를 들어 컴포넌트가 마운트될 때 이 함수를 호출하려면 useEffect 훅을 사용할 수 있습니다.
     useEffect(() => {
         if (userNo) {
-            console.log(userNo,"userNo");
+            const handleGetCompany = async () => {
+                try {
+                    companyNo.current = await getComToUserNo(userInfo.userNo);
+                    console.log(companyNo.current.data.comNo, "comNo");
+                    // console.log(companyNo.current.data.comNo);
+                    if (companyNo) {
+        
+                        const handleScoreList = async () => {
+                            const response = await axios.get(`/company/score_com?comNo=${companyNo.current.data.comNo}`);
+                            console.log(response.data.applyCvList);
+                            setResumes(response.data.applyCvList);
+        
+                        }
+        
+                        handleScoreList()
+                    }
+                    // console.dir(companyNo.current.data.comNo);
+                } catch (error) {
+                    console.error('Error fetching company data:', error);
+                }
+            };
             handleGetCompany();
-            
-
+            console.log("언제돌아?1");
         }
     }, [userNo])
+    
+    useEffect(() => {
+        console.log("언제돌아?2");
+        if (!initialScores || initialScores.length === 0) {
+            // initialScores가 없거나 비어있으면 results를 이용해 scores를 설정
+            const calculatedScores = resumes.map((resume) => results[resume.cvNo]?.score || resume.score);
+            console.log(calculatedScores);
+            setScores(calculatedScores);
+        }
+    }, [initialScores, results, resumes]);
+
+
+    
+
 
 
     const handleKeywordKeyDown = (event) => {
@@ -72,21 +85,37 @@ function ScoreContainer() {
     const handleEvaluate = async (resume, keyword) => {
         const keywordString = keyword.join(', ');
         console.log(keywordString);
-        if (keyword.length > 0 ) {
+        if (keyword.length > 0) {
             try {
                 const response = await axios.post('https://api.openai.com/v1/chat/completions', {
                     model: "gpt-3.5-turbo",
                     messages: [
                         {
                             role: "user",
-                            content: `${resume.coverLetter}이 자기소개서를 100점 만점으로 평가해주세요.
-                                        무조건 점수만 응답해주세요.
-                                        첫번째로 점수의 기준은 자기소개서는 '50자 이상', '한글 맞춤법을 준수할 경우', '외부 활동과 성취 내용이 있음', '전공 선택 이유와 성취 내용이 있음', 
-                                        '지원 동기와 의지가 확실함' 에 해당하지 않는 경우 20점 이하의 낮은점수 이고. 
-                                        두번째 점수의 기준은 "keyword : ${keywordString}"이 keyword와의 유사성을 평가하여 매우 엄격하게 평가해야 합니다.
-                                        키워드와 유사성이 없으면 20점 이하의 낮은점수입니다. 두 기준을 각각 최고 50점씩 줄 수 있고 두 기준의 점수를 더한 값이 100점입니다. 
-                                        만약 자기소개서가 빈 문자열이거나 null이면 0점을 주세요. 결과를 꼭 숫자로만 표현해주세요 꼭 숫자만 값이 나와야합니다. '예를들어 90점이면 90으로 표현' 
-                                       `
+                            content: `
+                            ${resume.coverLetter}
+                            Please evaluate the self-introduction letter out of 100 points.
+
+                            ### First Criteria (up to 70 points):
+                            1. The self-introduction must be at least 50 characters long.
+                            2. It must comply with Korean spelling rules.
+                            3. It should include external activities and achievements.
+                            4. It should explain the reasons for choosing the major and related achievements.
+                            5. It should clearly state the motivation and determination to apply.
+
+                            If any of these criteria are not met, give a score of 20 or lower.
+
+                            ### Second Criteria (up to 30 points):
+                            Strictly evaluate the similarity with the "keyword: ${keywordString}".
+
+                            If there is no similarity with the keyword, give a score of 10 or lower.
+
+                            ### Total Score:
+                            Combine the scores from both criteria for the final score. Express the total score as a number only, even if the score is "0".
+
+                            **Important:** Provide the result as a single number only, without any additional text. For example, if the score is "90 points", represent it as "90".
+
+                                     `
                         }
                     ],
                     temperature: 1,
@@ -102,23 +131,30 @@ function ScoreContainer() {
                 });
                 console.log(response.data);
                 console.log(response.data.choices[0].message.content);
-                //////////////////////// 여기서 score cvNo으로 컨트롤러에 가져다주면 거기서 score appliy에 넣으면 될듯
-                let score = response.data.choices[0].message.content;
-                let newColor = 'black'
 
-                if (score >= 86 && score <= 100) {
-                    newColor = '#155ADC'; // 파란색
-                } else if (score >= 70 && score <= 85) {
-                    newColor = '#128246'; // 초록색
-                } else if (score >= 60 && score <= 69) {
-                    newColor = '#FFE039'; // 노란색
-                } else if (score < 60) {
-                    newColor = 'red';
+                let score = response.data.choices[0].message.content;
+
+                setInitialScores([]);
+                setResults({
+                    [resume.cvNo]: { score: score }
+                });
+
+                try {
+                    console.log(resume.applyNo, " aN ",score," sco ", resume.cvNo, " cv ");
+                    const result = await axios.get('/company/score', {
+                        params: {
+                          applyNo: resume.applyNo,
+                          score: score,
+                          cvNo: resume.cvNo
+                        }
+                      });
+                    console.log(result.data);
+                } catch (error) {
+                    console.error(error);
                 }
 
-                setResults({
-                    [resume.cvNo]: { score: score, color: newColor }
-                });
+                //////////////////////// 여기서 score cvNo으로 컨트롤러에 가져다주면 거기서 score appliy에 넣으면 될듯
+                
                 let timerInterval;
                 Swal.fire({
                     width: 800,
@@ -169,6 +205,130 @@ function ScoreContainer() {
                         });
 
                         countUp();
+                    }
+                });
+
+            } catch (error) {
+                alert('서버측 에러 발생');
+            }
+        } else {
+            alert('키워드를 입력해주세요 !');
+        }
+    };
+
+    const handleALLEvaluate = async (resume, keyword) => {
+        const keywordString = keyword.join(', ');
+        const combinedString = resumes.map((resume, index) => `${resume.cvNo} - ${resume.coverLetter}`).join(' | ');
+
+
+        console.log(keywordString);
+        console.log(combinedString);
+
+        // console.log(coverLetterString);
+
+        if (keyword.length > 0) {
+            try {
+                const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+                    model: "gpt-3.5-turbo",
+                    messages: [
+                        {
+                            role: "user",
+                            content: `      
+                            ${combinedString}
+                            Please evaluate each user's cover letter out of 100 points. Users and their cover letters are separated by "|". Provide the results in order.
+                            
+                            ### First Criteria (up to 70 points):
+                            1. The cover letter must be at least 50 characters long.
+                            2. It must comply with Korean spelling rules.
+                            3. It should include external activities and achievements.
+                            4. It should explain the reasons for choosing the major and related achievements.
+                            5. It should clearly state the motivation and determination to apply.
+                            
+                            If any of these criteria are not met, give a score of 20 or lower.
+                            
+                            ### Second Criteria (up to 30 points):
+                            Strictly evaluate the similarity with the "keyword: ${keywordString}". 
+                            
+                            If there is no similarity with the keyword, give a score of 10 or lower.
+                            
+                            ### Total Score:
+                            Combine the scores from both criteria for the final score. Express the total score as a number, even if the score is "0".
+                            
+                            Provide the final scores for all users. The delimiter for users is a comma without spaces.
+                            
+                            **Important:** Please provide the result as numbers only. For example, if the score is "90 points", represent it as "90".
+                            
+                                     `
+                        }
+                    ],
+                    temperature: 1,
+                    max_tokens: 256,
+                    top_p: 1,
+                    frequency_penalty: 0,
+                    presence_penalty: 0
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    }
+                });
+                console.log(response.data);
+                console.log(response.data.choices[0].message.content);
+                //////////////////////// 여기서 score cvNo으로 컨트롤러에 가져다주면 거기서 score appliy에 넣으면 될듯
+                let score = response.data.choices[0].message.content;
+                let scoreArray = score.split(',').map(Number)
+                console.log(scoreArray);
+                setScores(scoreArray);
+                setInitialScores(scoreArray);
+                let timerInterval;
+                Swal.fire({
+                    width: 800,
+                    html: `
+                        <h1 style='font-weight:bold; margin-top:50px;'>👨‍💻 AI 이력서 평가 진행중 👩‍🚀</h1>
+                        <div class='d-flex justify-content-center'>
+                            <img src='/img/AI분석중.gif' width='720' />
+                        </div>
+                        <h3 style='font-weight:bold;'>전체 이력서 분석을 시작합니다.</h3>
+                    `,
+                    timer: 10000,
+                    timerProgressBar: true,
+                    backdrop: `
+                        rgba(0,0,0,0.7)
+                        right center 
+                        url("/img/AI_BOT.webp")
+                        no-repeat
+                    `,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getHtmlContainer().querySelector('b');
+                        timerInterval = setInterval(() => {
+                            if (timer) {
+                                timer.textContent = Swal.getTimerLeft();
+                            }
+                        }, 100);
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                        Swal.fire({
+                            html: `
+                                <h1 style='font-size: 28px; font-weight: bold;'>👨‍💼 모든 사용자의 AI 이력서 점수가 발표되었습니다.✨</h1>
+                                <h1 style='font-size: 40px'>
+                                    <span style="font-size: 60px;" class="counter" >성공!</span>
+                                    
+                                </h1>
+                            `,
+                            width: 800,
+                            padding: '3em',
+                            color: '#716add',
+                            confirmButtonText: '확인',
+                            backdrop: `
+                                rgba(0,0,0,0.7)
+                                left top
+                                no-repeat
+                            `
+                        });
+
+                        // countUp();
                     }
                 });
 
@@ -232,7 +392,7 @@ function ScoreContainer() {
                             </div>
                             <ol className="list-group">
                                 <li className="list-group-item d-flex">
-                                    <div style={{ width: '18%' }}>
+                                    <div style={{ width: '25%' }}>
                                         <strong style={{ fontSize: '20px' }}>지원자</strong>
                                     </div>
                                     <div className="w-25">
@@ -241,6 +401,15 @@ function ScoreContainer() {
                                     <div style={{ width: '68%' }}>
                                         <strong style={{ fontSize: '20px' }}>지원 채용공고</strong>
                                     </div>
+                                    <div >
+                                        <button
+                                            className="btn-in-short finder-btn"
+                                            onClick={() => handleALLEvaluate(resumes, keyword)}
+                                            style={{ fontWeight: 'bold' }}
+                                        >
+                                            전체조회
+                                        </button>
+                                    </div>
                                 </li>
 
                                 {resumes.length === 0 ? (
@@ -248,51 +417,75 @@ function ScoreContainer() {
                                         <h5 style={{ lineHeight: '300px' }}>조회된 이력서 정보가 없습니다.</h5>
                                     </div>
                                 ) : (
-                                    resumes.map((resume, index) => (
-                                        <li key={resume.cvNo} className="list-group-item d-flex">
-                                            <div className="d-flex align-items-center" style={{ width: '18%' }}>
-                                                <div className="d-flex me-1" style={{ width: '13px' }}>
-                                                    <strong>{index + 1}.</strong>
+
+                                    resumes.map((resume, index) => {
+                                        
+                                        let score = resume.score
+
+                                        let newColor = 'black';
+
+                                        if (scores && scores.length > 0) {
+                                            score = scores[index]; // scores 배열에서 점수 가져오기
+                                            console.log(scores);
+                                        } else {
+                                            score = results[resume.cvNo]?.score || ' '; // results 객체에서 점수 가져오기
+                                        }
+
+                                        if (score >= 86 && score <= 100) {
+                                            newColor = '#155ADC'; // 파란색
+                                        } else if (score >= 70 && score <= 85) {
+                                            newColor = '#128246'; // 초록색
+                                        } else if (score >= 60 && score <= 69) {
+                                            newColor = '#FFE039'; // 노란색
+                                        } else if (score < 60) {
+                                            newColor = 'red';
+                                        }
+
+                                        return (
+                                            <li key={resume.cvNo} className="list-group-item d-flex">
+                                                <div className="d-flex align-items-center" style={{ width: '26%' }}>
+                                                    <div className="d-flex me-1" style={{ width: '13px' }}>
+                                                        <strong>{index + 1}.</strong>
+                                                    </div>
+                                                    <div className="d-flex">
+                                                        <a href={`/resume/cv_read_user?cvNo=${resume.cvNo}`} className="job-item-link name-link">
+                                                            <span>{resume.user.userName}</span>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                                <div className="d-flex">
-                                                    <a href={`/resume/cv_read_user?cvNo=${resume.cvNo}`} className="job-item-link name-link">
-                                                        <span>{resume.user.userName}</span>
-                                                    </a>
+                                                <div className="w-25" style={{ paddingTop: '5px' }}>
+                                                    <span>
+                                                        <strong style={{ color: newColor }}>{score !== null ? score : ''}</strong>
+                                                    </span>
                                                 </div>
-                                            </div>
-                                            <div className="w-25" style={{ paddingTop: '5px' }}>
-                                                <span>
-                                                    <strong style={{ color: results[resume.cvNo]?.color || 'black' }}>
-                                                        {results[resume.cvNo]?.score || ''}
-                                                    </strong>
-                                                </span>
-                                            </div>
-                                            <div className="d-flex justify-content-between" style={{ width: '68%' }}>
-                                                <div className="d-flex">
-                                                    {resume.recruitPost.map((recruit) => (
-                                                        <div key={index} className="me-2" style={{ paddingTop: '5px' }}>
-                                                            <span>{recruit.recruitTitle}</span>
-                                                        </div>
-                                                    ))}
+                                                <div className="d-flex justify-content-between" style={{ width: '80%' }}>
+                                                    <div className="d-flex">
+                                                        {resume.recruitPost.map((recruit, recruitIndex) => (
+                                                            <div key={recruitIndex} className="me-2" style={{ paddingTop: '5px' }}>
+                                                                <span>{recruit.recruitTitle}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div>
+                                                        <button
+                                                            className="btn-in-short finder-btn"
+                                                            onClick={() => handleEvaluate(resume, keyword)}
+                                                            style={{ fontWeight: 'bold' }}
+                                                        >
+                                                            FINDER
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <button
-                                                        className="btn-in-short finder-btn"
-                                                        onClick={() => handleEvaluate(resume, keyword)}
-                                                        style={{ fontWeight: 'bold' }}
-                                                    >
-                                                        FINDER
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    ))
+                                            </li>
+                                        );
+                                    })
+
                                 )}
                             </ol>
                         </div>
                     </div>
                 </main>
-                
+
             </div>
         </>
     );

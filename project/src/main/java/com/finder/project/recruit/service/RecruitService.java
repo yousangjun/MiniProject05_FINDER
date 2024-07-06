@@ -62,6 +62,9 @@ public interface RecruitService {
     // 지원한 이력서list
     public List<RecruitPost> applyCvList(int userNo, Page page) throws Exception;
 
+    // 지원한 이력서 점수
+    public int cvToScore(int applyNo, String score, int cvNo) throws Exception;
+
     // 제출된 이력서
     public List<Resume> applyCom(int comNo, Page page) throws Exception;
 

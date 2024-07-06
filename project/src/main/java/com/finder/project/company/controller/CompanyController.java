@@ -748,12 +748,6 @@ public class CompanyController {
         Map<String, Object> response = new HashMap<>();
         List<Resume> applyCvList = recruitService.applyCom(comNo, page);
 
-        for (Resume resume : applyCvList) {
-            // log.info("gdgdgddgg" + resume.getCoverLetter());
-            // log.info("??????!@#!@#!@#@!" + resume);
-        }
-
-
         response.put("applyCvList", applyCvList);
         response.put("page", page);
 
@@ -763,7 +757,32 @@ public class CompanyController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
     
+    
+    @GetMapping("/score")
+    public ResponseEntity<?> get(@RequestParam("applyNo") Integer applyNo, @RequestParam("score") String score, @RequestParam("cvNo") Integer cvNo) {
+        // Map<String, Object> response = new HashMap<>();
+        log.info(applyNo + " " + score + " " + cvNo + "score전체값");
+        
+        try {
+            int result = recruitService.cvToScore(applyNo, score, cvNo);
 
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/scoreList")
+    public ResponseEntity<?> getScoreList(@RequestParam("applyNo") List<Integer> applyNoList, @RequestParam("score") List<Integer> scoreList, @RequestParam("cvNo") List<Integer> cvNoList) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }
 
