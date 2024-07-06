@@ -15,9 +15,7 @@ function ScoreContainer() {
     const companyNo = useRef(null);
 
     const [resumes, setResumes] = useState([]);
-    const [results, setResults] = useState({});
     const [scores, setScores] = useState([]);
-    const [initialScores, setInitialScores] = useState([]);
 
 
     useEffect(() => {
@@ -28,14 +26,14 @@ function ScoreContainer() {
                     console.log(companyNo.current.data.comNo, "comNo");
                     // console.log(companyNo.current.data.comNo);
                     if (companyNo) {
-        
+
                         const handleScoreList = async () => {
                             const response = await axios.get(`/company/score_com?comNo=${companyNo.current.data.comNo}`);
                             console.log(response.data.applyCvList);
                             setResumes(response.data.applyCvList);
-        
+
                         }
-        
+
                         handleScoreList()
                     }
                     // console.dir(companyNo.current.data.comNo);
@@ -47,20 +45,13 @@ function ScoreContainer() {
             console.log("언제돌아?1");
         }
     }, [userNo])
-    
+
     useEffect(() => {
         console.log("언제돌아?2");
-        if (!initialScores || initialScores.length === 0) {
-            // initialScores가 없거나 비어있으면 results를 이용해 scores를 설정
-            const calculatedScores = resumes.map((resume) => results[resume.cvNo]?.score || resume.score);
-            console.log(calculatedScores);
-            setScores(calculatedScores);
-        }
-    }, [initialScores, results, resumes]);
-
-
-    
-
+        const calculatedScores = resumes.map((resume) => resume.score);
+        console.log(calculatedScores);
+        setScores(calculatedScores);
+    }, [resumes]);
 
 
     const handleKeywordKeyDown = (event) => {
@@ -82,7 +73,7 @@ function ScoreContainer() {
 
     const API_KEY = ''; // 여기에 API 키를 추가하세요.
 
-    const handleEvaluate = async (resume, keyword) => {
+    const handleEvaluate = async (resume, keyword, index) => {
         const keywordString = keyword.join(', ');
         console.log(keywordString);
         if (keyword.length > 0) {
@@ -133,28 +124,34 @@ function ScoreContainer() {
                 console.log(response.data.choices[0].message.content);
 
                 let score = response.data.choices[0].message.content;
+                setResumes(prevResumes => {
+                    const newResumes = [...prevResumes]; // 배열 복사 (얕은 복사)
+                    newResumes[index] = { ...newResumes[index], score: score }
+                    return newResumes;
+                })
 
-                setInitialScores([]);
-                setResults({
-                    [resume.cvNo]: { score: score }
-                });
+
+                // setInitialScores(null);
+                // setResults({
+                //     [resume.cvNo]: { score: score }
+                // });
 
                 try {
-                    console.log(resume.applyNo, " aN ",score," sco ", resume.cvNo, " cv ");
+                    console.log(resume.applyNo, " aN ", score, " sco ", resume.cvNo, " cv ");
                     const result = await axios.get('/company/score', {
                         params: {
-                          applyNo: resume.applyNo,
-                          score: score,
-                          cvNo: resume.cvNo
+                            applyNo: resume.applyNo,
+                            score: score,
+                            cvNo: resume.cvNo
                         }
-                      });
+                    });
                     console.log(result.data);
                 } catch (error) {
                     console.error(error);
                 }
 
                 //////////////////////// 여기서 score cvNo으로 컨트롤러에 가져다주면 거기서 score appliy에 넣으면 될듯
-                
+
                 let timerInterval;
                 Swal.fire({
                     width: 800,
@@ -216,9 +213,9 @@ function ScoreContainer() {
         }
     };
 
-    const handleALLEvaluate = async (resume, keyword) => {
+    const handleALLEvaluate = async (resumes, keyword) => {
         const keywordString = keyword.join(', ');
-        const combinedString = resumes.map((resume, index) => `${resume.cvNo} - ${resume.coverLetter}`).join(' | ');
+        const combinedString = resumes.map((resumes) => `${resumes.cvNo} - ${resumes.coverLetter}`).join('\n' + '/' + '\n');
 
 
         console.log(keywordString);
@@ -235,7 +232,7 @@ function ScoreContainer() {
                             role: "user",
                             content: `      
                             ${combinedString}
-                            Please evaluate each user's cover letter out of 100 points. Users and their cover letters are separated by "|". Provide the results in order.
+                            Please evaluate each user's cover letter out of 100 points. Users and their cover letters are separated by "/". Provide the results in order.
                             
                             ### First Criteria (up to 70 points):
                             1. The cover letter must be at least 50 characters long.
@@ -247,22 +244,20 @@ function ScoreContainer() {
                             If any of these criteria are not met, give a score of 20 or lower.
                             
                             ### Second Criteria (up to 30 points):
-                            Strictly evaluate the similarity with the "keyword: ${keywordString}". 
+                            Strictly evaluate the similarity with the "keyword: ${keywordString}".
                             
                             If there is no similarity with the keyword, give a score of 10 or lower.
                             
                             ### Total Score:
-                            Combine the scores from both criteria for the final score. Express the total score as a number, even if the score is "0".
+                            Combine the scores from both criteria for the final score. Express the total score as a number only, even if the score is "0".
                             
-                            Provide the final scores for all users. The delimiter for users is a comma without spaces.
-                            
-                            **Important:** Please provide the result as numbers only. For example, if the score is "90 points", represent it as "90".
-                            
+                            **Important:** Provide the result as a single number only, without any additional text. For example, if the score is "90", represent it as "90".
+                            Provide the final scores for all users separated by commas, without spaces.
                                      `
                         }
                     ],
                     temperature: 1,
-                    max_tokens: 256,
+                    max_tokens: 512,
                     top_p: 1,
                     frequency_penalty: 0,
                     presence_penalty: 0
@@ -277,9 +272,28 @@ function ScoreContainer() {
                 //////////////////////// 여기서 score cvNo으로 컨트롤러에 가져다주면 거기서 score appliy에 넣으면 될듯
                 let score = response.data.choices[0].message.content;
                 let scoreArray = score.split(',').map(Number)
-                console.log(scoreArray);
-                setScores(scoreArray);
-                setInitialScores(scoreArray);
+
+                setResumes(prevResumes => {
+                    const newResumes = prevResumes.map((resume, index) => {
+                        return { ...resume, score: scoreArray[index] }; // 각 resume 객체의 score 업데이트
+                    });
+                    return newResumes; // 새로운 상태 반환
+                });
+
+                const params = new URLSearchParams();
+                resumes.forEach((resume) => {
+                    params.append('applyNoList', resume.applyNo);
+                    params.append('cvNoList', resume.cvNo);
+                });
+                scoreArray.forEach(score => params.append('scoreList', score));
+
+                try {
+                    const result = await axios.get('/company/scoreList', { params });
+                    console.log(result.data);
+                } catch (error) {
+                    console.error(error);
+                }
+
                 let timerInterval;
                 Swal.fire({
                     width: 800,
@@ -419,7 +433,7 @@ function ScoreContainer() {
                                 ) : (
 
                                     resumes.map((resume, index) => {
-                                        
+
                                         let score = resume.score
 
                                         let newColor = 'black';
@@ -427,10 +441,11 @@ function ScoreContainer() {
                                         if (scores && scores.length > 0) {
                                             score = scores[index]; // scores 배열에서 점수 가져오기
                                             console.log(scores);
-                                        } else {
-                                            score = results[resume.cvNo]?.score || ' '; // results 객체에서 점수 가져오기
                                         }
-
+                                        // else {
+                                        //     score = results[resume.cvNo]?.score || ' '; // results 객체에서 점수 가져오기
+                                        //     console.log(score, ": result 어떻게되있음??");
+                                        // }
                                         if (score >= 86 && score <= 100) {
                                             newColor = '#155ADC'; // 파란색
                                         } else if (score >= 70 && score <= 85) {
@@ -469,7 +484,7 @@ function ScoreContainer() {
                                                     <div>
                                                         <button
                                                             className="btn-in-short finder-btn"
-                                                            onClick={() => handleEvaluate(resume, keyword)}
+                                                            onClick={() => handleEvaluate(resume, keyword, index)}
                                                             style={{ fontWeight: 'bold' }}
                                                         >
                                                             FINDER

@@ -760,8 +760,7 @@ public class CompanyController {
     
     @GetMapping("/score")
     public ResponseEntity<?> get(@RequestParam("applyNo") Integer applyNo, @RequestParam("score") String score, @RequestParam("cvNo") Integer cvNo) {
-        // Map<String, Object> response = new HashMap<>();
-        log.info(applyNo + " " + score + " " + cvNo + "score전체값");
+        // log.info(applyNo + " " + score + " " + cvNo + "score전체값");
         
         try {
             int result = recruitService.cvToScore(applyNo, score, cvNo);
@@ -773,12 +772,13 @@ public class CompanyController {
     }
 
     @GetMapping("/scoreList")
-    public ResponseEntity<?> getScoreList(@RequestParam("applyNo") List<Integer> applyNoList, @RequestParam("score") List<Integer> scoreList, @RequestParam("cvNo") List<Integer> cvNoList) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<?> getScoreList(@RequestParam("applyNoList") List<Integer> applyNoList, @RequestParam("scoreList") List<String> scoreList, @RequestParam("cvNoList") List<Integer> cvNoList) {
+        log.info(applyNoList + " " + scoreList + " " + cvNoList + "scoreList전체값");
         try {
-            
+            int result = recruitService.cvToScoreList(applyNoList, scoreList, cvNoList);
 
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -1,6 +1,7 @@
 package com.finder.project.recruit.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -65,8 +66,11 @@ public interface RecruitService {
     // 지원한 이력서 점수
     public int cvToScore(int applyNo, String score, int cvNo) throws Exception;
 
+    // 지원한 이력서 전체 점수
+    public int cvToScoreList(List<Integer> applyNoList, List<String> scoreList, List<Integer> cvNoList) throws Exception;
+
     // 제출된 이력서
-    public List<Resume> applyCom(int comNo, Page page) throws Exception;
+    public List<Resume> applyCom(Integer comNo, Page page) throws Exception;
 
     // userNo 으로 com
     public Company userNoToCom(int userNo) throws Exception;

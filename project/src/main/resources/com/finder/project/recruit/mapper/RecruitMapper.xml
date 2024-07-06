@@ -384,6 +384,16 @@
 </insert>
 
 
+<!-- <update id="cvToScoreList" parameterType="map">
+    <foreach collection="applyNoList" item="applyNo" index="index" separator="">
+        UPDATE apply_employee
+        SET score = IF(#{cvNoList[${index}]} = cv_no, #{scoreList[${index}]}, score)
+        WHERE apply_no = #{applyNo}
+    </foreach>
+</update> -->
+
+
+
   <!-- 제출된 이력서 페이징 -->
   <!-- <select id="countResumes" resultType="int">
       SELECT COUNT(ae.apply_no)
