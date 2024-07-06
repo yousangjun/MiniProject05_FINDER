@@ -159,7 +159,6 @@ public class ResumeController {
             log.info("cvNo : " + cvNo);
             if (resumeCreate > 0) {
                 log.info("이력서 만드는 걸 성공했어요");
-                log.info("CVNo 몇이냐 씨발아 : " + cvNo);
 
                 return new ResponseEntity<>(cvNo, HttpStatus.OK);
             } else {
