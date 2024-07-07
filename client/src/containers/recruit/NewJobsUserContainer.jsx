@@ -92,9 +92,9 @@ const NewJobsUserContainer = () => {
                                         recruit={recruit} ContentListItemText={"삭제"} ShowBtn={true} />
                                     ))
                                 )}
-                                <Paging page={pageInfo} onPageChange={onPageChange} />
                             </>
                         )}
+                        <Paging page={pageInfo} onPageChange={onPageChange} />
                     </div>
                 </main>
             </div>
