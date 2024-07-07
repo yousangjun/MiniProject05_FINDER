@@ -85,7 +85,7 @@ function App() {
           {/* 이력서 페이지 */}
           <Route path="/resume" element={<Resume/>}></Route>
           <Route path="/resume/cvCreate_user/:cvNo" element={<CvCreate_user/>}></Route>           {/* 이력서 등록 */}
-          <Route path="/resume/cvRead_user" element={<CvRead_user/>}></Route>               {/* 이력서 조회 / 수정 / 삭제 */}
+          <Route path="/resume/cvRead_user/:cvNo" element={<CvRead_user/>}></Route>               {/* 이력서 조회 / 수정 / 삭제 */}
 
 
           {/* 회원 페이지 */}

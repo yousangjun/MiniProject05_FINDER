@@ -113,7 +113,7 @@ const CvCreate_user = () => {
     // 경력 이력 목록 가져오기
     const fetchEmploymentHistoryList = async () => {
         try {
-            const response = await axios.get(`/resume/cv_Emlist_user?userNo=${userNo}`);
+            const response = await axios.get(`/resume/cv_Emlist_user/${userNo}`);
             setEmploymentHistoryList(response.data);
         } catch (error) {
             console.error('경력 목록 가져오기 오류', error);
@@ -314,7 +314,7 @@ const CvCreate_user = () => {
                     </div>
                     {/* 토큰 있는 자리였음 */}
 
-                    <div className="d-flex">
+                    <div className="d-flex justify-content-between">
                         <div className="form-group col-6" style={{ width: 'calc(100% - 250px)' }}>
                             <div className="row">
                                 <div className="form-group col-12">
@@ -323,6 +323,7 @@ const CvCreate_user = () => {
                                 <div className="form-group col-12">
                                     <label htmlFor="age" className="form-label"></label>
                                     <span className="userAge">{formData.userBirth}</span>
+                                <hr style={{margin:"5px 0px 20px 0px"}} />
                                 </div>
                                 <div className="form-group col-12">
                                     <label htmlFor="email" className="form-label"></label>
@@ -335,7 +336,7 @@ const CvCreate_user = () => {
                             </div>
                         </div>
 
-                        <div className="profile-pic userImgTitle">
+                        <div className="profile-pic userImgTitle" >
                             <div id='preview' className='preview'>
                                 {/* <img src="" alt="썸네일에 따라 다르게 올라가야함" className='img-thumbnail' /> */}
                                 {
@@ -488,7 +489,7 @@ const CvCreate_user = () => {
                             <div className="btn-click123" style={{ display: 'flex' }}>
                                 {/* <BtnLong btnLongText={"이력서 등록"} btnType="submit" /> */}
                                 <button type='submit' className='btn-long' style={{ float: 'right' }}>이력서 등록</button>
-                                <button type='button' className='btn-long' style={{ float: 'right' }}>이전 페이지</button>
+                                <button type='button' className='btn-long' style={{ float: 'right' }} onClick={() => navi(-1)}>이전 페이지</button>
                             </div>
                         </div>
 
