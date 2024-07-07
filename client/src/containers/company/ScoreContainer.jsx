@@ -384,7 +384,7 @@ function ScoreContainer() {
                         <ContentHeader ContentHeaderText="결제 내역" />
                         <div className="main-content">
                             <div style={{ marginBottom: '15px' }}>keyword</div>
-                            <div className="item d-flex justify-content-between">
+                            <div className="item d-flex justify-content-between" style={{marginBottom: "10px"}}>
                                 <div className="keyword-span" id="outputContainer">
                                     <KeywordItem keywords={keyword} />
                                 </div>
