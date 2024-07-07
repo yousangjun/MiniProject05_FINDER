@@ -304,7 +304,7 @@ const CvCreate_user = () => {
 
     return (
         <>
-            <form method='POST' encType='multipart/form-data' style={{ marginTop: '20px' }} onSubmit={handleSubmit}>
+            <form style={{ marginTop: '20px' }} onSubmit={handleSubmit}>
                 <div className="container-fluid container resume-form">
                     <div className="form-group col-12 Title">
                         <span className='Title2'>
