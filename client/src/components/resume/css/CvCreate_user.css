@@ -45,8 +45,7 @@ h5{
 
 .userAge{
   font-size: 20px;
-  border-bottom: solid 1px #9e9e9e;
-  padding:0;
+  line-height: 50px;
   color:#5d626b;
 }
 
@@ -67,8 +66,10 @@ h5{
 }
 
 .userImgTitle{
-  width: 250px;
+  width: 170px;
+  justify-content: start !important;
 }
+
 .preview{
     border:none;
     min-height:210px;
@@ -118,6 +119,12 @@ h5{
   margin-bottom: 10px;
 }
 
+.introduceMe1 {
+  resize: none;
+  min-height: 200px;
+}
+
+
 .form-header {
     text-align: center;
     background-color: var(--long-btn-color);
@@ -132,7 +139,7 @@ h5{
   }
 
   .profile-pic {
-    height: 500px;
+    height: 280px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -153,13 +160,14 @@ h5{
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    
   }
 
   #preview img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    /* 이미지가 preview 영역에 맞춰서 잘림 */
+    object-fit: cover; /* 이미지가 preview 영역에 맞춰서 잘림 */
+    border-radius: 0;
   }
 
   .deleteFile-btn {
