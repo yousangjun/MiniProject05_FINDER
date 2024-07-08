@@ -332,12 +332,10 @@ public class ResumeController {
     // 경력 리스트
     /**
      * @param cvNo
-     * @param model
      * @return
-     * @throws Exception
      */
-    @GetMapping("/cv_Emlist_user")
-    public ResponseEntity<?> EmList(@RequestParam("cvNo") int cvNo) throws Exception {
+    @GetMapping("/cv_Emlist_user/{cvNo}")
+    public ResponseEntity<?> EmList(@PathVariable("cvNo") int cvNo) throws Exception {
         try {
             List<EmploymentHistory> employmentHistoryList = employmentHistoryService.employmentHistoryList(cvNo);
             log.info("::::::::::: 경력 리스트 :::::::::: ");
