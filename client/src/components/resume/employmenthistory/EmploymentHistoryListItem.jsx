@@ -1,26 +1,26 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 
-const EducationListItem = ({ educationList }) => {
+const EmploymentHistoryListItem = ({ employmentHistoryList }) => {
     const { cvNo } = useParams('');
 
 
 
-    console.log(`dldddjd`, educationList)
+    console.log(`dldddjd`, employmentHistoryList)
     return (
         <>
             {
-                educationList.map((education, index) => (
+                employmentHistoryList.map((employment, index) => (
                     <div className="d-flex flex-column w-100 h-auto" key={index}>
                         <div className="education-card d-flex justify-content-between">
                             <div className="flex-column col-3">
-                                <p>{education.university}</p>
+                                <p>{employment.university}</p>
                             </div>
                             <div className="flex-column col-3">
-                                <p>{education.major}</p>
+                                <p>{employment.major}</p>
                             </div>
                             <div className="flex-column col-3">
-                                <p>{education.universityStatus}</p>
+                                <p>{employment.universityStatus}</p>
                             </div>
                             <div className="flex-column col-3">
                                 <button type='button' className='btn del_btn'>
@@ -36,4 +36,4 @@ const EducationListItem = ({ educationList }) => {
     )
 }
 
-export default EducationListItem
+export default EmploymentHistoryListItem
