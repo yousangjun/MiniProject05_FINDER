@@ -142,7 +142,7 @@
             c.com_category LIKE CONCAT('%', #{option.keyword}, '%')
         </if>
     </where>
-    ORDER BY r.com_reg_date DESC
+    ORDER BY r.recruit_reg_date DESC
     LIMIT #{page.index}, #{page.rows}
 </select>
 
