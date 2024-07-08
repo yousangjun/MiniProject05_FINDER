@@ -53,6 +53,16 @@ const Sidebar = () => {
     }
   }
 
+  // 채용공고 등록 클릭 시 처리 함수
+  const handlePostJobsClick = (event) => {
+    if (remainQuantity === 0) {
+      event.preventDefault();
+      if (window.confirm("결제 페이지로 이동하시겠습니까?")) {
+        navigate("/company/credit_com");
+      }
+    }
+  };
+
   return (
     <nav className="col-12 col-sm-12 col-lg-3 sidebar1" style={{ boxShadow: '-4px 8px 20px rgba(0, 0, 0, 0.1)' }}>
       <div style={{ margin: '15px 0 45px 15px' }}>
@@ -101,7 +111,7 @@ const Sidebar = () => {
               <strong className="fs-5">채용공고 관리</strong>
             </li>
             <li className="nav-item1">
-              <Link to="/recruit/post_jobs_com" className="job-item-link1 nav-link1 fw-normal fs-6 token-end">
+              <Link to="/recruit/post_jobs_com" className="job-item-link1 nav-link1 fw-normal fs-6 token-end" onClick={handlePostJobsClick}>
                 <div style={{ backgroundColor: '#fff', borderRadius: '8px' }} className="d-flex justify-content-between">
                   <div className="d-flex gap-2 p-2 ps-2">
                     <div>
