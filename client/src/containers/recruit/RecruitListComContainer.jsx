@@ -90,7 +90,7 @@ const RecruitListComContainer = () => {
                                     </div>
                                 ) : (
                                     cvs.map((cv, index) => (
-                                        <ContentListItem key={index} LinkToHref={`/resume/cvRead_user?${cv.cvNo}`} 
+                                        <ContentListItem key={index} LinkToHref={`/resume/cvRead_user/${cv.cvNo}`} 
                                         cv={cv} ContentListItemText={"삭제"} ShowBtn={true} />
                                     ))
                                 )}

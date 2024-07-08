@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -512,21 +513,35 @@ public class ResumeController {
     }
 
     // 이력서 수정
-    @PostMapping("/cv_read_user")
-    public String updateUserPro2(HttpSession session, Resume resume) throws Exception {
+    // @PostMapping("/cv_read_user")
+    // public String updateUserPro2(HttpSession session, Resume resume) throws Exception {
 
-        log.info("이력서 정보" + session  + "ddsds" + resume);
+    //     log.info("이력서 정보" + session  + "ddsds" + resume);
+
+    //     int result = resumeService.update(resume);
+
+    //     if (result > 0) {
+    //         log.info("이력서 수정 성공했어요");
+    //         return "redirect:/resume/cv_list_user";
+    //     }
+
+    //     // 데이터 처리 실패
+    //     log.info("이력서 수정 실패했어요");
+    //     return "redirect:/resume/cv_read_user?cvNo&error";
+    // }
+    @PutMapping("/cv_read_user")
+    public ResponseEntity<String> updateUserPro2(@RequestBody Resume resume) throws Exception {
+        log.info("이력서 정보: " + resume);
 
         int result = resumeService.update(resume);
 
         if (result > 0) {
-            log.info("이력서 수정 성공했어요");
-            return "redirect:/resume/cv_list_user";
+            log.info("이력서 수정 성공");
+            return ResponseEntity.ok("이력서 수정 성공");
         }
 
-        // 데이터 처리 실패
-        log.info("이력서 수정 실패했어요");
-        return "redirect:/resume/cv_read_user?cvNo&error";
+        log.info("이력서 수정 실패");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이력서 수정 실패");
     }
 
     /* 

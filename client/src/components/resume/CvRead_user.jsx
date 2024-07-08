@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import './css/CvCreate_user.css'
 import axios from 'axios';
-import { LoginContext } from '../../contexts/LoginContextProvider';
+import { LoginContext } from '../../contexts/LoginContextProvider.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import BtnLong from '../main/BtnLong';
+import BtnLong from '../main/BtnLong.jsx';
 import { deleteFile } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
 import EducationListItem from './education/EducationListItem.jsx';
 import EmploymentHistoryListItem from './employmenthistory/EmploymentHistoryListItem.jsx';
 
 
 
-const CvCreate_user = () => {
-    const { userInfo } = useContext(LoginContext);
+const CvRead_user = () => {
+    const { userInfo, isLogin, roles } = useContext(LoginContext);
     const userNo = userInfo ? userInfo.userNo : null;
     const { cvNo } = useParams('');
     const fileInputRef = useRef(null);
@@ -279,6 +279,34 @@ const CvCreate_user = () => {
         }
     };
 
+    // 이력서 수정
+    const handleUpdate = async () => {
+        try {
+            const response = await axios.put('/resume/cv_read_user', {
+                cvNo,
+                cvTitle: formData.cvTitle,
+                university: formData.university,
+                major: formData.major,
+                universityStatus: formData.universityStatus,
+                organization: formData.organization,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                duties: formData.duties,
+                coverLetter: formData.coverLetter,
+                userNo
+            });
+
+            if (response.status === 200) {
+                alert('이력서 수정 성공');
+                navi('/recruit/cv_list_user');
+            } else {
+                throw new Error('이력서 수정 실패');
+            }
+        } catch (error) {
+            console.error('이력서 수정 오류', error);
+            alert('이력서 수정 실패');
+        }
+    };
 
 
     return (
@@ -426,28 +454,47 @@ const CvCreate_user = () => {
 
                         <div className="file-upload upload-btn d-flex justify-content-between">
                             <div>
-                                <input ref={fileInputRef2} onChange={handleFileChange} type="file" name="file" id="file-input" className="file-input hidden-file-input" multiple />
-                                <button className="btn-long InsertFile" type='button' id='uploadBtn' name='uploadBtn' onClick={handleFileUploadClick2}>파일 선택</button>
-                                {files.map((file) => (
-                                    <div key={file.fileNo} className="file-name">
-                                        {file.originName}
-                                        <span className="remove-file" role="button" onClick={() => deleteFileClick(file.fileNo)} style={{ cursor: 'pointer', marginLeft: '10px' }}>
-                                            X
-                                        </span>
-                                    </div>
-                                ))}
-                                {newFiles.map((file, index) => (
-                                    <div key={index} className="file-name">
-                                        {file.name}
-                                        <span className="remove-file" role="button" onClick={() => deleteNewFileClick(index)} style={{ cursor: 'pointer', marginLeft: '10px' }}>
-                                            X
-                                        </span>
-                                    </div>
-                                ))}
+                                {isLogin && roles.isUser && !roles.isCompany && (
+                                    <>
+                                        <input ref={fileInputRef2} onChange={handleFileChange} type="file" name="file" id="file-input" className="file-input hidden-file-input" multiple />
+                                        <button className="btn-long InsertFile" type='button' id='uploadBtn' name='uploadBtn' onClick={handleFileUploadClick2}>파일 선택</button>
+                                        {files.map((file) => (
+                                            <div key={file.fileNo} className="file-name">
+                                                {file.originName}
+                                                <span className="remove-file" role="button" onClick={() => deleteFileClick(file.fileNo)} style={{ cursor: 'pointer', marginLeft: '10px' }}>
+                                                    X
+                                                </span>
+                                            </div>
+                                        ))}
+                                        {newFiles.map((file, index) => (
+                                            <div key={index} className="file-name">
+                                                {file.name}
+                                                <span className="remove-file" role="button" onClick={() => deleteNewFileClick(index)} style={{ cursor: 'pointer', marginLeft: '10px' }}>
+                                                    X
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </>     
+                                    )   
+                                }
+                                {isLogin && roles.isCompany && (
+                                    <>
+                                        <button className="btn-long" type='button' id='' name=''>합격 / 불합격</button>
+                                    </>
+                                    )
+                                }
                             </div>
-                            <div className="btn-click123 d-flex gap-2">
-                                <button type='submit' className='btn-long' style={{ float: 'right' }}>이력서 등록</button>
-                                <button type='button' className='btn-long' style={{ float: 'right' }} onClick={() => navi(-1)}>이전 페이지</button>
+                            {/* 구직자일때 버튼 */}
+                            <div className='d-flex gap-2'>
+                            {isLogin && roles.isUser && !roles.isCompany && (
+                                  <>
+                                    <BtnLong btnLongText={"수정"}  onClick={handleUpdate}/>
+                                    <BtnLong btnLongText={"삭제"}/>
+                                  </>
+                            )}
+                                <div className="btn-click123" style={{ display: 'flex' }}>
+                                    <button type='button' className='btn-long' style={{ float: 'right' }} onClick={() => navi(-1)}>이전 페이지</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -457,4 +504,4 @@ const CvCreate_user = () => {
     )
 }
 
-export default CvCreate_user
+export default CvRead_user
