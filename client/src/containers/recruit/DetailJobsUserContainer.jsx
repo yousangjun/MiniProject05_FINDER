@@ -6,7 +6,7 @@ import './css/DetailJobsUserContainer.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const DetailJobsUserContainer = () => {
-  const { userInfo } = useContext(LoginContext);
+  const { userInfo, roles } = useContext(LoginContext);
   const { setNewRecruitNo } = useContext(LoginContext);
   const { newRecruitNo } = useContext(LoginContext);
   const { recruitNo } = useParams('');
@@ -148,9 +148,6 @@ const DetailJobsUserContainer = () => {
     // }
   };
 
-  const hasRole = (role) => {
-    return true;
-  };
 
   return (
     <>
@@ -295,7 +292,7 @@ const DetailJobsUserContainer = () => {
 
           <div className="col-md-12 col-lg-3 order-1 order-lg-2">
             <div className="d-flex flex-row flex-lg-column job_notice_detail a-wrapper" style={{ position: 'sticky', top: '130px', right: '50px' }}>
-              {hasRole('ROLE_USER') && (
+              {!roles.isCompany && (
                 <Button variant="primary" onClick={() => setModalOpen(true)} className="detail-form w-100" id="ae-btn" style={{ backgroundColor: '#004ea0', fontWeight: 'bold', border: 'transparent' }}>
                   지원하기
                 </Button>
