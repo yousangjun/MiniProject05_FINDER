@@ -1,6 +1,7 @@
 
-# FINDER 프로젝트 발표 + 시연 영상
+# FINDER REACT 프로젝트 발표 + 시연 영상
 준비중입니다.
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/98a09fd3-9397-4c57-bae6-df7a352ac844)
 
 
 
@@ -23,7 +24,9 @@
   - ERD
   - 테이블 정의서
   - 화면 설계서
-  - 프로젝트 실제 화면 UI
+  - MVC ⚙ REST
+  - JWT ⚙ SPRING SECURITY
+  - 실제 화면 UI
 ### 6. 자체 평가 의견
   - 개별 평가
   - 종합 평가
@@ -70,21 +73,19 @@
 # 3.프로젝트 팀 구성 및 역할
 #### 인원 : 4명
 
-![image](https://github.com/JJB03/Project05_FINDER/assets/121448554/02617f5f-6b63-48f7-a314-0d97dd6c66e6)
-![image](https://github.com/JJB03/Project05_FINDER/assets/121448554/fcd3081b-4a7b-46cd-b9aa-34b827c21433)
-
-
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/8b56d78a-29d8-4032-aca4-a7ff405b50fd)
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/bf0b6e71-1610-411c-9734-11e49ca6d26e)
  
 # 4. 프로젝트 수행절차 및 방법
 ## 4-1. 프로젝트 수행 절차
-#### 2024-05-16 ~ 2023-06-12
-![image](https://github.com/JJB03/Project05_FINDER/assets/121448554/cb041109-5d15-4173-a62b-efb2038a7305)
+#### 2024-06-14 ~ 2024-07-05
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/96521eb9-29f6-44f9-8564-4989654fac1c)
 
 
 
 ## 4-2. 수행 방법
 #### 사용 언어와 협업툴
-![image](https://github.com/JJB03/Project05_FINDER/assets/121448554/7f89dc68-61f7-4578-8dad-15008387628f)
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/19b6e0ec-dfd2-4ba0-8ea5-dc89c5fd24e3)
 
 
 
@@ -194,9 +195,16 @@
 </details>
 
 ----
+## 5-6. MVC ⚙ REST
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/e89009d3-1c21-4643-aa0d-ec342c6edb6b)
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/e5227883-e2d0-43a7-8059-91ae794554a8)
 
 
-## 5-6. 프로젝트 실제 화면 UI
+## 5-7. JWT SPRING ⚙ SECURITY
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/1b96a462-2a17-47bb-8586-fb05f6021b46)
+
+
+## 5-8. 프로젝트 실제 화면 UI
 <details>
 <summary><h3>공통 👆</h3></summary>
 <div markdown="1">
@@ -230,17 +238,18 @@
 
 # 6. 자체 평가 의견
 ## 6-1. 개별 평가
-### 홍준범
-![image](https://github.com/JJB03/Project05_FINDER/assets/121448554/c7e9ea99-3009-4f41-a563-c23f657175ec)
 
 ### 유상준
-![image](https://github.com/JJB03/Project05_FINDER/assets/121448554/e2d5effe-4585-4b38-ba16-daffd2f0aeaa)
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/eb1c8dec-181a-4633-85d6-367b6ae2d290)
 
 ### 정주빈
-![image](https://github.com/JJB03/Project05_FINDER/assets/121448554/e0980c87-4122-4712-8eea-4d84a4f367a9)
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/8bdc12b4-b78e-45be-9924-d05fff8b4df9)
+
+### 홍준범
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/525d6419-4227-4bac-b012-453767a95025)
    
 ### 백승헌
-![image](https://github.com/JJB03/Project05_FINDER/assets/121448554/52ae0ee8-ef9f-4980-acb6-f08cd2dd2875)
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/b8c7dfe6-f40b-494d-8c8c-4f0f23d97e46)
 
 
 
@@ -248,7 +257,7 @@
 
 ## 6-2. 종합 평가
 
-![image](https://github.com/JJB03/Project05_FINDER/assets/121448554/3005b45d-7edf-47f8-a872-72c3d80d96e6)
+![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/9d8f5acb-565a-4941-8857-c2ee860a41c1)
 
 
 
