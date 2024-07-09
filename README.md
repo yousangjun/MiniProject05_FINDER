@@ -1,6 +1,7 @@
 
 # FINDER REACT 프로젝트 발표 + 시연 영상
 준비중입니다.
+
 ![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/98a09fd3-9397-4c57-bae6-df7a352ac844)
 
 
