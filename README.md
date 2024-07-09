@@ -196,12 +196,16 @@
 
 ----
 ## 5-6. MVC ⚙ REST
+MVC와 REST 방식 중 저희는 REST 방식을 채택하였습니다.
+REST는 state 관리, 다양한 데이터 형식 지원, 서버단과 클라이언트단을 구분하여 개발할 수 있습니다. 서버에서 데이터를 보내면 클라이언트에서 데이터를 받아 라우팅하는 방식으로 개발의 확장성과 유연성을 높일 수 있습니다.
 ![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/e89009d3-1c21-4643-aa0d-ec342c6edb6b)
 ![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/e5227883-e2d0-43a7-8059-91ae794554a8)
 
 
+
 ## 5-7. JWT SPRING ⚙ SECURITY
 ![image](https://github.com/yousangjun/MiniProject05_FINDER/assets/121448554/1b96a462-2a17-47bb-8586-fb05f6021b46)
+JWT는 무상태성으로 서버 확장에 유리하며, 자체적으로 정보를 포함해 세션 관리 없이도 인가와 인증을 간편하게 합니다.
 
 
 ## 5-8. 프로젝트 실제 화면 UI
