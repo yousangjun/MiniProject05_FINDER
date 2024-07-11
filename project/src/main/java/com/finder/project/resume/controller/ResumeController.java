@@ -34,6 +34,7 @@ import com.finder.project.resume.service.EducationService;
 import com.finder.project.resume.service.EmploymentHistoryService;
 import com.finder.project.resume.service.ResumeService;
 import com.finder.project.user.dto.Users;
+import com.finder.project.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,6 +56,9 @@ import lombok.extern.slf4j.Slf4j;
 public class ResumeController {
     @Autowired
     private ResumeService resumeService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private FileService fileService;
@@ -160,7 +164,7 @@ public class ResumeController {
             log.info("cvNo : " + cvNo);
             if (resumeCreate > 0) {
                 log.info("이력서 만드는 걸 성공했어요");
-                log.info("CVNo 몇이냐 씨발아 : " + cvNo);
+                log.info("CVNo : " + cvNo);
 
                 return new ResponseEntity<>(cvNo, HttpStatus.OK);
             } else {
@@ -584,6 +588,7 @@ public class ResumeController {
         try {
             // 사용자의 이력서 정보를 가져옴
             Resume resume = resumeService.select(cvNo);
+            
             log.info("사용자 이력서 ::::: 기업 " + resume);
             if (resume != null) {
                 log.info("이력서의 " + cvNo + "번이 갔어요");

@@ -7,6 +7,7 @@ import KeywordItem from '../../components/main/KeywordItem';
 import axios from 'axios';
 import { getComToUserNo } from '../../apis/recruit/recruit.js'; // postRecruit 함수 import
 import { LoginContext } from '../../contexts/LoginContextProvider';
+import { Link } from 'react-router-dom';
 
 function ScoreContainer() {
     const { userInfo } = useContext(LoginContext);
@@ -463,9 +464,9 @@ function ScoreContainer() {
                                                         <strong>{index + 1}.</strong>
                                                     </div>
                                                     <div className="d-flex">
-                                                        <a href={`/resume/cv_read_user?cvNo=${resume.cvNo}`} className="job-item-link name-link">
+                                                        <Link to={`/resume/cvRead_user/${resume.cvNo}`} className="job-item-link name-link">
                                                             <span>{resume.user.userName}</span>
-                                                        </a>
+                                                        </Link>
                                                     </div>
                                                 </div>
                                                 <div className="w-25" style={{ paddingTop: '5px' }}>
