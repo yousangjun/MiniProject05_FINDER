@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 const EmploymentHistoryListItem = ({ employmentHistoryList }) => {
     const { cvNo } = useParams('');
 
+    console.log("cvNo ::::::::::::::::: " + cvNo)
 
 
     console.log(`dldddjd`, employmentHistoryList)
