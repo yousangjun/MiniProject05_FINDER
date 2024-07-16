@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -32,10 +33,10 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer-col2 d-md-flex flex-column align-items-md-center my-3">
-          <a href="/index" style={{ textDecoration: 'none', color: '#fff' }}>
+          <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>
             <h1><strong>FINDER</strong></h1>
             <img className="logo-footer" src="/img/logo_white_transparent.png" alt="" />
-          </a>
+          </Link>
         </div>
         <div className="footer-col3 my-3">
           <div></div>

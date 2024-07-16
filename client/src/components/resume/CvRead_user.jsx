@@ -81,33 +81,30 @@ const CvRead_user = () => {
         }
     };
 
-    // 유저 정보를 불러올때 사용
+    // cvNo 로 유저 정보 가져오기
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchCVData = async () => {
             try {
-                if (userInfo && userInfo.userNo) {
-                    const response = await axios.get('/user/info_user', {
-                        params: { userNo: userInfo.userNo }
+                    const response = await axios.get('/resume/cv_read_com', {
+                        params: { cvNo: cvNo }
                     });
-                    const userData = response.data;
-
-                    // const formattedDate = `${userData.userBirth.slice(0, 4)}-${userData.userBirth.slice(4, 6)}-${userData.userBirth.slice(6, 8)}`;
-                    const formattedDate = userData.userBirth.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, '$1-$2-$3');
-
+                    const cvData = response.data;
+                    const formattedDate = cvData.user.userBirth.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, '$1-$2-$3');
                     setFormData({
                         ...formData,
-                        name: userData.userName,
+                        name: cvData.user.userName,
                         userBirth: formattedDate,
-                        userPhone: userData.userPhone,
-                        userEmail: userData.userEmail,
+                        userPhone: cvData.user.userPhone,
+                        userEmail: cvData.user.userEmail,
+                        cvTitle: cvData.cvTitle,
+                        coverLetter: cvData.coverLetter
                     });
-                }
             } catch (error) {
                 console.error("Failed to fetch user data", error);
             }
         };
-        fetchUserData();
-    }, [userInfo]);
+        fetchCVData();
+    }, [cvNo]);
 
     // 경력 이력 목록 가져오기
     const fetchEmploymentHistoryList = async () => {

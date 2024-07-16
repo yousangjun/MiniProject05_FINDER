@@ -584,6 +584,7 @@ public class ResumeController {
         try {
             // 사용자의 이력서 정보를 가져옴
             Resume resume = resumeService.select(cvNo);
+            
             log.info("사용자 이력서 ::::: 기업 " + resume);
             if (resume != null) {
                 log.info("이력서의 " + cvNo + "번이 갔어요");

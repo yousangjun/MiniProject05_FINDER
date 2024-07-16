@@ -463,7 +463,7 @@ function ScoreContainer() {
                                                         <strong>{index + 1}.</strong>
                                                     </div>
                                                     <div className="d-flex">
-                                                        <a href={`/resume/cv_read_user?cvNo=${resume.cvNo}`} className="job-item-link name-link">
+                                                        <a href={`/resume/cvead_user/${resume.cvNo}`} className="job-item-link name-link">
                                                             <span>{resume.user.userName}</span>
                                                         </a>
                                                     </div>
