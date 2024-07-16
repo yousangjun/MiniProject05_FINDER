@@ -4,7 +4,6 @@ import './Footer.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faLinkedin, faYoutube, faInstagram } from '@fortawesome/free-brands-svg-icons'
-import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
